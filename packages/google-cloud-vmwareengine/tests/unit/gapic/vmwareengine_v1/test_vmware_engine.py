@@ -65,7 +65,7 @@ from google.cloud.vmwareengine_v1.services.vmware_engine import (
     pagers,
     transports,
 )
-from google.cloud.vmwareengine_v1.types import vmwareengine
+from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
 
 def client_cert_source_callback():
@@ -970,9 +970,9 @@ def test_list_private_clouds_pager(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="abc",
             ),
@@ -982,14 +982,14 @@ def test_list_private_clouds_pager(transport_name: str = "grpc"):
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
             ),
             RuntimeError,
@@ -1005,7 +1005,7 @@ def test_list_private_clouds_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.PrivateCloud) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.PrivateCloud) for i in results)
 
 
 def test_list_private_clouds_pages(transport_name: str = "grpc"):
@@ -1022,9 +1022,9 @@ def test_list_private_clouds_pages(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="abc",
             ),
@@ -1034,14 +1034,14 @@ def test_list_private_clouds_pages(transport_name: str = "grpc"):
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
             ),
             RuntimeError,
@@ -1067,9 +1067,9 @@ async def test_list_private_clouds_async_pager():
         call.side_effect = (
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="abc",
             ),
@@ -1079,14 +1079,14 @@ async def test_list_private_clouds_async_pager():
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
             ),
             RuntimeError,
@@ -1100,7 +1100,9 @@ async def test_list_private_clouds_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, vmwareengine.PrivateCloud) for i in responses)
+        assert all(
+            isinstance(i, vmwareengine_resources.PrivateCloud) for i in responses
+        )
 
 
 @pytest.mark.asyncio
@@ -1119,9 +1121,9 @@ async def test_list_private_clouds_async_pages():
         call.side_effect = (
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="abc",
             ),
@@ -1131,14 +1133,14 @@ async def test_list_private_clouds_async_pages():
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
             ),
             RuntimeError,
@@ -1174,9 +1176,9 @@ def test_get_private_cloud(request_type, transport: str = "grpc"):
         type(client.transport.get_private_cloud), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.PrivateCloud(
+        call.return_value = vmwareengine_resources.PrivateCloud(
             name="name_value",
-            state=vmwareengine.PrivateCloud.State.ACTIVE,
+            state=vmwareengine_resources.PrivateCloud.State.ACTIVE,
             description="description_value",
             uid="uid_value",
         )
@@ -1188,9 +1190,9 @@ def test_get_private_cloud(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.GetPrivateCloudRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.PrivateCloud)
+    assert isinstance(response, vmwareengine_resources.PrivateCloud)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.PrivateCloud.State.ACTIVE
+    assert response.state == vmwareengine_resources.PrivateCloud.State.ACTIVE
     assert response.description == "description_value"
     assert response.uid == "uid_value"
 
@@ -1232,9 +1234,9 @@ async def test_get_private_cloud_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.PrivateCloud(
+            vmwareengine_resources.PrivateCloud(
                 name="name_value",
-                state=vmwareengine.PrivateCloud.State.ACTIVE,
+                state=vmwareengine_resources.PrivateCloud.State.ACTIVE,
                 description="description_value",
                 uid="uid_value",
             )
@@ -1247,9 +1249,9 @@ async def test_get_private_cloud_async(
         assert args[0] == vmwareengine.GetPrivateCloudRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.PrivateCloud)
+    assert isinstance(response, vmwareengine_resources.PrivateCloud)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.PrivateCloud.State.ACTIVE
+    assert response.state == vmwareengine_resources.PrivateCloud.State.ACTIVE
     assert response.description == "description_value"
     assert response.uid == "uid_value"
 
@@ -1274,7 +1276,7 @@ def test_get_private_cloud_field_headers():
     with mock.patch.object(
         type(client.transport.get_private_cloud), "__call__"
     ) as call:
-        call.return_value = vmwareengine.PrivateCloud()
+        call.return_value = vmwareengine_resources.PrivateCloud()
         client.get_private_cloud(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1307,7 +1309,7 @@ async def test_get_private_cloud_field_headers_async():
         type(client.transport.get_private_cloud), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.PrivateCloud()
+            vmwareengine_resources.PrivateCloud()
         )
         await client.get_private_cloud(request)
 
@@ -1334,7 +1336,7 @@ def test_get_private_cloud_flattened():
         type(client.transport.get_private_cloud), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.PrivateCloud()
+        call.return_value = vmwareengine_resources.PrivateCloud()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_private_cloud(
@@ -1375,10 +1377,10 @@ async def test_get_private_cloud_flattened_async():
         type(client.transport.get_private_cloud), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.PrivateCloud()
+        call.return_value = vmwareengine_resources.PrivateCloud()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.PrivateCloud()
+            vmwareengine_resources.PrivateCloud()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -1579,7 +1581,7 @@ def test_create_private_cloud_flattened():
         # using the keyword arguments to the method.
         client.create_private_cloud(
             parent="parent_value",
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             private_cloud_id="private_cloud_id_value",
         )
 
@@ -1591,7 +1593,7 @@ def test_create_private_cloud_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].private_cloud
-        mock_val = vmwareengine.PrivateCloud(name="name_value")
+        mock_val = vmwareengine_resources.PrivateCloud(name="name_value")
         assert arg == mock_val
         arg = args[0].private_cloud_id
         mock_val = "private_cloud_id_value"
@@ -1609,7 +1611,7 @@ def test_create_private_cloud_flattened_error():
         client.create_private_cloud(
             vmwareengine.CreatePrivateCloudRequest(),
             parent="parent_value",
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             private_cloud_id="private_cloud_id_value",
         )
 
@@ -1634,7 +1636,7 @@ async def test_create_private_cloud_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_private_cloud(
             parent="parent_value",
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             private_cloud_id="private_cloud_id_value",
         )
 
@@ -1646,7 +1648,7 @@ async def test_create_private_cloud_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].private_cloud
-        mock_val = vmwareengine.PrivateCloud(name="name_value")
+        mock_val = vmwareengine_resources.PrivateCloud(name="name_value")
         assert arg == mock_val
         arg = args[0].private_cloud_id
         mock_val = "private_cloud_id_value"
@@ -1665,7 +1667,7 @@ async def test_create_private_cloud_flattened_error_async():
         await client.create_private_cloud(
             vmwareengine.CreatePrivateCloudRequest(),
             parent="parent_value",
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             private_cloud_id="private_cloud_id_value",
         )
 
@@ -1838,7 +1840,7 @@ def test_update_private_cloud_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_private_cloud(
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1847,7 +1849,7 @@ def test_update_private_cloud_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].private_cloud
-        mock_val = vmwareengine.PrivateCloud(name="name_value")
+        mock_val = vmwareengine_resources.PrivateCloud(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -1864,7 +1866,7 @@ def test_update_private_cloud_flattened_error():
     with pytest.raises(ValueError):
         client.update_private_cloud(
             vmwareengine.UpdatePrivateCloudRequest(),
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1888,7 +1890,7 @@ async def test_update_private_cloud_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_private_cloud(
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1897,7 +1899,7 @@ async def test_update_private_cloud_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].private_cloud
-        mock_val = vmwareengine.PrivateCloud(name="name_value")
+        mock_val = vmwareengine_resources.PrivateCloud(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -1915,7 +1917,7 @@ async def test_update_private_cloud_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_private_cloud(
             vmwareengine.UpdatePrivateCloudRequest(),
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2649,9 +2651,9 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="abc",
             ),
@@ -2661,14 +2663,14 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
             ),
             RuntimeError,
@@ -2684,7 +2686,7 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.Cluster) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.Cluster) for i in results)
 
 
 def test_list_clusters_pages(transport_name: str = "grpc"):
@@ -2699,9 +2701,9 @@ def test_list_clusters_pages(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="abc",
             ),
@@ -2711,14 +2713,14 @@ def test_list_clusters_pages(transport_name: str = "grpc"):
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
             ),
             RuntimeError,
@@ -2742,9 +2744,9 @@ async def test_list_clusters_async_pager():
         call.side_effect = (
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="abc",
             ),
@@ -2754,14 +2756,14 @@ async def test_list_clusters_async_pager():
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
             ),
             RuntimeError,
@@ -2775,7 +2777,7 @@ async def test_list_clusters_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, vmwareengine.Cluster) for i in responses)
+        assert all(isinstance(i, vmwareengine_resources.Cluster) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -2792,9 +2794,9 @@ async def test_list_clusters_async_pages():
         call.side_effect = (
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="abc",
             ),
@@ -2804,14 +2806,14 @@ async def test_list_clusters_async_pages():
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
             ),
             RuntimeError,
@@ -2845,9 +2847,9 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Cluster(
+        call.return_value = vmwareengine_resources.Cluster(
             name="name_value",
-            state=vmwareengine.Cluster.State.ACTIVE,
+            state=vmwareengine_resources.Cluster.State.ACTIVE,
             management=True,
             uid="uid_value",
         )
@@ -2859,9 +2861,9 @@ def test_get_cluster(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.GetClusterRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Cluster)
+    assert isinstance(response, vmwareengine_resources.Cluster)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.Cluster.State.ACTIVE
+    assert response.state == vmwareengine_resources.Cluster.State.ACTIVE
     assert response.management is True
     assert response.uid == "uid_value"
 
@@ -2899,9 +2901,9 @@ async def test_get_cluster_async(
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Cluster(
+            vmwareengine_resources.Cluster(
                 name="name_value",
-                state=vmwareengine.Cluster.State.ACTIVE,
+                state=vmwareengine_resources.Cluster.State.ACTIVE,
                 management=True,
                 uid="uid_value",
             )
@@ -2914,9 +2916,9 @@ async def test_get_cluster_async(
         assert args[0] == vmwareengine.GetClusterRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Cluster)
+    assert isinstance(response, vmwareengine_resources.Cluster)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.Cluster.State.ACTIVE
+    assert response.state == vmwareengine_resources.Cluster.State.ACTIVE
     assert response.management is True
     assert response.uid == "uid_value"
 
@@ -2939,7 +2941,7 @@ def test_get_cluster_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
-        call.return_value = vmwareengine.Cluster()
+        call.return_value = vmwareengine_resources.Cluster()
         client.get_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2970,7 +2972,7 @@ async def test_get_cluster_field_headers_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Cluster()
+            vmwareengine_resources.Cluster()
         )
         await client.get_cluster(request)
 
@@ -2995,7 +2997,7 @@ def test_get_cluster_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Cluster()
+        call.return_value = vmwareengine_resources.Cluster()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_cluster(
@@ -3034,10 +3036,10 @@ async def test_get_cluster_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Cluster()
+        call.return_value = vmwareengine_resources.Cluster()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Cluster()
+            vmwareengine_resources.Cluster()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -3226,7 +3228,7 @@ def test_create_cluster_flattened():
         # using the keyword arguments to the method.
         client.create_cluster(
             parent="parent_value",
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             cluster_id="cluster_id_value",
         )
 
@@ -3238,7 +3240,7 @@ def test_create_cluster_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].cluster
-        mock_val = vmwareengine.Cluster(name="name_value")
+        mock_val = vmwareengine_resources.Cluster(name="name_value")
         assert arg == mock_val
         arg = args[0].cluster_id
         mock_val = "cluster_id_value"
@@ -3256,7 +3258,7 @@ def test_create_cluster_flattened_error():
         client.create_cluster(
             vmwareengine.CreateClusterRequest(),
             parent="parent_value",
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             cluster_id="cluster_id_value",
         )
 
@@ -3279,7 +3281,7 @@ async def test_create_cluster_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_cluster(
             parent="parent_value",
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             cluster_id="cluster_id_value",
         )
 
@@ -3291,7 +3293,7 @@ async def test_create_cluster_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].cluster
-        mock_val = vmwareengine.Cluster(name="name_value")
+        mock_val = vmwareengine_resources.Cluster(name="name_value")
         assert arg == mock_val
         arg = args[0].cluster_id
         mock_val = "cluster_id_value"
@@ -3310,7 +3312,7 @@ async def test_create_cluster_flattened_error_async():
         await client.create_cluster(
             vmwareengine.CreateClusterRequest(),
             parent="parent_value",
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             cluster_id="cluster_id_value",
         )
 
@@ -3471,7 +3473,7 @@ def test_update_cluster_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_cluster(
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3480,7 +3482,7 @@ def test_update_cluster_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].cluster
-        mock_val = vmwareengine.Cluster(name="name_value")
+        mock_val = vmwareengine_resources.Cluster(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -3497,7 +3499,7 @@ def test_update_cluster_flattened_error():
     with pytest.raises(ValueError):
         client.update_cluster(
             vmwareengine.UpdateClusterRequest(),
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3519,7 +3521,7 @@ async def test_update_cluster_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_cluster(
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3528,7 +3530,7 @@ async def test_update_cluster_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].cluster
-        mock_val = vmwareengine.Cluster(name="name_value")
+        mock_val = vmwareengine_resources.Cluster(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -3546,7 +3548,7 @@ async def test_update_cluster_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_cluster(
             vmwareengine.UpdateClusterRequest(),
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -4021,9 +4023,9 @@ def test_list_subnets_pager(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="abc",
             ),
@@ -4033,14 +4035,14 @@ def test_list_subnets_pager(transport_name: str = "grpc"):
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
             ),
             RuntimeError,
@@ -4056,7 +4058,7 @@ def test_list_subnets_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.Subnet) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.Subnet) for i in results)
 
 
 def test_list_subnets_pages(transport_name: str = "grpc"):
@@ -4071,9 +4073,9 @@ def test_list_subnets_pages(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="abc",
             ),
@@ -4083,14 +4085,14 @@ def test_list_subnets_pages(transport_name: str = "grpc"):
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
             ),
             RuntimeError,
@@ -4114,9 +4116,9 @@ async def test_list_subnets_async_pager():
         call.side_effect = (
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="abc",
             ),
@@ -4126,14 +4128,14 @@ async def test_list_subnets_async_pager():
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
             ),
             RuntimeError,
@@ -4147,7 +4149,7 @@ async def test_list_subnets_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, vmwareengine.Subnet) for i in responses)
+        assert all(isinstance(i, vmwareengine_resources.Subnet) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -4164,9 +4166,9 @@ async def test_list_subnets_async_pages():
         call.side_effect = (
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="abc",
             ),
@@ -4176,14 +4178,14 @@ async def test_list_subnets_async_pages():
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
             ),
             RuntimeError,
@@ -4445,9 +4447,9 @@ def test_list_node_types_pager(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="abc",
             ),
@@ -4457,14 +4459,14 @@ def test_list_node_types_pager(transport_name: str = "grpc"):
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
             ),
             RuntimeError,
@@ -4480,7 +4482,7 @@ def test_list_node_types_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.NodeType) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.NodeType) for i in results)
 
 
 def test_list_node_types_pages(transport_name: str = "grpc"):
@@ -4495,9 +4497,9 @@ def test_list_node_types_pages(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="abc",
             ),
@@ -4507,14 +4509,14 @@ def test_list_node_types_pages(transport_name: str = "grpc"):
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
             ),
             RuntimeError,
@@ -4538,9 +4540,9 @@ async def test_list_node_types_async_pager():
         call.side_effect = (
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="abc",
             ),
@@ -4550,14 +4552,14 @@ async def test_list_node_types_async_pager():
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
             ),
             RuntimeError,
@@ -4571,7 +4573,7 @@ async def test_list_node_types_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, vmwareengine.NodeType) for i in responses)
+        assert all(isinstance(i, vmwareengine_resources.NodeType) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -4588,9 +4590,9 @@ async def test_list_node_types_async_pages():
         call.side_effect = (
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="abc",
             ),
@@ -4600,14 +4602,14 @@ async def test_list_node_types_async_pages():
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
             ),
             RuntimeError,
@@ -4641,7 +4643,7 @@ def test_get_node_type(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.NodeType(
+        call.return_value = vmwareengine_resources.NodeType(
             name="name_value",
             node_type_id="node_type_id_value",
             display_name="display_name_value",
@@ -4659,7 +4661,7 @@ def test_get_node_type(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.GetNodeTypeRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.NodeType)
+    assert isinstance(response, vmwareengine_resources.NodeType)
     assert response.name == "name_value"
     assert response.node_type_id == "node_type_id_value"
     assert response.display_name == "display_name_value"
@@ -4703,7 +4705,7 @@ async def test_get_node_type_async(
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.NodeType(
+            vmwareengine_resources.NodeType(
                 name="name_value",
                 node_type_id="node_type_id_value",
                 display_name="display_name_value",
@@ -4722,7 +4724,7 @@ async def test_get_node_type_async(
         assert args[0] == vmwareengine.GetNodeTypeRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.NodeType)
+    assert isinstance(response, vmwareengine_resources.NodeType)
     assert response.name == "name_value"
     assert response.node_type_id == "node_type_id_value"
     assert response.display_name == "display_name_value"
@@ -4751,7 +4753,7 @@ def test_get_node_type_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
-        call.return_value = vmwareengine.NodeType()
+        call.return_value = vmwareengine_resources.NodeType()
         client.get_node_type(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4782,7 +4784,7 @@ async def test_get_node_type_field_headers_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.NodeType()
+            vmwareengine_resources.NodeType()
         )
         await client.get_node_type(request)
 
@@ -4807,7 +4809,7 @@ def test_get_node_type_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.NodeType()
+        call.return_value = vmwareengine_resources.NodeType()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_node_type(
@@ -4846,10 +4848,10 @@ async def test_get_node_type_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.NodeType()
+        call.return_value = vmwareengine_resources.NodeType()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.NodeType()
+            vmwareengine_resources.NodeType()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -4903,7 +4905,7 @@ def test_show_nsx_credentials(request_type, transport: str = "grpc"):
         type(client.transport.show_nsx_credentials), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Credentials(
+        call.return_value = vmwareengine_resources.Credentials(
             username="username_value",
             password="password_value",
         )
@@ -4915,7 +4917,7 @@ def test_show_nsx_credentials(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.ShowNsxCredentialsRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Credentials)
+    assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
 
@@ -4957,7 +4959,7 @@ async def test_show_nsx_credentials_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Credentials(
+            vmwareengine_resources.Credentials(
                 username="username_value",
                 password="password_value",
             )
@@ -4970,7 +4972,7 @@ async def test_show_nsx_credentials_async(
         assert args[0] == vmwareengine.ShowNsxCredentialsRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Credentials)
+    assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
 
@@ -4995,7 +4997,7 @@ def test_show_nsx_credentials_field_headers():
     with mock.patch.object(
         type(client.transport.show_nsx_credentials), "__call__"
     ) as call:
-        call.return_value = vmwareengine.Credentials()
+        call.return_value = vmwareengine_resources.Credentials()
         client.show_nsx_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5028,7 +5030,7 @@ async def test_show_nsx_credentials_field_headers_async():
         type(client.transport.show_nsx_credentials), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Credentials()
+            vmwareengine_resources.Credentials()
         )
         await client.show_nsx_credentials(request)
 
@@ -5055,7 +5057,7 @@ def test_show_nsx_credentials_flattened():
         type(client.transport.show_nsx_credentials), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Credentials()
+        call.return_value = vmwareengine_resources.Credentials()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.show_nsx_credentials(
@@ -5096,10 +5098,10 @@ async def test_show_nsx_credentials_flattened_async():
         type(client.transport.show_nsx_credentials), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Credentials()
+        call.return_value = vmwareengine_resources.Credentials()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Credentials()
+            vmwareengine_resources.Credentials()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -5153,7 +5155,7 @@ def test_show_vcenter_credentials(request_type, transport: str = "grpc"):
         type(client.transport.show_vcenter_credentials), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Credentials(
+        call.return_value = vmwareengine_resources.Credentials(
             username="username_value",
             password="password_value",
         )
@@ -5165,7 +5167,7 @@ def test_show_vcenter_credentials(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.ShowVcenterCredentialsRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Credentials)
+    assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
 
@@ -5208,7 +5210,7 @@ async def test_show_vcenter_credentials_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Credentials(
+            vmwareengine_resources.Credentials(
                 username="username_value",
                 password="password_value",
             )
@@ -5221,7 +5223,7 @@ async def test_show_vcenter_credentials_async(
         assert args[0] == vmwareengine.ShowVcenterCredentialsRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Credentials)
+    assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
 
@@ -5246,7 +5248,7 @@ def test_show_vcenter_credentials_field_headers():
     with mock.patch.object(
         type(client.transport.show_vcenter_credentials), "__call__"
     ) as call:
-        call.return_value = vmwareengine.Credentials()
+        call.return_value = vmwareengine_resources.Credentials()
         client.show_vcenter_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5279,7 +5281,7 @@ async def test_show_vcenter_credentials_field_headers_async():
         type(client.transport.show_vcenter_credentials), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Credentials()
+            vmwareengine_resources.Credentials()
         )
         await client.show_vcenter_credentials(request)
 
@@ -5306,7 +5308,7 @@ def test_show_vcenter_credentials_flattened():
         type(client.transport.show_vcenter_credentials), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Credentials()
+        call.return_value = vmwareengine_resources.Credentials()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.show_vcenter_credentials(
@@ -5347,10 +5349,10 @@ async def test_show_vcenter_credentials_flattened_async():
         type(client.transport.show_vcenter_credentials), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.Credentials()
+        call.return_value = vmwareengine_resources.Credentials()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.Credentials()
+            vmwareengine_resources.Credentials()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -6034,7 +6036,9 @@ def test_create_hcx_activation_key_flattened():
         # using the keyword arguments to the method.
         client.create_hcx_activation_key(
             parent="parent_value",
-            hcx_activation_key=vmwareengine.HcxActivationKey(name="name_value"),
+            hcx_activation_key=vmwareengine_resources.HcxActivationKey(
+                name="name_value"
+            ),
             hcx_activation_key_id="hcx_activation_key_id_value",
         )
 
@@ -6046,7 +6050,7 @@ def test_create_hcx_activation_key_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].hcx_activation_key
-        mock_val = vmwareengine.HcxActivationKey(name="name_value")
+        mock_val = vmwareengine_resources.HcxActivationKey(name="name_value")
         assert arg == mock_val
         arg = args[0].hcx_activation_key_id
         mock_val = "hcx_activation_key_id_value"
@@ -6064,7 +6068,9 @@ def test_create_hcx_activation_key_flattened_error():
         client.create_hcx_activation_key(
             vmwareengine.CreateHcxActivationKeyRequest(),
             parent="parent_value",
-            hcx_activation_key=vmwareengine.HcxActivationKey(name="name_value"),
+            hcx_activation_key=vmwareengine_resources.HcxActivationKey(
+                name="name_value"
+            ),
             hcx_activation_key_id="hcx_activation_key_id_value",
         )
 
@@ -6089,7 +6095,9 @@ async def test_create_hcx_activation_key_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_hcx_activation_key(
             parent="parent_value",
-            hcx_activation_key=vmwareengine.HcxActivationKey(name="name_value"),
+            hcx_activation_key=vmwareengine_resources.HcxActivationKey(
+                name="name_value"
+            ),
             hcx_activation_key_id="hcx_activation_key_id_value",
         )
 
@@ -6101,7 +6109,7 @@ async def test_create_hcx_activation_key_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].hcx_activation_key
-        mock_val = vmwareengine.HcxActivationKey(name="name_value")
+        mock_val = vmwareengine_resources.HcxActivationKey(name="name_value")
         assert arg == mock_val
         arg = args[0].hcx_activation_key_id
         mock_val = "hcx_activation_key_id_value"
@@ -6120,7 +6128,9 @@ async def test_create_hcx_activation_key_flattened_error_async():
         await client.create_hcx_activation_key(
             vmwareengine.CreateHcxActivationKeyRequest(),
             parent="parent_value",
-            hcx_activation_key=vmwareengine.HcxActivationKey(name="name_value"),
+            hcx_activation_key=vmwareengine_resources.HcxActivationKey(
+                name="name_value"
+            ),
             hcx_activation_key_id="hcx_activation_key_id_value",
         )
 
@@ -6390,9 +6400,9 @@ def test_list_hcx_activation_keys_pager(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -6402,14 +6412,14 @@ def test_list_hcx_activation_keys_pager(transport_name: str = "grpc"):
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
             ),
             RuntimeError,
@@ -6425,7 +6435,9 @@ def test_list_hcx_activation_keys_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.HcxActivationKey) for i in results)
+        assert all(
+            isinstance(i, vmwareengine_resources.HcxActivationKey) for i in results
+        )
 
 
 def test_list_hcx_activation_keys_pages(transport_name: str = "grpc"):
@@ -6442,9 +6454,9 @@ def test_list_hcx_activation_keys_pages(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -6454,14 +6466,14 @@ def test_list_hcx_activation_keys_pages(transport_name: str = "grpc"):
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
             ),
             RuntimeError,
@@ -6487,9 +6499,9 @@ async def test_list_hcx_activation_keys_async_pager():
         call.side_effect = (
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -6499,14 +6511,14 @@ async def test_list_hcx_activation_keys_async_pager():
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
             ),
             RuntimeError,
@@ -6520,7 +6532,9 @@ async def test_list_hcx_activation_keys_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, vmwareengine.HcxActivationKey) for i in responses)
+        assert all(
+            isinstance(i, vmwareengine_resources.HcxActivationKey) for i in responses
+        )
 
 
 @pytest.mark.asyncio
@@ -6539,9 +6553,9 @@ async def test_list_hcx_activation_keys_async_pages():
         call.side_effect = (
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -6551,14 +6565,14 @@ async def test_list_hcx_activation_keys_async_pages():
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
             ),
             RuntimeError,
@@ -6594,9 +6608,9 @@ def test_get_hcx_activation_key(request_type, transport: str = "grpc"):
         type(client.transport.get_hcx_activation_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.HcxActivationKey(
+        call.return_value = vmwareengine_resources.HcxActivationKey(
             name="name_value",
-            state=vmwareengine.HcxActivationKey.State.AVAILABLE,
+            state=vmwareengine_resources.HcxActivationKey.State.AVAILABLE,
             activation_key="activation_key_value",
             uid="uid_value",
         )
@@ -6608,9 +6622,9 @@ def test_get_hcx_activation_key(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.GetHcxActivationKeyRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.HcxActivationKey)
+    assert isinstance(response, vmwareengine_resources.HcxActivationKey)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.HcxActivationKey.State.AVAILABLE
+    assert response.state == vmwareengine_resources.HcxActivationKey.State.AVAILABLE
     assert response.activation_key == "activation_key_value"
     assert response.uid == "uid_value"
 
@@ -6653,9 +6667,9 @@ async def test_get_hcx_activation_key_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.HcxActivationKey(
+            vmwareengine_resources.HcxActivationKey(
                 name="name_value",
-                state=vmwareengine.HcxActivationKey.State.AVAILABLE,
+                state=vmwareengine_resources.HcxActivationKey.State.AVAILABLE,
                 activation_key="activation_key_value",
                 uid="uid_value",
             )
@@ -6668,9 +6682,9 @@ async def test_get_hcx_activation_key_async(
         assert args[0] == vmwareengine.GetHcxActivationKeyRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.HcxActivationKey)
+    assert isinstance(response, vmwareengine_resources.HcxActivationKey)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.HcxActivationKey.State.AVAILABLE
+    assert response.state == vmwareengine_resources.HcxActivationKey.State.AVAILABLE
     assert response.activation_key == "activation_key_value"
     assert response.uid == "uid_value"
 
@@ -6695,7 +6709,7 @@ def test_get_hcx_activation_key_field_headers():
     with mock.patch.object(
         type(client.transport.get_hcx_activation_key), "__call__"
     ) as call:
-        call.return_value = vmwareengine.HcxActivationKey()
+        call.return_value = vmwareengine_resources.HcxActivationKey()
         client.get_hcx_activation_key(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6728,7 +6742,7 @@ async def test_get_hcx_activation_key_field_headers_async():
         type(client.transport.get_hcx_activation_key), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.HcxActivationKey()
+            vmwareengine_resources.HcxActivationKey()
         )
         await client.get_hcx_activation_key(request)
 
@@ -6755,7 +6769,7 @@ def test_get_hcx_activation_key_flattened():
         type(client.transport.get_hcx_activation_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.HcxActivationKey()
+        call.return_value = vmwareengine_resources.HcxActivationKey()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_hcx_activation_key(
@@ -6796,10 +6810,10 @@ async def test_get_hcx_activation_key_flattened_async():
         type(client.transport.get_hcx_activation_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.HcxActivationKey()
+        call.return_value = vmwareengine_resources.HcxActivationKey()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.HcxActivationKey()
+            vmwareengine_resources.HcxActivationKey()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -6853,7 +6867,7 @@ def test_get_network_policy(request_type, transport: str = "grpc"):
         type(client.transport.get_network_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.NetworkPolicy(
+        call.return_value = vmwareengine_resources.NetworkPolicy(
             name="name_value",
             edge_services_cidr="edge_services_cidr_value",
             uid="uid_value",
@@ -6869,7 +6883,7 @@ def test_get_network_policy(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.GetNetworkPolicyRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.NetworkPolicy)
+    assert isinstance(response, vmwareengine_resources.NetworkPolicy)
     assert response.name == "name_value"
     assert response.edge_services_cidr == "edge_services_cidr_value"
     assert response.uid == "uid_value"
@@ -6918,7 +6932,7 @@ async def test_get_network_policy_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.NetworkPolicy(
+            vmwareengine_resources.NetworkPolicy(
                 name="name_value",
                 edge_services_cidr="edge_services_cidr_value",
                 uid="uid_value",
@@ -6935,7 +6949,7 @@ async def test_get_network_policy_async(
         assert args[0] == vmwareengine.GetNetworkPolicyRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.NetworkPolicy)
+    assert isinstance(response, vmwareengine_resources.NetworkPolicy)
     assert response.name == "name_value"
     assert response.edge_services_cidr == "edge_services_cidr_value"
     assert response.uid == "uid_value"
@@ -6967,7 +6981,7 @@ def test_get_network_policy_field_headers():
     with mock.patch.object(
         type(client.transport.get_network_policy), "__call__"
     ) as call:
-        call.return_value = vmwareengine.NetworkPolicy()
+        call.return_value = vmwareengine_resources.NetworkPolicy()
         client.get_network_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7000,7 +7014,7 @@ async def test_get_network_policy_field_headers_async():
         type(client.transport.get_network_policy), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.NetworkPolicy()
+            vmwareengine_resources.NetworkPolicy()
         )
         await client.get_network_policy(request)
 
@@ -7027,7 +7041,7 @@ def test_get_network_policy_flattened():
         type(client.transport.get_network_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.NetworkPolicy()
+        call.return_value = vmwareengine_resources.NetworkPolicy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_network_policy(
@@ -7068,10 +7082,10 @@ async def test_get_network_policy_flattened_async():
         type(client.transport.get_network_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.NetworkPolicy()
+        call.return_value = vmwareengine_resources.NetworkPolicy()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.NetworkPolicy()
+            vmwareengine_resources.NetworkPolicy()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -7368,9 +7382,9 @@ def test_list_network_policies_pager(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="abc",
             ),
@@ -7380,14 +7394,14 @@ def test_list_network_policies_pager(transport_name: str = "grpc"):
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
             ),
             RuntimeError,
@@ -7403,7 +7417,7 @@ def test_list_network_policies_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.NetworkPolicy) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.NetworkPolicy) for i in results)
 
 
 def test_list_network_policies_pages(transport_name: str = "grpc"):
@@ -7420,9 +7434,9 @@ def test_list_network_policies_pages(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="abc",
             ),
@@ -7432,14 +7446,14 @@ def test_list_network_policies_pages(transport_name: str = "grpc"):
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
             ),
             RuntimeError,
@@ -7465,9 +7479,9 @@ async def test_list_network_policies_async_pager():
         call.side_effect = (
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="abc",
             ),
@@ -7477,14 +7491,14 @@ async def test_list_network_policies_async_pager():
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
             ),
             RuntimeError,
@@ -7498,7 +7512,9 @@ async def test_list_network_policies_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, vmwareengine.NetworkPolicy) for i in responses)
+        assert all(
+            isinstance(i, vmwareengine_resources.NetworkPolicy) for i in responses
+        )
 
 
 @pytest.mark.asyncio
@@ -7517,9 +7533,9 @@ async def test_list_network_policies_async_pages():
         call.side_effect = (
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="abc",
             ),
@@ -7529,14 +7545,14 @@ async def test_list_network_policies_async_pages():
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
             ),
             RuntimeError,
@@ -7720,7 +7736,7 @@ def test_create_network_policy_flattened():
         # using the keyword arguments to the method.
         client.create_network_policy(
             parent="parent_value",
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             network_policy_id="network_policy_id_value",
         )
 
@@ -7732,7 +7748,7 @@ def test_create_network_policy_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].network_policy
-        mock_val = vmwareengine.NetworkPolicy(name="name_value")
+        mock_val = vmwareengine_resources.NetworkPolicy(name="name_value")
         assert arg == mock_val
         arg = args[0].network_policy_id
         mock_val = "network_policy_id_value"
@@ -7750,7 +7766,7 @@ def test_create_network_policy_flattened_error():
         client.create_network_policy(
             vmwareengine.CreateNetworkPolicyRequest(),
             parent="parent_value",
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             network_policy_id="network_policy_id_value",
         )
 
@@ -7775,7 +7791,7 @@ async def test_create_network_policy_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_network_policy(
             parent="parent_value",
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             network_policy_id="network_policy_id_value",
         )
 
@@ -7787,7 +7803,7 @@ async def test_create_network_policy_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].network_policy
-        mock_val = vmwareengine.NetworkPolicy(name="name_value")
+        mock_val = vmwareengine_resources.NetworkPolicy(name="name_value")
         assert arg == mock_val
         arg = args[0].network_policy_id
         mock_val = "network_policy_id_value"
@@ -7806,7 +7822,7 @@ async def test_create_network_policy_flattened_error_async():
         await client.create_network_policy(
             vmwareengine.CreateNetworkPolicyRequest(),
             parent="parent_value",
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             network_policy_id="network_policy_id_value",
         )
 
@@ -7980,7 +7996,7 @@ def test_update_network_policy_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_network_policy(
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -7989,7 +8005,7 @@ def test_update_network_policy_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].network_policy
-        mock_val = vmwareengine.NetworkPolicy(name="name_value")
+        mock_val = vmwareengine_resources.NetworkPolicy(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -8006,7 +8022,7 @@ def test_update_network_policy_flattened_error():
     with pytest.raises(ValueError):
         client.update_network_policy(
             vmwareengine.UpdateNetworkPolicyRequest(),
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -8030,7 +8046,7 @@ async def test_update_network_policy_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_network_policy(
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -8039,7 +8055,7 @@ async def test_update_network_policy_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].network_policy
-        mock_val = vmwareengine.NetworkPolicy(name="name_value")
+        mock_val = vmwareengine_resources.NetworkPolicy(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -8057,7 +8073,7 @@ async def test_update_network_policy_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_network_policy(
             vmwareengine.UpdateNetworkPolicyRequest(),
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -8473,7 +8489,9 @@ def test_create_vmware_engine_network_flattened():
         # using the keyword arguments to the method.
         client.create_vmware_engine_network(
             parent="parent_value",
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             vmware_engine_network_id="vmware_engine_network_id_value",
         )
 
@@ -8485,7 +8503,7 @@ def test_create_vmware_engine_network_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].vmware_engine_network
-        mock_val = vmwareengine.VmwareEngineNetwork(name="name_value")
+        mock_val = vmwareengine_resources.VmwareEngineNetwork(name="name_value")
         assert arg == mock_val
         arg = args[0].vmware_engine_network_id
         mock_val = "vmware_engine_network_id_value"
@@ -8503,7 +8521,9 @@ def test_create_vmware_engine_network_flattened_error():
         client.create_vmware_engine_network(
             vmwareengine.CreateVmwareEngineNetworkRequest(),
             parent="parent_value",
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             vmware_engine_network_id="vmware_engine_network_id_value",
         )
 
@@ -8528,7 +8548,9 @@ async def test_create_vmware_engine_network_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_vmware_engine_network(
             parent="parent_value",
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             vmware_engine_network_id="vmware_engine_network_id_value",
         )
 
@@ -8540,7 +8562,7 @@ async def test_create_vmware_engine_network_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].vmware_engine_network
-        mock_val = vmwareengine.VmwareEngineNetwork(name="name_value")
+        mock_val = vmwareengine_resources.VmwareEngineNetwork(name="name_value")
         assert arg == mock_val
         arg = args[0].vmware_engine_network_id
         mock_val = "vmware_engine_network_id_value"
@@ -8559,7 +8581,9 @@ async def test_create_vmware_engine_network_flattened_error_async():
         await client.create_vmware_engine_network(
             vmwareengine.CreateVmwareEngineNetworkRequest(),
             parent="parent_value",
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             vmware_engine_network_id="vmware_engine_network_id_value",
         )
 
@@ -8733,7 +8757,9 @@ def test_update_vmware_engine_network_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_vmware_engine_network(
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -8742,7 +8768,7 @@ def test_update_vmware_engine_network_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].vmware_engine_network
-        mock_val = vmwareengine.VmwareEngineNetwork(name="name_value")
+        mock_val = vmwareengine_resources.VmwareEngineNetwork(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -8759,7 +8785,9 @@ def test_update_vmware_engine_network_flattened_error():
     with pytest.raises(ValueError):
         client.update_vmware_engine_network(
             vmwareengine.UpdateVmwareEngineNetworkRequest(),
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -8783,7 +8811,9 @@ async def test_update_vmware_engine_network_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_vmware_engine_network(
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -8792,7 +8822,7 @@ async def test_update_vmware_engine_network_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].vmware_engine_network
-        mock_val = vmwareengine.VmwareEngineNetwork(name="name_value")
+        mock_val = vmwareengine_resources.VmwareEngineNetwork(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -8810,7 +8840,9 @@ async def test_update_vmware_engine_network_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_vmware_engine_network(
             vmwareengine.UpdateVmwareEngineNetworkRequest(),
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -9078,11 +9110,11 @@ def test_get_vmware_engine_network(request_type, transport: str = "grpc"):
         type(client.transport.get_vmware_engine_network), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.VmwareEngineNetwork(
+        call.return_value = vmwareengine_resources.VmwareEngineNetwork(
             name="name_value",
             description="description_value",
-            state=vmwareengine.VmwareEngineNetwork.State.CREATING,
-            type_=vmwareengine.VmwareEngineNetwork.Type.LEGACY,
+            state=vmwareengine_resources.VmwareEngineNetwork.State.CREATING,
+            type_=vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY,
             uid="uid_value",
             etag="etag_value",
         )
@@ -9094,11 +9126,11 @@ def test_get_vmware_engine_network(request_type, transport: str = "grpc"):
         assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.VmwareEngineNetwork)
+    assert isinstance(response, vmwareengine_resources.VmwareEngineNetwork)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert response.state == vmwareengine.VmwareEngineNetwork.State.CREATING
-    assert response.type_ == vmwareengine.VmwareEngineNetwork.Type.LEGACY
+    assert response.state == vmwareengine_resources.VmwareEngineNetwork.State.CREATING
+    assert response.type_ == vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -9141,11 +9173,11 @@ async def test_get_vmware_engine_network_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.VmwareEngineNetwork(
+            vmwareengine_resources.VmwareEngineNetwork(
                 name="name_value",
                 description="description_value",
-                state=vmwareengine.VmwareEngineNetwork.State.CREATING,
-                type_=vmwareengine.VmwareEngineNetwork.Type.LEGACY,
+                state=vmwareengine_resources.VmwareEngineNetwork.State.CREATING,
+                type_=vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY,
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -9158,11 +9190,11 @@ async def test_get_vmware_engine_network_async(
         assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.VmwareEngineNetwork)
+    assert isinstance(response, vmwareengine_resources.VmwareEngineNetwork)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert response.state == vmwareengine.VmwareEngineNetwork.State.CREATING
-    assert response.type_ == vmwareengine.VmwareEngineNetwork.Type.LEGACY
+    assert response.state == vmwareengine_resources.VmwareEngineNetwork.State.CREATING
+    assert response.type_ == vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -9187,7 +9219,7 @@ def test_get_vmware_engine_network_field_headers():
     with mock.patch.object(
         type(client.transport.get_vmware_engine_network), "__call__"
     ) as call:
-        call.return_value = vmwareengine.VmwareEngineNetwork()
+        call.return_value = vmwareengine_resources.VmwareEngineNetwork()
         client.get_vmware_engine_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9220,7 +9252,7 @@ async def test_get_vmware_engine_network_field_headers_async():
         type(client.transport.get_vmware_engine_network), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.VmwareEngineNetwork()
+            vmwareengine_resources.VmwareEngineNetwork()
         )
         await client.get_vmware_engine_network(request)
 
@@ -9247,7 +9279,7 @@ def test_get_vmware_engine_network_flattened():
         type(client.transport.get_vmware_engine_network), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.VmwareEngineNetwork()
+        call.return_value = vmwareengine_resources.VmwareEngineNetwork()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_vmware_engine_network(
@@ -9288,10 +9320,10 @@ async def test_get_vmware_engine_network_flattened_async():
         type(client.transport.get_vmware_engine_network), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmwareengine.VmwareEngineNetwork()
+        call.return_value = vmwareengine_resources.VmwareEngineNetwork()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmwareengine.VmwareEngineNetwork()
+            vmwareengine_resources.VmwareEngineNetwork()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -9588,9 +9620,9 @@ def test_list_vmware_engine_networks_pager(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="abc",
             ),
@@ -9600,14 +9632,14 @@ def test_list_vmware_engine_networks_pager(transport_name: str = "grpc"):
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
             ),
             RuntimeError,
@@ -9623,7 +9655,9 @@ def test_list_vmware_engine_networks_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.VmwareEngineNetwork) for i in results)
+        assert all(
+            isinstance(i, vmwareengine_resources.VmwareEngineNetwork) for i in results
+        )
 
 
 def test_list_vmware_engine_networks_pages(transport_name: str = "grpc"):
@@ -9640,9 +9674,9 @@ def test_list_vmware_engine_networks_pages(transport_name: str = "grpc"):
         call.side_effect = (
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="abc",
             ),
@@ -9652,14 +9686,14 @@ def test_list_vmware_engine_networks_pages(transport_name: str = "grpc"):
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
             ),
             RuntimeError,
@@ -9685,9 +9719,9 @@ async def test_list_vmware_engine_networks_async_pager():
         call.side_effect = (
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="abc",
             ),
@@ -9697,14 +9731,14 @@ async def test_list_vmware_engine_networks_async_pager():
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
             ),
             RuntimeError,
@@ -9718,7 +9752,9 @@ async def test_list_vmware_engine_networks_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, vmwareengine.VmwareEngineNetwork) for i in responses)
+        assert all(
+            isinstance(i, vmwareengine_resources.VmwareEngineNetwork) for i in responses
+        )
 
 
 @pytest.mark.asyncio
@@ -9737,9 +9773,9 @@ async def test_list_vmware_engine_networks_async_pages():
         call.side_effect = (
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="abc",
             ),
@@ -9749,14 +9785,14 @@ async def test_list_vmware_engine_networks_async_pages():
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
             ),
             RuntimeError,
@@ -10067,9 +10103,9 @@ def test_list_private_clouds_rest_pager(transport: str = "rest"):
         response = (
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="abc",
             ),
@@ -10079,14 +10115,14 @@ def test_list_private_clouds_rest_pager(transport: str = "rest"):
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListPrivateCloudsResponse(
                 private_clouds=[
-                    vmwareengine.PrivateCloud(),
-                    vmwareengine.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
+                    vmwareengine_resources.PrivateCloud(),
                 ],
             ),
         )
@@ -10109,7 +10145,7 @@ def test_list_private_clouds_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.PrivateCloud) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.PrivateCloud) for i in results)
 
         pages = list(client.list_private_clouds(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -10136,9 +10172,9 @@ def test_get_private_cloud_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.PrivateCloud(
+        return_value = vmwareengine_resources.PrivateCloud(
             name="name_value",
-            state=vmwareengine.PrivateCloud.State.ACTIVE,
+            state=vmwareengine_resources.PrivateCloud.State.ACTIVE,
             description="description_value",
             uid="uid_value",
         )
@@ -10146,7 +10182,7 @@ def test_get_private_cloud_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.PrivateCloud.pb(return_value)
+        pb_return_value = vmwareengine_resources.PrivateCloud.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -10154,9 +10190,9 @@ def test_get_private_cloud_rest(request_type):
         response = client.get_private_cloud(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.PrivateCloud)
+    assert isinstance(response, vmwareengine_resources.PrivateCloud)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.PrivateCloud.State.ACTIVE
+    assert response.state == vmwareengine_resources.PrivateCloud.State.ACTIVE
     assert response.description == "description_value"
     assert response.uid == "uid_value"
 
@@ -10205,7 +10241,7 @@ def test_get_private_cloud_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.PrivateCloud()
+    return_value = vmwareengine_resources.PrivateCloud()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -10225,7 +10261,7 @@ def test_get_private_cloud_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.PrivateCloud.pb(return_value)
+            pb_return_value = vmwareengine_resources.PrivateCloud.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -10280,8 +10316,8 @@ def test_get_private_cloud_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.PrivateCloud.to_json(
-            vmwareengine.PrivateCloud()
+        req.return_value._content = vmwareengine_resources.PrivateCloud.to_json(
+            vmwareengine_resources.PrivateCloud()
         )
 
         request = vmwareengine.GetPrivateCloudRequest()
@@ -10290,7 +10326,7 @@ def test_get_private_cloud_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.PrivateCloud()
+        post.return_value = vmwareengine_resources.PrivateCloud()
 
         client.get_private_cloud(
             request,
@@ -10337,7 +10373,7 @@ def test_get_private_cloud_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.PrivateCloud()
+        return_value = vmwareengine_resources.PrivateCloud()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -10353,7 +10389,7 @@ def test_get_private_cloud_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.PrivateCloud.pb(return_value)
+        pb_return_value = vmwareengine_resources.PrivateCloud.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10724,7 +10760,7 @@ def test_create_private_cloud_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             private_cloud_id="private_cloud_id_value",
         )
         mock_args.update(sample_request)
@@ -10761,7 +10797,7 @@ def test_create_private_cloud_rest_flattened_error(transport: str = "rest"):
         client.create_private_cloud(
             vmwareengine.CreatePrivateCloudRequest(),
             parent="parent_value",
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             private_cloud_id="private_cloud_id_value",
         )
 
@@ -11094,7 +11130,7 @@ def test_update_private_cloud_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -11130,7 +11166,7 @@ def test_update_private_cloud_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.update_private_cloud(
             vmwareengine.UpdatePrivateCloudRequest(),
-            private_cloud=vmwareengine.PrivateCloud(name="name_value"),
+            private_cloud=vmwareengine_resources.PrivateCloud(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -11992,9 +12028,9 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
         response = (
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="abc",
             ),
@@ -12004,14 +12040,14 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListClustersResponse(
                 clusters=[
-                    vmwareengine.Cluster(),
-                    vmwareengine.Cluster(),
+                    vmwareengine_resources.Cluster(),
+                    vmwareengine_resources.Cluster(),
                 ],
             ),
         )
@@ -12034,7 +12070,7 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.Cluster) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.Cluster) for i in results)
 
         pages = list(client.list_clusters(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -12063,9 +12099,9 @@ def test_get_cluster_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.Cluster(
+        return_value = vmwareengine_resources.Cluster(
             name="name_value",
-            state=vmwareengine.Cluster.State.ACTIVE,
+            state=vmwareengine_resources.Cluster.State.ACTIVE,
             management=True,
             uid="uid_value",
         )
@@ -12073,7 +12109,7 @@ def test_get_cluster_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.Cluster.pb(return_value)
+        pb_return_value = vmwareengine_resources.Cluster.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -12081,9 +12117,9 @@ def test_get_cluster_rest(request_type):
         response = client.get_cluster(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Cluster)
+    assert isinstance(response, vmwareengine_resources.Cluster)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.Cluster.State.ACTIVE
+    assert response.state == vmwareengine_resources.Cluster.State.ACTIVE
     assert response.management is True
     assert response.uid == "uid_value"
 
@@ -12130,7 +12166,7 @@ def test_get_cluster_rest_required_fields(request_type=vmwareengine.GetClusterRe
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.Cluster()
+    return_value = vmwareengine_resources.Cluster()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -12150,7 +12186,7 @@ def test_get_cluster_rest_required_fields(request_type=vmwareengine.GetClusterRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.Cluster.pb(return_value)
+            pb_return_value = vmwareengine_resources.Cluster.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -12203,7 +12239,9 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.Cluster.to_json(vmwareengine.Cluster())
+        req.return_value._content = vmwareengine_resources.Cluster.to_json(
+            vmwareengine_resources.Cluster()
+        )
 
         request = vmwareengine.GetClusterRequest()
         metadata = [
@@ -12211,7 +12249,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.Cluster()
+        post.return_value = vmwareengine_resources.Cluster()
 
         client.get_cluster(
             request,
@@ -12260,7 +12298,7 @@ def test_get_cluster_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.Cluster()
+        return_value = vmwareengine_resources.Cluster()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -12276,7 +12314,7 @@ def test_get_cluster_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.Cluster.pb(return_value)
+        pb_return_value = vmwareengine_resources.Cluster.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12595,7 +12633,7 @@ def test_create_cluster_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             cluster_id="cluster_id_value",
         )
         mock_args.update(sample_request)
@@ -12632,7 +12670,7 @@ def test_create_cluster_rest_flattened_error(transport: str = "rest"):
         client.create_cluster(
             vmwareengine.CreateClusterRequest(),
             parent="parent_value",
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             cluster_id="cluster_id_value",
         )
 
@@ -12909,7 +12947,7 @@ def test_update_cluster_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -12945,7 +12983,7 @@ def test_update_cluster_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.update_cluster(
             vmwareengine.UpdateClusterRequest(),
-            cluster=vmwareengine.Cluster(name="name_value"),
+            cluster=vmwareengine_resources.Cluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -13524,9 +13562,9 @@ def test_list_subnets_rest_pager(transport: str = "rest"):
         response = (
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="abc",
             ),
@@ -13536,14 +13574,14 @@ def test_list_subnets_rest_pager(transport: str = "rest"):
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListSubnetsResponse(
                 subnets=[
-                    vmwareengine.Subnet(),
-                    vmwareengine.Subnet(),
+                    vmwareengine_resources.Subnet(),
+                    vmwareengine_resources.Subnet(),
                 ],
             ),
         )
@@ -13566,7 +13604,7 @@ def test_list_subnets_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.Subnet) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.Subnet) for i in results)
 
         pages = list(client.list_subnets(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -13867,9 +13905,9 @@ def test_list_node_types_rest_pager(transport: str = "rest"):
         response = (
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="abc",
             ),
@@ -13879,14 +13917,14 @@ def test_list_node_types_rest_pager(transport: str = "rest"):
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNodeTypesResponse(
                 node_types=[
-                    vmwareengine.NodeType(),
-                    vmwareengine.NodeType(),
+                    vmwareengine_resources.NodeType(),
+                    vmwareengine_resources.NodeType(),
                 ],
             ),
         )
@@ -13909,7 +13947,7 @@ def test_list_node_types_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.NodeType) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.NodeType) for i in results)
 
         pages = list(client.list_node_types(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -13936,7 +13974,7 @@ def test_get_node_type_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.NodeType(
+        return_value = vmwareengine_resources.NodeType(
             name="name_value",
             node_type_id="node_type_id_value",
             display_name="display_name_value",
@@ -13950,7 +13988,7 @@ def test_get_node_type_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.NodeType.pb(return_value)
+        pb_return_value = vmwareengine_resources.NodeType.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -13958,7 +13996,7 @@ def test_get_node_type_rest(request_type):
         response = client.get_node_type(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.NodeType)
+    assert isinstance(response, vmwareengine_resources.NodeType)
     assert response.name == "name_value"
     assert response.node_type_id == "node_type_id_value"
     assert response.display_name == "display_name_value"
@@ -14013,7 +14051,7 @@ def test_get_node_type_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.NodeType()
+    return_value = vmwareengine_resources.NodeType()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -14033,7 +14071,7 @@ def test_get_node_type_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.NodeType.pb(return_value)
+            pb_return_value = vmwareengine_resources.NodeType.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -14088,8 +14126,8 @@ def test_get_node_type_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.NodeType.to_json(
-            vmwareengine.NodeType()
+        req.return_value._content = vmwareengine_resources.NodeType.to_json(
+            vmwareengine_resources.NodeType()
         )
 
         request = vmwareengine.GetNodeTypeRequest()
@@ -14098,7 +14136,7 @@ def test_get_node_type_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.NodeType()
+        post.return_value = vmwareengine_resources.NodeType()
 
         client.get_node_type(
             request,
@@ -14145,7 +14183,7 @@ def test_get_node_type_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.NodeType()
+        return_value = vmwareengine_resources.NodeType()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -14161,7 +14199,7 @@ def test_get_node_type_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.NodeType.pb(return_value)
+        pb_return_value = vmwareengine_resources.NodeType.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14221,7 +14259,7 @@ def test_show_nsx_credentials_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.Credentials(
+        return_value = vmwareengine_resources.Credentials(
             username="username_value",
             password="password_value",
         )
@@ -14229,7 +14267,7 @@ def test_show_nsx_credentials_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.Credentials.pb(return_value)
+        pb_return_value = vmwareengine_resources.Credentials.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -14237,7 +14275,7 @@ def test_show_nsx_credentials_rest(request_type):
         response = client.show_nsx_credentials(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Credentials)
+    assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
 
@@ -14286,7 +14324,7 @@ def test_show_nsx_credentials_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.Credentials()
+    return_value = vmwareengine_resources.Credentials()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -14306,7 +14344,7 @@ def test_show_nsx_credentials_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.Credentials.pb(return_value)
+            pb_return_value = vmwareengine_resources.Credentials.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -14361,8 +14399,8 @@ def test_show_nsx_credentials_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.Credentials.to_json(
-            vmwareengine.Credentials()
+        req.return_value._content = vmwareengine_resources.Credentials.to_json(
+            vmwareengine_resources.Credentials()
         )
 
         request = vmwareengine.ShowNsxCredentialsRequest()
@@ -14371,7 +14409,7 @@ def test_show_nsx_credentials_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.Credentials()
+        post.return_value = vmwareengine_resources.Credentials()
 
         client.show_nsx_credentials(
             request,
@@ -14420,7 +14458,7 @@ def test_show_nsx_credentials_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.Credentials()
+        return_value = vmwareengine_resources.Credentials()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -14436,7 +14474,7 @@ def test_show_nsx_credentials_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.Credentials.pb(return_value)
+        pb_return_value = vmwareengine_resources.Credentials.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14497,7 +14535,7 @@ def test_show_vcenter_credentials_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.Credentials(
+        return_value = vmwareengine_resources.Credentials(
             username="username_value",
             password="password_value",
         )
@@ -14505,7 +14543,7 @@ def test_show_vcenter_credentials_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.Credentials.pb(return_value)
+        pb_return_value = vmwareengine_resources.Credentials.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -14513,7 +14551,7 @@ def test_show_vcenter_credentials_rest(request_type):
         response = client.show_vcenter_credentials(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.Credentials)
+    assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
 
@@ -14562,7 +14600,7 @@ def test_show_vcenter_credentials_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.Credentials()
+    return_value = vmwareengine_resources.Credentials()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -14582,7 +14620,7 @@ def test_show_vcenter_credentials_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.Credentials.pb(return_value)
+            pb_return_value = vmwareengine_resources.Credentials.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -14637,8 +14675,8 @@ def test_show_vcenter_credentials_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.Credentials.to_json(
-            vmwareengine.Credentials()
+        req.return_value._content = vmwareengine_resources.Credentials.to_json(
+            vmwareengine_resources.Credentials()
         )
 
         request = vmwareengine.ShowVcenterCredentialsRequest()
@@ -14647,7 +14685,7 @@ def test_show_vcenter_credentials_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.Credentials()
+        post.return_value = vmwareengine_resources.Credentials()
 
         client.show_vcenter_credentials(
             request,
@@ -14696,7 +14734,7 @@ def test_show_vcenter_credentials_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.Credentials()
+        return_value = vmwareengine_resources.Credentials()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -14712,7 +14750,7 @@ def test_show_vcenter_credentials_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.Credentials.pb(return_value)
+        pb_return_value = vmwareengine_resources.Credentials.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15567,7 +15605,9 @@ def test_create_hcx_activation_key_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            hcx_activation_key=vmwareengine.HcxActivationKey(name="name_value"),
+            hcx_activation_key=vmwareengine_resources.HcxActivationKey(
+                name="name_value"
+            ),
             hcx_activation_key_id="hcx_activation_key_id_value",
         )
         mock_args.update(sample_request)
@@ -15604,7 +15644,9 @@ def test_create_hcx_activation_key_rest_flattened_error(transport: str = "rest")
         client.create_hcx_activation_key(
             vmwareengine.CreateHcxActivationKeyRequest(),
             parent="parent_value",
-            hcx_activation_key=vmwareengine.HcxActivationKey(name="name_value"),
+            hcx_activation_key=vmwareengine_resources.HcxActivationKey(
+                name="name_value"
+            ),
             hcx_activation_key_id="hcx_activation_key_id_value",
         )
 
@@ -15916,9 +15958,9 @@ def test_list_hcx_activation_keys_rest_pager(transport: str = "rest"):
         response = (
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -15928,14 +15970,14 @@ def test_list_hcx_activation_keys_rest_pager(transport: str = "rest"):
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListHcxActivationKeysResponse(
                 hcx_activation_keys=[
-                    vmwareengine.HcxActivationKey(),
-                    vmwareengine.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
+                    vmwareengine_resources.HcxActivationKey(),
                 ],
             ),
         )
@@ -15960,7 +16002,9 @@ def test_list_hcx_activation_keys_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.HcxActivationKey) for i in results)
+        assert all(
+            isinstance(i, vmwareengine_resources.HcxActivationKey) for i in results
+        )
 
         pages = list(client.list_hcx_activation_keys(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -15989,9 +16033,9 @@ def test_get_hcx_activation_key_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.HcxActivationKey(
+        return_value = vmwareengine_resources.HcxActivationKey(
             name="name_value",
-            state=vmwareengine.HcxActivationKey.State.AVAILABLE,
+            state=vmwareengine_resources.HcxActivationKey.State.AVAILABLE,
             activation_key="activation_key_value",
             uid="uid_value",
         )
@@ -15999,7 +16043,7 @@ def test_get_hcx_activation_key_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.HcxActivationKey.pb(return_value)
+        pb_return_value = vmwareengine_resources.HcxActivationKey.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -16007,9 +16051,9 @@ def test_get_hcx_activation_key_rest(request_type):
         response = client.get_hcx_activation_key(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.HcxActivationKey)
+    assert isinstance(response, vmwareengine_resources.HcxActivationKey)
     assert response.name == "name_value"
-    assert response.state == vmwareengine.HcxActivationKey.State.AVAILABLE
+    assert response.state == vmwareengine_resources.HcxActivationKey.State.AVAILABLE
     assert response.activation_key == "activation_key_value"
     assert response.uid == "uid_value"
 
@@ -16058,7 +16102,7 @@ def test_get_hcx_activation_key_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.HcxActivationKey()
+    return_value = vmwareengine_resources.HcxActivationKey()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -16078,7 +16122,7 @@ def test_get_hcx_activation_key_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.HcxActivationKey.pb(return_value)
+            pb_return_value = vmwareengine_resources.HcxActivationKey.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -16133,8 +16177,8 @@ def test_get_hcx_activation_key_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.HcxActivationKey.to_json(
-            vmwareengine.HcxActivationKey()
+        req.return_value._content = vmwareengine_resources.HcxActivationKey.to_json(
+            vmwareengine_resources.HcxActivationKey()
         )
 
         request = vmwareengine.GetHcxActivationKeyRequest()
@@ -16143,7 +16187,7 @@ def test_get_hcx_activation_key_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.HcxActivationKey()
+        post.return_value = vmwareengine_resources.HcxActivationKey()
 
         client.get_hcx_activation_key(
             request,
@@ -16192,7 +16236,7 @@ def test_get_hcx_activation_key_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.HcxActivationKey()
+        return_value = vmwareengine_resources.HcxActivationKey()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -16208,7 +16252,7 @@ def test_get_hcx_activation_key_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.HcxActivationKey.pb(return_value)
+        pb_return_value = vmwareengine_resources.HcxActivationKey.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16269,7 +16313,7 @@ def test_get_network_policy_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.NetworkPolicy(
+        return_value = vmwareengine_resources.NetworkPolicy(
             name="name_value",
             edge_services_cidr="edge_services_cidr_value",
             uid="uid_value",
@@ -16281,7 +16325,7 @@ def test_get_network_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.NetworkPolicy.pb(return_value)
+        pb_return_value = vmwareengine_resources.NetworkPolicy.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -16289,7 +16333,7 @@ def test_get_network_policy_rest(request_type):
         response = client.get_network_policy(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.NetworkPolicy)
+    assert isinstance(response, vmwareengine_resources.NetworkPolicy)
     assert response.name == "name_value"
     assert response.edge_services_cidr == "edge_services_cidr_value"
     assert response.uid == "uid_value"
@@ -16345,7 +16389,7 @@ def test_get_network_policy_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.NetworkPolicy()
+    return_value = vmwareengine_resources.NetworkPolicy()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -16365,7 +16409,7 @@ def test_get_network_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.NetworkPolicy.pb(return_value)
+            pb_return_value = vmwareengine_resources.NetworkPolicy.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -16420,8 +16464,8 @@ def test_get_network_policy_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.NetworkPolicy.to_json(
-            vmwareengine.NetworkPolicy()
+        req.return_value._content = vmwareengine_resources.NetworkPolicy.to_json(
+            vmwareengine_resources.NetworkPolicy()
         )
 
         request = vmwareengine.GetNetworkPolicyRequest()
@@ -16430,7 +16474,7 @@ def test_get_network_policy_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.NetworkPolicy()
+        post.return_value = vmwareengine_resources.NetworkPolicy()
 
         client.get_network_policy(
             request,
@@ -16479,7 +16523,7 @@ def test_get_network_policy_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.NetworkPolicy()
+        return_value = vmwareengine_resources.NetworkPolicy()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -16495,7 +16539,7 @@ def test_get_network_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.NetworkPolicy.pb(return_value)
+        pb_return_value = vmwareengine_resources.NetworkPolicy.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16831,9 +16875,9 @@ def test_list_network_policies_rest_pager(transport: str = "rest"):
         response = (
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="abc",
             ),
@@ -16843,14 +16887,14 @@ def test_list_network_policies_rest_pager(transport: str = "rest"):
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListNetworkPoliciesResponse(
                 network_policies=[
-                    vmwareengine.NetworkPolicy(),
-                    vmwareengine.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
+                    vmwareengine_resources.NetworkPolicy(),
                 ],
             ),
         )
@@ -16873,7 +16917,7 @@ def test_list_network_policies_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.NetworkPolicy) for i in results)
+        assert all(isinstance(i, vmwareengine_resources.NetworkPolicy) for i in results)
 
         pages = list(client.list_network_policies(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -17158,7 +17202,7 @@ def test_create_network_policy_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             network_policy_id="network_policy_id_value",
         )
         mock_args.update(sample_request)
@@ -17195,7 +17239,7 @@ def test_create_network_policy_rest_flattened_error(transport: str = "rest"):
         client.create_network_policy(
             vmwareengine.CreateNetworkPolicyRequest(),
             parent="parent_value",
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             network_policy_id="network_policy_id_value",
         )
 
@@ -17476,7 +17520,7 @@ def test_update_network_policy_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -17512,7 +17556,7 @@ def test_update_network_policy_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.update_network_policy(
             vmwareengine.UpdateNetworkPolicyRequest(),
-            network_policy=vmwareengine.NetworkPolicy(name="name_value"),
+            network_policy=vmwareengine_resources.NetworkPolicy(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -18075,7 +18119,9 @@ def test_create_vmware_engine_network_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             vmware_engine_network_id="vmware_engine_network_id_value",
         )
         mock_args.update(sample_request)
@@ -18112,7 +18158,9 @@ def test_create_vmware_engine_network_rest_flattened_error(transport: str = "res
         client.create_vmware_engine_network(
             vmwareengine.CreateVmwareEngineNetworkRequest(),
             parent="parent_value",
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             vmware_engine_network_id="vmware_engine_network_id_value",
         )
 
@@ -18391,7 +18439,9 @@ def test_update_vmware_engine_network_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -18427,7 +18477,9 @@ def test_update_vmware_engine_network_rest_flattened_error(transport: str = "res
     with pytest.raises(ValueError):
         client.update_vmware_engine_network(
             vmwareengine.UpdateVmwareEngineNetworkRequest(),
-            vmware_engine_network=vmwareengine.VmwareEngineNetwork(name="name_value"),
+            vmware_engine_network=vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value"
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -18744,11 +18796,11 @@ def test_get_vmware_engine_network_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.VmwareEngineNetwork(
+        return_value = vmwareengine_resources.VmwareEngineNetwork(
             name="name_value",
             description="description_value",
-            state=vmwareengine.VmwareEngineNetwork.State.CREATING,
-            type_=vmwareengine.VmwareEngineNetwork.Type.LEGACY,
+            state=vmwareengine_resources.VmwareEngineNetwork.State.CREATING,
+            type_=vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY,
             uid="uid_value",
             etag="etag_value",
         )
@@ -18756,7 +18808,7 @@ def test_get_vmware_engine_network_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.VmwareEngineNetwork.pb(return_value)
+        pb_return_value = vmwareengine_resources.VmwareEngineNetwork.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -18764,11 +18816,11 @@ def test_get_vmware_engine_network_rest(request_type):
         response = client.get_vmware_engine_network(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, vmwareengine.VmwareEngineNetwork)
+    assert isinstance(response, vmwareengine_resources.VmwareEngineNetwork)
     assert response.name == "name_value"
     assert response.description == "description_value"
-    assert response.state == vmwareengine.VmwareEngineNetwork.State.CREATING
-    assert response.type_ == vmwareengine.VmwareEngineNetwork.Type.LEGACY
+    assert response.state == vmwareengine_resources.VmwareEngineNetwork.State.CREATING
+    assert response.type_ == vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -18817,7 +18869,7 @@ def test_get_vmware_engine_network_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = vmwareengine.VmwareEngineNetwork()
+    return_value = vmwareengine_resources.VmwareEngineNetwork()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -18837,7 +18889,9 @@ def test_get_vmware_engine_network_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmwareengine.VmwareEngineNetwork.pb(return_value)
+            pb_return_value = vmwareengine_resources.VmwareEngineNetwork.pb(
+                return_value
+            )
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -18892,8 +18946,8 @@ def test_get_vmware_engine_network_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = vmwareengine.VmwareEngineNetwork.to_json(
-            vmwareengine.VmwareEngineNetwork()
+        req.return_value._content = vmwareengine_resources.VmwareEngineNetwork.to_json(
+            vmwareengine_resources.VmwareEngineNetwork()
         )
 
         request = vmwareengine.GetVmwareEngineNetworkRequest()
@@ -18902,7 +18956,7 @@ def test_get_vmware_engine_network_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = vmwareengine.VmwareEngineNetwork()
+        post.return_value = vmwareengine_resources.VmwareEngineNetwork()
 
         client.get_vmware_engine_network(
             request,
@@ -18951,7 +19005,7 @@ def test_get_vmware_engine_network_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmwareengine.VmwareEngineNetwork()
+        return_value = vmwareengine_resources.VmwareEngineNetwork()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -18967,7 +19021,7 @@ def test_get_vmware_engine_network_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmwareengine.VmwareEngineNetwork.pb(return_value)
+        pb_return_value = vmwareengine_resources.VmwareEngineNetwork.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19307,9 +19361,9 @@ def test_list_vmware_engine_networks_rest_pager(transport: str = "rest"):
         response = (
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="abc",
             ),
@@ -19319,14 +19373,14 @@ def test_list_vmware_engine_networks_rest_pager(transport: str = "rest"):
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
                 next_page_token="ghi",
             ),
             vmwareengine.ListVmwareEngineNetworksResponse(
                 vmware_engine_networks=[
-                    vmwareengine.VmwareEngineNetwork(),
-                    vmwareengine.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
+                    vmwareengine_resources.VmwareEngineNetwork(),
                 ],
             ),
         )
@@ -19349,7 +19403,9 @@ def test_list_vmware_engine_networks_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, vmwareengine.VmwareEngineNetwork) for i in results)
+        assert all(
+            isinstance(i, vmwareengine_resources.VmwareEngineNetwork) for i in results
+        )
 
         pages = list(client.list_vmware_engine_networks(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):

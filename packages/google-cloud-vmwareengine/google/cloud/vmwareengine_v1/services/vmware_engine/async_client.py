@@ -53,7 +53,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.vmwareengine_v1.services.vmware_engine import pagers
-from google.cloud.vmwareengine_v1.types import vmwareengine
+from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
 from .client import VmwareEngineClient
 from .transports.base import DEFAULT_CLIENT_INFO, VmwareEngineTransport
@@ -378,7 +378,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.PrivateCloud:
+    ) -> vmwareengine_resources.PrivateCloud:
         r"""Retrieves a ``PrivateCloud`` resource by its resource name.
 
         .. code-block:: python
@@ -490,7 +490,7 @@ class VmwareEngineAsyncClient:
         request: Optional[Union[vmwareengine.CreatePrivateCloudRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        private_cloud: Optional[vmwareengine.PrivateCloud] = None,
+        private_cloud: Optional[vmwareengine_resources.PrivateCloud] = None,
         private_cloud_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -522,6 +522,7 @@ class VmwareEngineAsyncClient:
                 # Initialize request argument(s)
                 private_cloud = vmwareengine_v1.PrivateCloud()
                 private_cloud.network_config.management_cidr = "management_cidr_value"
+                private_cloud.management_cluster.cluster_id = "cluster_id_value"
 
                 request = vmwareengine_v1.CreatePrivateCloudRequest(
                     parent="parent_value",
@@ -642,7 +643,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.PrivateCloud,
+            vmwareengine_resources.PrivateCloud,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -653,7 +654,7 @@ class VmwareEngineAsyncClient:
         self,
         request: Optional[Union[vmwareengine.UpdatePrivateCloudRequest, dict]] = None,
         *,
-        private_cloud: Optional[vmwareengine.PrivateCloud] = None,
+        private_cloud: Optional[vmwareengine_resources.PrivateCloud] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -686,6 +687,7 @@ class VmwareEngineAsyncClient:
                 # Initialize request argument(s)
                 private_cloud = vmwareengine_v1.PrivateCloud()
                 private_cloud.network_config.management_cidr = "management_cidr_value"
+                private_cloud.management_cluster.cluster_id = "cluster_id_value"
 
                 request = vmwareengine_v1.UpdatePrivateCloudRequest(
                     private_cloud=private_cloud,
@@ -785,7 +787,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.PrivateCloud,
+            vmwareengine_resources.PrivateCloud,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -924,7 +926,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.PrivateCloud,
+            vmwareengine_resources.PrivateCloud,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -1050,7 +1052,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.PrivateCloud,
+            vmwareengine_resources.PrivateCloud,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -1193,7 +1195,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.Cluster:
+    ) -> vmwareengine_resources.Cluster:
         r"""Retrieves a ``Cluster`` resource by its resource name.
 
         .. code-block:: python
@@ -1303,7 +1305,7 @@ class VmwareEngineAsyncClient:
         request: Optional[Union[vmwareengine.CreateClusterRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        cluster: Optional[vmwareengine.Cluster] = None,
+        cluster: Optional[vmwareengine_resources.Cluster] = None,
         cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1448,7 +1450,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.Cluster,
+            vmwareengine_resources.Cluster,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -1459,7 +1461,7 @@ class VmwareEngineAsyncClient:
         self,
         request: Optional[Union[vmwareengine.UpdateClusterRequest, dict]] = None,
         *,
-        cluster: Optional[vmwareengine.Cluster] = None,
+        cluster: Optional[vmwareengine_resources.Cluster] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1587,7 +1589,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.Cluster,
+            vmwareengine_resources.Cluster,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -1988,7 +1990,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.NodeType:
+    ) -> vmwareengine_resources.NodeType:
         r"""Gets details of a single ``NodeType``.
 
         .. code-block:: python
@@ -2101,7 +2103,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.Credentials:
+    ) -> vmwareengine_resources.Credentials:
         r"""Gets details of credentials for NSX appliance.
 
         .. code-block:: python
@@ -2218,7 +2220,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.Credentials:
+    ) -> vmwareengine_resources.Credentials:
         r"""Gets details of credentials for Vcenter appliance.
 
         .. code-block:: python
@@ -2442,7 +2444,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.PrivateCloud,
+            vmwareengine_resources.PrivateCloud,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -2568,7 +2570,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.PrivateCloud,
+            vmwareengine_resources.PrivateCloud,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -2582,7 +2584,7 @@ class VmwareEngineAsyncClient:
         ] = None,
         *,
         parent: Optional[str] = None,
-        hcx_activation_key: Optional[vmwareengine.HcxActivationKey] = None,
+        hcx_activation_key: Optional[vmwareengine_resources.HcxActivationKey] = None,
         hcx_activation_key_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2732,7 +2734,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.HcxActivationKey,
+            vmwareengine_resources.HcxActivationKey,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -2877,7 +2879,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.HcxActivationKey:
+    ) -> vmwareengine_resources.HcxActivationKey:
         r"""Retrieves a ``HcxActivationKey`` resource by its resource name.
 
         .. code-block:: python
@@ -2998,7 +3000,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.NetworkPolicy:
+    ) -> vmwareengine_resources.NetworkPolicy:
         r"""Retrieves a ``NetworkPolicy`` resource by its resource name.
 
         .. code-block:: python
@@ -3247,7 +3249,7 @@ class VmwareEngineAsyncClient:
         request: Optional[Union[vmwareengine.CreateNetworkPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        network_policy: Optional[vmwareengine.NetworkPolicy] = None,
+        network_policy: Optional[vmwareengine_resources.NetworkPolicy] = None,
         network_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3401,7 +3403,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.NetworkPolicy,
+            vmwareengine_resources.NetworkPolicy,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -3412,7 +3414,7 @@ class VmwareEngineAsyncClient:
         self,
         request: Optional[Union[vmwareengine.UpdateNetworkPolicyRequest, dict]] = None,
         *,
-        network_policy: Optional[vmwareengine.NetworkPolicy] = None,
+        network_policy: Optional[vmwareengine_resources.NetworkPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3553,7 +3555,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.NetworkPolicy,
+            vmwareengine_resources.NetworkPolicy,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -3697,7 +3699,9 @@ class VmwareEngineAsyncClient:
         ] = None,
         *,
         parent: Optional[str] = None,
-        vmware_engine_network: Optional[vmwareengine.VmwareEngineNetwork] = None,
+        vmware_engine_network: Optional[
+            vmwareengine_resources.VmwareEngineNetwork
+        ] = None,
         vmware_engine_network_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3851,7 +3855,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.VmwareEngineNetwork,
+            vmwareengine_resources.VmwareEngineNetwork,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -3864,7 +3868,9 @@ class VmwareEngineAsyncClient:
             Union[vmwareengine.UpdateVmwareEngineNetworkRequest, dict]
         ] = None,
         *,
-        vmware_engine_network: Optional[vmwareengine.VmwareEngineNetwork] = None,
+        vmware_engine_network: Optional[
+            vmwareengine_resources.VmwareEngineNetwork
+        ] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3992,7 +3998,7 @@ class VmwareEngineAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            vmwareengine.VmwareEngineNetwork,
+            vmwareengine_resources.VmwareEngineNetwork,
             metadata_type=vmwareengine.OperationMetadata,
         )
 
@@ -4142,7 +4148,7 @@ class VmwareEngineAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vmwareengine.VmwareEngineNetwork:
+    ) -> vmwareengine_resources.VmwareEngineNetwork:
         r"""Retrieves a ``VmwareEngineNetwork`` resource by its resource
         name. The resource contains details of the VMware Engine
         network, such as its VMware Engine network type, peered networks

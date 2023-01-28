@@ -24,7 +24,7 @@ from typing import (
     Tuple,
 )
 
-from google.cloud.vmwareengine_v1.types import vmwareengine
+from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
 
 class ListPrivateCloudsPager:
@@ -81,7 +81,7 @@ class ListPrivateCloudsPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[vmwareengine.PrivateCloud]:
+    def __iter__(self) -> Iterator[vmwareengine_resources.PrivateCloud]:
         for page in self.pages:
             yield from page.private_clouds
 
@@ -143,7 +143,7 @@ class ListPrivateCloudsAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[vmwareengine.PrivateCloud]:
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.PrivateCloud]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.private_clouds:
@@ -209,7 +209,7 @@ class ListClustersPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[vmwareengine.Cluster]:
+    def __iter__(self) -> Iterator[vmwareengine_resources.Cluster]:
         for page in self.pages:
             yield from page.clusters
 
@@ -271,7 +271,7 @@ class ListClustersAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[vmwareengine.Cluster]:
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.Cluster]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.clusters:
@@ -337,7 +337,7 @@ class ListSubnetsPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[vmwareengine.Subnet]:
+    def __iter__(self) -> Iterator[vmwareengine_resources.Subnet]:
         for page in self.pages:
             yield from page.subnets
 
@@ -399,7 +399,7 @@ class ListSubnetsAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[vmwareengine.Subnet]:
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.Subnet]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.subnets:
@@ -465,7 +465,7 @@ class ListNodeTypesPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[vmwareengine.NodeType]:
+    def __iter__(self) -> Iterator[vmwareengine_resources.NodeType]:
         for page in self.pages:
             yield from page.node_types
 
@@ -527,7 +527,7 @@ class ListNodeTypesAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[vmwareengine.NodeType]:
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.NodeType]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.node_types:
@@ -593,7 +593,7 @@ class ListHcxActivationKeysPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[vmwareengine.HcxActivationKey]:
+    def __iter__(self) -> Iterator[vmwareengine_resources.HcxActivationKey]:
         for page in self.pages:
             yield from page.hcx_activation_keys
 
@@ -655,7 +655,7 @@ class ListHcxActivationKeysAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[vmwareengine.HcxActivationKey]:
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.HcxActivationKey]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.hcx_activation_keys:
@@ -721,7 +721,7 @@ class ListNetworkPoliciesPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[vmwareengine.NetworkPolicy]:
+    def __iter__(self) -> Iterator[vmwareengine_resources.NetworkPolicy]:
         for page in self.pages:
             yield from page.network_policies
 
@@ -783,7 +783,7 @@ class ListNetworkPoliciesAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[vmwareengine.NetworkPolicy]:
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.NetworkPolicy]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.network_policies:
@@ -849,7 +849,7 @@ class ListVmwareEngineNetworksPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[vmwareengine.VmwareEngineNetwork]:
+    def __iter__(self) -> Iterator[vmwareengine_resources.VmwareEngineNetwork]:
         for page in self.pages:
             yield from page.vmware_engine_networks
 
@@ -913,7 +913,7 @@ class ListVmwareEngineNetworksAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[vmwareengine.VmwareEngineNetwork]:
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.VmwareEngineNetwork]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.vmware_engine_networks:

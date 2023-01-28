@@ -26,7 +26,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.vmwareengine_v1.types import vmwareengine
+from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
 from .base import DEFAULT_CLIENT_INFO, VmwareEngineTransport
 
@@ -279,7 +279,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def get_private_cloud(
         self,
-    ) -> Callable[[vmwareengine.GetPrivateCloudRequest], vmwareengine.PrivateCloud]:
+    ) -> Callable[
+        [vmwareengine.GetPrivateCloudRequest], vmwareengine_resources.PrivateCloud
+    ]:
         r"""Return a callable for the get private cloud method over gRPC.
 
         Retrieves a ``PrivateCloud`` resource by its resource name.
@@ -298,7 +300,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["get_private_cloud"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetPrivateCloud",
                 request_serializer=vmwareengine.GetPrivateCloudRequest.serialize,
-                response_deserializer=vmwareengine.PrivateCloud.deserialize,
+                response_deserializer=vmwareengine_resources.PrivateCloud.deserialize,
             )
         return self._stubs["get_private_cloud"]
 
@@ -471,7 +473,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def get_cluster(
         self,
-    ) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine.Cluster]:
+    ) -> Callable[[vmwareengine.GetClusterRequest], vmwareengine_resources.Cluster]:
         r"""Return a callable for the get cluster method over gRPC.
 
         Retrieves a ``Cluster`` resource by its resource name.
@@ -490,7 +492,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["get_cluster"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetCluster",
                 request_serializer=vmwareengine.GetClusterRequest.serialize,
-                response_deserializer=vmwareengine.Cluster.deserialize,
+                response_deserializer=vmwareengine_resources.Cluster.deserialize,
             )
         return self._stubs["get_cluster"]
 
@@ -642,7 +644,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     @property
     def get_node_type(
         self,
-    ) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine.NodeType]:
+    ) -> Callable[[vmwareengine.GetNodeTypeRequest], vmwareengine_resources.NodeType]:
         r"""Return a callable for the get node type method over gRPC.
 
         Gets details of a single ``NodeType``.
@@ -661,14 +663,16 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["get_node_type"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetNodeType",
                 request_serializer=vmwareengine.GetNodeTypeRequest.serialize,
-                response_deserializer=vmwareengine.NodeType.deserialize,
+                response_deserializer=vmwareengine_resources.NodeType.deserialize,
             )
         return self._stubs["get_node_type"]
 
     @property
     def show_nsx_credentials(
         self,
-    ) -> Callable[[vmwareengine.ShowNsxCredentialsRequest], vmwareengine.Credentials]:
+    ) -> Callable[
+        [vmwareengine.ShowNsxCredentialsRequest], vmwareengine_resources.Credentials
+    ]:
         r"""Return a callable for the show nsx credentials method over gRPC.
 
         Gets details of credentials for NSX appliance.
@@ -687,7 +691,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["show_nsx_credentials"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ShowNsxCredentials",
                 request_serializer=vmwareengine.ShowNsxCredentialsRequest.serialize,
-                response_deserializer=vmwareengine.Credentials.deserialize,
+                response_deserializer=vmwareengine_resources.Credentials.deserialize,
             )
         return self._stubs["show_nsx_credentials"]
 
@@ -695,7 +699,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     def show_vcenter_credentials(
         self,
     ) -> Callable[
-        [vmwareengine.ShowVcenterCredentialsRequest], vmwareengine.Credentials
+        [vmwareengine.ShowVcenterCredentialsRequest], vmwareengine_resources.Credentials
     ]:
         r"""Return a callable for the show vcenter credentials method over gRPC.
 
@@ -715,7 +719,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["show_vcenter_credentials"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ShowVcenterCredentials",
                 request_serializer=vmwareengine.ShowVcenterCredentialsRequest.serialize,
-                response_deserializer=vmwareengine.Credentials.deserialize,
+                response_deserializer=vmwareengine_resources.Credentials.deserialize,
             )
         return self._stubs["show_vcenter_credentials"]
 
@@ -835,7 +839,8 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     def get_hcx_activation_key(
         self,
     ) -> Callable[
-        [vmwareengine.GetHcxActivationKeyRequest], vmwareengine.HcxActivationKey
+        [vmwareengine.GetHcxActivationKeyRequest],
+        vmwareengine_resources.HcxActivationKey,
     ]:
         r"""Return a callable for the get hcx activation key method over gRPC.
 
@@ -855,14 +860,16 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["get_hcx_activation_key"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetHcxActivationKey",
                 request_serializer=vmwareengine.GetHcxActivationKeyRequest.serialize,
-                response_deserializer=vmwareengine.HcxActivationKey.deserialize,
+                response_deserializer=vmwareengine_resources.HcxActivationKey.deserialize,
             )
         return self._stubs["get_hcx_activation_key"]
 
     @property
     def get_network_policy(
         self,
-    ) -> Callable[[vmwareengine.GetNetworkPolicyRequest], vmwareengine.NetworkPolicy]:
+    ) -> Callable[
+        [vmwareengine.GetNetworkPolicyRequest], vmwareengine_resources.NetworkPolicy
+    ]:
         r"""Return a callable for the get network policy method over gRPC.
 
         Retrieves a ``NetworkPolicy`` resource by its resource name.
@@ -881,7 +888,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["get_network_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetNetworkPolicy",
                 request_serializer=vmwareengine.GetNetworkPolicyRequest.serialize,
-                response_deserializer=vmwareengine.NetworkPolicy.deserialize,
+                response_deserializer=vmwareengine_resources.NetworkPolicy.deserialize,
             )
         return self._stubs["get_network_policy"]
 
@@ -1104,7 +1111,8 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     def get_vmware_engine_network(
         self,
     ) -> Callable[
-        [vmwareengine.GetVmwareEngineNetworkRequest], vmwareengine.VmwareEngineNetwork
+        [vmwareengine.GetVmwareEngineNetworkRequest],
+        vmwareengine_resources.VmwareEngineNetwork,
     ]:
         r"""Return a callable for the get vmware engine network method over gRPC.
 
@@ -1128,7 +1136,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
             self._stubs["get_vmware_engine_network"] = self.grpc_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetVmwareEngineNetwork",
                 request_serializer=vmwareengine.GetVmwareEngineNetworkRequest.serialize,
-                response_deserializer=vmwareengine.VmwareEngineNetwork.deserialize,
+                response_deserializer=vmwareengine_resources.VmwareEngineNetwork.deserialize,
             )
         return self._stubs["get_vmware_engine_network"]
 
