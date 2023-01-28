@@ -97,6 +97,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-maps-mapsplatformdatasets": {
+            "component": "google-maps-mapsplatformdatasets",
+            "release-type": "python",
+            "extra-files": [
+                "google/maps/mapsplatformdatasets/gapic_version.py"
+            ]
         }
     }
 }
