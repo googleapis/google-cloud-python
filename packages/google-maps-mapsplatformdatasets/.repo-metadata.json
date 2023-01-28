@@ -1,0 +1,17 @@
+{
+    "name": "mapsplatformdatasets",
+    "name_pretty": "",
+    "api_description": "",
+    "product_documentation": "",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/mapsplatformdatasets/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-maps-mapsplatformdatasets",
+    "api_id": "mapsplatformdatasets.googleapis.com",
+    "default_version": "v1alpha",
+    "codeowner_team": "",
+    "api_shortname": "mapsplatformdatasets"
+}
