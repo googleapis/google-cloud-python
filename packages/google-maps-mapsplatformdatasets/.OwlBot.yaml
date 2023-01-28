@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
-  digest: sha256:d6729369ae31e03f91082694f1e2492f9d2e30946a29b3ef262d30f085b2ef55
+
+deep-copy-regex:
+    - source: /google/maps/mapsplatformdatasets/(.*)/.*-py
+      dest: /owl-bot-staging/google-maps-mapsplatformdatasets/$1
