@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.19.0...v0.19.1) (2023-01-25)
+
+
+### Documentation
+
+* Updates the user instructions re OAuth ([0c2b716](https://github.com/googleapis/python-bigquery-pandas/commit/0c2b716a55551f26050ed8d94ff912d406527ac5))
+
 ## [0.19.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.18.1...v0.19.0) (2023-01-11)
 
 
