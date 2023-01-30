@@ -189,9 +189,9 @@ def unit(session):
 def install_systemtest_dependencies(session, *constraints):
 
     # Use pre-release gRPC for system tests.
-    # Exclude version 1.49.0rc1 which has a known issue.
-    # See https://github.com/grpc/grpc/pull/30642
-    session.install("--pre", "grpcio!=1.49.0rc1")
+    # Exclude version 1.52.0rc1 which has a known issue.
+    # See https://github.com/grpc/grpc/issues/32163
+    session.install("--pre", "grpcio!=1.52.0rc1")
 
     session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
 
@@ -346,9 +346,7 @@ def prerelease_deps(session):
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
     system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
+        SYSTEM_TEST_STANDARD_DEPENDENCIES + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
     )
     session.install(*system_deps_all)
 
@@ -378,8 +376,8 @@ def prerelease_deps(session):
         # dependency of grpc
         "six",
         "googleapis-common-protos",
-        # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
-        "grpcio!=1.49.0rc1",
+        # Exclude version 1.52.0rc1 which has a known issue. See https://github.com/grpc/grpc/issues/32163
+        "grpcio!=1.52.0rc1",
         "grpcio-status",
         "google-api-core",
         "proto-plus",
