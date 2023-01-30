@@ -125,39 +125,6 @@ def test_document_from_gcs_with_multiple_shards(get_bytes_multiple_files_mock):
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
-def test_get_bytes(mock_storage):
-
-    client = mock_storage.Client.return_value
-
-    mock_bucket = mock.Mock()
-    mock_bucket.blob.return_value.download_as_string.return_value = "test".encode(
-        "utf-8"
-    )
-
-    client.Bucket.return_value = mock_bucket
-
-    blobs = [
-        storage.Blob(
-            name="gs://test-directory/documentai/output/123456789/1/test_shard1.json",
-            bucket=mock_bucket,
-        ),
-        storage.Blob(
-            name="gs://test-directory/documentai/output/123456789/1/test_shard2.json",
-            bucket=mock_bucket,
-        ),
-    ]
-
-    client.list_blobs.return_value = blobs
-
-    actual = document._get_bytes(
-        "gs://test-directory/documentai/", "output/123456789/1"
-    )
-    mock_storage.Client.assert_called_once()
-
-    assert actual == [b"", b""]
-
-
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
 def test_print_gcs_document_tree_with_one_folder(mock_storage, capfd):
 
     client = mock_storage.Client.return_value

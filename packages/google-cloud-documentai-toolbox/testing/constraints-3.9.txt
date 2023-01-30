@@ -1,7 +1,10 @@
-# This constraints file is used to check that lower bounds
-# are correct in setup.py
-# List *all* library dependencies and extras in this file.
-# Pin the version to the lower bound.
-#
-# e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
-# Then this file should have foo==1.14.0
+# -*- coding: utf-8 -*-
+# This constraints file is required for unit tests.
+# List all library dependencies and extras in this file.
+google-api-core
+libcst
+pandas
+proto-plus
+grpc-google-iam-v1
+google-cloud-documentai
+google-cloud-storage
