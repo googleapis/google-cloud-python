@@ -622,6 +622,10 @@ class TestDatasetReference(unittest.TestCase):
         expected = "DatasetReference('project1', 'dataset1')"
         self.assertEqual(repr(dataset), expected)
 
+    def test___str__(self):
+        dataset = self._make_one("project1", "dataset1")
+        self.assertEqual(str(dataset), "project1.dataset1")
+
 
 class TestDataset(unittest.TestCase):
     from google.cloud.bigquery.dataset import DatasetReference

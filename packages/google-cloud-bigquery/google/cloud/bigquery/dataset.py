@@ -215,6 +215,9 @@ class DatasetReference(object):
     def __hash__(self):
         return hash(self._key())
 
+    def __str__(self):
+        return f"{self.project}.{self._dataset_id}"
+
     def __repr__(self):
         return "DatasetReference{}".format(self._key())
 
