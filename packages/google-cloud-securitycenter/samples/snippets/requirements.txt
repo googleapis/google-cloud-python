@@ -1,2 +1,0 @@
-google-cloud-pubsub==2.14.0
-google-cloud-securitycenter==1.18.2
