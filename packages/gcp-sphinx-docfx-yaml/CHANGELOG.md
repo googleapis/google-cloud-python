@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.0...v2.0.1) (2023-01-30)
+
+
+### Bug Fixes
+
+* Remove license headers in markdown files ([#273](https://github.com/googleapis/sphinx-docfx-yaml/issues/273)) ([a4c808f](https://github.com/googleapis/sphinx-docfx-yaml/commit/a4c808fdbfbf30bc536c7c22420229b0e40fa7c3))
+
 ## [2.0.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.6.0...v2.0.0) (2022-11-15)
 
 
