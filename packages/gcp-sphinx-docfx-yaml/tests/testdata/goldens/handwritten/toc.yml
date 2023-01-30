@@ -3,6 +3,8 @@
     name: Overview
   - href: changelog.md
     name: Changelog
+  - href: upgrading.md
+    name: 3.0.0 Migration Guide
   - items:
     - href: blobs.md
       name: Blobs / Objects

@@ -145,6 +145,33 @@ def _extract_header_from_markdown(mdfile: Iterable[str]) -> str:
     return ""
 
 
+def _remove_license(mdfile_path: str) -> None:
+    """Removes any licenses in markdown files."""
+
+    comment_tag_begin = "<!--"
+    comment_tag_end = "-->"
+
+    with open(mdfile_path) as mdfile:
+        file_content = mdfile.read()
+
+    # Find the first occurrence of comment tags.
+    begin_index = file_content.find(comment_tag_begin)
+    end_index = file_content.find(comment_tag_end)
+
+    # Check whether the HTML comment is a license - they should be at the top of
+    # the file, and if any content prior to the license is visible other than
+    # whitespace we assume it's not a license comment.
+    if (pre_comment := file_content[:begin_index]) and not pre_comment.isspace():
+        return
+
+    # Strip the license.
+    file_content = file_content[end_index + len(comment_tag_end):]
+
+    # Reset file position to the beginning to write
+    with open(mdfile_path, 'w') as mdfile:
+        mdfile.write(file_content)
+
+
 def _highlight_md_codeblocks(mdfile_path: str) -> None:
     """Adds syntax highlighting to code blocks for a given markdown file."""
     fence = '```'
@@ -284,6 +311,8 @@ def move_markdown_pages(
 
         if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
             mdfile_name = ""
+
+            _remove_license(mdfile)
 
             # Extract the header name for TOC.
             with open(mdfile) as mdfile_iterator:

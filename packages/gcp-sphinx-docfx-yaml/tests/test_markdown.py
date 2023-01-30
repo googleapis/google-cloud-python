@@ -278,5 +278,33 @@ For example:
             pytest.fail('Should not have thrown an exception.')
 
 
+    test_markdown_filenames = [
+        [
+            "tests/markdown_example_header.md",
+            "tests/markdown_example_header_want.md",
+        ],
+        [
+            "tests/markdown_example_header_with_comments.md",
+            "tests/markdown_example_header_with_comments_want.md",
+        ],
+    ]
+    @parameterized.expand(test_markdown_filenames)
+    def test_remove_license(self, base_filename, want_filename):
+        # Check that licenses are correctly removed.
+
+        # Copy the base file we'll need to test.
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as test_file:
+            with open(base_filename) as base_file:
+                test_file.write(base_file.read())
+                test_file.flush()
+                test_file.seek(0)
+
+            markdown_utils._remove_license(test_file.name)
+            test_file.seek(0)
+
+            with open(want_filename) as mdfile_want:
+                self.assertEqual(test_file.read(), mdfile_want.read())
+
+
 if __name__ == '__main__':
     unittest.main()
