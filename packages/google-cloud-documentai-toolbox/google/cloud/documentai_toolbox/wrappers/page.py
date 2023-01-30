@@ -141,7 +141,7 @@ class Paragraph:
     """Represents a wrapped documentai.Document.Page.Paragraph.
     Attributes:
         documentai_paragraph (google.cloud.documentai.Document.Page.Paragraph):
-            Required.The original google.cloud.documentai.Document.Page.Paragraph object.
+            Required. The original google.cloud.documentai.Document.Page.Paragraph object.
         text (str):
             Required. UTF-8 encoded text.
     """
@@ -155,7 +155,7 @@ class Line:
     """Represents a wrapped documentai.Document.Page.Line.
     Attributes:
         documentai_line (google.cloud.documentai.Document.Page.Line):
-            Required.The original google.cloud.documentai.Document.Page.Line object.
+            Required. The original google.cloud.documentai.Document.Page.Line object.
         text (str):
             Required. UTF-8 encoded text.
     """
@@ -200,7 +200,7 @@ def _get_paragraphs(
     r"""Returns a list of Paragraph.
     Args:
         paragraphs (List[documentai.Document.Page.Paragraph]):
-            Required. a list of documentai.Document.Page.Paragraph objects.
+            Required. A list of documentai.Document.Page.Paragraph objects.
         text (str):
             Required. UTF-8 encoded text in reading order
             from the document.
@@ -227,7 +227,7 @@ def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Li
     r"""Returns a list of Line.
     Args:
         lines (List[documentai.Document.Page.Line]):
-            Required. a list of documentai.Document.Page.Line objects.
+            Required. A list of documentai.Document.Page.Line objects.
         text (str):
             Required. UTF-8 encoded text in reading order
             from the document.
@@ -289,15 +289,15 @@ class Page:
         text: (str):
             Required. The full text of the Document containing the Page.
         lines (List[str]):
-            A list of visually detected text lines on the
+            Required. A list of visually detected text lines on the
             page. A collection of tokens that a human would
             perceive as a line.
         paragraphs (List[str]):
-            A list of visually detected text paragraphs
+            Required. A list of visually detected text paragraphs
             on the page. A collection of lines that a human
             would perceive as a paragraph.
         tables (List[Table]):
-            A list of visually detected tables on the
+            Required. A list of visually detected tables on the
             page.
     """
 

@@ -91,14 +91,18 @@ def test_entities_from_shard():
     assert actual[0].type_ == "vat"
 
 
-def test_document_from_documentai_document_with_single_shard():
-    test_document = []
-    for byte in get_bytes("tests/unit/resources/0"):
-        test_document.append(documentai.Document.from_json(byte))
-
-    actual = document.Document.from_documentai_document(
-        documentai_document=test_document[0]
+def test_document_from_document_path_with_single_shard():
+    actual = document.Document.from_document_path(
+        document_path="tests/unit/resources/0/toolbox_invoice_test-0.json"
     )
+    assert len(actual.pages) == 1
+
+
+def test_document_from_documentai_document_with_single_shard():
+    with open("tests/unit/resources/0/toolbox_invoice_test-0.json", "r") as f:
+        doc = documentai.Document.from_json(f.read())
+
+    actual = document.Document.from_documentai_document(documentai_document=doc)
     assert len(actual.pages) == 1
 
 

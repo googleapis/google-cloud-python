@@ -26,11 +26,11 @@ class Entity:
 
     Attributes:
         documentai_entity (google.cloud.documentai.Document.Entity):
-            Required.The original google.cloud.documentai.Document.Entity object.
+            Required. The original google.cloud.documentai.Document.Entity object.
         type_ (str):
-            Entity type from a schema e.g. ``Address``.
+            Required. Entity type from a schema e.g. ``Address``.
         mention_text (str):
-            Text value in the document e.g.
+            Optional. Text value in the document e.g.
             ``1600 Amphitheatre Pkwy``. If the entity is not present in
             the document, this field will be empty.
     """

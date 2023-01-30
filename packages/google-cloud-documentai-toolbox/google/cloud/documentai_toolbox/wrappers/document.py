@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ from google.cloud.documentai_toolbox.wrappers.entity import Entity
 def _entities_from_shards(
     shards: List[documentai.Document],
 ) -> List[Entity]:
-    r"""Returns the list of Entities of the documentai.Documents in shards.
+    r"""Returns a list of Entities from a list of documentai.Document shards.
 
     Args:
         shards (List[google.cloud.documentai.Document]):
@@ -50,7 +50,7 @@ def _entities_from_shards(
 
 
 def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
-    r"""Returns a list of Pages of the documentai.Documents in shards.
+    r"""Returns a list of Pages from a list of documentai.Document shards.
 
     Args:
         shards (List[google.cloud.documentai.Document]):
@@ -82,7 +82,7 @@ def _get_storage_client():
 
 
 def _get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
-    r"""Returns the list of bytes of json files on Cloud Storage.
+    r"""Returns a list of bytes of json files from Cloud Storage.
 
     Args:
         gcs_bucket_name (str):
@@ -114,7 +114,7 @@ def _get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
 
 
 def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Document]:
-    r"""Returns the list of documentai.Documents with the given gcs_prefix.
+    r"""Returns a list of documentai.Document shards from a Cloud Storage folder.
 
     Args:
         gcs_bucket_name (str):
@@ -148,7 +148,7 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
 
 
 def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
-    r"""Prints a tree of filenames in gcs_prefix location.
+    r"""Prints a tree of filenames in Cloud Storage folder.
 
     Args:
         gcs_bucket_name (str):
@@ -210,15 +210,15 @@ def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
 class Document:
     r"""Represents a wrapped Document.
 
-    A single Document protobuf message might be written as several JSON files on
-    GCS by Document AI's BatchProcessDocuments method.  This class hides away the
-    shards from the users and implements convenient methods for searching and
+    This class hides away the complexities of using Document protobuf
+    response outputted by BatchProcessDocuments or ProcessDocument
+    methods and implements convenient methods for searching and
     extracting information within the Document.
 
     Attributes:
         shards: (List[google.cloud.documentai.Document]):
-            The list of documentai.Document shards of the same Document.  Each shard
-            consists of a number of pages in the Document.
+            Optional. A list of documentai.Document shards of the same Document.
+            Each shard consists of a number of pages in the Document.
         gcs_bucket_name (Optional[str]):
             Optional. The name of the gcs bucket.
 
@@ -232,9 +232,9 @@ class Document:
 
             For more information please take a look at https://cloud.google.com/storage/docs/json_api/v1/objects/list
         pages: (List[Page]):
-            The list of Pages in the Document.
+            A list of Pages in the Document.
         entities: (List[Entity]):
-            The list of Entities in the Document.
+            A list of Entities in the Document.
     """
 
     shards: List[documentai.Document] = dataclasses.field(repr=False)
@@ -249,12 +249,45 @@ class Document:
         self.entities = _entities_from_shards(shards=self.shards)
 
     @classmethod
-    def from_documentai_document(cls, documentai_document: documentai.Document):
+    def from_document_path(
+        cls,
+        document_path: str,
+    ):
+        r"""Loads Document from local document_path.
+
+        Args:
+            document_path (str):
+                Required. The path to the resp.
+        Returns:
+            Document:
+                A document from local document_path.
+        """
+
+        with open(document_path, "r") as f:
+            doc = documentai.Document.from_json(f.read())
+
+        return cls(shards=[doc])
+
+    @classmethod
+    def from_documentai_document(
+        cls,
+        documentai_document: documentai.Document,
+    ):
+        r"""Loads Document from local documentai_document.
+
+        Args:
+            documentai_document (documentai.Document):
+                Optional. The Document.proto response.
+        Returns:
+            Document:
+                A document from local documentai_document.
+        """
+
         return cls(shards=[documentai_document])
 
     @classmethod
     def from_gcs(cls, gcs_bucket_name: str, gcs_prefix: str):
-        r"""Loads Document from gcs.
+        r"""Loads Document from Cloud Storage.
 
         Args:
             gcs_bucket_name (str):
