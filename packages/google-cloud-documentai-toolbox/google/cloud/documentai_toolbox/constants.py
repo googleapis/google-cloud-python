@@ -15,3 +15,8 @@
 #
 
 USER_AGENT_PRODUCT = "documentai-toolbox"
+
+JSON_EXTENSION = ".json"
+JSON_MIMETYPE = "application/json"
+
+FILE_CHECK_REGEX = r"(.*[.].*$)"
