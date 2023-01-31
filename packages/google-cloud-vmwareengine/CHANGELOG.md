@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.2...google-cloud-vmwareengine-v1.0.0) (2023-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* resource proto messages moved to new file ([#10829](https://github.com/googleapis/google-cloud-python/issues/10829))
+
+### Bug Fixes
+
+* resource proto messages moved to new file ([#10829](https://github.com/googleapis/google-cloud-python/issues/10829)) ([bf1ef3d](https://github.com/googleapis/google-cloud-python/commit/bf1ef3d2db8f8cd2e88d4ab29bff73a1af3ae99c))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.1...google-cloud-vmwareengine-v0.2.2) (2023-01-20)
 
 
