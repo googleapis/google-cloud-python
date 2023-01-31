@@ -484,6 +484,9 @@ Libraries
    * - `Distributed Edge Container <https://github.com/googleapis/python-edgecontainer>`_
      - |preview|
      - |PyPI-google-cloud-edgecontainer|
+   * - `Document AI Toolbox <https://github.com/googleapis/python-documentai-toolbox>`_
+     - |preview|
+     - |PyPI-google-cloud-documentai-toolbox|
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |preview|
      - |PyPI-google-cloud-error-reporting|
@@ -809,6 +812,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dataform
 .. |PyPI-google-cloud-edgecontainer| image:: https://img.shields.io/pypi/v/google-cloud-edgecontainer.svg
      :target: https://pypi.org/project/google-cloud-edgecontainer
+.. |PyPI-google-cloud-documentai-toolbox| image:: https://img.shields.io/pypi/v/google-cloud-documentai-toolbox.svg
+     :target: https://pypi.org/project/google-cloud-documentai-toolbox
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-eventarc-publishing| image:: https://img.shields.io/pypi/v/google-cloud-eventarc-publishing.svg
