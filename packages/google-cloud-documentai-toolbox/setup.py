@@ -38,6 +38,7 @@ setuptools.setup(
     version=version,
     license="Apache 2.0",
     long_description=readme,
+    long_description_content_type="text/x-rst",
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
