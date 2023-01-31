@@ -11,3 +11,12 @@ ipython
 gcp-docuploader
 gcp-releasetool
 importlib-metadata
+
+# Required for package release.
+typing-extensions
+twine
+wheel
+setuptools
+nox
+charset-normalizer<3
+click<8.1.0
