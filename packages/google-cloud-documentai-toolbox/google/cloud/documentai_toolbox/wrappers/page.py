@@ -139,6 +139,7 @@ def _table_wrapper_from_documentai_table(
 @dataclasses.dataclass
 class Paragraph:
     """Represents a wrapped documentai.Document.Page.Paragraph.
+
     Attributes:
         documentai_paragraph (google.cloud.documentai.Document.Page.Paragraph):
             Required. The original google.cloud.documentai.Document.Page.Paragraph object.
@@ -153,6 +154,7 @@ class Paragraph:
 @dataclasses.dataclass
 class Line:
     """Represents a wrapped documentai.Document.Page.Line.
+
     Attributes:
         documentai_line (google.cloud.documentai.Document.Page.Line):
             Required. The original google.cloud.documentai.Document.Page.Line object.
@@ -198,6 +200,7 @@ def _get_paragraphs(
     paragraphs: List[documentai.Document.Page.Paragraph], text: str
 ) -> List[Paragraph]:
     r"""Returns a list of Paragraph.
+
     Args:
         paragraphs (List[documentai.Document.Page.Paragraph]):
             Required. A list of documentai.Document.Page.Paragraph objects.
@@ -225,6 +228,7 @@ def _get_paragraphs(
 
 def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Line]:
     r"""Returns a list of Line.
+
     Args:
         lines (List[documentai.Document.Page.Line]):
             Required. A list of documentai.Document.Page.Line objects.

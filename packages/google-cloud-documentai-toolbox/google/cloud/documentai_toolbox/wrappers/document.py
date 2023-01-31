@@ -70,7 +70,12 @@ def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
 
 
 def _get_storage_client():
-    """Returns a Storage client with custom user agent header."""
+    r"""Returns a Storage client with custom user agent header.
+
+    Returns:
+        storage.Client.
+
+    """
     user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
 
     info = client_info.ClientInfo(
@@ -88,13 +93,13 @@ def _get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
         gcs_bucket_name (str):
             Required. The name of the gcs bucket.
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_bucket_name=`{bucket}`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_bucket_name={bucket} .
         gcs_prefix (str):
             Required. The prefix of the json files in the target_folder
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_prefix={optional_folder}/{target_folder}/ .
     Returns:
         List[bytes]:
             A list of bytes.
@@ -120,13 +125,13 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
         gcs_bucket_name (str):
             Required. The name of the gcs bucket.
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_bucket_name=`{bucket}`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_bucket_name={bucket}.
         gcs_prefix (str):
             Required. The prefix of the json files in the target_folder.
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_prefix={optional_folder}/{target_folder}/.
     Returns:
         List[google.cloud.documentai.Document]:
             A list of documentai.Documents.
@@ -154,13 +159,13 @@ def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
         gcs_bucket_name (str):
             Required. The name of the gcs bucket.
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_bucket_name=`{bucket}`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_bucket_name={bucket}.
         gcs_prefix (str):
             Required. The prefix of the json files in the target_folder.
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_prefix={optional_folder}/{target_folder}/ .
     Returns:
         None.
 
@@ -222,15 +227,15 @@ class Document:
         gcs_bucket_name (Optional[str]):
             Optional. The name of the gcs bucket.
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_bucket_name=`{bucket}`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_bucket_name={bucket}.
         gcs_prefix (Optional[str]):
             Optional. The prefix of the json files in the target_folder.
 
-            Format: `gs://{bucket}/{optional_folder}/{target_folder}/`
-                    where gcs_prefix=`{optional_folder}/{target_folder}/`.
+            Format: gs://{bucket}/{optional_folder}/{target_folder}/
+                    where gcs_prefix={optional_folder}/{target_folder}/.
 
-            For more information please take a look at https://cloud.google.com/storage/docs/json_api/v1/objects/list
+            For more information please take a look at https://cloud.google.com/storage/docs/json_api/v1/objects/list .
         pages: (List[Page]):
             A list of Pages in the Document.
         entities: (List[Entity]):
