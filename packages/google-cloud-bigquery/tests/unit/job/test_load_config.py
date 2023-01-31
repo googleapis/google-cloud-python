@@ -424,6 +424,20 @@ class TestLoadJobConfig(_Base):
         config.null_marker = null_marker
         self.assertEqual(config._properties["load"]["nullMarker"], null_marker)
 
+    def test_preserve_ascii_control_characters_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.preserve_ascii_control_characters)
+
+    def test_preserve_ascii_control_characters_hit(self):
+        config = self._get_target_class()()
+        config._properties["load"]["preserveAsciiControlCharacters"] = True
+        self.assertTrue(config.preserve_ascii_control_characters)
+
+    def test_preserve_ascii_control_characters_setter(self):
+        config = self._get_target_class()()
+        config.preserve_ascii_control_characters = True
+        self.assertTrue(config._properties["load"]["preserveAsciiControlCharacters"])
+
     def test_projection_fields_miss(self):
         config = self._get_target_class()()
         self.assertIsNone(config.projection_fields)

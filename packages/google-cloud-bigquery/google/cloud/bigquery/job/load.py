@@ -312,6 +312,19 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("nullMarker", value)
 
     @property
+    def preserve_ascii_control_characters(self):
+        """Optional[bool]: Preserves the embedded ASCII control characters when sourceFormat is set to CSV.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.preserve_ascii_control_characters
+        """
+        return self._get_sub_prop("preserveAsciiControlCharacters")
+
+    @preserve_ascii_control_characters.setter
+    def preserve_ascii_control_characters(self, value):
+        self._set_sub_prop("preserveAsciiControlCharacters", bool(value))
+
+    @property
     def projection_fields(self) -> Optional[List[str]]:
         """Optional[List[str]]: If
         :attr:`google.cloud.bigquery.job.LoadJobConfig.source_format` is set to
