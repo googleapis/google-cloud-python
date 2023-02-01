@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/googleapis/python-tpu/compare/v1.7.1...v1.7.2) (2023-01-30)
+
+
+### Bug Fixes
+
+* Proper http bindings for v2 API ([#209](https://github.com/googleapis/python-tpu/issues/209)) ([e549185](https://github.com/googleapis/python-tpu/commit/e549185be8c93233ece34290e56df72ad5f56d14))
+
 ## [1.7.1](https://github.com/googleapis/python-tpu/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
