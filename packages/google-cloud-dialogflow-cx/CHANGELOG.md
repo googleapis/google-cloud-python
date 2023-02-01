@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.17.1...v1.18.0) (2023-01-30)
+
+
+### Features
+
+* Added JSON_PACKAGE field to ExportAgentRequest ([#497](https://github.com/googleapis/python-dialogflow-cx/issues/497)) ([efe6286](https://github.com/googleapis/python-dialogflow-cx/commit/efe628674806271f5584b10eca899745fa190258))
+* **v3beta1:** Added JSON_PACKAGE field to ExportAgentRequest ([#495](https://github.com/googleapis/python-dialogflow-cx/issues/495)) ([d03ec56](https://github.com/googleapis/python-dialogflow-cx/commit/d03ec56bf21d0ce601c5a5029bcf4219b9372254))
+
 ## [1.17.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.17.0...v1.17.1) (2023-01-20)
 
 
