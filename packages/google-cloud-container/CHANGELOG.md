@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.17.2](https://github.com/googleapis/python-container/compare/v2.17.1...v2.17.2) (2023-01-30)
+
+
+### Documentation
+
+* Add references for available node image types ([76cfff8](https://github.com/googleapis/python-container/commit/76cfff85542aa1a8326efbfbc6d1c95b663e1452))
+* Clarified wording around the NodePoolUpdateStrategy default behavior ([76cfff8](https://github.com/googleapis/python-container/commit/76cfff85542aa1a8326efbfbc6d1c95b663e1452))
+
 ## [2.17.1](https://github.com/googleapis/python-container/compare/v2.17.0...v2.17.1) (2023-01-20)
 
 
