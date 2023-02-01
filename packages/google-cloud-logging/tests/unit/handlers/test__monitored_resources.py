@@ -16,7 +16,7 @@ import unittest
 
 import mock
 import os
-
+import functools
 
 from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_functions_resource,
@@ -66,6 +66,20 @@ class Test_Create_Resources(unittest.TestCase):
         else:
             return None
 
+    def _mock_metadata_no_project(self, endpoint):
+        if (
+            endpoint == _monitored_resources._ZONE_ID
+            or endpoint == _monitored_resources._REGION_ID
+        ):
+            return self.LOCATION
+        elif (
+            endpoint == _monitored_resources._GKE_CLUSTER_NAME
+            or endpoint == _monitored_resources._GCE_INSTANCE_ID
+        ):
+            return self.NAME
+        else:
+            return None
+
     def setUp(self):
         os.environ.clear()
 
@@ -99,6 +113,23 @@ class Test_Create_Resources(unittest.TestCase):
             self.assertEqual(func_resource.labels["project_id"], self.PROJECT)
             self.assertEqual(func_resource.labels["function_name"], self.NAME)
             self.assertEqual(func_resource.labels["region"], self.LOCATION)
+
+    def test_functions_resource_no_name(self):
+        """
+        Simulate functions environment with function name returned as None
+        https://github.com/googleapis/python-logging/pull/718
+        """
+        patch = mock.patch(
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+            wraps=self._mock_metadata_no_project,
+        )
+        with patch:
+            func_resource = _create_functions_resource()
+
+            self.assertIsInstance(func_resource, Resource)
+            self.assertEqual(func_resource.type, "cloud_function")
+            self.assertEqual(func_resource.labels["project_id"], "")
+            self.assertEqual(func_resource.labels["function_name"], "")
 
     def test_create_kubernetes_resource(self):
 
@@ -169,6 +200,29 @@ class Test_Create_Resources(unittest.TestCase):
         self.assertEqual(resource.type, "global")
         self.assertEqual(resource.labels["project_id"], self.PROJECT)
 
+    def test_with_no_project_from_server(self):
+        """
+        Ensure project_id uses an empty string if not known
+        https://github.com/googleapis/python-logging/issues/710
+        """
+        patch = mock.patch(
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+            wraps=self._mock_metadata_no_project,
+        )
+        with patch:
+            _global_resource_patched = functools.partial(_create_global_resource, None)
+            resource_fns = [
+                _global_resource_patched,
+                _create_app_engine_resource,
+                _create_cloud_run_resource,
+                _create_compute_resource,
+                _create_kubernetes_resource,
+                _create_functions_resource,
+            ]
+            for fn in resource_fns:
+                resource = fn()
+                self.assertEqual(resource.labels["project_id"], "")
+
 
 class Test_Resource_Detection(unittest.TestCase):
 
@@ -186,6 +240,14 @@ class Test_Resource_Detection(unittest.TestCase):
     def _mock_gce_metadata(self, endpoint):
         if endpoint == _monitored_resources._GCE_INSTANCE_ID:
             return "TRUE"
+        else:
+            return None
+
+    def _mock_partial_metadata(self, endpoint):
+        if endpoint == _monitored_resources._ZONE_ID:
+            return "ZONE"
+        elif endpoint == _monitored_resources._GCE_INSTANCE_ID:
+            return "instance"
         else:
             return None
 
@@ -249,3 +311,19 @@ class Test_Resource_Detection(unittest.TestCase):
             resource = detect_resource(self.PROJECT)
             self.assertIsInstance(resource, Resource)
             self.assertEqual(resource.type, "global")
+
+    def test_detect_partial_data(self):
+        """
+        Test case where the metadata server returns partial data
+        """
+        patch = mock.patch(
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+            wraps=self._mock_partial_metadata,
+        )
+        with patch:
+            resource = detect_resource(self.PROJECT)
+            self.assertIsInstance(resource, Resource)
+            self.assertEqual(resource.type, "gce_instance")
+            # project id not returned from metadata serve
+            # should be empty string
+            self.assertEqual(resource.labels["project_id"], "")

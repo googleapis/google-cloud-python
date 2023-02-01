@@ -71,8 +71,8 @@ def _create_functions_resource():
     resource = Resource(
         type="cloud_function",
         labels={
-            "project_id": project,
-            "function_name": function_name,
+            "project_id": project if project else "",
+            "function_name": function_name if function_name else "",
             "region": region.split("/")[-1] if region else "",
         },
     )
@@ -91,7 +91,7 @@ def _create_kubernetes_resource():
     resource = Resource(
         type="k8s_container",
         labels={
-            "project_id": project,
+            "project_id": project if project else "",
             "location": zone if zone else "",
             "cluster_name": cluster_name if cluster_name else "",
         },
@@ -110,7 +110,7 @@ def _create_compute_resource():
     resource = Resource(
         type="gce_instance",
         labels={
-            "project_id": project,
+            "project_id": project if project else "",
             "instance_id": instance if instance else "",
             "zone": zone if zone else "",
         },
@@ -128,7 +128,7 @@ def _create_cloud_run_resource():
     resource = Resource(
         type="cloud_run_revision",
         labels={
-            "project_id": project,
+            "project_id": project if project else "",
             "service_name": os.environ.get(_CLOUD_RUN_SERVICE_ID, ""),
             "revision_name": os.environ.get(_CLOUD_RUN_REVISION_ID, ""),
             "location": region.split("/")[-1] if region else "",
@@ -148,7 +148,7 @@ def _create_app_engine_resource():
     resource = Resource(
         type="gae_app",
         labels={
-            "project_id": project,
+            "project_id": project if project else "",
             "module_id": os.environ.get(_GAE_SERVICE_ENV, ""),
             "version_id": os.environ.get(_GAE_VERSION_ENV, ""),
             "zone": zone if zone else "",
@@ -164,7 +164,7 @@ def _create_global_resource(project):
     Returns:
         google.cloud.logging.Resource
     """
-    return Resource(type="global", labels={"project_id": project})
+    return Resource(type="global", labels={"project_id": project if project else ""})
 
 
 def detect_resource(project=""):
