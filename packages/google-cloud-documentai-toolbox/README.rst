@@ -8,7 +8,7 @@ Document AI Toolbox
 
 |experimental| |versions|
 
-`Document AI Toolbox`_: Document AI Toolbox aims to reduce the friction of managing, manipulating, and extracting information from outputs of Document AI’s BatchProcessDocument method (JSON files written to user-managed GCS buckets), programmatically.
+`Document AI Toolbox`_: Document AI Toolbox aims to reduce the friction of managing, manipulating, and extracting information from outputs of Document AI’s BatchProcessDocument (JSON files written to user-managed GCS buckets) and ProcessDocument methods, programmatically.
 
 .. |experimental| image:: https://img.shields.io/badge/support-experimental-red.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
