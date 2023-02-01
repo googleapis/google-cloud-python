@@ -1,4 +1,4 @@
-Buckets
+Bucket
 ~~~~~~~
 
 .. automodule:: google.cloud.storage.bucket
