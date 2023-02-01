@@ -2,7 +2,7 @@
     "name": "documentai-toolbox",
     "name_pretty": "Document AI Toolbox",
     "issue_tracker": "https://github.com/googleapis/python-documentai-toolbox/issues",
-    "client_documentation": "",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/documentai-toolbox/latest",
     "release_level": "preview",
     "language": "python",
     "library_type": "OTHER",
