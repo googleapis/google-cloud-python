@@ -94,6 +94,8 @@ s.replace(
         # dependency of grpc''',
 )
 
+
+
 def place_before(path, text, *before_text, escape=None):
     replacement = "\n".join(before_text) + "\n" + text
     if escape:
@@ -210,6 +212,17 @@ python_files=tests/*test_*.py
 # ----------------------------------------------------------------------------
 
 python.py_samples(skip_readmes=True)
+
+s.replace(
+    ["./samples/snippets/noxfile.py"], 
+    """session.install\("-e", _get_repo_root\(\)\)""",
+    """session.install("-e", _get_repo_root())
+    else:
+        # ensure that sqlalchemy_bigquery gets installed
+        # for tests that are not based on source
+        session.install("sqlalchemy_bigquery")""",
+)
+
 
 # ----------------------------------------------------------------------------
 # Final cleanup

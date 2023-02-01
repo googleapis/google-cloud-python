@@ -220,6 +220,10 @@ def _session_tests(
 
     if INSTALL_LIBRARY_FROM_SOURCE:
         session.install("-e", _get_repo_root())
+    else:
+        # ensure that sqlalchemy_bigquery gets installed
+        # for tests that are not based on source
+        session.install("sqlalchemy_bigquery")
 
     if post_install:
         post_install(session)
