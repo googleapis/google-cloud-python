@@ -124,8 +124,8 @@ class PhraseSet(proto.Message):
         North America), and ``eu`` (Europe). If you are calling the
         ``speech.googleapis.com`` endpoint, use the ``global`` location. To
         specify a region, use a `regional
-        endpoint </speech-to-text/docs/endpoints>`__ with matching ``us`` or
-        ``eu`` location value.
+        endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+        with matching ``us`` or ``eu`` location value.
 
         Attributes:
             value (str):
