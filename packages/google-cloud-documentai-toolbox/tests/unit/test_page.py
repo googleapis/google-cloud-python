@@ -22,7 +22,9 @@ import pytest
 
 @pytest.fixture
 def docproto():
-    with open("tests/unit/resources/0/toolbox_invoice_test-0.json", "r") as f:
+    with open(
+        "tests/unit/resources/0/toolbox_invoice_test-0.json", "r", encoding="utf-8"
+    ) as f:
         return documentai.Document.from_json(f.read())
 
 
@@ -117,22 +119,22 @@ def test_table_wrapper_from_documentai_table(docproto):
     assert len(table.header_rows[0]) == 4
 
 
-def test_header_for_table_row_from_documentai_table_row(docproto):
+def test_header_for_table_rows_from_documentai_table_rows(docproto):
     docproto_page = docproto.pages[0]
 
-    header_row = page._table_row_from_documentai_table_row(
+    header_rows = page._table_rows_from_documentai_table_rows(
         table_rows=docproto_page.tables[0].header_rows, text=docproto.text
     )
-    assert header_row == [["Item Description", "Quantity", "Price", "Amount"]]
+    assert header_rows == [["Item Description", "Quantity", "Price", "Amount"]]
 
 
-def test_body_for_table_row_from_documentai_table_row(docproto):
+def test_body_for_table_rows_from_documentai_table_rows(docproto):
     docproto_page = docproto.pages[0]
 
-    body_row = page._table_row_from_documentai_table_row(
+    body_rows = page._table_rows_from_documentai_table_rows(
         table_rows=docproto_page.tables[0].body_rows, text=docproto.text
     )
-    assert body_row == [
+    assert body_rows == [
         ["Tool A", "500", "$1.00", "$500.00"],
         ["Service B", "1", "$900.00", "$900.00"],
         ["Resource C", "50", "$12.00", "$600.00"],

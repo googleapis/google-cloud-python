@@ -250,7 +250,7 @@ class Document:
 
         Args:
             document_path (str):
-                Required. The path to the resp.
+                Required. The path to the document.json file.
         Returns:
             Document:
                 A document from local document_path.
@@ -316,9 +316,7 @@ class Document:
                 A list of Pages.
 
         """
-        if (target_string is None and pattern is None) or (
-            target_string is not None and pattern is not None
-        ):
+        if (target_string and pattern) or (not target_string and not pattern):
             raise ValueError(
                 "Exactly one of target_string and pattern must be specified."
             )
@@ -326,12 +324,8 @@ class Document:
         found_pages = []
         for page in self.pages:
             for paragraph in page.paragraphs:
-                if target_string is not None and target_string in paragraph.text:
-                    found_pages.append(page)
-                    break
-                elif (
-                    pattern is not None
-                    and re.search(pattern, paragraph.text) is not None
+                if (target_string and target_string in paragraph.text) or (
+                    pattern and re.search(pattern, paragraph.text)
                 ):
                     found_pages.append(page)
                     break

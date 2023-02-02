@@ -54,18 +54,14 @@ class Table:
                 The DataFrame of the table.
 
         """
-        dataframe = None
-
         if not self.body_rows:
-            dataframe = pd.DataFrame(columns=self.header_rows)
-        else:
-            if self.header_rows != []:
-                dataframe = pd.DataFrame(self.body_rows)
-                dataframe.columns = self.header_rows
-            else:
+            return pd.DataFrame(columns=self.header_rows)
 
-                dataframe = pd.DataFrame(self.body_rows)
-                dataframe.columns = [None] * len(self.body_rows[0])
+        dataframe = pd.DataFrame(self.body_rows)
+        if self.header_rows:
+            dataframe.columns = self.header_rows
+        else:
+            dataframe.columns = [None] * len(self.body_rows[0])
 
         return dataframe
 
@@ -102,13 +98,13 @@ class Table:
 
 
 def _table_wrapper_from_documentai_table(
-    documentai_table: List[documentai.Document.Page.Table], text: str
+    documentai_table: documentai.Document.Page.Table, text: str
 ) -> Table:
     r"""Returns a Table.
 
     Args:
-        documentai_tables (List[documentai.Document.Page.Table]):
-            Required. A list of documentai.Document.Page.Table.
+        documentai_table (documentai.Document.Page.Table):
+            Required. A documentai.Document.Page.Table.
         text (str):
             Required. UTF-8 encoded text in reading order
             from the document.
@@ -119,21 +115,16 @@ def _table_wrapper_from_documentai_table(
 
     """
 
-    header_rows = []
-    body_rows = []
-
-    header_rows = _table_row_from_documentai_table_row(
+    header_rows = _table_rows_from_documentai_table_rows(
         table_rows=documentai_table.header_rows, text=text
     )
-    body_rows = _table_row_from_documentai_table_row(
+    body_rows = _table_rows_from_documentai_table_rows(
         table_rows=documentai_table.body_rows, text=text
     )
 
-    result = Table(
+    return Table(
         documentai_table=documentai_table, body_rows=body_rows, header_rows=header_rows
     )
-
-    return result
 
 
 @dataclasses.dataclass
@@ -185,13 +176,11 @@ def _text_from_element_with_layout(
 
     result_text = ""
 
-    if element_with_layout.layout.text_anchor.text_segments == []:
+    if not element_with_layout.layout.text_anchor.text_segments:
         return ""
-    else:
-        for text_segment in element_with_layout.layout.text_anchor.text_segments:
-            result_text += text[
-                int(text_segment.start_index) : int(text_segment.end_index)
-            ]
+
+    for text_segment in element_with_layout.layout.text_anchor.text_segments:
+        result_text += text[int(text_segment.start_index) : int(text_segment.end_index)]
 
     return result_text
 
@@ -254,10 +243,10 @@ def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Li
     return result
 
 
-def _table_row_from_documentai_table_row(
+def _table_rows_from_documentai_table_rows(
     table_rows: List[documentai.Document.Page.Table.TableRow], text: str
 ) -> List[str]:
-    r"""Returns a list rows from table_rows.
+    r"""Returns a list of rows from table_rows.
 
     Args:
         table_rows (List[documentai.Document.Page.Table.TableRow]):
