@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "AzureDiskTemplate",
         "AzureClient",
         "AzureAuthorization",
+        "AzureServicesAuthentication",
         "AzureClusterUser",
         "AzureNodePool",
         "AzureNodeConfig",
@@ -59,7 +60,7 @@ class AzureCluster(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         description (str):
             Optional. A human readable description of
             this cluster. Cannot be longer than 255 UTF-8
@@ -77,13 +78,13 @@ class AzureCluster(proto.Message):
             resources are deployed. For example:
             ``/subscriptions/<subscription-id>/resourceGroups/<resource-group-name>``
         azure_client (str):
-            Required. Name of the
+            Optional. Name of the
             [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
             that contains authentication configuration for how the
             Anthos Multi-Cloud API connects to Azure APIs.
 
-            The ``AzureClient`` resource must reside on the same GCP
-            project and region as the ``AzureCluster``.
+            The ``AzureClient`` resource must reside on the same Google
+            Cloud Platform project and region as the ``AzureCluster``.
 
             ``AzureClient`` names are formatted as
             ``projects/<project-number>/locations/<region>/azureClients/<client-id>``.
@@ -100,6 +101,9 @@ class AzureCluster(proto.Message):
         authorization (google.cloud.gke_multicloud_v1.types.AzureAuthorization):
             Required. Configuration related to the
             cluster RBAC settings.
+        azure_services_authentication (google.cloud.gke_multicloud_v1.types.AzureServicesAuthentication):
+            Optional. Authentication configuration for
+            management of Azure resources.
         state (google.cloud.gke_multicloud_v1.types.AzureCluster.State):
             Output only. The current state of the
             cluster.
@@ -225,6 +229,11 @@ class AzureCluster(proto.Message):
         proto.MESSAGE,
         number=6,
         message="AzureAuthorization",
+    )
+    azure_services_authentication: "AzureServicesAuthentication" = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message="AzureServicesAuthentication",
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -652,6 +661,9 @@ class AzureClient(proto.Message):
         application_id (str):
             Required. The Azure Active Directory
             Application ID.
+        reconciling (bool):
+            Output only. If set, there are currently
+            pending changes to the client.
         annotations (MutableMapping[str, str]):
             Optional. Annotations on the resource.
 
@@ -671,6 +683,9 @@ class AzureClient(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this resource
             was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this client
+            was last updated.
     """
 
     name: str = proto.Field(
@@ -684,6 +699,10 @@ class AzureClient(proto.Message):
     application_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    reconciling: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
     annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -701,6 +720,11 @@ class AzureClient(proto.Message):
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
         message=timestamp_pb2.Timestamp,
     )
 
@@ -723,6 +747,29 @@ class AzureAuthorization(proto.Message):
         proto.MESSAGE,
         number=1,
         message="AzureClusterUser",
+    )
+
+
+class AzureServicesAuthentication(proto.Message):
+    r"""Authentication configuration for the management of Azure
+    resources.
+
+    Attributes:
+        tenant_id (str):
+            Required. The Azure Active Directory Tenant
+            ID.
+        application_id (str):
+            Required. The Azure Active Directory
+            Application ID.
+    """
+
+    tenant_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    application_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1055,7 +1102,7 @@ class AzureServerConfig(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         valid_versions (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureK8sVersionInfo]):
             List of valid Kubernetes versions.
         supported_azure_regions (MutableSequence[str]):

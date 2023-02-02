@@ -126,6 +126,9 @@ class UpdateAzureClusterRequest(proto.Message):
             -  ``annotations``.
             -  ``authorization.admin_users``.
             -  ``control_plane.root_volume.size_gib``.
+            -  ``azure_services_authentication``.
+            -  ``azure_services_authentication.tenant_id``.
+            -  ``azure_services_authentication.application_id``.
             -  ``control_plane.proxy_config``.
             -  ``control_plane.proxy_config.resource_group_id``.
             -  ``control_plane.proxy_config.secret_id``.
@@ -164,7 +167,7 @@ class GetAzureClusterRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
     """
 
     name: str = proto.Field(
@@ -187,7 +190,7 @@ class ListAzureClustersRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         page_size (int):
             The maximum number of items to return.
 
@@ -224,7 +227,8 @@ class ListAzureClustersResponse(proto.Message):
         azure_clusters (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureCluster]):
             A list of
             [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
-            resources in the specified GCP project and region region.
+            resources in the specified Google Cloud Platform project and
+            region region.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -260,7 +264,7 @@ class DeleteAzureClusterRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         allow_missing (bool):
             If set to true, and the
             [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
@@ -668,7 +672,7 @@ class ListAzureClientsRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         page_size (int):
             The maximum number of items to return.
 

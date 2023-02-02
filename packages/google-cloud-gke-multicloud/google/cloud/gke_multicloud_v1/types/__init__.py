@@ -92,6 +92,7 @@ from .azure_resources import (
     AzureNodePoolError,
     AzureProxyConfig,
     AzureServerConfig,
+    AzureServicesAuthentication,
     AzureSshConfig,
     ReplicaPlacement,
 )
@@ -200,6 +201,7 @@ __all__ = (
     "AzureNodePoolError",
     "AzureProxyConfig",
     "AzureServerConfig",
+    "AzureServicesAuthentication",
     "AzureSshConfig",
     "ReplicaPlacement",
     "CreateAzureClientRequest",

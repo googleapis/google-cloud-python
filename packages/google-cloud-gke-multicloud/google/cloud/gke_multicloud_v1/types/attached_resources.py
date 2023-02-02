@@ -46,7 +46,7 @@ class AttachedCluster(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         description (str):
             Optional. A human readable description of
             this cluster. Cannot be longer than 255 UTF-8
@@ -292,9 +292,10 @@ class AttachedOidcConfig(proto.Message):
     r"""OIDC discovery information of the target cluster.
 
     Kubernetes Service Account (KSA) tokens are JWT tokens signed by the
-    cluster API server. This fields indicates how GCP services validate
-    KSA tokens in order to allow system workloads (such as GKE Connect
-    and telemetry agents) to authenticate back to GCP.
+    cluster API server. This fields indicates how Google Cloud Platform
+    services validate KSA tokens in order to allow system workloads
+    (such as GKE Connect and telemetry agents) to authenticate back to
+    Google Cloud Platform.
 
     Both clusters with public and private issuer URLs are supported.
     Clusters with public issuers only need to specify the ``issuer_url``

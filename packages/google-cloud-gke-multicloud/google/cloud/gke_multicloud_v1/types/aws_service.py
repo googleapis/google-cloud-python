@@ -169,7 +169,7 @@ class GetAwsClusterRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
     """
 
     name: str = proto.Field(
@@ -192,7 +192,7 @@ class ListAwsClustersRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         page_size (int):
             The maximum number of items to return.
 
@@ -229,7 +229,8 @@ class ListAwsClustersResponse(proto.Message):
         aws_clusters (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsCluster]):
             A list of
             [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
-            resources in the specified GCP project and region region.
+            resources in the specified Google Cloud Platform project and
+            region region.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -265,7 +266,7 @@ class DeleteAwsClusterRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         validate_only (bool):
             If set, only validate the request, but do not
             actually delete the resource.

@@ -115,6 +115,7 @@ from google.cloud.gke_multicloud_v1.types.azure_resources import (
     AzureNodePoolError,
     AzureProxyConfig,
     AzureServerConfig,
+    AzureServicesAuthentication,
     AzureSshConfig,
     ReplicaPlacement,
 )
@@ -229,6 +230,7 @@ __all__ = (
     "AzureNodePoolError",
     "AzureProxyConfig",
     "AzureServerConfig",
+    "AzureServicesAuthentication",
     "AzureSshConfig",
     "ReplicaPlacement",
     "CreateAzureClientRequest",

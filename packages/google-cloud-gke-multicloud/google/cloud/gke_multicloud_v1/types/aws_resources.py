@@ -59,7 +59,7 @@ class AwsCluster(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         description (str):
             Optional. A human readable description of
             this cluster. Cannot be longer than 255 UTF-8

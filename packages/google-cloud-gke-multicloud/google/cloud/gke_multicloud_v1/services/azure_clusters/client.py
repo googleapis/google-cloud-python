@@ -889,7 +889,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1115,7 +1116,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
     ) -> operation.Operation:
         r"""Creates a new
         [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
-        resource on a given GCP project and region.
+        resource on a given Google Cloud Platform project and region.
 
         If successful, the response contains a newly created
         [Operation][google.longrunning.Operation] resource that can be
@@ -1140,7 +1141,6 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 azure_cluster = gke_multicloud_v1.AzureCluster()
                 azure_cluster.azure_region = "azure_region_value"
                 azure_cluster.resource_group_id = "resource_group_id_value"
-                azure_cluster.azure_client = "azure_client_value"
                 azure_cluster.networking.virtual_network_id = "virtual_network_id_value"
                 azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
                 azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
@@ -1308,7 +1308,6 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 azure_cluster = gke_multicloud_v1.AzureCluster()
                 azure_cluster.azure_region = "azure_region_value"
                 azure_cluster.resource_group_id = "resource_group_id_value"
-                azure_cluster.azure_client = "azure_client_value"
                 azure_cluster.networking.virtual_network_id = "virtual_network_id_value"
                 azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
                 azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
@@ -1356,6 +1355,9 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 -  ``annotations``.
                 -  ``authorization.admin_users``.
                 -  ``control_plane.root_volume.size_gib``.
+                -  ``azure_services_authentication``.
+                -  ``azure_services_authentication.tenant_id``.
+                -  ``azure_services_authentication.application_id``.
                 -  ``control_plane.proxy_config``.
                 -  ``control_plane.proxy_config.resource_group_id``.
                 -  ``control_plane.proxy_config.secret_id``.
@@ -1488,7 +1490,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1600,7 +1603,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1736,7 +1740,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

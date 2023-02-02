@@ -243,7 +243,7 @@ class AwsClustersAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new
         [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource
-        on a given GCP project and region.
+        on a given Google Cloud Platform project and region.
 
         If successful, the response contains a newly created
         [Operation][google.longrunning.Operation] resource that can be
@@ -629,7 +629,8 @@ class AwsClustersAsyncClient:
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -749,7 +750,8 @@ class AwsClustersAsyncClient:
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -892,7 +894,8 @@ class AwsClustersAsyncClient:
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
-                for more details on GCP resource names.
+                for more details on Google Cloud Platform resource
+                names.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

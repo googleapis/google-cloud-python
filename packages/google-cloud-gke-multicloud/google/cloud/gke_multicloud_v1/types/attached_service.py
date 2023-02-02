@@ -54,8 +54,8 @@ class GenerateAttachedClusterInstallManifestRequest(proto.Message):
             Names <https://cloud.google.com/apis/design/resource_names>`__
             for more details on Google Cloud resource names.
         attached_cluster_id (str):
-            Required. A client provided ID the resource. Must be unique
-            within the parent resource.
+            Required. A client provided ID of the resource. Must be
+            unique within the parent resource.
 
             The provided ID will be part of the
             [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
@@ -70,7 +70,7 @@ class GenerateAttachedClusterInstallManifestRequest(proto.Message):
             must be the Membership id.
 
             Membership names are formatted as
-            ``resource name formatted as``\ projects//locations//memberships/\`.
+            ``projects/<project-id>/locations/<region>/memberships/<membership-id>``.
         platform_version (str):
             Required. The platform version for the cluster (e.g.
             ``1.19.0-gke.1000``).
@@ -280,7 +280,7 @@ class GetAttachedClusterRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
     """
 
     name: str = proto.Field(
@@ -304,7 +304,7 @@ class ListAttachedClustersRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         page_size (int):
             The maximum number of items to return.
 
@@ -342,7 +342,8 @@ class ListAttachedClustersResponse(proto.Message):
         attached_clusters (MutableSequence[google.cloud.gke_multicloud_v1.types.AttachedCluster]):
             A list of
             [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
-            resources in the specified GCP project and region region.
+            resources in the specified Google Cloud Platform project and
+            region region.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -381,7 +382,7 @@ class DeleteAttachedClusterRequest(proto.Message):
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
-            for more details on GCP resource names.
+            for more details on Google Cloud Platform resource names.
         validate_only (bool):
             If set, only validate the request, but do not
             actually delete the resource.

@@ -1003,6 +1003,7 @@ def test_get_azure_client(request_type, transport: str = "grpc"):
             name="name_value",
             tenant_id="tenant_id_value",
             application_id="application_id_value",
+            reconciling=True,
             pem_certificate="pem_certificate_value",
             uid="uid_value",
         )
@@ -1018,6 +1019,7 @@ def test_get_azure_client(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.tenant_id == "tenant_id_value"
     assert response.application_id == "application_id_value"
+    assert response.reconciling is True
     assert response.pem_certificate == "pem_certificate_value"
     assert response.uid == "uid_value"
 
@@ -1059,6 +1061,7 @@ async def test_get_azure_client_async(
                 name="name_value",
                 tenant_id="tenant_id_value",
                 application_id="application_id_value",
+                reconciling=True,
                 pem_certificate="pem_certificate_value",
                 uid="uid_value",
             )
@@ -1075,6 +1078,7 @@ async def test_get_azure_client_async(
     assert response.name == "name_value"
     assert response.tenant_id == "tenant_id_value"
     assert response.application_id == "application_id_value"
+    assert response.reconciling is True
     assert response.pem_certificate == "pem_certificate_value"
     assert response.uid == "uid_value"
 
@@ -5291,10 +5295,12 @@ def test_create_azure_client_rest(request_type):
         "name": "name_value",
         "tenant_id": "tenant_id_value",
         "application_id": "application_id_value",
+        "reconciling": True,
         "annotations": {},
         "pem_certificate": "pem_certificate_value",
         "uid": "uid_value",
         "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
     }
     request = request_type(**request_init)
 
@@ -5507,10 +5513,12 @@ def test_create_azure_client_rest_bad_request(
         "name": "name_value",
         "tenant_id": "tenant_id_value",
         "application_id": "application_id_value",
+        "reconciling": True,
         "annotations": {},
         "pem_certificate": "pem_certificate_value",
         "uid": "uid_value",
         "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
     }
     request = request_type(**request_init)
 
@@ -5615,6 +5623,7 @@ def test_get_azure_client_rest(request_type):
             name="name_value",
             tenant_id="tenant_id_value",
             application_id="application_id_value",
+            reconciling=True,
             pem_certificate="pem_certificate_value",
             uid="uid_value",
         )
@@ -5634,6 +5643,7 @@ def test_get_azure_client_rest(request_type):
     assert response.name == "name_value"
     assert response.tenant_id == "tenant_id_value"
     assert response.application_id == "application_id_value"
+    assert response.reconciling is True
     assert response.pem_certificate == "pem_certificate_value"
     assert response.uid == "uid_value"
 
@@ -6548,6 +6558,10 @@ def test_create_azure_cluster_rest(request_type):
             "endpoint_subnet_id": "endpoint_subnet_id_value",
         },
         "authorization": {"admin_users": [{"username": "username_value"}]},
+        "azure_services_authentication": {
+            "tenant_id": "tenant_id_value",
+            "application_id": "application_id_value",
+        },
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
@@ -6822,6 +6836,10 @@ def test_create_azure_cluster_rest_bad_request(
             "endpoint_subnet_id": "endpoint_subnet_id_value",
         },
         "authorization": {"admin_users": [{"username": "username_value"}]},
+        "azure_services_authentication": {
+            "tenant_id": "tenant_id_value",
+            "application_id": "application_id_value",
+        },
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
@@ -6987,6 +7005,10 @@ def test_update_azure_cluster_rest(request_type):
             "endpoint_subnet_id": "endpoint_subnet_id_value",
         },
         "authorization": {"admin_users": [{"username": "username_value"}]},
+        "azure_services_authentication": {
+            "tenant_id": "tenant_id_value",
+            "application_id": "application_id_value",
+        },
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
@@ -7247,6 +7269,10 @@ def test_update_azure_cluster_rest_bad_request(
             "endpoint_subnet_id": "endpoint_subnet_id_value",
         },
         "authorization": {"admin_users": [{"username": "username_value"}]},
+        "azure_services_authentication": {
+            "tenant_id": "tenant_id_value",
+            "application_id": "application_id_value",
+        },
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
