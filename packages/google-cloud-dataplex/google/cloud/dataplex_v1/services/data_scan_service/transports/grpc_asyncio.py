@@ -35,6 +35,11 @@ from .grpc import DataScanServiceGrpcTransport
 class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     """gRPC AsyncIO backend transport for DataScanService.
 
+    DataScanService manages DataScan resources which can be
+    configured to run various types of data scanning workload and
+    generate enriched metadata (e.g. Data Profile, Data Quality) for
+    the data source.
+
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
     and call it.
@@ -258,7 +263,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the create data scan method over gRPC.
 
-        Creates a dataScan resource.
+        Creates a DataScan resource.
 
         Returns:
             Callable[[~.CreateDataScanRequest],
@@ -286,7 +291,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the update data scan method over gRPC.
 
-        Update the dataScan resource.
+        Updates a DataScan resource.
 
         Returns:
             Callable[[~.UpdateDataScanRequest],
@@ -314,7 +319,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the delete data scan method over gRPC.
 
-        Delete the dataScan resource.
+        Deletes a DataScan resource.
 
         Returns:
             Callable[[~.DeleteDataScanRequest],
@@ -340,7 +345,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.GetDataScanRequest], Awaitable[datascans.DataScan]]:
         r"""Return a callable for the get data scan method over gRPC.
 
-        Get dataScan resource.
+        Gets a DataScan resource.
 
         Returns:
             Callable[[~.GetDataScanRequest],
@@ -368,7 +373,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the list data scans method over gRPC.
 
-        Lists dataScans.
+        Lists DataScans.
 
         Returns:
             Callable[[~.ListDataScansRequest],
@@ -396,7 +401,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the run data scan method over gRPC.
 
-        Run an on demand execution of a DataScan.
+        Runs an on-demand execution of a DataScan
 
         Returns:
             Callable[[~.RunDataScanRequest],
@@ -422,7 +427,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.GetDataScanJobRequest], Awaitable[datascans.DataScanJob]]:
         r"""Return a callable for the get data scan job method over gRPC.
 
-        Get DataScanJob resource.
+        Gets a DataScanJob resource.
 
         Returns:
             Callable[[~.GetDataScanJobRequest],
@@ -451,7 +456,7 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the list data scan jobs method over gRPC.
 
-        Lists DataScanJobs under the given dataScan.
+        Lists DataScanJobs under the given DataScan.
 
         Returns:
             Callable[[~.ListDataScanJobsRequest],

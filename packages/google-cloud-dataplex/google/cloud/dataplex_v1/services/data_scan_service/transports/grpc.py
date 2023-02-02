@@ -34,6 +34,11 @@ from .base import DEFAULT_CLIENT_INFO, DataScanServiceTransport
 class DataScanServiceGrpcTransport(DataScanServiceTransport):
     """gRPC backend transport for DataScanService.
 
+    DataScanService manages DataScan resources which can be
+    configured to run various types of data scanning workload and
+    generate enriched metadata (e.g. Data Profile, Data Quality) for
+    the data source.
+
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
     and call it.
@@ -251,7 +256,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.CreateDataScanRequest], operations_pb2.Operation]:
         r"""Return a callable for the create data scan method over gRPC.
 
-        Creates a dataScan resource.
+        Creates a DataScan resource.
 
         Returns:
             Callable[[~.CreateDataScanRequest],
@@ -277,7 +282,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.UpdateDataScanRequest], operations_pb2.Operation]:
         r"""Return a callable for the update data scan method over gRPC.
 
-        Update the dataScan resource.
+        Updates a DataScan resource.
 
         Returns:
             Callable[[~.UpdateDataScanRequest],
@@ -303,7 +308,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.DeleteDataScanRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete data scan method over gRPC.
 
-        Delete the dataScan resource.
+        Deletes a DataScan resource.
 
         Returns:
             Callable[[~.DeleteDataScanRequest],
@@ -329,7 +334,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.GetDataScanRequest], datascans.DataScan]:
         r"""Return a callable for the get data scan method over gRPC.
 
-        Get dataScan resource.
+        Gets a DataScan resource.
 
         Returns:
             Callable[[~.GetDataScanRequest],
@@ -355,7 +360,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.ListDataScansRequest], datascans.ListDataScansResponse]:
         r"""Return a callable for the list data scans method over gRPC.
 
-        Lists dataScans.
+        Lists DataScans.
 
         Returns:
             Callable[[~.ListDataScansRequest],
@@ -381,7 +386,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.RunDataScanRequest], datascans.RunDataScanResponse]:
         r"""Return a callable for the run data scan method over gRPC.
 
-        Run an on demand execution of a DataScan.
+        Runs an on-demand execution of a DataScan
 
         Returns:
             Callable[[~.RunDataScanRequest],
@@ -407,7 +412,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ) -> Callable[[datascans.GetDataScanJobRequest], datascans.DataScanJob]:
         r"""Return a callable for the get data scan job method over gRPC.
 
-        Get DataScanJob resource.
+        Gets a DataScanJob resource.
 
         Returns:
             Callable[[~.GetDataScanJobRequest],
@@ -435,7 +440,7 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the list data scan jobs method over gRPC.
 
-        Lists DataScanJobs under the given dataScan.
+        Lists DataScanJobs under the given DataScan.
 
         Returns:
             Callable[[~.ListDataScanJobsRequest],

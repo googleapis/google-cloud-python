@@ -52,11 +52,11 @@ class DataScanType(proto.Enum):
 
     Values:
         DATA_SCAN_TYPE_UNSPECIFIED (0):
-            The DataScan Type is unspecified.
+            The DataScan type is unspecified.
         DATA_QUALITY (1):
-            Data Quality Scan.
+            Data Quality scan.
         DATA_PROFILE (2):
-            Data Profile Scan.
+            Data Profile scan.
     """
     DATA_SCAN_TYPE_UNSPECIFIED = 0
     DATA_QUALITY = 1
@@ -69,8 +69,8 @@ class CreateDataScanRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent location:
-            projects/{project}/locations/{location_id} where
-            ``{project}`` refers to a project_id or project_number and
+            ``projects/{project}/locations/{location_id}`` where
+            ``project`` refers to a *project_id* or *project_number* and
             ``location_id`` refers to a GCP region.
         data_scan (google.cloud.dataplex_v1.types.DataScan):
             Required. DataScan resource.
@@ -104,8 +104,9 @@ class UpdateDataScanRequest(proto.Message):
 
     Attributes:
         data_scan (google.cloud.dataplex_v1.types.DataScan):
-            Required. Update description. Only fields specified in
-            ``update_mask`` are updated.
+            Required. DataScan resource to be updated.
+
+            Only fields specified in ``update_mask`` are updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask of fields to update.
     """
@@ -128,9 +129,9 @@ class DeleteDataScanRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the dataScan:
-            projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-            where ``{project}`` refers to a project_id or project_number
-            and ``location_id`` refers to a GCP region.
+            ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
+            where ``project`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a GCP region.
     """
 
     name: str = proto.Field(
@@ -145,23 +146,22 @@ class GetDataScanRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the dataScan:
-            projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-            where ``{project}`` refers to a project_id or project_number
-            and ``location_id`` refers to a GCP region.
+            ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
+            where ``project`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a GCP region.
         view (google.cloud.dataplex_v1.types.GetDataScanRequest.DataScanView):
-            Optional. Used to select the subset of DataScan information
-            to return. Defaults to ``BASIC``.
+            Optional. Select the DataScan view to return. Defaults to
+            ``BASIC``.
     """
 
     class DataScanView(proto.Enum):
-        r"""DataScan views for getting a partial dataScan.
+        r"""DataScan view options.
 
         Values:
             DATA_SCAN_VIEW_UNSPECIFIED (0):
                 The API will default to the ``BASIC`` view.
             BASIC (1):
-                Basic view that does not include spec and
-                result.
+                Basic view that does not include *spec* and *result*.
             FULL (10):
                 Include everything.
         """
@@ -185,8 +185,9 @@ class ListDataScansRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. projects/{project}/locations/{location_id} where
-            ``{project}`` refers to a project_id or project_number and
+            Required. The resource name of the parent location:
+            ``projects/{project}/locations/{location_id}`` where
+            ``project`` refers to a *project_id* or *project_number* and
             ``location_id`` refers to a GCP region.
         page_size (int):
             Optional. Maximum number of dataScans to
@@ -203,8 +204,8 @@ class ListDataScansRequest(proto.Message):
         filter (str):
             Optional. Filter request.
         order_by (str):
-            Optional. Order by fields (name or create_time) for the
-            result. If not specified, the ordering is undefined.
+            Optional. Order by fields (``name`` or ``create_time``) for
+            the result. If not specified, the ordering is undefined.
     """
 
     parent: str = proto.Field(
@@ -234,8 +235,8 @@ class ListDataScansResponse(proto.Message):
 
     Attributes:
         data_scans (MutableSequence[google.cloud.dataplex_v1.types.DataScan]):
-            DataScans (metadata only) under the given
-            parent location.
+            DataScans (``BASIC`` view only) under the given parent
+            location.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -269,10 +270,11 @@ class RunDataScanRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the DataScan:
-            projects/{project}/locations/{location_id}/dataScans/{data_scan_id}.
-            where ``{project}`` refers to a project_id or project_number
-            and ``location_id`` refers to a GCP region. Only on-demand
-            DataScans are allowed.
+            ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``.
+            where ``project`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a GCP region.
+
+            Only **OnDemand** data scans are allowed.
     """
 
     name: str = proto.Field(
@@ -286,7 +288,7 @@ class RunDataScanResponse(proto.Message):
 
     Attributes:
         job (google.cloud.dataplex_v1.types.DataScanJob):
-            DataScanJob created by RunDataScan API.
+            DataScanJob created by RunDataScan request.
     """
 
     job: "DataScanJob" = proto.Field(
@@ -302,23 +304,22 @@ class GetDataScanJobRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the DataScanJob:
-            projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}
-            where ``{project}`` refers to a project_id or project_number
-            and ``location_id`` refers to a GCP region.
+            ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}``
+            where ``project`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a GCP region.
         view (google.cloud.dataplex_v1.types.GetDataScanJobRequest.DataScanJobView):
-            Optional. Used to select the subset of DataScan information
-            to return. Defaults to ``BASIC``.
+            Optional. Select the DataScanJob view to return. Defaults to
+            ``BASIC``.
     """
 
     class DataScanJobView(proto.Enum):
-        r"""DataScanJob views for getting a partial dataScanJob.
+        r"""DataScanJob view options.
 
         Values:
             DATA_SCAN_JOB_VIEW_UNSPECIFIED (0):
                 The API will default to the ``BASIC`` view.
             BASIC (1):
-                Basic view that does not include spec and
-                result.
+                Basic view that does not include *spec* and *result*.
             FULL (10):
                 Include everything.
         """
@@ -343,9 +344,9 @@ class ListDataScanJobsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent environment:
-            projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-            where ``{project}`` refers to a project_id or project_number
-            and ``location_id`` refers to a GCP region.
+            ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
+            where ``project`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a GCP region.
         page_size (int):
             Optional. Maximum number of DataScanJobs to
             return. The service may return fewer than this
@@ -379,8 +380,7 @@ class ListDataScanJobsResponse(proto.Message):
 
     Attributes:
         data_scan_jobs (MutableSequence[google.cloud.dataplex_v1.types.DataScanJob]):
-            DataScanJobs (metadata only) under a given
-            dataScan.
+            DataScanJobs (``BASIC`` view only) under a given dataScan.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -425,9 +425,9 @@ class DataScan(proto.Message):
         name (str):
             Output only. The relative resource name of the scan, of the
             form:
-            projects/{project}/locations/{location_id}/dataScans/{datascan_id}.
-            where ``{project}`` refers to a project_id or project_number
-            and ``location_id`` refers to a GCP region.
+            ``projects/{project}/locations/{location_id}/dataScans/{datascan_id}``,
+            where ``project`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a GCP region.
         uid (str):
             Output only. System generated globally unique
             ID for the scan. This ID will be different if
@@ -455,7 +455,7 @@ class DataScan(proto.Message):
             Required. The data source for DataScan.
         execution_spec (google.cloud.dataplex_v1.types.DataScan.ExecutionSpec):
             Optional. DataScan execution settings.
-            If not specified, the fields under it will use
+            If not specified, the fields in it will use
             their default values.
         execution_status (google.cloud.dataplex_v1.types.DataScan.ExecutionStatus):
             Output only. Status of the data scan
@@ -489,15 +489,19 @@ class DataScan(proto.Message):
 
         Attributes:
             trigger (google.cloud.dataplex_v1.types.Trigger):
-                Optional. Spec related to how often and when
-                a scan should be triggered. If not specified,
-                the default is OnDemand, which means the scan
-                will not run until the user calls RunDataScan
+                Optional. Spec related to how often and when a scan should
+                be triggered.
+
+                If not specified, the default is ``OnDemand``, which means
+                the scan will not run until the user calls ``RunDataScan``
                 API.
             field (str):
-                Immutable. The unnested field (Date or
-                Timestamp) that contains values that
-                monotonically increase over time.
+                Immutable. The unnested field (of type *Date* or
+                *Timestamp*) that contains values which monotonically
+                increase over time.
+
+                If not specified, a data scan will run for all data in the
+                table.
 
                 This field is a member of `oneof`_ ``incremental``.
         """
@@ -617,7 +621,7 @@ class DataScan(proto.Message):
 
 
 class DataScanJob(proto.Message):
-    r"""A DataScanJob represents an instance of a data scan.
+    r"""A DataScanJob represents an instance of DataScan execution.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -630,9 +634,9 @@ class DataScanJob(proto.Message):
         name (str):
             Output only. The relative resource name of the DataScanJob,
             of the form:
-            projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}.
-            where ``{project}`` refers to a project_id or project_number
-            and ``location_id`` refers to a GCP region.
+            ``projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}``,
+            where ``project`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a GCP region.
         uid (str):
             Output only. System generated globally unique
             ID for the DataScanJob.

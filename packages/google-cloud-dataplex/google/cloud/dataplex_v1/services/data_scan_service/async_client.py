@@ -68,7 +68,11 @@ from .transports.grpc_asyncio import DataScanServiceGrpcAsyncIOTransport
 
 
 class DataScanServiceAsyncClient:
-    """"""
+    """DataScanService manages DataScan resources which can be
+    configured to run various types of data scanning workload and
+    generate enriched metadata (e.g. Data Profile, Data Quality) for
+    the data source.
+    """
 
     _client: DataScanServiceClient
 
@@ -248,7 +252,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a dataScan resource.
+        r"""Creates a DataScan resource.
 
         .. code-block:: python
 
@@ -290,8 +294,8 @@ class DataScanServiceAsyncClient:
                 The request object. Create dataScan request.
             parent (:class:`str`):
                 Required. The resource name of the parent location:
-                projects/{project}/locations/{location_id} where
-                ``{project}`` refers to a project_id or project_number
+                ``projects/{project}/locations/{location_id}`` where
+                ``project`` refers to a *project_id* or *project_number*
                 and ``location_id`` refers to a GCP region.
 
                 This corresponds to the ``parent`` field
@@ -404,7 +408,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Update the dataScan resource.
+        r"""Updates a DataScan resource.
 
         .. code-block:: python
 
@@ -443,8 +447,9 @@ class DataScanServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.UpdateDataScanRequest, dict]]):
                 The request object. Update dataScan request.
             data_scan (:class:`google.cloud.dataplex_v1.types.DataScan`):
-                Required. Update description. Only fields specified in
-                ``update_mask`` are updated.
+                Required. DataScan resource to be updated.
+
+                Only fields specified in ``update_mask`` are updated.
 
                 This corresponds to the ``data_scan`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -541,7 +546,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Delete the dataScan resource.
+        r"""Deletes a DataScan resource.
 
         .. code-block:: python
 
@@ -578,9 +583,9 @@ class DataScanServiceAsyncClient:
                 The request object. Delete dataScan request.
             name (:class:`str`):
                 Required. The resource name of the dataScan:
-                projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-                where ``{project}`` refers to a project_id or
-                project_number and ``location_id`` refers to a GCP
+                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
+                where ``project`` refers to a *project_id* or
+                *project_number* and ``location_id`` refers to a GCP
                 region.
 
                 This corresponds to the ``name`` field
@@ -667,7 +672,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datascans.DataScan:
-        r"""Get dataScan resource.
+        r"""Gets a DataScan resource.
 
         .. code-block:: python
 
@@ -700,9 +705,9 @@ class DataScanServiceAsyncClient:
                 The request object. Get dataScan request.
             name (:class:`str`):
                 Required. The resource name of the dataScan:
-                projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-                where ``{project}`` refers to a project_id or
-                project_number and ``location_id`` refers to a GCP
+                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
+                where ``project`` refers to a *project_id* or
+                *project_number* and ``location_id`` refers to a GCP
                 region.
 
                 This corresponds to the ``name`` field
@@ -781,7 +786,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataScansAsyncPager:
-        r"""Lists dataScans.
+        r"""Lists DataScans.
 
         .. code-block:: python
 
@@ -814,10 +819,10 @@ class DataScanServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.ListDataScansRequest, dict]]):
                 The request object. List dataScans request.
             parent (:class:`str`):
-                Required. projects/{project}/locations/{location_id}
-                where ``{project}`` refers to a project_id or
-                project_number and ``location_id`` refers to a GCP
-                region.
+                Required. The resource name of the parent location:
+                ``projects/{project}/locations/{location_id}`` where
+                ``project`` refers to a *project_id* or *project_number*
+                and ``location_id`` refers to a GCP region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -896,7 +901,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datascans.RunDataScanResponse:
-        r"""Run an on demand execution of a DataScan.
+        r"""Runs an on-demand execution of a DataScan
 
         .. code-block:: python
 
@@ -929,10 +934,12 @@ class DataScanServiceAsyncClient:
                 The request object. Run DataScan Request
             name (:class:`str`):
                 Required. The resource name of the DataScan:
-                projects/{project}/locations/{location_id}/dataScans/{data_scan_id}.
-                where ``{project}`` refers to a project_id or
-                project_number and ``location_id`` refers to a GCP
-                region. Only on-demand DataScans are allowed.
+                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``.
+                where ``project`` refers to a *project_id* or
+                *project_number* and ``location_id`` refers to a GCP
+                region.
+
+                Only **OnDemand** data scans are allowed.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -998,7 +1005,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datascans.DataScanJob:
-        r"""Get DataScanJob resource.
+        r"""Gets a DataScanJob resource.
 
         .. code-block:: python
 
@@ -1031,9 +1038,9 @@ class DataScanServiceAsyncClient:
                 The request object. Get DataScanJob request.
             name (:class:`str`):
                 Required. The resource name of the DataScanJob:
-                projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}
-                where ``{project}`` refers to a project_id or
-                project_number and ``location_id`` refers to a GCP
+                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}``
+                where ``project`` refers to a *project_id* or
+                *project_number* and ``location_id`` refers to a GCP
                 region.
 
                 This corresponds to the ``name`` field
@@ -1048,7 +1055,7 @@ class DataScanServiceAsyncClient:
         Returns:
             google.cloud.dataplex_v1.types.DataScanJob:
                 A DataScanJob represents an instance
-                of a data scan.
+                of DataScan execution.
 
         """
         # Create or coerce a protobuf request object.
@@ -1102,7 +1109,7 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataScanJobsAsyncPager:
-        r"""Lists DataScanJobs under the given dataScan.
+        r"""Lists DataScanJobs under the given DataScan.
 
         .. code-block:: python
 
@@ -1136,9 +1143,9 @@ class DataScanServiceAsyncClient:
                 The request object. List DataScanJobs request.
             parent (:class:`str`):
                 Required. The resource name of the parent environment:
-                projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-                where ``{project}`` refers to a project_id or
-                project_number and ``location_id`` refers to a GCP
+                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
+                where ``project`` refers to a *project_id* or
+                *project_number* and ``location_id`` refers to a GCP
                 region.
 
                 This corresponds to the ``parent`` field
