@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.17.3](https://github.com/googleapis/python-speech/compare/v2.17.2...v2.17.3) (2023-02-02)
+
+
+### Documentation
+
+* **v1:** Clarified boost usage ([#491](https://github.com/googleapis/python-speech/issues/491)) ([8a2a41a](https://github.com/googleapis/python-speech/commit/8a2a41ad40c5dd6282b4774b13b62a1af85f7f15))
+
 ## [2.17.2](https://github.com/googleapis/python-speech/compare/v2.17.1...v2.17.2) (2023-01-30)
 
 
