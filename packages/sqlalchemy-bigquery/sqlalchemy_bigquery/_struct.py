@@ -17,8 +17,6 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from typing import Mapping, Tuple
-
 import packaging.version
 import sqlalchemy.sql.default_comparator
 import sqlalchemy.sql.sqltypes
@@ -54,8 +52,8 @@ class STRUCT(sqlalchemy.sql.sqltypes.Indexable, sqlalchemy.types.UserDefinedType
 
     def __init__(
         self,
-        *fields: Tuple[str, sqlalchemy.types.TypeEngine],
-        **kwfields: Mapping[str, sqlalchemy.types.TypeEngine],
+        *fields,
+        **kwfields,
     ):
         # Note that because:
         # https://docs.python.org/3/whatsnew/3.6.html#pep-468-preserving-keyword-argument-order
