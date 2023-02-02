@@ -20,11 +20,14 @@ from samples.snippets import quickstart_sample
 
 location = "us"
 project_id = os.environ["GOOGLE_CLOUD_PROJECT"]
-gcs_bucket_name= "documentai_toolbox_samples"
+gcs_bucket_name = "documentai_toolbox_samples"
 gcs_input_uri = "output/123456789/0"
 
-def test_quickstart_sample(capsys):
-    quickstart_sample.quickstart_sample(gcs_bucket_name=gcs_bucket_name,gcs_prefix=gcs_input_uri)
+
+def test_quickstart_sample(capsys: pytest.CaptureFixture) -> None:
+    quickstart_sample.quickstart_sample(
+        gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_input_uri
+    )
     out, _ = capsys.readouterr()
 
     assert "Number of Pages: 1" in out

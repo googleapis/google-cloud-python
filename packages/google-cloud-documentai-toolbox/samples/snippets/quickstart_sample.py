@@ -14,27 +14,32 @@
 #
 
 
-# [START documentai_quickstart]
+# [START documentai_toolbox_quickstart]
 
 from google.cloud.documentai_toolbox import document
 
 # TODO(developer): Uncomment these variables before running the sample.
 # Given a document.proto or sharded document.proto in path gs://bucket/path/to/folder
-# gcs_bucket_name = 'bucket'
-# gcs_prefix = 'path/to/folder' 
+# gcs_bucket_name = "bucket"
+# gcs_prefix = "path/to/folder"
 
-def quickstart_sample(gcs_bucket_name:str,gcs_prefix:str):
-    wrapped_document = document.Document.from_gcs(gcs_bucket_name=gcs_bucket_name,gcs_prefix=gcs_prefix)
+
+def quickstart_sample(gcs_bucket_name: str, gcs_prefix: str) -> None:
+    wrapped_document = document.Document.from_gcs(
+        gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
+    )
 
     print("Document Successfully Loaded!")
-    print(f"\t Number of Pages: {len(dt.pages)}")
-    print(f"\t Number of Entities: {len(dt.entities)}")
+    print(f"\t Number of Pages: {len(wrapped_document.pages)}")
+    print(f"\t Number of Entities: {len(wrapped_document.entities)}")
 
-    for idx,page in enumerate(dt.pages):
+    for idx, page in enumerate(wrapped_document.pages):
+        print(f"Page {idx}")
         for paragraph in page.paragraphs:
             print(paragraph.text)
-    
-    for entity in enumerate(dt.entities):
-        print(f"{entity.type} : {entity.mention_text}")
 
-# [END documentai_quickstart]
+    for entity in wrapped_document.entities:
+        print(f"{entity.type_} : {entity.mention_text}")
+
+
+# [END documentai_toolbox_quickstart]
