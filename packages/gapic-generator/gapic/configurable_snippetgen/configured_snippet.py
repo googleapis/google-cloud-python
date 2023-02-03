@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import dataclasses
-from typing import Optional
+from typing import List, Optional
 
 import inflection
 import libcst
@@ -154,19 +154,29 @@ class ConfiguredSnippet:
             # Either the default or HTTPS, in which case the schema is not needed.
             return host_maybe_with_port_and_region
 
-    def _append_to_sample_function_def_body(
-        self, statement: libcst.BaseStatement
+    def _extend_sample_function_def_body(
+        self, statements: List[libcst.BaseStatement]
     ) -> None:
-        """Appends the statement node to the current sample function def."""
-        transformer = _AppendToSampleFunctionBody(statement)
+        """Appends the statements to the current sample function def."""
+        for statement in statements:
+            transformer = _AppendToSampleFunctionBody(statement)
 
-        # The result of applying a transformer could be of a different type
-        # in general, but we will only update the sample function def here.
-        self._sample_function_def = self._sample_function_def.visit(
-            transformer
-        )  # type: ignore
+            # The result of applying a transformer could be of a different type
+            # in general, but we will only update the sample function def here.
+            self._sample_function_def = self._sample_function_def.visit(
+                transformer
+            )  # type: ignore
 
     def _add_sample_function_parameters(self) -> None:
+        """Adds sample function parameters.
+
+        Before:
+            def sample_create_custom_class_Basic():
+                ...
+        After:
+            def sample_create_custom_class_Basic(parent = "projects/..."):
+                ...
+        """
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
         params = []
         for config_parameter in self.config.signature.parameters:
@@ -176,7 +186,14 @@ class ConfiguredSnippet:
             params=parameters
         )
 
-    def _get_service_client_initialization(self) -> libcst.BaseStatement:
+    def _get_service_client_initialization(self) -> List[libcst.BaseStatement]:
+        """Returns the service client initialization statements.
+
+        Examples:
+            client = speech_v1.AdaptationClient()
+
+            client = speech_v1.AdaptationClient(client_options = {"api_endpoint": "us-speech.googleapis.com"})
+        """
         if self.api_endpoint is not None:
             client_options_arg = libcst.Arg(
                 keyword=libcst.Name("client_options"),
@@ -193,16 +210,29 @@ class ConfiguredSnippet:
                 f"client = {self.gapic_module_name}.{self.client_class_name}()"
             )
 
-        return service_client_initialization
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, support pre_client_initialization statements.
+        return [service_client_initialization]
+
+    def _get_standard_call(self) -> List[libcst.BaseStatement]:
+        """Returns the standard call statements."""
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, support standard call statements.
+        return []
+
+    def _get_call(self) -> List[libcst.BaseStatement]:
+        """Returns the snippet call statements."""
+        call_type = self.config.snippet.WhichOneof("call")
+        if call_type == "standard":
+            return self._get_standard_call()
+        else:
+            raise ValueError(f"Snippet call type {call_type} not supported.")
 
     def _build_sample_function(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
-        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
         self._add_sample_function_parameters()
-        self._append_to_sample_function_def_body(
-            self._get_service_client_initialization()
-        )
+        self._extend_sample_function_def_body(
+            self._get_service_client_initialization())
+        self._extend_sample_function_def_body(self._get_call())
 
     def _add_sample_function(self) -> None:
         self._module = self._module.with_changes(

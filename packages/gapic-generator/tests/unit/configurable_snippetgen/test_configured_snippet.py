@@ -91,6 +91,16 @@ def snippet_without_endpoint():
     return snippet
 
 
+@pytest.fixture
+def snippet_bidi_streaming():
+    snippet = _make_configured_snippet()
+    snippet.config.snippet.ClearField("standard")
+    snippet.config.snippet.bidi_streaming.CopyFrom(
+        snippet_config_language_pb2.Snippet.BidiStreaming()
+    )
+    return snippet
+
+
 def test_gapic_module_name(snippet):
     assert snippet.gapic_module_name == "speech_v1"
 
@@ -202,12 +212,34 @@ def test_api_endpoint(custom_service_endpoint_dict, expected):
     snippet_config = json_format.ParseDict(
         snippet_config_dict, snippet_config_language_pb2.SnippetConfig()
     )
-
     snippet = configured_snippet.ConfiguredSnippet(
         api_schema, snippet_config, api_version, is_sync
     )
-
     assert snippet.api_endpoint == expected
+
+
+@pytest.mark.parametrize(
+    "is_sync,expected",
+    [
+        (True, "speech_v1_generated_Adaptation_create_custom_class_Basic_sync.py"),
+        (False, "speech_v1_generated_Adaptation_create_custom_class_Basic_async.py"),
+    ],
+)
+def test_filename(is_sync, expected):
+    snippet = _make_configured_snippet(is_sync=is_sync)
+    assert snippet.filename == expected
+
+
+def test_AppendToSampleFunctionBody():
+    # Start with a function def with nonempty body to we can be sure the
+    # transformer appends the statement.
+    function_def = libcst.parse_statement("def f():\n    'hello'")
+    statement = libcst.parse_statement("'world'")
+    transformer = configured_snippet._AppendToSampleFunctionBody(statement)
+    updated_function_def = function_def.visit(transformer)
+    expected_function_def = libcst.parse_statement(
+        "def f():\n    'hello'\n    'world'")
+    assert updated_function_def.deep_equals(expected_function_def)
 
 
 def test_AppendToSampleFunctionBody():
@@ -244,3 +276,8 @@ def test_code_without_endpoint(snippet_without_endpoint):
     client = speech_v1.AdaptationClient()
 """
     assert snippet_without_endpoint.code == expected_code
+
+
+def test_generate_should_raise_error_if_unsupported(snippet_bidi_streaming):
+    with pytest.raises(ValueError):
+        snippet_bidi_streaming.generate()
