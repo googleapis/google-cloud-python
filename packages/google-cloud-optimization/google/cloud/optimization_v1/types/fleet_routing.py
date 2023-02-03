@@ -82,7 +82,7 @@ class OptimizeToursRequest(proto.Message):
         solving_mode (google.cloud.optimization_v1.types.OptimizeToursRequest.SolvingMode):
             By default, the solving mode is ``DEFAULT_SOLVE`` (0).
         max_validation_errors (int):
-            Truncates the number of validation errors returned. Those
+            Truncates the number of validation errors returned. These
             errors are typically attached to an INVALID_ARGUMENT error
             payload as a BadRequest error detail
             (https://cloud.google.com/apis/design/errors#error_details),
@@ -275,7 +275,7 @@ class OptimizeToursRequest(proto.Message):
             [OptimizeToursResponse.request_label][google.cloud.optimization.v1.OptimizeToursResponse.request_label].
         populate_travel_step_polylines (bool):
             Deprecated: Use
-            [OptimizeToursRequest.populate_transition_polylines][]
+            [OptimizeToursRequest.populate_transition_polylines][google.cloud.optimization.v1.OptimizeToursRequest.populate_transition_polylines]
             instead. If true, polylines will be populated in response
             [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions].
             Note that in this case, the polylines will also be populated
@@ -441,11 +441,12 @@ class OptimizeToursResponse(proto.Message):
             Duration, distance and usage metrics for this
             solution.
         total_cost (float):
-            Deprecated: Use [Metrics.total_cost][] instead. Total cost
-            of the solution. This takes into account all costs: costs
-            per per hour and travel hour, fixed vehicle costs,
-            unperformed shipment penalty costs, global duration cost,
-            etc.
+            Deprecated: Use
+            [Metrics.total_cost][google.cloud.optimization.v1.OptimizeToursResponse.Metrics.total_cost]
+            instead. Total cost of the solution. This takes into account
+            all costs: costs per per hour and travel hour, fixed vehicle
+            costs, unperformed shipment penalty costs, global duration
+            cost, etc.
     """
 
     class Metrics(proto.Message):
@@ -957,20 +958,21 @@ class ShipmentModel(proto.Message):
         )
 
     class BreakRule(proto.Message):
-        r"""Deprecated: Use top level [BreakRule][] instead. Rules to generate
-        time breaks for a vehicle (e.g. lunch breaks). A break is a
-        contiguous period of time during which the vehicle remains idle at
-        its current position and cannot perform any visit. A break may
-        occur:
+        r"""Deprecated: Use top level
+        [BreakRule][google.cloud.optimization.v1.ShipmentModel.BreakRule]
+        instead. Rules to generate time breaks for a vehicle (e.g. lunch
+        breaks). A break is a contiguous period of time during which the
+        vehicle remains idle at its current position and cannot perform any
+        visit. A break may occur:
 
         -  during the travel between two visits (which includes the time
            right before or right after a visit, but not in the middle of a
            visit), in which case it extends the corresponding transit time
-           between the visits,
-        -  or before the vehicle start (the vehicle may not start in the
-           middle of a break), in which case it does not affect the vehicle
-           start time.
-        -  or after the vehicle end (ditto, with the vehicle end time).
+           between the visits
+        -  before the vehicle start (the vehicle may not start in the middle
+           of a break), in which case it does not affect the vehicle start
+           time.
+        -  after the vehicle end (ditto, with the vehicle end time).
 
         Attributes:
             break_requests (MutableSequence[google.cloud.optimization_v1.types.ShipmentModel.BreakRule.BreakRequest]):
@@ -1319,7 +1321,9 @@ class Shipment(proto.Message):
             performing route. ``precedence_rules`` that reference
             ignored shipments will also be ignored.
         demands (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
-            Deprecated: Use [Shipment.load_demands][] instead.
+            Deprecated: Use
+            [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands]
+            instead.
     """
 
     class VisitRequest(proto.Message):
@@ -1404,7 +1408,9 @@ class Shipment(proto.Message):
                 corresponding
                 [ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit].
             demands (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
-                Deprecated: Use [VisitRequest.load_demands][] instead.
+                Deprecated: Use
+                [VisitRequest.load_demands][google.cloud.optimization.v1.Shipment.VisitRequest.load_demands]
+                instead.
         """
 
         arrival_location: latlng_pb2.LatLng = proto.Field(
@@ -1873,18 +1879,23 @@ class Vehicle(proto.Message):
             vehicles are ignored, it is skipped in the response.
         break_rule_indices (MutableSequence[int]):
             Deprecated: No longer used. Indices in the ``break_rule``
-            field in the source [ShipmentModel][]. They correspond to
-            break rules enforced on the vehicle.
+            field in the source
+            [ShipmentModel][google.cloud.optimization.v1.ShipmentModel].
+            They correspond to break rules enforced on the vehicle.
 
             As of 2018/03, at most one rule index per vehicle can be
             specified.
         capacities (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
-            Deprecated: Use [Vehicle.load_limits][] instead.
+            Deprecated: Use
+            [Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits]
+            instead.
         start_load_intervals (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantityInterval]):
-            Deprecated: Use [Vehicle.LoadLimit.start_load_interval][]
+            Deprecated: Use
+            [Vehicle.LoadLimit.start_load_interval][google.cloud.optimization.v1.Vehicle.LoadLimit.start_load_interval]
             instead.
         end_load_intervals (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantityInterval]):
-            Deprecated: Use [Vehicle.LoadLimit.end_load_interval][]
+            Deprecated: Use
+            [Vehicle.LoadLimit.end_load_interval][google.cloud.optimization.v1.Vehicle.LoadLimit.end_load_interval]
             instead.
     """
 
@@ -2354,8 +2365,9 @@ class TimeWindow(proto.Message):
 
 
 class CapacityQuantity(proto.Message):
-    r"""Deprecated: Use [Shipment.Load][], [Vehicle.LoadLimit][] and
-    [ShipmentRoute.VehicleLoad][] instead.
+    r"""Deprecated: Use
+    [Vehicle.LoadLimit.Interval][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval]
+    instead.
 
     Attributes:
         type_ (str):
@@ -2375,7 +2387,10 @@ class CapacityQuantity(proto.Message):
 
 
 class CapacityQuantityInterval(proto.Message):
-    r"""Deprecated: Use [Vehicle.LoadLimit.Interval][] instead.
+    r"""Deprecated: Use
+    [Vehicle.LoadLimit.Interval][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval]
+    instead.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2433,10 +2448,10 @@ class DistanceLimit(proto.Message):
 
             This field is a member of `oneof`_ ``_soft_max_meters``.
         cost_per_kilometer_above_soft_max (float):
-            Cost per kilometer incurred if ``soft_max_meters`` limit is
-            violated. The additional cost is 0 if the distance is under
-            the limit, otherwise the formula used to compute the cost is
-            the following:
+            Cost per kilometer incurred if distance is above
+            ``soft_max_meters`` limit. The additional cost is 0 if the
+            distance is under the limit, otherwise the formula used to
+            compute the cost is the following:
 
             ::
 
@@ -2940,36 +2955,40 @@ class ShipmentRoute(proto.Message):
             Total cost of the route. The sum of all costs
             in the cost map.
         end_loads (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
-            Deprecated: Use [ShipmentRoute.Transition.loads][] instead.
-            Vehicle loads upon arrival at its end location, for each
-            type specified in
+            Deprecated: Use
+            [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]
+            instead. Vehicle loads upon arrival at its end location, for
+            each type specified in
             [Vehicle.capacities][google.cloud.optimization.v1.Vehicle.capacities],
             ``start_load_intervals``, ``end_load_intervals`` or demands.
             Exception: we omit loads for quantity types unconstrained by
             intervals and that don't have any non-zero demand on the
             route.
         travel_steps (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute.TravelStep]):
-            Deprecated: Use [ShipmentRoute.Transition][] instead.
-            Ordered list of travel steps for the route.
+            Deprecated: Use
+            [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions]
+            instead. Ordered list of travel steps for the route.
         vehicle_detour (google.protobuf.duration_pb2.Duration):
             Deprecated: No longer used. This field will only be
             populated at the
             [ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit]
-            level. Extra detour time due to the shipments visited on the
-            route.
+            level.
+
+            This field is the extra detour time due to the shipments
+            visited on the route.
 
             It is equal to ``vehicle_end_time`` - ``vehicle_start_time``
             - travel duration from the vehicle's start_location to its
             ``end_location``.
         delay_before_vehicle_end (google.cloud.optimization_v1.types.ShipmentRoute.Delay):
-            Deprecated: Use [ShipmentRoute.Transition.delay_duration][]
-            instead. Delay occurring before the vehicle end. See
+            Deprecated: Delay occurring before the vehicle end. See
             [TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay].
     """
 
     class Delay(proto.Message):
-        r"""Deprecated: Use [ShipmentRoute.Transition.delay_duration][] instead.
-        Time interval spent on the route resulting from a
+        r"""Deprecated: Use
+        [ShipmentRoute.Transition.delay_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.delay_duration]
+        instead. Time interval spent on the route resulting from a
         [TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay].
 
         Attributes:
@@ -3043,9 +3062,10 @@ class ShipmentRoute(proto.Message):
                 [VisitRequest.label][google.cloud.optimization.v1.Shipment.VisitRequest.label],
                 if specified in the ``VisitRequest``.
             arrival_loads (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
-                Deprecated: Use [ShipmentRoute.Transition.loads][] instead.
-                Vehicle loads upon arrival at the visit location, for each
-                type specified in
+                Deprecated: Use
+                [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]
+                instead. Vehicle loads upon arrival at the visit location,
+                for each type specified in
                 [Vehicle.capacities][google.cloud.optimization.v1.Vehicle.capacities],
                 ``start_load_intervals``, ``end_load_intervals`` or
                 ``demands``.
@@ -3054,10 +3074,13 @@ class ShipmentRoute(proto.Message):
                 intervals and that don't have any non-zero demand on the
                 route.
             delay_before_start (google.cloud.optimization_v1.types.ShipmentRoute.Delay):
-                Deprecated: Use [ShipmentRoute.Transition.delay_duration][]
-                instead.
+                Deprecated: Use
+                [ShipmentRoute.Transition.delay_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.delay_duration]
+                instead. Delay occurring before the visit starts.
             demands (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
-                Deprecated: Use [Visit.load_demands][] instead.
+                Deprecated: Use
+                [Visit.load_demands][google.cloud.optimization.v1.ShipmentRoute.Visit.load_demands]
+                instead.
         """
 
         shipment_index: int = proto.Field(
@@ -3182,7 +3205,9 @@ class ShipmentRoute(proto.Message):
                 next transition's loads, depending on whether the visit was
                 a pickup or a delivery.
             loads (MutableSequence[google.cloud.optimization_v1.types.CapacityQuantity]):
-                Deprecated: Use [Transition.vehicle_loads][] instead.
+                Deprecated: Use
+                [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]
+                instead.
         """
 
         travel_duration: duration_pb2.Duration = proto.Field(
@@ -3298,14 +3323,16 @@ class ShipmentRoute(proto.Message):
         )
 
     class TravelStep(proto.Message):
-        r"""Deprecated: Use [ShipmentRoute.transitions][] instead. Travel
-        between each visit, along the route: from the vehicle's
-        ``start_location`` to the first visit's ``arrival_location``, then
-        from the first visit's ``departure_location`` to the second visit's
-        ``arrival_location``, and so on until the vehicle's
-        ``end_location``. This accounts only for the actual travel between
-        visits, not counting the waiting time, the time spent performing a
-        visit, nor the distance covered during a visit.
+        r"""Deprecated: Use
+        [ShipmentRoute.Transition][google.cloud.optimization.v1.ShipmentRoute.Transition]
+        instead. Travel between each visit along the route: from the
+        vehicle's ``start_location`` to the first visit's
+        ``arrival_location``, then from the first visit's
+        ``departure_location`` to the second visit's ``arrival_location``,
+        and so on until the vehicle's ``end_location``. This accounts only
+        for the actual travel between visits, not counting the waiting time,
+        the time spent performing a visit, nor the distance covered during a
+        visit.
 
         Invariant: ``travel_steps_size() == visits_size() + 1``.
 
@@ -3628,11 +3655,17 @@ class AggregatedMetrics(proto.Message):
             (resp.
             [ShipmentRoute.metrics.max_loads][google.cloud.optimization.v1.AggregatedMetrics.max_loads].
         costs (MutableMapping[str, float]):
-            Deprecated: Use [ShipmentRoute.route_costs][] and
-            [OptimizeToursResponse.Metrics.costs][] instead.
+            Deprecated: Use
+            [ShipmentRoute.route_costs][google.cloud.optimization.v1.ShipmentRoute.route_costs]
+            and
+            [OptimizeToursResponse.Metrics.costs][google.cloud.optimization.v1.OptimizeToursResponse.Metrics.costs]
+            instead.
         total_cost (float):
-            Deprecated: Use [ShipmentRoute.route_total_cost][] and
-            [OptimizeToursResponse.Metrics.total_cost][] instead.
+            Deprecated: Use
+            [ShipmentRoute.route_total_cost][google.cloud.optimization.v1.ShipmentRoute.route_total_cost]
+            and
+            [OptimizeToursResponse.Metrics.total_cost][google.cloud.optimization.v1.OptimizeToursResponse.Metrics.total_cost]
+            instead.
     """
 
     performed_shipment_count: int = proto.Field(
@@ -3782,7 +3815,7 @@ class InjectedSolutionConstraint(proto.Message):
                 level (google.cloud.optimization_v1.types.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level):
                     The constraint relaxation level that applies when the
                     conditions at or after ``threshold_time`` AND at least
-                    ``threshold_visit_count`` are satified.
+                    ``threshold_visit_count`` are satisfied.
                 threshold_time (google.protobuf.timestamp_pb2.Timestamp):
                     The time at or after which the relaxation ``level`` may be
                     applied.
@@ -3800,7 +3833,7 @@ class InjectedSolutionConstraint(proto.Message):
 
             class Level(proto.Enum):
                 r"""Expresses the different constraint relaxation levels, which
-                are applied for a visit and those that follow when it satifies
+                are applied for a visit and those that follow when it satisfies
                 the threshold conditions.
 
                 The enumeration below is in order of increasing relaxation.
@@ -3810,7 +3843,7 @@ class InjectedSolutionConstraint(proto.Message):
                         Implicit default relaxation level: no constraints are
                         relaxed, i.e., all visits are fully constrained.
 
-                        This value must not be explicly used in ``level``.
+                        This value must not be explicitly used in ``level``.
                     RELAX_VISIT_TIMES_AFTER_THRESHOLD (1):
                         Visit start times and vehicle start/end times
                         will be relaxed, but each visit remains bound to
@@ -3939,6 +3972,13 @@ class OptimizeToursValidationError(proto.Message):
                -  INJECTED_SOLUTION_MISSING_LABEL = 2000;
                -  INJECTED_SOLUTION_DUPLICATE_LABEL = 2001;
                -  INJECTED_SOLUTION_AMBIGUOUS_INDEX = 2002;
+               -  INJECTED_SOLUTION_INFEASIBLE_AFTER_GETTING_TRAVEL_TIMES
+                  = 2003;
+               -  INJECTED_SOLUTION_TRANSITION_INCONSISTENT_WITH_ACTUAL_TRAVEL
+                  = 2004;
+               -  INJECTED_SOLUTION_CONCURRENT_SOLUTION_TYPES = 2005;
+               -  INJECTED_SOLUTION_MORE_THAN_ONE_PER_TYPE = 2006;
+               -  INJECTED_SOLUTION_REFRESH_WITHOUT_POPULATE = 2008;
 
             -  SHIPMENT_MODEL_ERROR = 22;
 
@@ -3951,6 +3991,9 @@ class OptimizeToursValidationError(proto.Message):
                -  SHIPMENT_MODEL_GLOBAL_START_TIME_AFTER_GLOBAL_END_TIME
                   = 2204;
                -  SHIPMENT_MODEL_GLOBAL_DURATION_TOO_LONG = 2205;
+               -  SHIPMENT_MODEL_MAX_ACTIVE_VEHICLES_NOT_POSITIVE =
+                  2206;
+               -  SHIPMENT_MODEL_DURATION_MATRIX_TOO_LARGE = 2207;
 
             -  INDEX_ERROR = 24;
 
@@ -4074,10 +4117,14 @@ class OptimizeToursValidationError(proto.Message):
 
             -  SHIPMENT_ERROR = 40;
 
+               -  SHIPMENT_PD_LIMIT_WITHOUT_PICKUP_AND_DELIVERY = 4014;
                -  SHIPMENT_PD_ABSOLUTE_DETOUR_LIMIT_DURATION_NEGATIVE_OR_NAN
                   = 4000;
                -  SHIPMENT_PD_ABSOLUTE_DETOUR_LIMIT_DURATION_EXCEEDS_GLOBAL_DURATION
                   = 4001;
+               -  SHIPMENT_PD_RELATIVE_DETOUR_LIMIT_INVALID = 4015;
+               -  SHIPMENT_PD_DETOUR_LIMIT_AND_EXTRA_VISIT_DURATION =
+                  4016;
                -  SHIPMENT_PD_TIME_LIMIT_DURATION_NEGATIVE_OR_NAN =
                   4002;
                -  SHIPMENT_PD_TIME_LIMIT_DURATION_EXCEEDS_GLOBAL_DURATION
@@ -4094,7 +4141,6 @@ class OptimizeToursValidationError(proto.Message):
                -  SHIPMENT_INVALID_COST_FOR_VEHICLE = 4011;
                -  SHIPMENT_COST_FOR_VEHICLE_INDEX_OUT_OF_BOUNDS = 4012;
                -  SHIPMENT_DUPLICATE_COST_FOR_VEHICLE_INDEX = 4013;
-               -  SHIPMENT_DETOUR_WITHOUT_PICKUP_AND_DELIVERY = 4014;
 
             -  VEHICLE_ERROR = 42;
 
@@ -4122,6 +4168,10 @@ class OptimizeToursValidationError(proto.Message):
                -  VEHICLE_INVALID_COST_PER_TRAVELED_HOUR = 4219;
                -  VEHICLE_INVALID_FIXED_COST = 4220;
                -  VEHICLE_INVALID_TRAVEL_DURATION_MULTIPLE = 4221;
+               -  VEHICLE_TRAVEL_DURATION_MULTIPLE_WITH_SHIPMENT_PD_DETOUR_LIMITS
+                  = 4223;
+               -  VEHICLE_MATRIX_INDEX_WITH_SHIPMENT_PD_DETOUR_LIMITS =
+                  4224;
                -  VEHICLE_MINIMUM_DURATION_LONGER_THAN_DURATION_LIMIT =
                   4222;
 
@@ -4206,11 +4256,6 @@ class OptimizeToursValidationError(proto.Message):
                   5600;
                -  DURATION_SECONDS_MATRIX_DURATION_EXCEEDS_GLOBAL_DURATION
                   = 5601;
-
-            -  GRAPH_ARC_ERROR = 58;
-
-               -  GRAPH_ARC_DURATION_NEGATIVE_OR_NAN = 5800;
-               -  GRAPH_ARC_DURATION_EXCEEDS_GLOBAL_DURATION = 5801;
         display_name (str):
             The error display name.
         fields (MutableSequence[google.cloud.optimization_v1.types.OptimizeToursValidationError.FieldReference]):
