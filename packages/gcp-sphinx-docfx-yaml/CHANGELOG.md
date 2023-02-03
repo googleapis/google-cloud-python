@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.1...v2.0.2) (2023-02-03)
+
+
+### Bug Fixes
+
+* Allow multiple/custom index pages to be used ([#280](https://github.com/googleapis/sphinx-docfx-yaml/issues/280)) ([7ee38d8](https://github.com/googleapis/sphinx-docfx-yaml/commit/7ee38d8335d974e51fd07623bdff323f99f50fad))
+
 ## [2.0.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.0...v2.0.1) (2023-01-30)
 
 
