@@ -301,6 +301,16 @@ def move_markdown_pages(
     # Used to keep track of the index page entry to insert later.
     index_page_entry = None
 
+    markdown_file_names = {
+        mdfile.name.lower()
+        for mdfile in markdown_dir.iterdir()
+    }
+
+    # If there is an index.md and no readme.md, use the index.md. Otherwise, we ignore the index.md.
+    if ("index.md" in markdown_file_names and
+        "readme.md" not in markdown_file_names):
+        files_to_ignore.remove("index.md")
+
     # For each file, if it is a markdown file move to the top level pages.
     for mdfile in markdown_dir.iterdir():
         if mdfile.is_dir():
@@ -332,6 +342,9 @@ def move_markdown_pages(
             if mdfile_name_to_use in files_to_rename:
                 mdfile_name_to_use = files_to_rename[mdfile_name_to_use]
 
+            if cwd and mdfile_name_to_use == "index.md":
+                mdfile_name_to_use = f"{'_'.join(cwd)}_{mdfile_name_to_use}"
+
             mdfile_outdir = f"{outdir}/{mdfile_name_to_use}"
 
             shutil.copy(mdfile, mdfile_outdir)
@@ -340,16 +353,16 @@ def move_markdown_pages(
             _highlight_md_codeblocks(mdfile_outdir)
             _clean_image_links(mdfile_outdir)
 
-            # Use Overview as the name for index file.
-            if mdfile_name_to_use == 'index.md':
-                # Save the index page entry.
-                index_page_entry = {
-                    'name': 'Overview',
-                    'href': 'index.md',
-                }
-                continue
-
             if not cwd:
+                # Use Overview as the name for top-level index file.
+                if 'index.md' in mdfile_name_to_use:
+                    # Save the index page entry.
+                    index_page_entry = {
+                        'name': 'Overview',
+                        'href': 'index.md',
+                    }
+                    continue
+
                 # Use '/' to reserve for top level pages.
                 app.env.markdown_pages['/'].append({
                     'name': name,

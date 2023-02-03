@@ -27,7 +27,7 @@ from sphinx.application import Sphinx
 
 
 @pytest.mark.parametrize(
-    "test_dir", ["handwritten", "gapic-combo", "gapic-auto"]
+    "test_dir", ["handwritten", "gapic-combo", "gapic-auto", "non-cloud"]
 )
 def test_goldens(update_goldens, test_dir):
     source_dir = Path("tests/testdata") / test_dir
