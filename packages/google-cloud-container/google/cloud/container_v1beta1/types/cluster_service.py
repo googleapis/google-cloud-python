@@ -5471,7 +5471,9 @@ class NodePool(proto.Message):
         self_link (str):
             [Output only] Server-defined URL for the resource.
         version (str):
-            The version of the Kubernetes of this node.
+            The version of Kubernetes running on this NodePool's nodes.
+            If unspecified, it defaults as described
+            `here <https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version>`__.
         instance_group_urls (MutableSequence[str]):
             [Output only] The resource URLs of the `managed instance
             groups <https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances>`__
@@ -6448,7 +6450,7 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__.
             This field is deprecated, min_cpu_platform should be
             specified using
-            https://cloud.google.com/requested-min-cpu-platform label
+            ``cloud.google.com/requested-min-cpu-platform`` label
             selector on the pod. To unset the min cpu platform field
             pass "automatic" as field value.
         disk_size_gb (int):
