@@ -30,8 +30,8 @@ def slugify(value):
 
     # From Django
     """
-    value = re.sub('[^\w\s-]', '', value).strip()
-    return re.sub('[-\s]+', '-', value)
+    value = re.sub(r'[^\w\s-]', '', value).strip()
+    return re.sub(r'[-\s]+', '-', value)
 
 
 def transform_string(app, string):

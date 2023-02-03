@@ -25,7 +25,7 @@ from sphinx.addnodes import desc, desc_signature
 from .utils import transform_node as _transform_node
 from .nodes import remarks
 
-TYPE_SEP_PATTERN = '(\[|\]|, |\(|\))'
+TYPE_SEP_PATTERN = r'(\[|\]|, |\(|\))'
 
 def _get_desc_data(node):
     assert node.tagname == 'desc'

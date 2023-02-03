@@ -220,7 +220,7 @@ def _highlight_md_codeblocks(mdfile_path: str) -> None:
 
 def _clean_image_links(mdfile_path: str) -> None:
     """Cleans extra whitespace that breaks image links in index.html file."""
-    image_link_pattern='\[\s*!\[image\]\(.*\)\s*\]\(.*\)'
+    image_link_pattern=r'\[\s*!\[image\]\(.*\)\s*\]\(.*\)'
     new_lines = []
     with open(mdfile_path) as mdfile:
         file_content = mdfile.read()

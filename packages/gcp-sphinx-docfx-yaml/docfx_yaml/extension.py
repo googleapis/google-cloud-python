@@ -87,12 +87,12 @@ REFMETHOD = 'meth'
 REFFUNCTION = 'func'
 INITPY = '__init__.py'
 # Regex expression for checking references of pattern like ":class:`~package_v1.module`"
-REF_PATTERN = ':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_.<> ]*(\(\))?`'
+REF_PATTERN = r':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_.<> ]*(\(\))?`'
 # Regex expression for checking references of pattern like "~package_v1.subpackage.module"
-REF_PATTERN_LAST = '~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?'
+REF_PATTERN_LAST = r'~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?'
 # Regex expression for checking references of pattern like
 # "[module][google.cloud.cloudkms_v1.module]"
-REF_PATTERN_BRACKETS = '\[[a-zA-Z0-9_<>\-. ]+\]\[[a-zA-Z0-9_<>\-. ]+\]'
+REF_PATTERN_BRACKETS = r'\[[a-zA-Z0-9_<>\-. ]+\]\[[a-zA-Z0-9_<>\-. ]+\]'
 
 REF_PATTERNS = [
     REF_PATTERN,
