@@ -396,21 +396,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             return resp
 
             {% endif %}{# method.void #}
-     {% else %}{# method.http_options and not method.client_streaming #}
-            {% if not method.http_options %}
-            raise RuntimeError(
-                "Cannot define a method without a valid 'google.api.http' annotation.")
-
-            {% elif method.client_streaming %}
+    {% else %}{# method.http_options and not method.client_streaming #}
             raise NotImplementedError(
-                "Client streaming over REST is not yet defined for python client")
+                "Method {{ method.name }} is not available over REST transport"
+            )
 
-            {% else %}
-            raise NotImplementedError()
-
-            {% endif %}{# method.http_options #}
-
-    {%- endif %}{# unary method #}
+    {% endif %}{# method.http_options and not method.client_streaming #}
     {% endfor %}
     {% for method in service.methods.values()|sort(attribute="name") %}
 

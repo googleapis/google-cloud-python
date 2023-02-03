@@ -622,8 +622,8 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> rest_streaming.ResponseIterator:
             raise NotImplementedError(
-                "Client streaming over REST is not yet defined for python client")
-
+                "Method TailLogEntries is not available over REST transport"
+            )
     class _WriteLogEntries(LoggingServiceV2RestStub):
         def __hash__(self):
             return hash("WriteLogEntries")
