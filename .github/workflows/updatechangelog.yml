@@ -16,9 +16,6 @@ name: A workflow for updating the CHANGELOG.md in the root directory
 # Controls when the action will run.
 
 on:
-  pull_request:
-    branches:
-      - main
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Run this Github Action every Tuesday at 7 AM UTC
