@@ -235,6 +235,8 @@ class JobStatus(proto.Message):
             task_pack (int):
                 The max number of tasks can be assigned to
                 this instance type.
+            boot_disk (google.cloud.batch_v1.types.AllocationPolicy.Disk):
+                The VM boot disk.
         """
 
         machine_type: str = proto.Field(
@@ -249,6 +251,11 @@ class JobStatus(proto.Message):
         task_pack: int = proto.Field(
             proto.INT64,
             number=3,
+        )
+        boot_disk: "AllocationPolicy.Disk" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="AllocationPolicy.Disk",
         )
 
     class TaskGroupStatus(proto.Message):
@@ -457,8 +464,17 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             image (str):
-                Name of a public or custom image used as the
-                data source.
+                Name of a public or custom image used as the data source.
+                For example, the following are all valid URLs: (1) Specify
+                the image by its family name:
+                projects/{project}/global/images/family/{image_family} (2)
+                Specify the image version:
+                projects/{project}/global/images/{image_version} You can
+                also use Batch customized image in short names. The
+                following image values are supported for a boot disk:
+                "batch-debian": use Batch Debian images. "batch-centos": use
+                Batch CentOS images. "batch-cos": use Batch
+                Container-Optimized images.
 
                 This field is a member of `oneof`_ ``data_source``.
             snapshot (str):
@@ -466,14 +482,20 @@ class AllocationPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``data_source``.
             type_ (str):
-                Disk type as shown in ``gcloud compute disk-types list`` For
-                example, "pd-ssd", "pd-standard", "pd-balanced",
-                "local-ssd".
+                Disk type as shown in ``gcloud compute disk-types list``.
+                For example, local SSD uses type "local-ssd". Persistent
+                disks and boot disks use "pd-balanced", "pd-extreme",
+                "pd-ssd" or "pd-standard".
             size_gb (int):
-                Disk size in GB. This field is ignored if ``data_source`` is
-                ``disk`` or ``image``. If ``type`` is ``local-ssd``, size_gb
-                should be a multiple of 375GB, otherwise, the final size
-                will be the next greater multiple of 375 GB.
+                Disk size in GB. For persistent disk, this field is ignored
+                if ``data_source`` is ``image`` or ``snapshot``. For local
+                SSD, size_gb should be a multiple of 375GB, otherwise, the
+                final size will be the next greater multiple of 375 GB. For
+                boot disk, Batch will calculate the boot disk size based on
+                source image and task requirements if you do not speicify
+                the size. If both this field and the boot_disk_mib field in
+                task spec's compute_resource are defined, Batch will only
+                honor this field.
             disk_interface (str):
                 Local SSDs are available through both "SCSI"
                 and "NVMe" interfaces. If not indicated, "NVMe"
@@ -590,6 +612,10 @@ class AllocationPolicy(proto.Message):
             accelerators (MutableSequence[google.cloud.batch_v1.types.AllocationPolicy.Accelerator]):
                 The accelerators attached to each VM
                 instance.
+            boot_disk (google.cloud.batch_v1.types.AllocationPolicy.Disk):
+                Book disk to be created and attached to each
+                VM by this InstancePolicy. Boot disk will be
+                deleted when the VM is deleted.
             disks (MutableSequence[google.cloud.batch_v1.types.AllocationPolicy.AttachedDisk]):
                 Non-boot disks to be attached for each VM
                 created by this InstancePolicy. New disks will
@@ -615,6 +641,11 @@ class AllocationPolicy(proto.Message):
             proto.MESSAGE,
             number=5,
             message="AllocationPolicy.Accelerator",
+        )
+        boot_disk: "AllocationPolicy.Disk" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message="AllocationPolicy.Disk",
         )
         disks: MutableSequence["AllocationPolicy.AttachedDisk"] = proto.RepeatedField(
             proto.MESSAGE,
@@ -853,11 +884,20 @@ class ServiceAccount(proto.Message):
             account has to be specified in the instance
             template and it has to match the email field
             here.
+        scopes (MutableSequence[str]):
+            List of scopes to be enabled for this service
+            account on the VM, in addition to the
+            cloud-platform API scope that will be added by
+            default.
     """
 
     email: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    scopes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
 
 
