@@ -4372,6 +4372,7 @@ def test_update_issue_model(request_type, transport: str = "grpc"):
         call.return_value = resources.IssueModel(
             name="name_value",
             display_name="display_name_value",
+            issue_count=1201,
             state=resources.IssueModel.State.UNDEPLOYED,
         )
         response = client.update_issue_model(request)
@@ -4385,6 +4386,7 @@ def test_update_issue_model(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.IssueModel)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
 
 
@@ -4429,6 +4431,7 @@ async def test_update_issue_model_async(
             resources.IssueModel(
                 name="name_value",
                 display_name="display_name_value",
+                issue_count=1201,
                 state=resources.IssueModel.State.UNDEPLOYED,
             )
         )
@@ -4443,6 +4446,7 @@ async def test_update_issue_model_async(
     assert isinstance(response, resources.IssueModel)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
 
 
@@ -4635,6 +4639,7 @@ def test_get_issue_model(request_type, transport: str = "grpc"):
         call.return_value = resources.IssueModel(
             name="name_value",
             display_name="display_name_value",
+            issue_count=1201,
             state=resources.IssueModel.State.UNDEPLOYED,
         )
         response = client.get_issue_model(request)
@@ -4648,6 +4653,7 @@ def test_get_issue_model(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.IssueModel)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
 
 
@@ -4688,6 +4694,7 @@ async def test_get_issue_model_async(
             resources.IssueModel(
                 name="name_value",
                 display_name="display_name_value",
+                issue_count=1201,
                 state=resources.IssueModel.State.UNDEPLOYED,
             )
         )
@@ -4702,6 +4709,7 @@ async def test_get_issue_model_async(
     assert isinstance(response, resources.IssueModel)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
 
 

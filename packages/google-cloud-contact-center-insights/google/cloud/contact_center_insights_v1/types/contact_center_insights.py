@@ -587,7 +587,47 @@ class IngestConversationsMetadata(proto.Message):
             Output only. Partial errors during ingest
             operation that might cause the operation output
             to be incomplete.
+        ingest_conversations_stats (google.cloud.contact_center_insights_v1.types.IngestConversationsMetadata.IngestConversationsStats):
+            Output only. Statistics for
+            IngestConversations operation.
     """
+
+    class IngestConversationsStats(proto.Message):
+        r"""Statistics for IngestConversations operation.
+
+        Attributes:
+            processed_object_count (int):
+                Output only. The number of objects processed
+                during the ingest operation.
+            duplicates_skipped_count (int):
+                Output only. The number of objects skipped
+                because another conversation with the same
+                transcript uri had already been ingested.
+            successful_ingest_count (int):
+                Output only. The number of new conversations
+                added during this ingest operation.
+            failed_ingest_count (int):
+                Output only. The number of objects which were unable to be
+                ingested due to errors. The errors are populated in the
+                partial_errors field.
+        """
+
+        processed_object_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        duplicates_skipped_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        successful_ingest_count: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        failed_ingest_count: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -608,6 +648,11 @@ class IngestConversationsMetadata(proto.Message):
         proto.MESSAGE,
         number=4,
         message=status_pb2.Status,
+    )
+    ingest_conversations_stats: IngestConversationsStats = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=IngestConversationsStats,
     )
 
 

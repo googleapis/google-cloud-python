@@ -1201,6 +1201,9 @@ class IssueModel(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent time at which
             the issue model was updated.
+        issue_count (int):
+            Output only. Number of issues in this issue
+            model.
         state (google.cloud.contact_center_insights_v1.types.IssueModel.State):
             Output only. State of the model.
         input_data_config (google.cloud.contact_center_insights_v1.types.IssueModel.InputDataConfig):
@@ -1285,6 +1288,10 @@ class IssueModel(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    issue_count: int = proto.Field(
+        proto.INT64,
+        number=8,
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -2196,7 +2203,8 @@ class View(proto.Message):
             Output only. The most recent time at which
             the view was updated.
         value (str):
-            String with specific view properties.
+            String with specific view properties, must be
+            non-empty.
     """
 
     name: str = proto.Field(
