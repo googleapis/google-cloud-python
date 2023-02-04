@@ -255,9 +255,6 @@ class ReportErrorsServiceGrpcAsyncIOTransport(ReportErrorsServiceTransport):
         in regional log buckets or logs routed to other Google Cloud
         projects.
 
-        For more information, see `Using Error Reporting with
-        regionalized logs </error-reporting/docs/regionalization>`__.
-
         Returns:
             Callable[[~.ReportErrorEventRequest],
                     Awaitable[~.ReportErrorEventResponse]]:

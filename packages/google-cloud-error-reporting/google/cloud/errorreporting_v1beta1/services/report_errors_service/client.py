@@ -443,9 +443,6 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
         in regional log buckets or logs routed to other Google Cloud
         projects.
 
-        For more information, see `Using Error Reporting with
-        regionalized logs </error-reporting/docs/regionalization>`__.
-
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
