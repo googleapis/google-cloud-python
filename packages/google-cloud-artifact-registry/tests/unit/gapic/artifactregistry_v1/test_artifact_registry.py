@@ -63,12 +63,15 @@ from google.cloud.artifactregistry_v1.services.artifact_registry import (
     transports,
 )
 from google.cloud.artifactregistry_v1.types import apt_artifact, artifact, file, package
+from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_config
 from google.cloud.artifactregistry_v1.types import repository
 from google.cloud.artifactregistry_v1.types import repository as gda_repository
 from google.cloud.artifactregistry_v1.types import service, settings
 from google.cloud.artifactregistry_v1.types import tag
 from google.cloud.artifactregistry_v1.types import tag as gda_tag
-from google.cloud.artifactregistry_v1.types import version, yum_artifact
+from google.cloud.artifactregistry_v1.types import version
+from google.cloud.artifactregistry_v1.types import vpcsc_config
+from google.cloud.artifactregistry_v1.types import yum_artifact
 
 
 def client_cert_source_callback():
@@ -1409,6 +1412,2092 @@ async def test_get_docker_image_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_docker_image(
             artifact.GetDockerImageRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        artifact.ListMavenArtifactsRequest,
+        dict,
+    ],
+)
+def test_list_maven_artifacts(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListMavenArtifactsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_maven_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListMavenArtifactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMavenArtifactsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_maven_artifacts_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        client.list_maven_artifacts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListMavenArtifactsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_maven_artifacts_async(
+    transport: str = "grpc_asyncio", request_type=artifact.ListMavenArtifactsRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListMavenArtifactsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_maven_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListMavenArtifactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMavenArtifactsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_maven_artifacts_async_from_dict():
+    await test_list_maven_artifacts_async(request_type=dict)
+
+
+def test_list_maven_artifacts_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.ListMavenArtifactsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        call.return_value = artifact.ListMavenArtifactsResponse()
+        client.list_maven_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_maven_artifacts_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.ListMavenArtifactsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListMavenArtifactsResponse()
+        )
+        await client.list_maven_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_maven_artifacts_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListMavenArtifactsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_maven_artifacts(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_maven_artifacts_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_maven_artifacts(
+            artifact.ListMavenArtifactsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_maven_artifacts_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListMavenArtifactsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListMavenArtifactsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_maven_artifacts(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_maven_artifacts_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_maven_artifacts(
+            artifact.ListMavenArtifactsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_maven_artifacts_pager(transport_name: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[],
+                next_page_token="def",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_maven_artifacts(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, artifact.MavenArtifact) for i in results)
+
+
+def test_list_maven_artifacts_pages(transport_name: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[],
+                next_page_token="def",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_maven_artifacts(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_maven_artifacts_async_pager():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[],
+                next_page_token="def",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_maven_artifacts(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, artifact.MavenArtifact) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_maven_artifacts_async_pages():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_maven_artifacts),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[],
+                next_page_token="def",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListMavenArtifactsResponse(
+                maven_artifacts=[
+                    artifact.MavenArtifact(),
+                    artifact.MavenArtifact(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_maven_artifacts(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        artifact.GetMavenArtifactRequest,
+        dict,
+    ],
+)
+def test_get_maven_artifact(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_maven_artifact), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.MavenArtifact(
+            name="name_value",
+            pom_uri="pom_uri_value",
+            group_id="group_id_value",
+            artifact_id="artifact_id_value",
+            version="version_value",
+        )
+        response = client.get_maven_artifact(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetMavenArtifactRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, artifact.MavenArtifact)
+    assert response.name == "name_value"
+    assert response.pom_uri == "pom_uri_value"
+    assert response.group_id == "group_id_value"
+    assert response.artifact_id == "artifact_id_value"
+    assert response.version == "version_value"
+
+
+def test_get_maven_artifact_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_maven_artifact), "__call__"
+    ) as call:
+        client.get_maven_artifact()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetMavenArtifactRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_maven_artifact_async(
+    transport: str = "grpc_asyncio", request_type=artifact.GetMavenArtifactRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_maven_artifact), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.MavenArtifact(
+                name="name_value",
+                pom_uri="pom_uri_value",
+                group_id="group_id_value",
+                artifact_id="artifact_id_value",
+                version="version_value",
+            )
+        )
+        response = await client.get_maven_artifact(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetMavenArtifactRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, artifact.MavenArtifact)
+    assert response.name == "name_value"
+    assert response.pom_uri == "pom_uri_value"
+    assert response.group_id == "group_id_value"
+    assert response.artifact_id == "artifact_id_value"
+    assert response.version == "version_value"
+
+
+@pytest.mark.asyncio
+async def test_get_maven_artifact_async_from_dict():
+    await test_get_maven_artifact_async(request_type=dict)
+
+
+def test_get_maven_artifact_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.GetMavenArtifactRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_maven_artifact), "__call__"
+    ) as call:
+        call.return_value = artifact.MavenArtifact()
+        client.get_maven_artifact(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_maven_artifact_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.GetMavenArtifactRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_maven_artifact), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.MavenArtifact()
+        )
+        await client.get_maven_artifact(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_maven_artifact_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_maven_artifact), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.MavenArtifact()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_maven_artifact(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_maven_artifact_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_maven_artifact(
+            artifact.GetMavenArtifactRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_maven_artifact_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_maven_artifact), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.MavenArtifact()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.MavenArtifact()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_maven_artifact(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_maven_artifact_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_maven_artifact(
+            artifact.GetMavenArtifactRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        artifact.ListNpmPackagesRequest,
+        dict,
+    ],
+)
+def test_list_npm_packages(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListNpmPackagesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_npm_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListNpmPackagesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNpmPackagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_npm_packages_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        client.list_npm_packages()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListNpmPackagesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_npm_packages_async(
+    transport: str = "grpc_asyncio", request_type=artifact.ListNpmPackagesRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListNpmPackagesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_npm_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListNpmPackagesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNpmPackagesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_npm_packages_async_from_dict():
+    await test_list_npm_packages_async(request_type=dict)
+
+
+def test_list_npm_packages_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.ListNpmPackagesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        call.return_value = artifact.ListNpmPackagesResponse()
+        client.list_npm_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_npm_packages_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.ListNpmPackagesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListNpmPackagesResponse()
+        )
+        await client.list_npm_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_npm_packages_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListNpmPackagesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_npm_packages(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_npm_packages_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_npm_packages(
+            artifact.ListNpmPackagesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_npm_packages_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListNpmPackagesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListNpmPackagesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_npm_packages(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_npm_packages_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_npm_packages(
+            artifact.ListNpmPackagesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_npm_packages_pager(transport_name: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_npm_packages(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, artifact.NpmPackage) for i in results)
+
+
+def test_list_npm_packages_pages(transport_name: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_npm_packages(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_npm_packages_async_pager():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_npm_packages(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, artifact.NpmPackage) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_npm_packages_async_pages():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_npm_packages),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListNpmPackagesResponse(
+                npm_packages=[
+                    artifact.NpmPackage(),
+                    artifact.NpmPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_npm_packages(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        artifact.GetNpmPackageRequest,
+        dict,
+    ],
+)
+def test_get_npm_package(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_npm_package), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.NpmPackage(
+            name="name_value",
+            package_name="package_name_value",
+            version="version_value",
+            tags=["tags_value"],
+        )
+        response = client.get_npm_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetNpmPackageRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, artifact.NpmPackage)
+    assert response.name == "name_value"
+    assert response.package_name == "package_name_value"
+    assert response.version == "version_value"
+    assert response.tags == ["tags_value"]
+
+
+def test_get_npm_package_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_npm_package), "__call__") as call:
+        client.get_npm_package()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetNpmPackageRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_npm_package_async(
+    transport: str = "grpc_asyncio", request_type=artifact.GetNpmPackageRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_npm_package), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.NpmPackage(
+                name="name_value",
+                package_name="package_name_value",
+                version="version_value",
+                tags=["tags_value"],
+            )
+        )
+        response = await client.get_npm_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetNpmPackageRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, artifact.NpmPackage)
+    assert response.name == "name_value"
+    assert response.package_name == "package_name_value"
+    assert response.version == "version_value"
+    assert response.tags == ["tags_value"]
+
+
+@pytest.mark.asyncio
+async def test_get_npm_package_async_from_dict():
+    await test_get_npm_package_async(request_type=dict)
+
+
+def test_get_npm_package_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.GetNpmPackageRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_npm_package), "__call__") as call:
+        call.return_value = artifact.NpmPackage()
+        client.get_npm_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_npm_package_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.GetNpmPackageRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_npm_package), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(artifact.NpmPackage())
+        await client.get_npm_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_npm_package_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_npm_package), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.NpmPackage()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_npm_package(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_npm_package_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_npm_package(
+            artifact.GetNpmPackageRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_npm_package_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_npm_package), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.NpmPackage()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(artifact.NpmPackage())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_npm_package(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_npm_package_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_npm_package(
+            artifact.GetNpmPackageRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        artifact.ListPythonPackagesRequest,
+        dict,
+    ],
+)
+def test_list_python_packages(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListPythonPackagesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_python_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListPythonPackagesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPythonPackagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_python_packages_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        client.list_python_packages()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListPythonPackagesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_python_packages_async(
+    transport: str = "grpc_asyncio", request_type=artifact.ListPythonPackagesRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListPythonPackagesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_python_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.ListPythonPackagesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPythonPackagesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_python_packages_async_from_dict():
+    await test_list_python_packages_async(request_type=dict)
+
+
+def test_list_python_packages_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.ListPythonPackagesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        call.return_value = artifact.ListPythonPackagesResponse()
+        client.list_python_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_python_packages_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.ListPythonPackagesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListPythonPackagesResponse()
+        )
+        await client.list_python_packages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_python_packages_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListPythonPackagesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_python_packages(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_python_packages_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_python_packages(
+            artifact.ListPythonPackagesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_python_packages_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.ListPythonPackagesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.ListPythonPackagesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_python_packages(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_python_packages_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_python_packages(
+            artifact.ListPythonPackagesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_python_packages_pager(transport_name: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_python_packages(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, artifact.PythonPackage) for i in results)
+
+
+def test_list_python_packages_pages(transport_name: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_python_packages(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_python_packages_async_pager():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_python_packages(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, artifact.PythonPackage) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_python_packages_async_pages():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_python_packages),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="abc",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[],
+                next_page_token="def",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                ],
+                next_page_token="ghi",
+            ),
+            artifact.ListPythonPackagesResponse(
+                python_packages=[
+                    artifact.PythonPackage(),
+                    artifact.PythonPackage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_python_packages(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        artifact.GetPythonPackageRequest,
+        dict,
+    ],
+)
+def test_get_python_package(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_python_package), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.PythonPackage(
+            name="name_value",
+            uri="uri_value",
+            package_name="package_name_value",
+            version="version_value",
+        )
+        response = client.get_python_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetPythonPackageRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, artifact.PythonPackage)
+    assert response.name == "name_value"
+    assert response.uri == "uri_value"
+    assert response.package_name == "package_name_value"
+    assert response.version == "version_value"
+
+
+def test_get_python_package_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_python_package), "__call__"
+    ) as call:
+        client.get_python_package()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetPythonPackageRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_python_package_async(
+    transport: str = "grpc_asyncio", request_type=artifact.GetPythonPackageRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_python_package), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.PythonPackage(
+                name="name_value",
+                uri="uri_value",
+                package_name="package_name_value",
+                version="version_value",
+            )
+        )
+        response = await client.get_python_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == artifact.GetPythonPackageRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, artifact.PythonPackage)
+    assert response.name == "name_value"
+    assert response.uri == "uri_value"
+    assert response.package_name == "package_name_value"
+    assert response.version == "version_value"
+
+
+@pytest.mark.asyncio
+async def test_get_python_package_async_from_dict():
+    await test_get_python_package_async(request_type=dict)
+
+
+def test_get_python_package_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.GetPythonPackageRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_python_package), "__call__"
+    ) as call:
+        call.return_value = artifact.PythonPackage()
+        client.get_python_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_python_package_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = artifact.GetPythonPackageRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_python_package), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.PythonPackage()
+        )
+        await client.get_python_package(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_python_package_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_python_package), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.PythonPackage()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_python_package(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_python_package_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_python_package(
+            artifact.GetPythonPackageRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_python_package_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_python_package), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = artifact.PythonPackage()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            artifact.PythonPackage()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_python_package(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_python_package_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_python_package(
+            artifact.GetPythonPackageRequest(),
             name="name_value",
         )
 
@@ -8048,6 +10137,503 @@ async def test_update_project_settings_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vpcsc_config.GetVPCSCConfigRequest,
+        dict,
+    ],
+)
+def test_get_vpcsc_config(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vpcsc_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vpcsc_config.VPCSCConfig(
+            name="name_value",
+            vpcsc_policy=vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY,
+        )
+        response = client.get_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vpcsc_config.GetVPCSCConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vpcsc_config.VPCSCConfig)
+    assert response.name == "name_value"
+    assert response.vpcsc_policy == vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY
+
+
+def test_get_vpcsc_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vpcsc_config), "__call__") as call:
+        client.get_vpcsc_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vpcsc_config.GetVPCSCConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_vpcsc_config_async(
+    transport: str = "grpc_asyncio", request_type=vpcsc_config.GetVPCSCConfigRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vpcsc_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vpcsc_config.VPCSCConfig(
+                name="name_value",
+                vpcsc_policy=vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY,
+            )
+        )
+        response = await client.get_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vpcsc_config.GetVPCSCConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vpcsc_config.VPCSCConfig)
+    assert response.name == "name_value"
+    assert response.vpcsc_policy == vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY
+
+
+@pytest.mark.asyncio
+async def test_get_vpcsc_config_async_from_dict():
+    await test_get_vpcsc_config_async(request_type=dict)
+
+
+def test_get_vpcsc_config_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vpcsc_config.GetVPCSCConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vpcsc_config), "__call__") as call:
+        call.return_value = vpcsc_config.VPCSCConfig()
+        client.get_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_vpcsc_config_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vpcsc_config.GetVPCSCConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vpcsc_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vpcsc_config.VPCSCConfig()
+        )
+        await client.get_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_vpcsc_config_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vpcsc_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vpcsc_config.VPCSCConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_vpcsc_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_vpcsc_config_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_vpcsc_config(
+            vpcsc_config.GetVPCSCConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_vpcsc_config_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vpcsc_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vpcsc_config.VPCSCConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vpcsc_config.VPCSCConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_vpcsc_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_vpcsc_config_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_vpcsc_config(
+            vpcsc_config.GetVPCSCConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gda_vpcsc_config.UpdateVPCSCConfigRequest,
+        dict,
+    ],
+)
+def test_update_vpcsc_config(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vpcsc_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gda_vpcsc_config.VPCSCConfig(
+            name="name_value",
+            vpcsc_policy=gda_vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY,
+        )
+        response = client.update_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gda_vpcsc_config.UpdateVPCSCConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gda_vpcsc_config.VPCSCConfig)
+    assert response.name == "name_value"
+    assert response.vpcsc_policy == gda_vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY
+
+
+def test_update_vpcsc_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vpcsc_config), "__call__"
+    ) as call:
+        client.update_vpcsc_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gda_vpcsc_config.UpdateVPCSCConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_vpcsc_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=gda_vpcsc_config.UpdateVPCSCConfigRequest,
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vpcsc_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gda_vpcsc_config.VPCSCConfig(
+                name="name_value",
+                vpcsc_policy=gda_vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY,
+            )
+        )
+        response = await client.update_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gda_vpcsc_config.UpdateVPCSCConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gda_vpcsc_config.VPCSCConfig)
+    assert response.name == "name_value"
+    assert response.vpcsc_policy == gda_vpcsc_config.VPCSCConfig.VPCSCPolicy.DENY
+
+
+@pytest.mark.asyncio
+async def test_update_vpcsc_config_async_from_dict():
+    await test_update_vpcsc_config_async(request_type=dict)
+
+
+def test_update_vpcsc_config_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gda_vpcsc_config.UpdateVPCSCConfigRequest()
+
+    request.vpcsc_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vpcsc_config), "__call__"
+    ) as call:
+        call.return_value = gda_vpcsc_config.VPCSCConfig()
+        client.update_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "vpcsc_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_vpcsc_config_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gda_vpcsc_config.UpdateVPCSCConfigRequest()
+
+    request.vpcsc_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vpcsc_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gda_vpcsc_config.VPCSCConfig()
+        )
+        await client.update_vpcsc_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "vpcsc_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_vpcsc_config_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vpcsc_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gda_vpcsc_config.VPCSCConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_vpcsc_config(
+            vpcsc_config=gda_vpcsc_config.VPCSCConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].vpcsc_config
+        mock_val = gda_vpcsc_config.VPCSCConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_vpcsc_config_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_vpcsc_config(
+            gda_vpcsc_config.UpdateVPCSCConfigRequest(),
+            vpcsc_config=gda_vpcsc_config.VPCSCConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_vpcsc_config_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vpcsc_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gda_vpcsc_config.VPCSCConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gda_vpcsc_config.VPCSCConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_vpcsc_config(
+            vpcsc_config=gda_vpcsc_config.VPCSCConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].vpcsc_config
+        mock_val = gda_vpcsc_config.VPCSCConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_vpcsc_config_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_vpcsc_config(
+            gda_vpcsc_config.UpdateVPCSCConfigRequest(),
+            vpcsc_config=gda_vpcsc_config.VPCSCConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ArtifactRegistryGrpcTransport(
@@ -8187,6 +10773,12 @@ def test_artifact_registry_base_transport():
     methods = (
         "list_docker_images",
         "get_docker_image",
+        "list_maven_artifacts",
+        "get_maven_artifact",
+        "list_npm_packages",
+        "get_npm_package",
+        "list_python_packages",
+        "get_python_package",
         "import_apt_artifacts",
         "import_yum_artifacts",
         "list_repositories",
@@ -8212,8 +10804,11 @@ def test_artifact_registry_base_transport():
         "test_iam_permissions",
         "get_project_settings",
         "update_project_settings",
+        "get_vpcsc_config",
+        "update_vpcsc_config",
         "get_location",
         "list_locations",
+        "get_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -8701,6 +11296,97 @@ def test_parse_file_path():
     assert expected == actual
 
 
+def test_maven_artifact_path():
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    maven_artifact = "octopus"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/mavenArtifacts/{maven_artifact}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        maven_artifact=maven_artifact,
+    )
+    actual = ArtifactRegistryClient.maven_artifact_path(
+        project, location, repository, maven_artifact
+    )
+    assert expected == actual
+
+
+def test_parse_maven_artifact_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "maven_artifact": "mussel",
+    }
+    path = ArtifactRegistryClient.maven_artifact_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_maven_artifact_path(path)
+    assert expected == actual
+
+
+def test_npm_package_path():
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    npm_package = "abalone"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/npmPackages/{npm_package}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        npm_package=npm_package,
+    )
+    actual = ArtifactRegistryClient.npm_package_path(
+        project, location, repository, npm_package
+    )
+    assert expected == actual
+
+
+def test_parse_npm_package_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "npm_package": "octopus",
+    }
+    path = ArtifactRegistryClient.npm_package_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_npm_package_path(path)
+    assert expected == actual
+
+
+def test_package_path():
+    project = "oyster"
+    location = "nudibranch"
+    repository = "cuttlefish"
+    package = "mussel"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        package=package,
+    )
+    actual = ArtifactRegistryClient.package_path(project, location, repository, package)
+    assert expected == actual
+
+
+def test_parse_package_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "repository": "scallop",
+        "package": "abalone",
+    }
+    path = ArtifactRegistryClient.package_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_package_path(path)
+    assert expected == actual
+
+
 def test_project_settings_path():
     project = "squid"
     expected = "projects/{project}/projectSettings".format(
@@ -8721,10 +11407,41 @@ def test_parse_project_settings_path():
     assert expected == actual
 
 
-def test_repository_path():
+def test_python_package_path():
     project = "whelk"
     location = "octopus"
     repository = "oyster"
+    python_package = "nudibranch"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/pythonPackages/{python_package}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        python_package=python_package,
+    )
+    actual = ArtifactRegistryClient.python_package_path(
+        project, location, repository, python_package
+    )
+    assert expected == actual
+
+
+def test_parse_python_package_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "repository": "winkle",
+        "python_package": "nautilus",
+    }
+    path = ArtifactRegistryClient.python_package_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_python_package_path(path)
+    assert expected == actual
+
+
+def test_repository_path():
+    project = "scallop"
+    location = "abalone"
+    repository = "squid"
     expected = (
         "projects/{project}/locations/{location}/repositories/{repository}".format(
             project=project,
@@ -8738,9 +11455,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "repository": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "repository": "octopus",
     }
     path = ArtifactRegistryClient.repository_path(**expected)
 
@@ -8750,11 +11467,11 @@ def test_parse_repository_path():
 
 
 def test_tag_path():
-    project = "winkle"
-    location = "nautilus"
-    repository = "scallop"
-    package = "abalone"
-    tag = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    repository = "cuttlefish"
+    package = "mussel"
+    tag = "winkle"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/tags/{tag}".format(
         project=project,
         location=location,
@@ -8770,11 +11487,11 @@ def test_tag_path():
 
 def test_parse_tag_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "repository": "octopus",
-        "package": "oyster",
-        "tag": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "repository": "abalone",
+        "package": "squid",
+        "tag": "clam",
     }
     path = ArtifactRegistryClient.tag_path(**expected)
 
@@ -8784,11 +11501,11 @@ def test_parse_tag_path():
 
 
 def test_version_path():
-    project = "cuttlefish"
-    location = "mussel"
-    repository = "winkle"
-    package = "nautilus"
-    version = "scallop"
+    project = "whelk"
+    location = "octopus"
+    repository = "oyster"
+    package = "nudibranch"
+    version = "cuttlefish"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/versions/{version}".format(
         project=project,
         location=location,
@@ -8804,16 +11521,39 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "repository": "clam",
-        "package": "whelk",
-        "version": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "repository": "nautilus",
+        "package": "scallop",
+        "version": "abalone",
     }
     path = ArtifactRegistryClient.version_path(**expected)
 
     # Check that the path construction is reversible.
     actual = ArtifactRegistryClient.parse_version_path(path)
+    assert expected == actual
+
+
+def test_vpcsc_config_path():
+    project = "squid"
+    location = "clam"
+    expected = "projects/{project}/locations/{location}/vpcscConfig".format(
+        project=project,
+        location=location,
+    )
+    actual = ArtifactRegistryClient.vpcsc_config_path(project, location)
+    assert expected == actual
+
+
+def test_parse_vpcsc_config_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+    }
+    path = ArtifactRegistryClient.vpcsc_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_vpcsc_config_path(path)
     assert expected == actual
 
 
@@ -8986,6 +11726,151 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_list_locations(transport: str = "grpc"):

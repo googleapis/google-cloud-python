@@ -40,6 +40,7 @@ async def sample_get_file():
 
     # Initialize request argument(s)
     request = artifactregistry_v1.GetFileRequest(
+        name="name_value",
     )
 
     # Make the request

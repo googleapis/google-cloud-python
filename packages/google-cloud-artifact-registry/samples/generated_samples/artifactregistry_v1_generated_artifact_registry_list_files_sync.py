@@ -40,6 +40,7 @@ def sample_list_files():
 
     # Initialize request argument(s)
     request = artifactregistry_v1.ListFilesRequest(
+        parent="parent_value",
     )
 
     # Make the request

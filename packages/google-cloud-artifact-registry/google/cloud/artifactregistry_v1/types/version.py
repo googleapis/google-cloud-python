@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "ListVersionsResponse",
         "GetVersionRequest",
         "DeleteVersionRequest",
+        "BatchDeleteVersionsMetadata",
     },
 )
 
@@ -78,9 +79,10 @@ class Version(proto.Message):
         metadata (google.protobuf.struct_pb2.Struct):
             Output only. Repository-specific Metadata stored against
             this version. The fields returned are defined by the
-            underlying repository-specific resource. Currently, the only
-            resource in use is
+            underlying repository-specific resource. Currently, the
+            resources could be:
             [DockerImage][google.devtools.artifactregistry.v1.DockerImage]
+            [MavenArtifact][google.devtools.artifactregistry.v1.MavenArtifact]
     """
 
     name: str = proto.Field(
@@ -223,6 +225,20 @@ class DeleteVersionRequest(proto.Message):
     )
     force: bool = proto.Field(
         proto.BOOL,
+        number=2,
+    )
+
+
+class BatchDeleteVersionsMetadata(proto.Message):
+    r"""The metadata of an LRO from deleting multiple versions.
+
+    Attributes:
+        failed_versions (MutableSequence[str]):
+            The versions the operation failed to delete.
+    """
+
+    failed_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
         number=2,
     )
 

@@ -162,6 +162,390 @@ class ListDockerImagesAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListMavenArtifactsPager:
+    """A pager for iterating through ``list_maven_artifacts`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListMavenArtifactsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``maven_artifacts`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListMavenArtifacts`` requests and continue to iterate
+    through the ``maven_artifacts`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListMavenArtifactsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., artifact.ListMavenArtifactsResponse],
+        request: artifact.ListMavenArtifactsRequest,
+        response: artifact.ListMavenArtifactsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListMavenArtifactsRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListMavenArtifactsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = artifact.ListMavenArtifactsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[artifact.ListMavenArtifactsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[artifact.MavenArtifact]:
+        for page in self.pages:
+            yield from page.maven_artifacts
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListMavenArtifactsAsyncPager:
+    """A pager for iterating through ``list_maven_artifacts`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListMavenArtifactsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``maven_artifacts`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListMavenArtifacts`` requests and continue to iterate
+    through the ``maven_artifacts`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListMavenArtifactsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[artifact.ListMavenArtifactsResponse]],
+        request: artifact.ListMavenArtifactsRequest,
+        response: artifact.ListMavenArtifactsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListMavenArtifactsRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListMavenArtifactsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = artifact.ListMavenArtifactsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[artifact.ListMavenArtifactsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[artifact.MavenArtifact]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.maven_artifacts:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListNpmPackagesPager:
+    """A pager for iterating through ``list_npm_packages`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListNpmPackagesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``npm_packages`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListNpmPackages`` requests and continue to iterate
+    through the ``npm_packages`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListNpmPackagesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., artifact.ListNpmPackagesResponse],
+        request: artifact.ListNpmPackagesRequest,
+        response: artifact.ListNpmPackagesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListNpmPackagesRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListNpmPackagesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = artifact.ListNpmPackagesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[artifact.ListNpmPackagesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[artifact.NpmPackage]:
+        for page in self.pages:
+            yield from page.npm_packages
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListNpmPackagesAsyncPager:
+    """A pager for iterating through ``list_npm_packages`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListNpmPackagesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``npm_packages`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListNpmPackages`` requests and continue to iterate
+    through the ``npm_packages`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListNpmPackagesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[artifact.ListNpmPackagesResponse]],
+        request: artifact.ListNpmPackagesRequest,
+        response: artifact.ListNpmPackagesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListNpmPackagesRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListNpmPackagesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = artifact.ListNpmPackagesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[artifact.ListNpmPackagesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[artifact.NpmPackage]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.npm_packages:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPythonPackagesPager:
+    """A pager for iterating through ``list_python_packages`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListPythonPackagesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``python_packages`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListPythonPackages`` requests and continue to iterate
+    through the ``python_packages`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListPythonPackagesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., artifact.ListPythonPackagesResponse],
+        request: artifact.ListPythonPackagesRequest,
+        response: artifact.ListPythonPackagesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListPythonPackagesRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListPythonPackagesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = artifact.ListPythonPackagesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[artifact.ListPythonPackagesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[artifact.PythonPackage]:
+        for page in self.pages:
+            yield from page.python_packages
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPythonPackagesAsyncPager:
+    """A pager for iterating through ``list_python_packages`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListPythonPackagesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``python_packages`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListPythonPackages`` requests and continue to iterate
+    through the ``python_packages`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListPythonPackagesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[artifact.ListPythonPackagesResponse]],
+        request: artifact.ListPythonPackagesRequest,
+        response: artifact.ListPythonPackagesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListPythonPackagesRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListPythonPackagesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = artifact.ListPythonPackagesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[artifact.ListPythonPackagesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[artifact.PythonPackage]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.python_packages:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListRepositoriesPager:
     """A pager for iterating through ``list_repositories`` requests.
 

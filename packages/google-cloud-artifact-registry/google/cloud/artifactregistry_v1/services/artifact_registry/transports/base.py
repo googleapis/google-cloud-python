@@ -31,12 +31,15 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.artifactregistry_v1 import gapic_version as package_version
 from google.cloud.artifactregistry_v1.types import apt_artifact, artifact, file, package
+from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_config
 from google.cloud.artifactregistry_v1.types import repository
 from google.cloud.artifactregistry_v1.types import repository as gda_repository
 from google.cloud.artifactregistry_v1.types import settings
 from google.cloud.artifactregistry_v1.types import tag
 from google.cloud.artifactregistry_v1.types import tag as gda_tag
-from google.cloud.artifactregistry_v1.types import version, yum_artifact
+from google.cloud.artifactregistry_v1.types import version
+from google.cloud.artifactregistry_v1.types import vpcsc_config
+from google.cloud.artifactregistry_v1.types import yum_artifact
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -143,6 +146,36 @@ class ArtifactRegistryTransport(abc.ABC):
             ),
             self.get_docker_image: gapic_v1.method.wrap_method(
                 self.get_docker_image,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_maven_artifacts: gapic_v1.method.wrap_method(
+                self.list_maven_artifacts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_maven_artifact: gapic_v1.method.wrap_method(
+                self.get_maven_artifact,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_npm_packages: gapic_v1.method.wrap_method(
+                self.list_npm_packages,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_npm_package: gapic_v1.method.wrap_method(
+                self.get_npm_package,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_python_packages: gapic_v1.method.wrap_method(
+                self.list_python_packages,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_python_package: gapic_v1.method.wrap_method(
+                self.get_python_package,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -271,6 +304,16 @@ class ArtifactRegistryTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_vpcsc_config: gapic_v1.method.wrap_method(
+                self.get_vpcsc_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_vpcsc_config: gapic_v1.method.wrap_method(
+                self.update_vpcsc_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -305,6 +348,69 @@ class ArtifactRegistryTransport(abc.ABC):
     ) -> Callable[
         [artifact.GetDockerImageRequest],
         Union[artifact.DockerImage, Awaitable[artifact.DockerImage]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_maven_artifacts(
+        self,
+    ) -> Callable[
+        [artifact.ListMavenArtifactsRequest],
+        Union[
+            artifact.ListMavenArtifactsResponse,
+            Awaitable[artifact.ListMavenArtifactsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_maven_artifact(
+        self,
+    ) -> Callable[
+        [artifact.GetMavenArtifactRequest],
+        Union[artifact.MavenArtifact, Awaitable[artifact.MavenArtifact]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_npm_packages(
+        self,
+    ) -> Callable[
+        [artifact.ListNpmPackagesRequest],
+        Union[
+            artifact.ListNpmPackagesResponse,
+            Awaitable[artifact.ListNpmPackagesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_npm_package(
+        self,
+    ) -> Callable[
+        [artifact.GetNpmPackageRequest],
+        Union[artifact.NpmPackage, Awaitable[artifact.NpmPackage]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_python_packages(
+        self,
+    ) -> Callable[
+        [artifact.ListPythonPackagesRequest],
+        Union[
+            artifact.ListPythonPackagesResponse,
+            Awaitable[artifact.ListPythonPackagesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_python_package(
+        self,
+    ) -> Callable[
+        [artifact.GetPythonPackageRequest],
+        Union[artifact.PythonPackage, Awaitable[artifact.PythonPackage]],
     ]:
         raise NotImplementedError()
 
@@ -525,6 +631,33 @@ class ArtifactRegistryTransport(abc.ABC):
     ) -> Callable[
         [settings.UpdateProjectSettingsRequest],
         Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_vpcsc_config(
+        self,
+    ) -> Callable[
+        [vpcsc_config.GetVPCSCConfigRequest],
+        Union[vpcsc_config.VPCSCConfig, Awaitable[vpcsc_config.VPCSCConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_vpcsc_config(
+        self,
+    ) -> Callable[
+        [gda_vpcsc_config.UpdateVPCSCConfigRequest],
+        Union[gda_vpcsc_config.VPCSCConfig, Awaitable[gda_vpcsc_config.VPCSCConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

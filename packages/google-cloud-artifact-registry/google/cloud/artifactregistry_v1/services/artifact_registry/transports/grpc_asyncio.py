@@ -28,12 +28,15 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.artifactregistry_v1.types import apt_artifact, artifact, file, package
+from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_config
 from google.cloud.artifactregistry_v1.types import repository
 from google.cloud.artifactregistry_v1.types import repository as gda_repository
 from google.cloud.artifactregistry_v1.types import settings
 from google.cloud.artifactregistry_v1.types import tag
 from google.cloud.artifactregistry_v1.types import tag as gda_tag
-from google.cloud.artifactregistry_v1.types import version, yum_artifact
+from google.cloud.artifactregistry_v1.types import version
+from google.cloud.artifactregistry_v1.types import vpcsc_config
+from google.cloud.artifactregistry_v1.types import yum_artifact
 
 from .base import DEFAULT_CLIENT_INFO, ArtifactRegistryTransport
 from .grpc import ArtifactRegistryGrpcTransport
@@ -324,6 +327,174 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 response_deserializer=artifact.DockerImage.deserialize,
             )
         return self._stubs["get_docker_image"]
+
+    @property
+    def list_maven_artifacts(
+        self,
+    ) -> Callable[
+        [artifact.ListMavenArtifactsRequest],
+        Awaitable[artifact.ListMavenArtifactsResponse],
+    ]:
+        r"""Return a callable for the list maven artifacts method over gRPC.
+
+        Lists maven artifacts.
+
+        Returns:
+            Callable[[~.ListMavenArtifactsRequest],
+                    Awaitable[~.ListMavenArtifactsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_maven_artifacts" not in self._stubs:
+            self._stubs["list_maven_artifacts"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ListMavenArtifacts",
+                request_serializer=artifact.ListMavenArtifactsRequest.serialize,
+                response_deserializer=artifact.ListMavenArtifactsResponse.deserialize,
+            )
+        return self._stubs["list_maven_artifacts"]
+
+    @property
+    def get_maven_artifact(
+        self,
+    ) -> Callable[
+        [artifact.GetMavenArtifactRequest], Awaitable[artifact.MavenArtifact]
+    ]:
+        r"""Return a callable for the get maven artifact method over gRPC.
+
+        Gets a maven artifact.
+
+        Returns:
+            Callable[[~.GetMavenArtifactRequest],
+                    Awaitable[~.MavenArtifact]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_maven_artifact" not in self._stubs:
+            self._stubs["get_maven_artifact"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetMavenArtifact",
+                request_serializer=artifact.GetMavenArtifactRequest.serialize,
+                response_deserializer=artifact.MavenArtifact.deserialize,
+            )
+        return self._stubs["get_maven_artifact"]
+
+    @property
+    def list_npm_packages(
+        self,
+    ) -> Callable[
+        [artifact.ListNpmPackagesRequest], Awaitable[artifact.ListNpmPackagesResponse]
+    ]:
+        r"""Return a callable for the list npm packages method over gRPC.
+
+        Lists npm packages.
+
+        Returns:
+            Callable[[~.ListNpmPackagesRequest],
+                    Awaitable[~.ListNpmPackagesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_npm_packages" not in self._stubs:
+            self._stubs["list_npm_packages"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ListNpmPackages",
+                request_serializer=artifact.ListNpmPackagesRequest.serialize,
+                response_deserializer=artifact.ListNpmPackagesResponse.deserialize,
+            )
+        return self._stubs["list_npm_packages"]
+
+    @property
+    def get_npm_package(
+        self,
+    ) -> Callable[[artifact.GetNpmPackageRequest], Awaitable[artifact.NpmPackage]]:
+        r"""Return a callable for the get npm package method over gRPC.
+
+        Gets a npm package.
+
+        Returns:
+            Callable[[~.GetNpmPackageRequest],
+                    Awaitable[~.NpmPackage]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_npm_package" not in self._stubs:
+            self._stubs["get_npm_package"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetNpmPackage",
+                request_serializer=artifact.GetNpmPackageRequest.serialize,
+                response_deserializer=artifact.NpmPackage.deserialize,
+            )
+        return self._stubs["get_npm_package"]
+
+    @property
+    def list_python_packages(
+        self,
+    ) -> Callable[
+        [artifact.ListPythonPackagesRequest],
+        Awaitable[artifact.ListPythonPackagesResponse],
+    ]:
+        r"""Return a callable for the list python packages method over gRPC.
+
+        Lists python packages.
+
+        Returns:
+            Callable[[~.ListPythonPackagesRequest],
+                    Awaitable[~.ListPythonPackagesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_python_packages" not in self._stubs:
+            self._stubs["list_python_packages"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ListPythonPackages",
+                request_serializer=artifact.ListPythonPackagesRequest.serialize,
+                response_deserializer=artifact.ListPythonPackagesResponse.deserialize,
+            )
+        return self._stubs["list_python_packages"]
+
+    @property
+    def get_python_package(
+        self,
+    ) -> Callable[
+        [artifact.GetPythonPackageRequest], Awaitable[artifact.PythonPackage]
+    ]:
+        r"""Return a callable for the get python package method over gRPC.
+
+        Gets a python package.
+
+        Returns:
+            Callable[[~.GetPythonPackageRequest],
+                    Awaitable[~.PythonPackage]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_python_package" not in self._stubs:
+            self._stubs["get_python_package"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetPythonPackage",
+                request_serializer=artifact.GetPythonPackageRequest.serialize,
+                response_deserializer=artifact.PythonPackage.deserialize,
+            )
+        return self._stubs["get_python_package"]
 
     @property
     def import_apt_artifacts(
@@ -1013,8 +1184,82 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
             )
         return self._stubs["update_project_settings"]
 
+    @property
+    def get_vpcsc_config(
+        self,
+    ) -> Callable[
+        [vpcsc_config.GetVPCSCConfigRequest], Awaitable[vpcsc_config.VPCSCConfig]
+    ]:
+        r"""Return a callable for the get vpcsc config method over gRPC.
+
+        Retrieves the VPCSC Config for the Project.
+
+        Returns:
+            Callable[[~.GetVPCSCConfigRequest],
+                    Awaitable[~.VPCSCConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_vpcsc_config" not in self._stubs:
+            self._stubs["get_vpcsc_config"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetVPCSCConfig",
+                request_serializer=vpcsc_config.GetVPCSCConfigRequest.serialize,
+                response_deserializer=vpcsc_config.VPCSCConfig.deserialize,
+            )
+        return self._stubs["get_vpcsc_config"]
+
+    @property
+    def update_vpcsc_config(
+        self,
+    ) -> Callable[
+        [gda_vpcsc_config.UpdateVPCSCConfigRequest],
+        Awaitable[gda_vpcsc_config.VPCSCConfig],
+    ]:
+        r"""Return a callable for the update vpcsc config method over gRPC.
+
+        Updates the VPCSC Config for the Project.
+
+        Returns:
+            Callable[[~.UpdateVPCSCConfigRequest],
+                    Awaitable[~.VPCSCConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_vpcsc_config" not in self._stubs:
+            self._stubs["update_vpcsc_config"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/UpdateVPCSCConfig",
+                request_serializer=gda_vpcsc_config.UpdateVPCSCConfigRequest.serialize,
+                response_deserializer=gda_vpcsc_config.VPCSCConfig.deserialize,
+            )
+        return self._stubs["update_vpcsc_config"]
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
 
     @property
     def list_locations(

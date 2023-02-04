@@ -81,12 +81,18 @@ class File(proto.Message):
         hashes (MutableSequence[google.cloud.artifactregistry_v1.types.Hash]):
             The hashes of the file content.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time when the File was created.
+            Output only. The time when the File was
+            created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time when the File was last updated.
+            Output only. The time when the File was last
+            updated.
         owner (str):
             The name of the Package or Version that owns
             this file, if any.
+        fetch_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the last attempt
+            to refresh the file's data was made. Only set
+            when the repository is remote.
     """
 
     name: str = proto.Field(
@@ -116,6 +122,11 @@ class File(proto.Message):
         proto.STRING,
         number=7,
     )
+    fetch_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListFilesRequest(proto.Message):
@@ -123,8 +134,8 @@ class ListFilesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The name of the repository whose files will
-            be listed. For example:
+            Required. The name of the repository whose
+            files will be listed. For example:
             "projects/p1/locations/us-central1/repositories/repo1
         filter (str):
             An expression for filtering the results of the request.
@@ -203,7 +214,7 @@ class GetFileRequest(proto.Message):
 
     Attributes:
         name (str):
-            The name of the file to retrieve.
+            Required. The name of the file to retrieve.
     """
 
     name: str = proto.Field(

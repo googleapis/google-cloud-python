@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListFiles
+# Snippet for GetNpmPackage
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-artifact-registry
 
 
-# [START artifactregistry_v1_generated_ArtifactRegistry_ListFiles_async]
+# [START artifactregistry_v1_generated_ArtifactRegistry_GetNpmPackage_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,19 @@
 from google.cloud import artifactregistry_v1
 
 
-async def sample_list_files():
+async def sample_get_npm_package():
     # Create a client
     client = artifactregistry_v1.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.ListFilesRequest(
-        parent="parent_value",
+    request = artifactregistry_v1.GetNpmPackageRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_files(request=request)
+    response = await client.get_npm_package(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END artifactregistry_v1_generated_ArtifactRegistry_ListFiles_async]
+# [END artifactregistry_v1_generated_ArtifactRegistry_GetNpmPackage_async]

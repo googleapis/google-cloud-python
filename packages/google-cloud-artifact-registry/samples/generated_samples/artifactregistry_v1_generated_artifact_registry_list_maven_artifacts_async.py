@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListFiles
+# Snippet for ListMavenArtifacts
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-artifact-registry
 
 
-# [START artifactregistry_v1_generated_ArtifactRegistry_ListFiles_async]
+# [START artifactregistry_v1_generated_ArtifactRegistry_ListMavenArtifacts_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,20 @@
 from google.cloud import artifactregistry_v1
 
 
-async def sample_list_files():
+async def sample_list_maven_artifacts():
     # Create a client
     client = artifactregistry_v1.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.ListFilesRequest(
+    request = artifactregistry_v1.ListMavenArtifactsRequest(
         parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_files(request=request)
+    page_result = client.list_maven_artifacts(request=request)
 
     # Handle the response
     async for response in page_result:
         print(response)
 
-# [END artifactregistry_v1_generated_ArtifactRegistry_ListFiles_async]
+# [END artifactregistry_v1_generated_ArtifactRegistry_ListMavenArtifacts_async]
