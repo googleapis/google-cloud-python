@@ -44,10 +44,20 @@ for library in s.get_staging_dirs(default_version):
     )
 
     # Remove replacement once repo has migrated to google-cloud-python
-    s.replace(
+    assert 1 == s.replace(
         library / "setup.py",
         """url = \"https://github.com/googleapis/python-build\"""",
         """url = \"https://github.com/googleapis/python-cloudbuild\""""
+    )
+
+    # grpc-google-iam-v1 is required by cloud build v2 however setup.py does not reflect this.
+    # The issue is that both v1 and v2 are generated which have different requirements for setup.py files.
+    # The setup.py for v2 is clobbered by the setup.py for v1 which does not require grpc-google-iam-v1.
+    assert 1 == s.replace(
+        library / "setup.py",
+        r"""\"protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5\",\n""",
+        """\"protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5\",
+    "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",\n""",
     )
 
     s.move([library], excludes=["**/gapic_version.py"])

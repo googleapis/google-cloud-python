@@ -6,9 +6,15 @@
       "extra-files": [
         "google/cloud/devtools/cloudbuild/gapic_version.py",
         "google/cloud/devtools/cloudbuild_v1/gapic_version.py",
+        "google/cloud/devtools/cloudbuild_v2/gapic_version.py",
         {
           "type": "json",
           "path": "samples/generated_samples/snippet_metadata_google.devtools.cloudbuild.v1.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.devtools.cloudbuild.v2.json",
           "jsonpath": "$.clientLibrary.version"
         }
       ]
