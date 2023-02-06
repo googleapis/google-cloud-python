@@ -214,16 +214,16 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/latest/", None),
     "google-cloud-datastore": (
-        "https://googleapis.dev/python/datastore/latest/",
-        None,
+        "https://cloud.google.com/python/docs/reference/datastore/latest/",
+        (None, "datastore_objects.inv"),
     ),
     "google-api-core": (
         "https://googleapis.dev/python/google-api-core/latest",
         None,
     ),
     "google-cloud-core": (
-        "https://googleapis.dev/python/google-cloud-core/latest",
-        None,
+        "https://cloud.google.com/python/docs/reference/google-cloud-core/latest/",
+        (None, "cloud-core_objects.inv"),
     ),
     "grpc": ("https://grpc.io/grpc/python/", None),
 }
