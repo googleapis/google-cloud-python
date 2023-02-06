@@ -6,7 +6,7 @@ MarkupSafe==2.1.2
 protobuf==4.21.12
 pypandoc==1.10
 PyYAML==6.0
-setuptools==66.1.1
+setuptools==67.1.0
 grpc-google-iam-v1==0.12.6
 proto-plus==1.22.2
 pytest-asyncio==0.20.3
