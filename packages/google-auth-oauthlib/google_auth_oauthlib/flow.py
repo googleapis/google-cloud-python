@@ -97,7 +97,7 @@ class Flow(object):
         client_config,
         redirect_uri=None,
         code_verifier=None,
-        autogenerate_code_verifier=False,
+        autogenerate_code_verifier=True,
     ):
         """
         Args:
