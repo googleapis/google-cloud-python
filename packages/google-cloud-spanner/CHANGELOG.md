@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.27.1](https://github.com/googleapis/python-spanner/compare/v3.27.0...v3.27.1) (2023-01-30)
+
+
+### Bug Fixes
+
+* Add context manager return types ([830f325](https://github.com/googleapis/python-spanner/commit/830f325c4ab9ab1eb8d53edca723d000c23ee0d7))
+* Change fgac database role tags ([#888](https://github.com/googleapis/python-spanner/issues/888)) ([ae92f0d](https://github.com/googleapis/python-spanner/commit/ae92f0dd8a78f2397977354525b4be4b2b02aec3))
+* Fix for database name in batch create request ([#883](https://github.com/googleapis/python-spanner/issues/883)) ([5e50beb](https://github.com/googleapis/python-spanner/commit/5e50bebdd1d43994b3d83568641d1dff1c419cc8))
+
+
+### Documentation
+
+* Add documentation for enums ([830f325](https://github.com/googleapis/python-spanner/commit/830f325c4ab9ab1eb8d53edca723d000c23ee0d7))
+
 ## [3.27.0](https://github.com/googleapis/python-spanner/compare/v3.26.0...v3.27.0) (2023-01-10)
 
 
