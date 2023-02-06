@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.8.3](https://github.com/googleapis/gapic-generator-python/compare/v1.8.2...v1.8.3) (2023-02-06)
+
+
+### Bug Fixes
+
+* Raise not implemented error when REST transport is not supported ([#1578](https://github.com/googleapis/gapic-generator-python/issues/1578)) ([af6e77c](https://github.com/googleapis/gapic-generator-python/commit/af6e77c3dacaef039b1eb07ea3c9b348074d5448))
+
 ## [1.8.2](https://github.com/googleapis/gapic-generator-python/compare/v1.8.1...v1.8.2) (2023-01-23)
 
 
