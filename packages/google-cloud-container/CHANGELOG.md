@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.17.3](https://github.com/googleapis/python-container/compare/v2.17.2...v2.17.3) (2023-02-03)
+
+
+### Documentation
+
+* Add clarification on whether `NodePool.version` is a required field ([#344](https://github.com/googleapis/python-container/issues/344)) ([071c147](https://github.com/googleapis/python-container/commit/071c147df8e6edd72ff66b1997f21e881acd9b32))
+
 ## [2.17.2](https://github.com/googleapis/python-container/compare/v2.17.1...v2.17.2) (2023-01-30)
 
 
