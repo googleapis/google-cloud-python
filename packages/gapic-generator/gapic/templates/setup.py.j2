@@ -50,12 +50,10 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 packages = [
     package
     for package in setuptools.PEP420PackageFinder.find()
-    if package.startswith("google")
+    if package.startswith("{{ api.naming.namespace_packages|first }}")
 ]
 
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
+namespaces = [{% for namespace_packages in api.naming.namespace_packages %}"{{ namespace_packages }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 
 setuptools.setup(
     name=name,
