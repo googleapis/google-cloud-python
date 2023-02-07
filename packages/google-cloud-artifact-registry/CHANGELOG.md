@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-artifact-registry/compare/v1.6.1...v1.7.0) (2023-02-04)
+
+
+### Features
+
+* Add `BatchDeleteVersionMetadata` to return version that failed to delete ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Add `order_by` to `ListDockerImages` ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Add an API to get and update VPCSC config ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Add format-specific resources `MavenArtifact`, `NpmPackage`, `KfpArtifact` and `PythonPackage` ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+
+
+### Bug Fixes
+
+* Deprecate `REDIRECTION_FROM_GCR_IO_FINALIZED` ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Make `GetFileRequest.name` and `ListFilesRequest.parent` required ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Make `Package` a resource ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+
 ## [1.6.1](https://github.com/googleapis/python-artifact-registry/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
