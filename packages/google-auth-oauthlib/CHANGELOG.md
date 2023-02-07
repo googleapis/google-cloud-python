@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [1.0.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.8.0...v1.0.0) (2023-02-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* PKCE is enabled by default. ([#269](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/269))
+
+### Features
+
+* PKCE is enabled by default. ([#269](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/269)) ([1e04d3f](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/1e04d3f181b1734a73d82396c969754034f55b38))
+
+
+### Bug Fixes
+
+* Change the library from preview to stable ([#267](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/267)) ([c77edf1](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/c77edf12a84cc71622f25eee5091656652ff2c65))
+* Remove deprecated OOB code ([1391486](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/13914865ec3cbdb1e4ab87a7bcfc34d0b4e184d3))
+
 ## [0.8.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.7.1...v0.8.0) (2022-12-08)
 
 
