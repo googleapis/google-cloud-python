@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.11.0](https://github.com/googleapis/python-documentai/compare/v2.10.0...v2.11.0) (2023-02-07)
+
+
+### Features
+
+* Added EvaluationReference to evaluation.proto ([f374763](https://github.com/googleapis/python-documentai/commit/f37476381ca4a9adee98c8823b6d0b2287fbd71a))
+* Added latest_evaluation to processor.proto ([f374763](https://github.com/googleapis/python-documentai/commit/f37476381ca4a9adee98c8823b6d0b2287fbd71a))
+
 ## [2.10.0](https://github.com/googleapis/python-documentai/compare/v2.9.1...v2.10.0) (2023-01-25)
 
 
