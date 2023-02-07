@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-optimization/compare/v1.3.1...v1.3.2) (2023-02-03)
+
+
+### Documentation
+
+* Clarification for deprecated fields ([#108](https://github.com/googleapis/python-optimization/issues/108)) ([2879fcb](https://github.com/googleapis/python-optimization/commit/2879fcbb5a18b63f3c6bffd6425e3482936c85cd))
+
 ## [1.3.1](https://github.com/googleapis/python-optimization/compare/v1.3.0...v1.3.1) (2023-01-20)
 
 
