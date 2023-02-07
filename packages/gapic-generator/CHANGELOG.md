@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.8.4](https://github.com/googleapis/gapic-generator-python/compare/v1.8.3...v1.8.4) (2023-02-07)
+
+
+### Bug Fixes
+
+* Fix generated unit tests with repeated double ([#1582](https://github.com/googleapis/gapic-generator-python/issues/1582)) ([4c7dd53](https://github.com/googleapis/gapic-generator-python/commit/4c7dd53c9507f37b6c885c2b65b4f2cb98aad5fe))
+* Fix install issue for packages without google namespace ([#1576](https://github.com/googleapis/gapic-generator-python/issues/1576)) ([862cc64](https://github.com/googleapis/gapic-generator-python/commit/862cc646c4e6d50654201fe2d7c48d5ca5bf427b))
+* Use protobuf 3.21.12 in bazel build rules ([#1584](https://github.com/googleapis/gapic-generator-python/issues/1584)) ([550a5f1](https://github.com/googleapis/gapic-generator-python/commit/550a5f1b1841dd90c143466a42058b6f3c583dd2))
+
 ## [1.8.3](https://github.com/googleapis/gapic-generator-python/compare/v1.8.2...v1.8.3) (2023-02-06)
 
 
