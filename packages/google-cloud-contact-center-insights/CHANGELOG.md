@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.6.1...v1.7.0) (2023-02-04)
+
+
+### Features
+
+* Add IngestConversationsStats ([#287](https://github.com/googleapis/python-contact-center-insights/issues/287)) ([9e3af8b](https://github.com/googleapis/python-contact-center-insights/commit/9e3af8b7909374459897be862240bf7facb754ce))
+
 ## [1.6.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
