@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/googleapis/python-dataflow-client/compare/v0.8.1...v0.8.2) (2023-02-07)
+
+
+### Bug Fixes
+
+* Raise not implemented error when REST transport is not supported ([#170](https://github.com/googleapis/python-dataflow-client/issues/170)) ([44651ca](https://github.com/googleapis/python-dataflow-client/commit/44651cae3c23a05c61c8bafbb0a55b141d3368a5))
+
 ## [0.8.1](https://github.com/googleapis/python-dataflow-client/compare/v0.8.0...v0.8.1) (2023-01-20)
 
 
