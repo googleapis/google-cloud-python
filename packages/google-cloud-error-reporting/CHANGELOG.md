@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.8.2](https://github.com/googleapis/python-error-reporting/compare/v1.8.1...v1.8.2) (2023-02-04)
+
+
+### Documentation
+
+* Removed link to the regionalization page ([#411](https://github.com/googleapis/python-error-reporting/issues/411)) ([3a0d82d](https://github.com/googleapis/python-error-reporting/commit/3a0d82db6a425b91430be0ee84fd9c957f39af00))
+
 ## [1.8.1](https://github.com/googleapis/python-error-reporting/compare/v1.8.0...v1.8.1) (2023-01-20)
 
 
