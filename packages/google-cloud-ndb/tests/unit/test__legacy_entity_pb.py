@@ -99,7 +99,7 @@ class TestEntityProto:
         assert element.has_type()
         assert element.type == "D"
         # Not quite sure how this type could be set from a decoder string
-        element.set_type(u"E")
+        element.set_type("E")
         assert element.type == "E"
 
     @staticmethod

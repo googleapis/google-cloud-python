@@ -361,13 +361,13 @@ def add_idle(callback, *args, **kwargs):
 
 
 def call_soon(callback, *args, **kwargs):
-    """Calls :method:`EventLoop.call_soon` on current event loop. """
+    """Calls :method:`EventLoop.call_soon` on current event loop."""
     loop = get_event_loop()
     loop.call_soon(callback, *args, **kwargs)
 
 
 def queue_call(delay, callback, *args, **kwargs):
-    """Calls :method:`EventLoop.queue_call` on current event loop. """
+    """Calls :method:`EventLoop.queue_call` on current event loop."""
     loop = get_event_loop()
     loop.queue_call(delay, callback, *args, **kwargs)
 

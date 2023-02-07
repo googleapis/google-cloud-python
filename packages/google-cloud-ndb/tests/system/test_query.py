@@ -1605,9 +1605,9 @@ def test_query_legacy_repeated_structured_property(ds_entity):
         entity_id,
         **{
             "foo": 1,
-            "bar.one": [u"pish", u"bish"],
-            "bar.two": [u"posh", u"bosh"],
-            "bar.three": [u"pash", u"bash"],
+            "bar.one": ["pish", "bish"],
+            "bar.two": ["posh", "bosh"],
+            "bar.three": ["pash", "bash"],
         }
     )
 
@@ -1617,9 +1617,9 @@ def test_query_legacy_repeated_structured_property(ds_entity):
         entity_id,
         **{
             "foo": 2,
-            "bar.one": [u"bish", u"pish"],
-            "bar.two": [u"bosh", u"posh"],
-            "bar.three": [u"bass", u"pass"],
+            "bar.one": ["bish", "pish"],
+            "bar.two": ["bosh", "posh"],
+            "bar.three": ["bass", "pass"],
         }
     )
 
@@ -1629,9 +1629,9 @@ def test_query_legacy_repeated_structured_property(ds_entity):
         entity_id,
         **{
             "foo": 3,
-            "bar.one": [u"pish", u"bish"],
-            "bar.two": [u"fosh", u"posh"],
-            "bar.three": [u"fash", u"bash"],
+            "bar.one": ["pish", "bish"],
+            "bar.two": ["fosh", "posh"],
+            "bar.three": ["fash", "bash"],
         }
     )
 
@@ -1640,8 +1640,8 @@ def test_query_legacy_repeated_structured_property(ds_entity):
     query = (
         SomeKind.query()
         .filter(
-            SomeKind.bar == OtherKind(one=u"pish", two=u"posh"),
-            SomeKind.bar == OtherKind(two=u"posh", three=u"pash"),
+            SomeKind.bar == OtherKind(one="pish", two="posh"),
+            SomeKind.bar == OtherKind(two="posh", three="pash"),
         )
         .order(SomeKind.foo)
     )
@@ -1668,9 +1668,9 @@ def test_query_legacy_repeated_structured_property_with_name(ds_entity):
         entity_id,
         **{
             "foo": 1,
-            "b.one": [u"pish", u"bish"],
-            "b.two": [u"posh", u"bosh"],
-            "b.three": [u"pash", u"bash"],
+            "b.one": ["pish", "bish"],
+            "b.two": ["posh", "bosh"],
+            "b.three": ["pash", "bash"],
         }
     )
 
@@ -1680,7 +1680,7 @@ def test_query_legacy_repeated_structured_property_with_name(ds_entity):
 
     results = query.fetch()
     assert len(results) == 1
-    assert results[0].bar[0].one == u"pish"
+    assert results[0].bar[0].one == "pish"
 
 
 @pytest.mark.usefixtures("client_context")

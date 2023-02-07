@@ -52,9 +52,9 @@ class TestKey:
 
         https://github.com/googleapis/python-ndb/issues/322
         """
-        key = key_module.Key(u"Kind", 42)
+        key = key_module.Key("Kind", 42)
 
-        assert key._key == google.cloud.datastore.Key(u"Kind", 42, project="testing")
+        assert key._key == google.cloud.datastore.Key("Kind", 42, project="testing")
         assert key._reference is None
 
     @staticmethod
@@ -564,7 +564,7 @@ class TestKey:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_reference_bad_integer_id():
-        for id_ in (-10, 0, 2 ** 64):
+        for id_ in (-10, 0, 2**64):
             key = key_module.Key("kind", id_, app="app")
             with pytest.raises(ValueError):
                 key.reference()

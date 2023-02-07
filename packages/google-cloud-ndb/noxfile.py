@@ -30,7 +30,7 @@ ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11")
 MAJOR_INTERPRETERS = "3.8"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-BLACK_VERSION = "black==20.8b1"
+BLACK_VERSION = "black==22.3.0"
 
 
 def get_path(*names):

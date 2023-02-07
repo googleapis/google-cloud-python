@@ -306,7 +306,7 @@ def global_set(key, value, expires=None, read=False):
 
 
 class _GlobalCacheSetBatch(_GlobalCacheBatch):
-    """Batch for global cache set requests. """
+    """Batch for global cache set requests."""
 
     def __init__(self, options):
         self.expires = options.get("expires")
@@ -408,7 +408,7 @@ def global_set_if_not_exists(key, value, expires=None):
 
 
 class _GlobalCacheSetIfNotExistsBatch(_GlobalCacheSetBatch):
-    """Batch for global cache set_if_not_exists requests. """
+    """Batch for global cache set_if_not_exists requests."""
 
     def add(self, key, value):
         """Add a key, value pair to store in the cache.
@@ -507,7 +507,7 @@ global_watch = _handle_transient_errors(read=True)(_global_watch)
 
 
 class _GlobalCacheWatchBatch(_GlobalCacheSetBatch):
-    """Batch for global cache watch requests. """
+    """Batch for global cache watch requests."""
 
     def make_call(self):
         """Call :method:`GlobalCache.watch`."""
@@ -537,7 +537,7 @@ def global_unwatch(key):
 
 
 class _GlobalCacheUnwatchBatch(_GlobalCacheDeleteBatch):
-    """Batch for global cache unwatch requests. """
+    """Batch for global cache unwatch requests."""
 
     def make_call(self):
         """Call :method:`GlobalCache.unwatch`."""
@@ -574,7 +574,7 @@ global_compare_and_swap = _handle_transient_errors(read=True)(_global_compare_an
 
 
 class _GlobalCacheCompareAndSwapBatch(_GlobalCacheSetBatch):
-    """Batch for global cache compare and swap requests. """
+    """Batch for global cache compare and swap requests."""
 
     def make_call(self):
         """Call :method:`GlobalCache.compare_and_swap`."""

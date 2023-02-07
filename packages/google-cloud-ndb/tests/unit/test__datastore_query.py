@@ -39,7 +39,7 @@ def test_make_filter():
         op=query_pb2.PropertyFilter.Operator.EQUAL,
         value=entity_pb2.Value(string_value="Harold"),
     )
-    assert _datastore_query.make_filter("harry", "=", u"Harold") == expected
+    assert _datastore_query.make_filter("harry", "=", "Harold") == expected
 
 
 def test_make_composite_and_filter():
@@ -873,11 +873,11 @@ class Test_PostFilterQueryIteratorImpl:
     @staticmethod
     def test_constructor():
         foo = model.StringProperty("foo")
-        query = query_module.QueryOptions(offset=20, limit=10, filters=foo == u"this")
+        query = query_module.QueryOptions(offset=20, limit=10, filters=foo == "this")
         predicate = object()
         iterator = _datastore_query._PostFilterQueryIteratorImpl(query, predicate)
         assert iterator._result_set._query == query_module.QueryOptions(
-            filters=foo == u"this"
+            filters=foo == "this"
         )
         assert iterator._offset == 20
         assert iterator._limit == 10
@@ -1030,11 +1030,11 @@ class Test_PostFilterQueryIteratorImpl:
     @staticmethod
     def test__more_results_after_limit():
         foo = model.StringProperty("foo")
-        query = query_module.QueryOptions(offset=20, limit=10, filters=foo == u"this")
+        query = query_module.QueryOptions(offset=20, limit=10, filters=foo == "this")
         predicate = object()
         iterator = _datastore_query._PostFilterQueryIteratorImpl(query, predicate)
         assert iterator._result_set._query == query_module.QueryOptions(
-            filters=foo == u"this"
+            filters=foo == "this"
         )
         assert iterator._offset == 20
         assert iterator._limit == 10

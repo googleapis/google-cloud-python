@@ -180,7 +180,7 @@ class TestRepeatedStructuredPropertyPredicate:
         class SomeKind(model.Model):
             foo = model.StructuredProperty(SubKind, repeated=True)
 
-        match_entity = SubKind(bar=1, baz=u"scoggs")
+        match_entity = SubKind(bar=1, baz="scoggs")
         predicate = query_module.RepeatedStructuredPropertyPredicate(
             "foo", ["bar", "baz"], model._entity_to_protobuf(match_entity)
         )
@@ -191,7 +191,7 @@ class TestRepeatedStructuredPropertyPredicate:
             {
                 "something.else": "whocares",
                 "foo.bar": [2, 1],
-                "foo.baz": [u"matic", u"scoggs"],
+                "foo.baz": ["matic", "scoggs"],
             }
         )
 

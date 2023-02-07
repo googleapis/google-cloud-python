@@ -1955,7 +1955,7 @@ class TestCompressedTextProperty:
     @staticmethod
     def test__validate():
         prop = model.CompressedTextProperty(name="text")
-        assert prop._validate(u"abc") is None
+        assert prop._validate("abc") is None
 
     @staticmethod
     def test__validate_bad_bytes():
@@ -1979,18 +1979,18 @@ class TestCompressedTextProperty:
     def test__to_base_type_converted():
         prop = model.CompressedTextProperty(name="text")
         value = b"\xe2\x98\x83"
-        assert prop._to_base_type(u"\N{snowman}") == value
+        assert prop._to_base_type("\N{snowman}") == value
 
     @staticmethod
     def test__from_base_type():
         prop = model.CompressedTextProperty(name="text")
-        assert prop._from_base_type(u"abc") is None
+        assert prop._from_base_type("abc") is None
 
     @staticmethod
     def test__from_base_type_converted():
         prop = model.CompressedTextProperty(name="text")
         value = b"\xe2\x98\x83"
-        assert prop._from_base_type(value) == u"\N{snowman}"
+        assert prop._from_base_type(value) == "\N{snowman}"
 
     @staticmethod
     def test__from_base_type_cannot_convert():
@@ -2054,24 +2054,24 @@ class TestTextProperty:
     @staticmethod
     def test__to_base_type():
         prop = model.TextProperty(name="text")
-        assert prop._to_base_type(u"abc") is None
+        assert prop._to_base_type("abc") is None
 
     @staticmethod
     def test__to_base_type_converted():
         prop = model.TextProperty(name="text")
-        value = u"\N{snowman}"
+        value = "\N{snowman}"
         assert prop._to_base_type(b"\xe2\x98\x83") == value
 
     @staticmethod
     def test__from_base_type():
         prop = model.TextProperty(name="text")
-        assert prop._from_base_type(u"abc") is None
+        assert prop._from_base_type("abc") is None
 
     @staticmethod
     def test__from_base_type_converted():
         prop = model.TextProperty(name="text")
         value = b"\xe2\x98\x83"
-        assert prop._from_base_type(value) == u"\N{snowman}"
+        assert prop._from_base_type(value) == "\N{snowman}"
 
     @staticmethod
     def test__from_base_type_cannot_convert():
@@ -2222,7 +2222,7 @@ class TestJsonProperty:
     @staticmethod
     def test__to_base_type():
         prop = model.JsonProperty(name="json-val")
-        value = [14, [15, 16], {"seventeen": 18}, u"\N{snowman}"]
+        value = [14, [15, 16], {"seventeen": 18}, "\N{snowman}"]
         expected = b'[14,[15,16],{"seventeen":18},"\\u2603"]'
         assert prop._to_base_type(value) == expected
 
@@ -2230,14 +2230,14 @@ class TestJsonProperty:
     def test__from_base_type():
         prop = model.JsonProperty(name="json-val")
         value = b'[14,true,{"a":null,"b":"\\u2603"}]'
-        expected = [14, True, {"a": None, "b": u"\N{snowman}"}]
+        expected = [14, True, {"a": None, "b": "\N{snowman}"}]
         assert prop._from_base_type(value) == expected
 
     @staticmethod
     def test__from_base_type_str():
         prop = model.JsonProperty(name="json-val")
-        value = u'[14,true,{"a":null,"b":"\\u2603"}]'
-        expected = [14, True, {"a": None, "b": u"\N{snowman}"}]
+        value = '[14,true,{"a":null,"b":"\\u2603"}]'
+        expected = [14, True, {"a": None, "b": "\N{snowman}"}]
         assert prop._from_base_type(value) == expected
 
 
@@ -2338,16 +2338,13 @@ class TestUser:
 
     @staticmethod
     def test__from_ds_entity_with_user_id():
-        assert (
-            model.User._from_ds_entity(
-                {
-                    "email": "foo@example.com",
-                    "auth_domain": "gmail.com",
-                    "user_id": "12345",
-                }
-            )
-            == model.User("foo@example.com", "gmail.com", "12345")
-        )
+        assert model.User._from_ds_entity(
+            {
+                "email": "foo@example.com",
+                "auth_domain": "gmail.com",
+                "user_id": "12345",
+            }
+        ) == model.User("foo@example.com", "gmail.com", "12345")
 
 
 class TestUserProperty:
@@ -3151,8 +3148,8 @@ class TestStructuredProperty:
         mine = Mine(foo="x", bar="y")
         comparison = prop._comparison("=", mine)
         compared = query_module.AND(
-            query_module.FilterNode("baz.bar", "=", u"y"),
-            query_module.FilterNode("baz.foo", "=", u"x"),
+            query_module.FilterNode("baz.bar", "=", "y"),
+            query_module.FilterNode("baz.foo", "=", "x"),
         )
         # Python 2 and 3 order nodes differently, sort them and test each one
         # is in both lists.
@@ -3182,8 +3179,8 @@ class TestStructuredProperty:
         conjunction_nodes = sorted(
             conjunction._nodes, key=lambda a: getattr(a, "_name", "z")
         )
-        assert conjunction_nodes[0] == query_module.FilterNode("bar.bar", "=", u"y")
-        assert conjunction_nodes[1] == query_module.FilterNode("bar.foo", "=", u"x")
+        assert conjunction_nodes[0] == query_module.FilterNode("bar.bar", "=", "y")
+        assert conjunction_nodes[1] == query_module.FilterNode("bar.foo", "=", "x")
         assert conjunction_nodes[2].predicate.name == "bar"
         assert sorted(conjunction_nodes[2].predicate.match_keys) == [
             "bar",
@@ -3940,7 +3937,7 @@ class TestGenericProperty:
     @staticmethod
     def test__validate_indexed_unicode():
         prop = model.GenericProperty(name="generic", indexed=True)
-        assert prop._validate(u"abc") is None
+        assert prop._validate("abc") is None
 
     @staticmethod
     def test__validate_indexed_bad_length():

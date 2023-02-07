@@ -767,11 +767,11 @@ class _Result(object):
         self.cursor = Cursor(result_pb.cursor)
 
     def __lt__(self, other):
-        """For total ordering. """
+        """For total ordering."""
         return self._compare(other) == -1
 
     def __eq__(self, other):
-        """For total ordering. """
+        """For total ordering."""
         if isinstance(other, _Result) and self.result_pb == other.result_pb:
             return True
 
