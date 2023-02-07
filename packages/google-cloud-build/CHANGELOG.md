@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.12.0](https://github.com/googleapis/python-cloudbuild/compare/v3.11.1...v3.12.0) (2023-02-04)
+
+
+### Features
+
+* Client libraries for Cloud Build Repositories (preview) ([#376](https://github.com/googleapis/python-cloudbuild/issues/376)) ([9b53646](https://github.com/googleapis/python-cloudbuild/commit/9b5364663ffd818e6f9cc27097ec9c56ef604915))
+
 ## [3.11.1](https://github.com/googleapis/python-cloudbuild/compare/v3.11.0...v3.11.1) (2023-01-20)
 
 
