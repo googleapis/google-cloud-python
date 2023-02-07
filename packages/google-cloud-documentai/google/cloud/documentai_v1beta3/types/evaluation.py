@@ -21,9 +21,48 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
     manifest={
+        "EvaluationReference",
         "Evaluation",
     },
 )
+
+
+class EvaluationReference(proto.Message):
+    r"""Gives a short summary of an evaluation, and links to the
+    evaluation itself.
+
+    Attributes:
+        operation (str):
+            The resource name of the Long Running
+            Operation for the evaluation.
+        evaluation (str):
+            The resource name of the evaluation.
+        aggregate_metrics (google.cloud.documentai_v1beta3.types.Evaluation.Metrics):
+            An aggregate of the statistics for the
+            evaluation with fuzzy matching on.
+        aggregate_metrics_exact (google.cloud.documentai_v1beta3.types.Evaluation.Metrics):
+            An aggregate of the statistics for the
+            evaluation with fuzzy matching off.
+    """
+
+    operation: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    evaluation: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    aggregate_metrics: "Evaluation.Metrics" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Evaluation.Metrics",
+    )
+    aggregate_metrics_exact: "Evaluation.Metrics" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Evaluation.Metrics",
+    )
 
 
 class Evaluation(proto.Message):

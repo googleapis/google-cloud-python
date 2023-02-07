@@ -77,7 +77,7 @@ from .document_processor_service import (
     UndeployProcessorVersionResponse,
 )
 from .document_schema import DocumentSchema
-from .evaluation import Evaluation
+from .evaluation import Evaluation, EvaluationReference
 from .geometry import BoundingPoly, NormalizedVertex, Vertex
 from .operation_metadata import CommonOperationMetadata
 from .processor import Processor, ProcessorVersion
@@ -145,6 +145,7 @@ __all__ = (
     "UndeployProcessorVersionResponse",
     "DocumentSchema",
     "Evaluation",
+    "EvaluationReference",
     "BoundingPoly",
     "NormalizedVertex",
     "Vertex",

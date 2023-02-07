@@ -86,7 +86,7 @@ from .types.document_processor_service import (
     UndeployProcessorVersionResponse,
 )
 from .types.document_schema import DocumentSchema
-from .types.evaluation import Evaluation
+from .types.evaluation import Evaluation, EvaluationReference
 from .types.geometry import BoundingPoly, NormalizedVertex, Vertex
 from .types.operation_metadata import CommonOperationMetadata
 from .types.processor import Processor, ProcessorVersion
@@ -123,6 +123,7 @@ __all__ = (
     "EvaluateProcessorVersionRequest",
     "EvaluateProcessorVersionResponse",
     "Evaluation",
+    "EvaluationReference",
     "FetchProcessorTypesRequest",
     "FetchProcessorTypesResponse",
     "GcsDocument",
