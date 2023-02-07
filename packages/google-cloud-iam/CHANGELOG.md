@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.11.2](https://github.com/googleapis/python-iam/compare/v2.11.1...v2.11.2) (2023-02-02)
+
+
+### Documentation
+
+* Update overall name from iamcredentials to iam ([#266](https://github.com/googleapis/python-iam/issues/266)) ([41db8fb](https://github.com/googleapis/python-iam/commit/41db8fba964202b483dd6d045904855a7950e17d))
+
 ## [2.11.1](https://github.com/googleapis/python-iam/compare/v2.11.0...v2.11.1) (2023-01-20)
 
 
