@@ -587,7 +587,16 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% for field in method.output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}{# field.repeated #}
     {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
@@ -1076,7 +1085,16 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     {% for field in method.output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}
     {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
