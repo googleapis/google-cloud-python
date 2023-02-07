@@ -437,8 +437,8 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> jobs.CheckActiveJobsResponse:
-            raise RuntimeError(
-                "Cannot define a method without a valid 'google.api.http' annotation."
+            raise NotImplementedError(
+                "Method CheckActiveJobs is not available over REST transport"
             )
 
     class _CreateJob(JobsV1Beta3RestStub):

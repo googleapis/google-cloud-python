@@ -4118,11 +4118,10 @@ def test_check_active_jobs_rest_error():
     )
     # Since a `google.api.http` annotation is required for using a rest transport
     # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
+    with pytest.raises(NotImplementedError) as not_implemented_error:
         client.check_active_jobs({})
-    assert (
-        "Cannot define a method without a valid 'google.api.http' annotation."
-        in str(runtime_error.value)
+    assert "Method CheckActiveJobs is not available over REST transport" in str(
+        not_implemented_error.value
     )
 
 
