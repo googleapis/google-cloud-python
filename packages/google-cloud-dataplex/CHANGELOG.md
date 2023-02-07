@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-dataplex/compare/v1.4.1...v1.4.2) (2023-02-02)
+
+
+### Documentation
+
+* Improvements to DataScan API documentation ([#123](https://github.com/googleapis/python-dataplex/issues/123)) ([a7e193f](https://github.com/googleapis/python-dataplex/commit/a7e193fb2cb0475ae1f75bb412967ec4436686e5))
+
 ## [1.4.1](https://github.com/googleapis/python-dataplex/compare/v1.4.0...v1.4.1) (2023-01-20)
 
 
