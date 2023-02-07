@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-batch/compare/v0.8.1...v0.9.0) (2023-02-04)
+
+
+### Features
+
+* Add boot disk field in InstancePolicy ([3a73b21](https://github.com/googleapis/python-batch/commit/3a73b21726e1780be3782fd3eb98eca28a0759f5))
+* Add boot disk field in InstanceStatus ([3a73b21](https://github.com/googleapis/python-batch/commit/3a73b21726e1780be3782fd3eb98eca28a0759f5))
+* Support custom scopes for service account ([3a73b21](https://github.com/googleapis/python-batch/commit/3a73b21726e1780be3782fd3eb98eca28a0759f5))
+
 ## [0.8.1](https://github.com/googleapis/python-batch/compare/v0.8.0...v0.8.1) (2023-01-20)
 
 
