@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.1.0-alpha...v0.1.1-alpha) (2023-02-08)
+
+
+### Bug Fixes
+
+* Updated Pip install name in README ([#52](https://github.com/googleapis/python-documentai-toolbox/issues/52)) ([dad8c8b](https://github.com/googleapis/python-documentai-toolbox/commit/dad8c8bfb6241eaa1e24f0b239d39d1396c735c8))
+
+
+### Documentation
+
+* **samples:** Added quickstart sample ([#27](https://github.com/googleapis/python-documentai-toolbox/issues/27)) ([23a0791](https://github.com/googleapis/python-documentai-toolbox/commit/23a0791633b0c2c2fb65f3706ecb279d058239ad))
+
 ## [0.1.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.1.0-alpha...v0.1.0-alpha) (2023-01-31)
 
 
