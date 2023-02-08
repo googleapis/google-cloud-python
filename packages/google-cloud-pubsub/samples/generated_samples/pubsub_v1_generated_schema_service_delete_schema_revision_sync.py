@@ -41,7 +41,6 @@ def sample_delete_schema_revision():
     # Initialize request argument(s)
     request = pubsub_v1.DeleteSchemaRevisionRequest(
         name="name_value",
-        revision_id="revision_id_value",
     )
 
     # Make the request

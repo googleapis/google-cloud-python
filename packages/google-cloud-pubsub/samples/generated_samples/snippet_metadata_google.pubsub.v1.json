@@ -1845,12 +1845,12 @@
       "regionTag": "pubsub_v1_generated_SchemaService_DeleteSchemaRevision_async",
       "segments": [
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -1860,18 +1860,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1929,12 +1929,12 @@
       "regionTag": "pubsub_v1_generated_SchemaService_DeleteSchemaRevision_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -1944,18 +1944,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],

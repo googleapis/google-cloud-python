@@ -931,7 +931,6 @@ class SchemaServiceAsyncClient:
                 # Initialize request argument(s)
                 request = pubsub_v1.DeleteSchemaRevisionRequest(
                     name="name_value",
-                    revision_id="revision_id_value",
                 )
 
                 # Make the request
@@ -945,20 +944,18 @@ class SchemaServiceAsyncClient:
                 The request object. Request for the
                 `DeleteSchemaRevision` method.
             name (:class:`str`):
-                Required. The name of the schema
-                revision to be deleted, with a revision
-                ID explicitly included.
-                Example:
-                projects/123/schemas/my-schema@c7cfa2a8
+                Required. The name of the schema revision to be deleted,
+                with a revision ID explicitly included.
+
+                Example: ``projects/123/schemas/my-schema@c7cfa2a8``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             revision_id (:class:`str`):
-                Required. The revision ID to roll
-                back to. It must be a revision of the
-                same schema.
-                  Example: c7cfa2a8
+                Optional. This field is deprecated and should not be
+                used for specifying the revision ID. The revision ID
+                should be specified via the ``name`` parameter.
 
                 This corresponds to the ``revision_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
