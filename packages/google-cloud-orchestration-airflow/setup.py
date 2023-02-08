@@ -59,9 +59,12 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
+namespaces = [
+    "google",
+    "google.cloud",
+    "google.cloud.orchestration",
+    "google.cloud.orchestration.airflow",
+]
 
 setuptools.setup(
     name=name,
