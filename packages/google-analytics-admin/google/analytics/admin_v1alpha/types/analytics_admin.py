@@ -100,6 +100,12 @@ __protobuf__ = proto.module(
         "ApproveDisplayVideo360AdvertiserLinkProposalRequest",
         "ApproveDisplayVideo360AdvertiserLinkProposalResponse",
         "CancelDisplayVideo360AdvertiserLinkProposalRequest",
+        "GetSearchAds360LinkRequest",
+        "ListSearchAds360LinksRequest",
+        "ListSearchAds360LinksResponse",
+        "CreateSearchAds360LinkRequest",
+        "DeleteSearchAds360LinkRequest",
+        "UpdateSearchAds360LinkRequest",
         "CreateCustomDimensionRequest",
         "UpdateCustomDimensionRequest",
         "ListCustomDimensionsRequest",
@@ -128,6 +134,13 @@ __protobuf__ = proto.module(
         "ArchiveAudienceRequest",
         "GetAttributionSettingsRequest",
         "UpdateAttributionSettingsRequest",
+        "SetAutomatedGa4ConfigurationOptOutRequest",
+        "SetAutomatedGa4ConfigurationOptOutResponse",
+        "FetchAutomatedGa4ConfigurationOptOutRequest",
+        "FetchAutomatedGa4ConfigurationOptOutResponse",
+        "GetBigQueryLinkRequest",
+        "ListBigQueryLinksRequest",
+        "ListBigQueryLinksResponse",
     },
 )
 
@@ -1073,7 +1086,7 @@ class ListFirebaseLinksRequest(proto.Message):
             A page token, received from a previous ``ListFirebaseLinks``
             call. Provide this to retrieve the subsequent page. When
             paginating, all other parameters provided to
-            ``ListProperties`` must match the call that provided the
+            ``ListFirebaseLinks`` must match the call that provided the
             page token.
     """
 
@@ -2117,6 +2130,147 @@ class CancelDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
     )
 
 
+class GetSearchAds360LinkRequest(proto.Message):
+    r"""Request message for GetSearchAds360Link RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the SearchAds360Link to
+            get. Example format:
+            properties/1234/SearchAds360Link/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListSearchAds360LinksRequest(proto.Message):
+    r"""Request message for ListSearchAds360Links RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous
+            ``ListSearchAds360Links`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListSearchAds360Links`` must match the call that provided
+            the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSearchAds360LinksResponse(proto.Message):
+    r"""Response message for ListSearchAds360Links RPC.
+
+    Attributes:
+        search_ads_360_links (MutableSequence[google.analytics.admin_v1alpha.types.SearchAds360Link]):
+            List of SearchAds360Links.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    search_ads_360_links: MutableSequence[
+        resources.SearchAds360Link
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.SearchAds360Link,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateSearchAds360LinkRequest(proto.Message):
+    r"""Request message for CreateSearchAds360Link RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        search_ads_360_link (google.analytics.admin_v1alpha.types.SearchAds360Link):
+            Required. The SearchAds360Link to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    search_ads_360_link: resources.SearchAds360Link = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.SearchAds360Link,
+    )
+
+
+class DeleteSearchAds360LinkRequest(proto.Message):
+    r"""Request message for DeleteSearchAds360Link RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the SearchAds360Link to
+            delete. Example format:
+            properties/1234/SearchAds360Links/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateSearchAds360LinkRequest(proto.Message):
+    r"""Request message for UpdateSearchAds360Link RPC.
+
+    Attributes:
+        search_ads_360_link (google.analytics.admin_v1alpha.types.SearchAds360Link):
+            The SearchAds360Link to update
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    search_ads_360_link: resources.SearchAds360Link = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.SearchAds360Link,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
 class CreateCustomDimensionRequest(proto.Message):
     r"""Request message for CreateCustomDimension RPC.
 
@@ -2751,6 +2905,154 @@ class UpdateAttributionSettingsRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class SetAutomatedGa4ConfigurationOptOutRequest(proto.Message):
+    r"""Request for setting the opt out status for the automated GA4
+    setup process.
+
+    Attributes:
+        property (str):
+            Required. The UA property to set the opt out
+            status. Note this request uses the internal
+            property ID, not the tracking ID of the form
+            UA-XXXXXX-YY. Format:
+            properties/{internalWebPropertyId}
+            Example: properties/1234
+        opt_out (bool):
+            The status to set.
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    opt_out: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class SetAutomatedGa4ConfigurationOptOutResponse(proto.Message):
+    r"""Response message for setting the opt out status for the
+    automated GA4 setup process.
+
+    """
+
+
+class FetchAutomatedGa4ConfigurationOptOutRequest(proto.Message):
+    r"""Request for fetching the opt out status for the automated GA4
+    setup process.
+
+    Attributes:
+        property (str):
+            Required. The UA property to get the opt out
+            status. Note this request uses the internal
+            property ID, not the tracking ID of the form
+            UA-XXXXXX-YY. Format:
+            properties/{internalWebPropertyId}
+            Example: properties/1234
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FetchAutomatedGa4ConfigurationOptOutResponse(proto.Message):
+    r"""Response message for fetching the opt out status for the
+    automated GA4 setup process.
+
+    Attributes:
+        opt_out (bool):
+            The opt out status for the UA property.
+    """
+
+    opt_out: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class GetBigQueryLinkRequest(proto.Message):
+    r"""Request message for GetBigQueryLink RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the BigQuery link to lookup. Format:
+            properties/{property_id}/bigQueryLinks/{bigquery_link_id}
+            Example: properties/123/bigQueryLinks/456
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListBigQueryLinksRequest(proto.Message):
+    r"""Request message for ListBigQueryLinks RPC.
+
+    Attributes:
+        parent (str):
+            Required. The name of the property to list BigQuery links
+            under. Format: properties/{property_id} Example:
+            properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            The service may return fewer than this value,
+            even if there are additional pages. If
+            unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            A page token, received from a previous ``ListBigQueryLinks``
+            call. Provide this to retrieve the subsequent page. When
+            paginating, all other parameters provided to
+            ``ListBigQueryLinks`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListBigQueryLinksResponse(proto.Message):
+    r"""Response message for ListBigQueryLinks RPC
+
+    Attributes:
+        bigquery_links (MutableSequence[google.analytics.admin_v1alpha.types.BigQueryLink]):
+            List of BigQueryLinks.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    bigquery_links: MutableSequence[resources.BigQueryLink] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.BigQueryLink,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

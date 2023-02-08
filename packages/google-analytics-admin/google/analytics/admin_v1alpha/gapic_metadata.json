@@ -120,6 +120,11 @@
                 "create_property"
               ]
             },
+            "CreateSearchAds360Link": {
+              "methods": [
+                "create_search_ads360_link"
+              ]
+            },
             "CreateUserLink": {
               "methods": [
                 "create_user_link"
@@ -170,9 +175,19 @@
                 "delete_property"
               ]
             },
+            "DeleteSearchAds360Link": {
+              "methods": [
+                "delete_search_ads360_link"
+              ]
+            },
             "DeleteUserLink": {
               "methods": [
                 "delete_user_link"
+              ]
+            },
+            "FetchAutomatedGa4ConfigurationOptOut": {
+              "methods": [
+                "fetch_automated_ga4_configuration_opt_out"
               ]
             },
             "GetAccount": {
@@ -188,6 +203,11 @@
             "GetAudience": {
               "methods": [
                 "get_audience"
+              ]
+            },
+            "GetBigQueryLink": {
+              "methods": [
+                "get_big_query_link"
               ]
             },
             "GetConversionEvent": {
@@ -250,6 +270,11 @@
                 "get_property"
               ]
             },
+            "GetSearchAds360Link": {
+              "methods": [
+                "get_search_ads360_link"
+              ]
+            },
             "GetUserLink": {
               "methods": [
                 "get_user_link"
@@ -268,6 +293,11 @@
             "ListAudiences": {
               "methods": [
                 "list_audiences"
+              ]
+            },
+            "ListBigQueryLinks": {
+              "methods": [
+                "list_big_query_links"
               ]
             },
             "ListConversionEvents": {
@@ -320,6 +350,11 @@
                 "list_properties"
               ]
             },
+            "ListSearchAds360Links": {
+              "methods": [
+                "list_search_ads360_links"
+              ]
+            },
             "ListUserLinks": {
               "methods": [
                 "list_user_links"
@@ -338,6 +373,11 @@
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
+              ]
+            },
+            "SetAutomatedGa4ConfigurationOptOut": {
+              "methods": [
+                "set_automated_ga4_configuration_opt_out"
               ]
             },
             "UpdateAccount": {
@@ -398,6 +438,11 @@
             "UpdateProperty": {
               "methods": [
                 "update_property"
+              ]
+            },
+            "UpdateSearchAds360Link": {
+              "methods": [
+                "update_search_ads360_link"
               ]
             },
             "UpdateUserLink": {
@@ -520,6 +565,11 @@
                 "create_property"
               ]
             },
+            "CreateSearchAds360Link": {
+              "methods": [
+                "create_search_ads360_link"
+              ]
+            },
             "CreateUserLink": {
               "methods": [
                 "create_user_link"
@@ -570,9 +620,19 @@
                 "delete_property"
               ]
             },
+            "DeleteSearchAds360Link": {
+              "methods": [
+                "delete_search_ads360_link"
+              ]
+            },
             "DeleteUserLink": {
               "methods": [
                 "delete_user_link"
+              ]
+            },
+            "FetchAutomatedGa4ConfigurationOptOut": {
+              "methods": [
+                "fetch_automated_ga4_configuration_opt_out"
               ]
             },
             "GetAccount": {
@@ -588,6 +648,11 @@
             "GetAudience": {
               "methods": [
                 "get_audience"
+              ]
+            },
+            "GetBigQueryLink": {
+              "methods": [
+                "get_big_query_link"
               ]
             },
             "GetConversionEvent": {
@@ -650,6 +715,11 @@
                 "get_property"
               ]
             },
+            "GetSearchAds360Link": {
+              "methods": [
+                "get_search_ads360_link"
+              ]
+            },
             "GetUserLink": {
               "methods": [
                 "get_user_link"
@@ -668,6 +738,11 @@
             "ListAudiences": {
               "methods": [
                 "list_audiences"
+              ]
+            },
+            "ListBigQueryLinks": {
+              "methods": [
+                "list_big_query_links"
               ]
             },
             "ListConversionEvents": {
@@ -720,6 +795,11 @@
                 "list_properties"
               ]
             },
+            "ListSearchAds360Links": {
+              "methods": [
+                "list_search_ads360_links"
+              ]
+            },
             "ListUserLinks": {
               "methods": [
                 "list_user_links"
@@ -738,6 +818,11 @@
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
+              ]
+            },
+            "SetAutomatedGa4ConfigurationOptOut": {
+              "methods": [
+                "set_automated_ga4_configuration_opt_out"
               ]
             },
             "UpdateAccount": {
@@ -798,6 +883,11 @@
             "UpdateProperty": {
               "methods": [
                 "update_property"
+              ]
+            },
+            "UpdateSearchAds360Link": {
+              "methods": [
+                "update_search_ads360_link"
               ]
             },
             "UpdateUserLink": {
@@ -920,6 +1010,11 @@
                 "create_property"
               ]
             },
+            "CreateSearchAds360Link": {
+              "methods": [
+                "create_search_ads360_link"
+              ]
+            },
             "CreateUserLink": {
               "methods": [
                 "create_user_link"
@@ -970,9 +1065,19 @@
                 "delete_property"
               ]
             },
+            "DeleteSearchAds360Link": {
+              "methods": [
+                "delete_search_ads360_link"
+              ]
+            },
             "DeleteUserLink": {
               "methods": [
                 "delete_user_link"
+              ]
+            },
+            "FetchAutomatedGa4ConfigurationOptOut": {
+              "methods": [
+                "fetch_automated_ga4_configuration_opt_out"
               ]
             },
             "GetAccount": {
@@ -988,6 +1093,11 @@
             "GetAudience": {
               "methods": [
                 "get_audience"
+              ]
+            },
+            "GetBigQueryLink": {
+              "methods": [
+                "get_big_query_link"
               ]
             },
             "GetConversionEvent": {
@@ -1050,6 +1160,11 @@
                 "get_property"
               ]
             },
+            "GetSearchAds360Link": {
+              "methods": [
+                "get_search_ads360_link"
+              ]
+            },
             "GetUserLink": {
               "methods": [
                 "get_user_link"
@@ -1068,6 +1183,11 @@
             "ListAudiences": {
               "methods": [
                 "list_audiences"
+              ]
+            },
+            "ListBigQueryLinks": {
+              "methods": [
+                "list_big_query_links"
               ]
             },
             "ListConversionEvents": {
@@ -1120,6 +1240,11 @@
                 "list_properties"
               ]
             },
+            "ListSearchAds360Links": {
+              "methods": [
+                "list_search_ads360_links"
+              ]
+            },
             "ListUserLinks": {
               "methods": [
                 "list_user_links"
@@ -1138,6 +1263,11 @@
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
+              ]
+            },
+            "SetAutomatedGa4ConfigurationOptOut": {
+              "methods": [
+                "set_automated_ga4_configuration_opt_out"
               ]
             },
             "UpdateAccount": {
@@ -1198,6 +1328,11 @@
             "UpdateProperty": {
               "methods": [
                 "update_property"
+              ]
+            },
+            "UpdateSearchAds360Link": {
+              "methods": [
+                "update_search_ads360_link"
               ]
             },
             "UpdateUserLink": {

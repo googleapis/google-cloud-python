@@ -228,6 +228,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_search_ads360_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_search_ads360_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_user_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -276,9 +284,21 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_search_ads360_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_user_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_fetch_automated_ga4_configuration_opt_out(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_automated_ga4_configuration_opt_out(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_get_account(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -301,6 +321,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_get_audience(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_big_query_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_big_query_link(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -400,6 +428,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_search_ads360_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_search_ads360_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_user_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -429,6 +465,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_audiences(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_big_query_links(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_big_query_links(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -512,6 +556,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_search_ads360_links(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_search_ads360_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_user_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -541,6 +593,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_search_change_history_events(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_set_automated_ga4_configuration_opt_out(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_automated_ga4_configuration_opt_out(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -637,6 +697,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_property(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_search_ads360_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_search_ads360_link(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1134,6 +1202,31 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_search_ads360_link(
+        self,
+        request: analytics_admin.CreateSearchAds360LinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.CreateSearchAds360LinkRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_search_ads360_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_search_ads360_link(
+        self, response: resources.SearchAds360Link
+    ) -> resources.SearchAds360Link:
+        """Post-rpc interceptor for create_search_ads360_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_user_link(
         self,
         request: analytics_admin.CreateUserLinkRequest,
@@ -1281,6 +1374,20 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_delete_search_ads360_link(
+        self,
+        request: analytics_admin.DeleteSearchAds360LinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.DeleteSearchAds360LinkRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_search_ads360_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
     def pre_delete_user_link(
         self,
         request: analytics_admin.DeleteUserLinkRequest,
@@ -1292,6 +1399,32 @@ class AnalyticsAdminServiceRestInterceptor:
         before they are sent to the AnalyticsAdminService server.
         """
         return request, metadata
+
+    def pre_fetch_automated_ga4_configuration_opt_out(
+        self,
+        request: analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for fetch_automated_ga4_configuration_opt_out
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_fetch_automated_ga4_configuration_opt_out(
+        self, response: analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse
+    ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
+        """Post-rpc interceptor for fetch_automated_ga4_configuration_opt_out
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_get_account(
         self,
@@ -1353,6 +1486,29 @@ class AnalyticsAdminServiceRestInterceptor:
 
     def post_get_audience(self, response: audience.Audience) -> audience.Audience:
         """Post-rpc interceptor for get_audience
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_big_query_link(
+        self,
+        request: analytics_admin.GetBigQueryLinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetBigQueryLinkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_big_query_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_big_query_link(
+        self, response: resources.BigQueryLink
+    ) -> resources.BigQueryLink:
+        """Post-rpc interceptor for get_big_query_link
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1648,6 +1804,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_get_search_ads360_link(
+        self,
+        request: analytics_admin.GetSearchAds360LinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetSearchAds360LinkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_search_ads360_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_search_ads360_link(
+        self, response: resources.SearchAds360Link
+    ) -> resources.SearchAds360Link:
+        """Post-rpc interceptor for get_search_ads360_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_user_link(
         self,
         request: analytics_admin.GetUserLinkRequest,
@@ -1731,6 +1910,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListAudiencesResponse
     ) -> analytics_admin.ListAudiencesResponse:
         """Post-rpc interceptor for list_audiences
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_big_query_links(
+        self,
+        request: analytics_admin.ListBigQueryLinksRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListBigQueryLinksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_big_query_links
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_big_query_links(
+        self, response: analytics_admin.ListBigQueryLinksResponse
+    ) -> analytics_admin.ListBigQueryLinksResponse:
+        """Post-rpc interceptor for list_big_query_links
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1977,6 +2179,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_list_search_ads360_links(
+        self,
+        request: analytics_admin.ListSearchAds360LinksRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListSearchAds360LinksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_search_ads360_links
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_search_ads360_links(
+        self, response: analytics_admin.ListSearchAds360LinksResponse
+    ) -> analytics_admin.ListSearchAds360LinksResponse:
+        """Post-rpc interceptor for list_search_ads360_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_user_links(
         self,
         request: analytics_admin.ListUserLinksRequest,
@@ -2066,6 +2291,32 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.SearchChangeHistoryEventsResponse
     ) -> analytics_admin.SearchChangeHistoryEventsResponse:
         """Post-rpc interceptor for search_change_history_events
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_automated_ga4_configuration_opt_out(
+        self,
+        request: analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for set_automated_ga4_configuration_opt_out
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_set_automated_ga4_configuration_opt_out(
+        self, response: analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse
+    ) -> analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
+        """Post-rpc interceptor for set_automated_ga4_configuration_opt_out
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2350,6 +2601,31 @@ class AnalyticsAdminServiceRestInterceptor:
 
     def post_update_property(self, response: resources.Property) -> resources.Property:
         """Post-rpc interceptor for update_property
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_search_ads360_link(
+        self,
+        request: analytics_admin.UpdateSearchAds360LinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.UpdateSearchAds360LinkRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_search_ads360_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_search_ads360_link(
+        self, response: resources.SearchAds360Link
+    ) -> resources.SearchAds360Link:
+        """Post-rpc interceptor for update_search_ads360_link
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -4723,6 +4999,107 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_property(resp)
             return resp
 
+    class _CreateSearchAds360Link(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateSearchAds360Link")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateSearchAds360LinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.SearchAds360Link:
+            r"""Call the create search ads360 link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateSearchAds360LinkRequest):
+                    The request object. Request message for
+                CreateSearchAds360Link RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.SearchAds360Link:
+                    A link between a GA4 property and a
+                Search Ads 360 entity.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/searchAds360Links",
+                    "body": "search_ads_360_link",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_search_ads360_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateSearchAds360LinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.SearchAds360Link()
+            pb_resp = resources.SearchAds360Link.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_search_ads360_link(resp)
+            return resp
+
     class _CreateUserLink(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateUserLink")
@@ -5573,6 +5950,84 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_delete_property(resp)
             return resp
 
+    class _DeleteSearchAds360Link(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteSearchAds360Link")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteSearchAds360LinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete search ads360 link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteSearchAds360LinkRequest):
+                    The request object. Request message for
+                DeleteSearchAds360Link RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/searchAds360Links/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_search_ads360_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteSearchAds360LinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteUserLink(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("DeleteUserLink")
@@ -5654,6 +6109,119 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _FetchAutomatedGa4ConfigurationOptOut(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("FetchAutomatedGa4ConfigurationOptOut")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
+            r"""Call the fetch automated ga4
+            configuration opt out method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest):
+                        The request object. Request for fetching the opt out
+                    status for the automated GA4 setup
+                    process.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
+                        Response message for fetching the opt
+                    out status for the automated GA4 setup
+                    process.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/properties:fetchAutomatedGa4ConfigurationOptOut",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_fetch_automated_ga4_configuration_opt_out(
+                request, metadata
+            )
+            pb_request = analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse()
+            pb_resp = analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_fetch_automated_ga4_configuration_opt_out(
+                resp
+            )
+            return resp
 
     class _GetAccount(AnalyticsAdminServiceRestStub):
         def __hash__(self):
@@ -5922,6 +6490,98 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_audience(resp)
+            return resp
+
+    class _GetBigQueryLink(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetBigQueryLink")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetBigQueryLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.BigQueryLink:
+            r"""Call the get big query link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetBigQueryLinkRequest):
+                    The request object. Request message for GetBigQueryLink
+                RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.BigQueryLink:
+                    A link between a GA4 Property and
+                BigQuery project.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/bigQueryLinks/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_big_query_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetBigQueryLinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.BigQueryLink()
+            pb_resp = resources.BigQueryLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_big_query_link(resp)
             return resp
 
     class _GetConversionEvent(AnalyticsAdminServiceRestStub):
@@ -7048,6 +7708,98 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_property(resp)
             return resp
 
+    class _GetSearchAds360Link(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetSearchAds360Link")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetSearchAds360LinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.SearchAds360Link:
+            r"""Call the get search ads360 link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetSearchAds360LinkRequest):
+                    The request object. Request message for
+                GetSearchAds360Link RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.SearchAds360Link:
+                    A link between a GA4 property and a
+                Search Ads 360 entity.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/searchAds360Links/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_search_ads360_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetSearchAds360LinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.SearchAds360Link()
+            pb_resp = resources.SearchAds360Link.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_search_ads360_link(resp)
+            return resp
+
     class _GetUserLink(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("GetUserLink")
@@ -7385,6 +8137,98 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_audiences(resp)
+            return resp
+
+    class _ListBigQueryLinks(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListBigQueryLinks")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListBigQueryLinksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListBigQueryLinksResponse:
+            r"""Call the list big query links method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListBigQueryLinksRequest):
+                    The request object. Request message for ListBigQueryLinks
+                RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListBigQueryLinksResponse:
+                    Response message for
+                ListBigQueryLinks RPC
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/bigQueryLinks",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_big_query_links(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListBigQueryLinksRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListBigQueryLinksResponse()
+            pb_resp = analytics_admin.ListBigQueryLinksResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_big_query_links(resp)
             return resp
 
     class _ListConversionEvents(AnalyticsAdminServiceRestStub):
@@ -8336,6 +9180,98 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_properties(resp)
             return resp
 
+    class _ListSearchAds360Links(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListSearchAds360Links")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListSearchAds360LinksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListSearchAds360LinksResponse:
+            r"""Call the list search ads360 links method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListSearchAds360LinksRequest):
+                    The request object. Request message for
+                ListSearchAds360Links RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListSearchAds360LinksResponse:
+                    Response message for
+                ListSearchAds360Links RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/searchAds360Links",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_search_ads360_links(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListSearchAds360LinksRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListSearchAds360LinksResponse()
+            pb_resp = analytics_admin.ListSearchAds360LinksResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_search_ads360_links(resp)
+            return resp
+
     class _ListUserLinks(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("ListUserLinks")
@@ -8710,6 +9646,117 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_change_history_events(resp)
+            return resp
+
+    class _SetAutomatedGa4ConfigurationOptOut(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("SetAutomatedGa4ConfigurationOptOut")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
+            r"""Call the set automated ga4
+            configuration opt out method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest):
+                        The request object. Request for setting the opt out
+                    status for the automated GA4 setup
+                    process.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
+                        Response message for setting the opt
+                    out status for the automated GA4 setup
+                    process.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/properties:setAutomatedGa4ConfigurationOptOut",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_set_automated_ga4_configuration_opt_out(
+                request, metadata
+            )
+            pb_request = analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse()
+            pb_resp = analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_set_automated_ga4_configuration_opt_out(resp)
             return resp
 
     class _UpdateAccount(AnalyticsAdminServiceRestStub):
@@ -9952,6 +10999,109 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_property(resp)
             return resp
 
+    class _UpdateSearchAds360Link(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateSearchAds360Link")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateSearchAds360LinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.SearchAds360Link:
+            r"""Call the update search ads360 link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.UpdateSearchAds360LinkRequest):
+                    The request object. Request message for
+                UpdateSearchAds360Link RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.SearchAds360Link:
+                    A link between a GA4 property and a
+                Search Ads 360 entity.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{search_ads_360_link.name=properties/*/searchAds360Links/*}",
+                    "body": "search_ads_360_link",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_search_ads360_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateSearchAds360LinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.SearchAds360Link()
+            pb_resp = resources.SearchAds360Link.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_search_ads360_link(resp)
+            return resp
+
     class _UpdateUserLink(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateUserLink")
@@ -10271,6 +11421,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_search_ads360_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSearchAds360LinkRequest], resources.SearchAds360Link
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateSearchAds360Link(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_user_link(
         self,
     ) -> Callable[[analytics_admin.CreateUserLinkRequest], resources.UserLink]:
@@ -10358,12 +11518,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._DeleteProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_search_ads360_link(
+        self,
+    ) -> Callable[[analytics_admin.DeleteSearchAds360LinkRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteSearchAds360Link(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_user_link(
         self,
     ) -> Callable[[analytics_admin.DeleteUserLinkRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteUserLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_automated_ga4_configuration_opt_out(
+        self,
+    ) -> Callable[
+        [analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest],
+        analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_account(
@@ -10390,6 +11569,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAudience(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_big_query_link(
+        self,
+    ) -> Callable[[analytics_admin.GetBigQueryLinkRequest], resources.BigQueryLink]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBigQueryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_conversion_event(
@@ -10509,6 +11696,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._GetProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_search_ads360_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSearchAds360LinkRequest], resources.SearchAds360Link
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSearchAds360Link(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_user_link(
         self,
     ) -> Callable[[analytics_admin.GetUserLinkRequest], resources.UserLink]:
@@ -10546,6 +11743,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAudiences(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_big_query_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListBigQueryLinksRequest],
+        analytics_admin.ListBigQueryLinksResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBigQueryLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_conversion_events(
@@ -10657,6 +11865,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._ListProperties(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_search_ads360_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSearchAds360LinksRequest],
+        analytics_admin.ListSearchAds360LinksResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSearchAds360Links(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_user_links(
         self,
     ) -> Callable[
@@ -10698,6 +11917,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchChangeHistoryEvents(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def set_automated_ga4_configuration_opt_out(
+        self,
+    ) -> Callable[
+        [analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest],
+        analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_account(
@@ -10813,6 +12043,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProperty(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_search_ads360_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSearchAds360LinkRequest], resources.SearchAds360Link
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSearchAds360Link(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_user_link(

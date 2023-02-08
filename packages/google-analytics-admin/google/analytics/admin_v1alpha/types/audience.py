@@ -150,9 +150,6 @@ class AudienceDimensionOrMetricFilter(proto.Message):
                 FULL_REGEXP (5):
                     Full regular expression matches with the
                     string value.
-                PARTIAL_REGEXP (6):
-                    Partial regular expression matches with the
-                    string value.
             """
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
@@ -160,7 +157,6 @@ class AudienceDimensionOrMetricFilter(proto.Message):
             ENDS_WITH = 3
             CONTAINS = 4
             FULL_REGEXP = 5
-            PARTIAL_REGEXP = 6
 
         match_type: "AudienceDimensionOrMetricFilter.StringFilter.MatchType" = (
             proto.Field(
@@ -255,19 +251,13 @@ class AudienceDimensionOrMetricFilter(proto.Message):
                     Equal.
                 LESS_THAN (2):
                     Less than.
-                LESS_THAN_OR_EQUAL (3):
-                    Less than or equal.
                 GREATER_THAN (4):
                     Greater than.
-                GREATER_THAN_OR_EQUAL (5):
-                    Greater than or equal.
             """
             OPERATION_UNSPECIFIED = 0
             EQUAL = 1
             LESS_THAN = 2
-            LESS_THAN_OR_EQUAL = 3
             GREATER_THAN = 4
-            GREATER_THAN_OR_EQUAL = 5
 
         operation: "AudienceDimensionOrMetricFilter.NumericFilter.Operation" = (
             proto.Field(
@@ -711,9 +701,9 @@ class Audience(proto.Message):
             is ignored when there is no EXCLUDE filter
             clause in the Audience.
         filter_clauses (MutableSequence[google.analytics.admin_v1alpha.types.AudienceFilterClause]):
-            Required. Immutable. null Filter clauses that
-            define the Audience. All clauses will be AND’ed
-            together.
+            Required. Immutable. Unordered list. Filter
+            clauses that define the Audience. All clauses
+            will be AND’ed together.
     """
 
     class AudienceExclusionDurationMode(proto.Enum):

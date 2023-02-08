@@ -635,14 +635,22 @@ class AccessQuota(proto.Message):
         tokens_per_hour (google.analytics.admin_v1alpha.types.AccessQuotaStatus):
             Properties can use 50,000 tokens per hour. An
             API request consumes a single number of tokens,
-            and that number is deducted from both the hourly
-            and daily quotas.
+            and that number is deducted from all of the
+            hourly, daily, and per project hourly quotas.
         concurrent_requests (google.analytics.admin_v1alpha.types.AccessQuotaStatus):
             Properties can use up to 50 concurrent
             requests.
         server_errors_per_project_per_hour (google.analytics.admin_v1alpha.types.AccessQuotaStatus):
             Properties and cloud project pairs can have
             up to 50 server errors per hour.
+        tokens_per_project_per_hour (google.analytics.admin_v1alpha.types.AccessQuotaStatus):
+            Properties can use up to 25% of their tokens
+            per project per hour. This amounts to Analytics
+            360 Properties can use 12,500 tokens per project
+            per hour. An API request consumes a single
+            number of tokens, and that number is deducted
+            from all of the hourly, daily, and per project
+            hourly quotas.
     """
 
     tokens_per_day: "AccessQuotaStatus" = proto.Field(
@@ -663,6 +671,11 @@ class AccessQuota(proto.Message):
     server_errors_per_project_per_hour: "AccessQuotaStatus" = proto.Field(
         proto.MESSAGE,
         number=4,
+        message="AccessQuotaStatus",
+    )
+    tokens_per_project_per_hour: "AccessQuotaStatus" = proto.Field(
+        proto.MESSAGE,
+        number=5,
         message="AccessQuotaStatus",
     )
 

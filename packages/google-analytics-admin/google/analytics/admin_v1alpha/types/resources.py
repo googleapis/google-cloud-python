@@ -19,6 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.analytics.admin_v1alpha.types import (
+    expanded_data_set as gaa_expanded_data_set,
+)
+
 __protobuf__ = proto.module(
     package="google.analytics.admin.v1alpha",
     manifest={
@@ -48,6 +52,7 @@ __protobuf__ = proto.module(
         "ChangeHistoryChange",
         "DisplayVideo360AdvertiserLink",
         "DisplayVideo360AdvertiserLinkProposal",
+        "SearchAds360Link",
         "LinkProposalStatusDetails",
         "ConversionEvent",
         "GoogleSignalsSettings",
@@ -55,6 +60,7 @@ __protobuf__ = proto.module(
         "CustomMetric",
         "DataRetentionSettings",
         "AttributionSettings",
+        "BigQueryLink",
     },
 )
 
@@ -243,6 +249,10 @@ class ChangeHistoryResourceType(proto.Enum):
             DataStream resource
         ATTRIBUTION_SETTINGS (20):
             AttributionSettings resource
+        EXPANDED_DATA_SET (21):
+            ExpandedDataSet resource
+        CHANNEL_GROUP (22):
+            ChannelGroup resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -260,6 +270,8 @@ class ChangeHistoryResourceType(proto.Enum):
     SEARCH_ADS_360_LINK = 16
     DATA_STREAM = 18
     ATTRIBUTION_SETTINGS = 20
+    EXPANDED_DATA_SET = 21
+    CHANNEL_GROUP = 22
 
 
 class GoogleSignalsState(proto.Enum):
@@ -1286,6 +1298,11 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            search_ads_360_link (google.analytics.admin_v1alpha.types.SearchAds360Link):
+                A snapshot of a SearchAds360Link resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
             data_stream (google.analytics.admin_v1alpha.types.DataStream):
                 A snapshot of a DataStream resource in change
                 history.
@@ -1293,6 +1310,16 @@ class ChangeHistoryChange(proto.Message):
                 This field is a member of `oneof`_ ``resource``.
             attribution_settings (google.analytics.admin_v1alpha.types.AttributionSettings):
                 A snapshot of AttributionSettings resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
+            expanded_data_set (google.analytics.admin_v1alpha.types.ExpandedDataSet):
+                A snapshot of an ExpandedDataSet resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
+            bigquery_link (google.analytics.admin_v1alpha.types.BigQueryLink):
+                A snapshot of a BigQuery link resource in
                 change history.
 
                 This field is a member of `oneof`_ ``resource``.
@@ -1372,6 +1399,12 @@ class ChangeHistoryChange(proto.Message):
             oneof="resource",
             message="DataRetentionSettings",
         )
+        search_ads_360_link: "SearchAds360Link" = proto.Field(
+            proto.MESSAGE,
+            number=16,
+            oneof="resource",
+            message="SearchAds360Link",
+        )
         data_stream: "DataStream" = proto.Field(
             proto.MESSAGE,
             number=18,
@@ -1383,6 +1416,18 @@ class ChangeHistoryChange(proto.Message):
             number=20,
             oneof="resource",
             message="AttributionSettings",
+        )
+        expanded_data_set: gaa_expanded_data_set.ExpandedDataSet = proto.Field(
+            proto.MESSAGE,
+            number=21,
+            oneof="resource",
+            message=gaa_expanded_data_set.ExpandedDataSet,
+        )
+        bigquery_link: "BigQueryLink" = proto.Field(
+            proto.MESSAGE,
+            number=23,
+            oneof="resource",
+            message="BigQueryLink",
         )
 
     resource: str = proto.Field(
@@ -1431,8 +1476,8 @@ class DisplayVideo360AdvertiserLink(proto.Message):
             Immutable. Enables the import of campaign
             data from Display & Video 360 into the GA4
             property. After link creation, this can only be
-            updated from the Display & Video 360 product.
-            If this field is not set on create, it will be
+            updated from the Display & Video 360 product. If
+            this field is not set on create, it will be
             defaulted to true.
         cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Immutable. Enables the import of cost data from Display &
@@ -1557,6 +1602,82 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
     cost_data_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=8,
+        message=wrappers_pb2.BoolValue,
+    )
+
+
+class SearchAds360Link(proto.Message):
+    r"""A link between a GA4 property and a Search Ads 360 entity.
+
+    Attributes:
+        name (str):
+            Output only. The resource name for this
+            SearchAds360Link resource. Format:
+            properties/{propertyId}/searchAds360Links/{linkId}
+            Note: linkId is not the Search Ads 360
+            advertiser ID
+        advertiser_id (str):
+            Immutable. This field represents the
+            Advertiser ID of the Search Ads 360 Advertiser.
+            that has been linked.
+        campaign_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Immutable. Enables the import of campaign
+            data from Search Ads 360 into the GA4 property.
+            After link creation, this can only be updated
+            from the Search Ads 360 product.
+            If this field is not set on create, it will be
+            defaulted to true.
+        cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Immutable. Enables the import of cost data from Search Ads
+            360 to the GA4 property. This can only be enabled if
+            campaign_data_sharing_enabled is enabled. After link
+            creation, this can only be updated from the Search Ads 360
+            product. If this field is not set on create, it will be
+            defaulted to true.
+        advertiser_display_name (str):
+            Output only. The display name of the Search
+            Ads 360 Advertiser. Allows users to easily
+            identify the linked resource.
+        ads_personalization_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Enables personalized advertising features
+            with this integration. If this field is not set
+            on create, it will be defaulted to true.
+        site_stats_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Enables export of site stats with this
+            integration. If this field is not set on create,
+            it will be defaulted to true.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    advertiser_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    campaign_data_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.BoolValue,
+    )
+    cost_data_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=wrappers_pb2.BoolValue,
+    )
+    advertiser_display_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    ads_personalization_enabled: wrappers_pb2.BoolValue = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=wrappers_pb2.BoolValue,
+    )
+    site_stats_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
+        proto.MESSAGE,
+        number=7,
         message=wrappers_pb2.BoolValue,
     )
 
@@ -2095,6 +2216,79 @@ class AttributionSettings(proto.Message):
         proto.ENUM,
         number=4,
         enum=ReportingAttributionModel,
+    )
+
+
+class BigQueryLink(proto.Message):
+    r"""A link between a GA4 Property and BigQuery project.
+
+    Attributes:
+        name (str):
+            Output only. Resource name of this BigQuery link. Format:
+            'properties/{property_id}/bigQueryLinks/{bigquery_link_id}'
+            Format: 'properties/1234/bigQueryLinks/abc567'
+        project (str):
+            Immutable. The linked Google Cloud project.
+            When creating a BigQueryLink, you may provide
+            this resource name using either a project number
+            or project ID. Once this resource has been
+            created, the returned project will always have a
+            project that contains a project number. Format:
+            'projects/{project number}'
+            Example: 'projects/1234'
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when the link was created.
+        daily_export_enabled (bool):
+            If set true, enables daily data export to the
+            linked Google Cloud project.
+        streaming_export_enabled (bool):
+            If set true, enables streaming export to the
+            linked Google Cloud project.
+        include_advertising_id (bool):
+            If set true, exported data will include
+            advertising identifiers for mobile app streams.
+        export_streams (MutableSequence[str]):
+            The list of streams under the parent property for which data
+            will be exported. Format:
+            properties/{property_id}/dataStreams/{stream_id} Example:
+            ['properties/1000/dataStreams/2000']
+        excluded_events (MutableSequence[str]):
+            The list of event names that will be excluded
+            from exports.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    daily_export_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    streaming_export_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    include_advertising_id: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    export_streams: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    excluded_events: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 

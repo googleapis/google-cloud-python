@@ -133,27 +133,27 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self._wrapped_methods = {
             self.get_account: gapic_v1.method.wrap_method(
                 self.get_account,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_accounts: gapic_v1.method.wrap_method(
                 self.list_accounts,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_account: gapic_v1.method.wrap_method(
                 self.delete_account,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_account: gapic_v1.method.wrap_method(
                 self.update_account,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.provision_account_ticket: gapic_v1.method.wrap_method(
                 self.provision_account_ticket,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_account_summaries: gapic_v1.method.wrap_method(
@@ -163,117 +163,117 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.get_property: gapic_v1.method.wrap_method(
                 self.get_property,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_properties: gapic_v1.method.wrap_method(
                 self.list_properties,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_property: gapic_v1.method.wrap_method(
                 self.create_property,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_property: gapic_v1.method.wrap_method(
                 self.delete_property,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_property: gapic_v1.method.wrap_method(
                 self.update_property,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_user_link: gapic_v1.method.wrap_method(
                 self.get_user_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.batch_get_user_links: gapic_v1.method.wrap_method(
                 self.batch_get_user_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_user_links: gapic_v1.method.wrap_method(
                 self.list_user_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.audit_user_links: gapic_v1.method.wrap_method(
                 self.audit_user_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_user_link: gapic_v1.method.wrap_method(
                 self.create_user_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.batch_create_user_links: gapic_v1.method.wrap_method(
                 self.batch_create_user_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_user_link: gapic_v1.method.wrap_method(
                 self.update_user_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.batch_update_user_links: gapic_v1.method.wrap_method(
                 self.batch_update_user_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_user_link: gapic_v1.method.wrap_method(
                 self.delete_user_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.batch_delete_user_links: gapic_v1.method.wrap_method(
                 self.batch_delete_user_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_firebase_link: gapic_v1.method.wrap_method(
                 self.create_firebase_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_firebase_link: gapic_v1.method.wrap_method(
                 self.delete_firebase_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_firebase_links: gapic_v1.method.wrap_method(
                 self.list_firebase_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_global_site_tag: gapic_v1.method.wrap_method(
                 self.get_global_site_tag,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_google_ads_link: gapic_v1.method.wrap_method(
                 self.create_google_ads_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_google_ads_link: gapic_v1.method.wrap_method(
                 self.update_google_ads_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_google_ads_link: gapic_v1.method.wrap_method(
                 self.delete_google_ads_link,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_google_ads_links: gapic_v1.method.wrap_method(
                 self.list_google_ads_links,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_data_sharing_settings: gapic_v1.method.wrap_method(
@@ -511,6 +511,31 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_search_ads360_link: gapic_v1.method.wrap_method(
+                self.get_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_search_ads360_links: gapic_v1.method.wrap_method(
+                self.list_search_ads360_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_search_ads360_link: gapic_v1.method.wrap_method(
+                self.create_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_search_ads360_link: gapic_v1.method.wrap_method(
+                self.delete_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_search_ads360_link: gapic_v1.method.wrap_method(
+                self.update_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_attribution_settings: gapic_v1.method.wrap_method(
                 self.get_attribution_settings,
                 default_timeout=None,
@@ -523,6 +548,26 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.run_access_report: gapic_v1.method.wrap_method(
                 self.run_access_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_automated_ga4_configuration_opt_out: gapic_v1.method.wrap_method(
+                self.set_automated_ga4_configuration_opt_out,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_automated_ga4_configuration_opt_out: gapic_v1.method.wrap_method(
+                self.fetch_automated_ga4_configuration_opt_out,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_big_query_link: gapic_v1.method.wrap_method(
+                self.get_big_query_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_big_query_links: gapic_v1.method.wrap_method(
+                self.list_big_query_links,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1327,6 +1372,54 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_search_ads360_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSearchAds360LinkRequest],
+        Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_search_ads360_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSearchAds360LinksRequest],
+        Union[
+            analytics_admin.ListSearchAds360LinksResponse,
+            Awaitable[analytics_admin.ListSearchAds360LinksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_search_ads360_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSearchAds360LinkRequest],
+        Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_search_ads360_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteSearchAds360LinkRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_search_ads360_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSearchAds360LinkRequest],
+        Union[resources.SearchAds360Link, Awaitable[resources.SearchAds360Link]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_attribution_settings(
         self,
     ) -> Callable[
@@ -1352,6 +1445,51 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             analytics_admin.RunAccessReportResponse,
             Awaitable[analytics_admin.RunAccessReportResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_automated_ga4_configuration_opt_out(
+        self,
+    ) -> Callable[
+        [analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest],
+        Union[
+            analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse,
+            Awaitable[analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_automated_ga4_configuration_opt_out(
+        self,
+    ) -> Callable[
+        [analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest],
+        Union[
+            analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse,
+            Awaitable[analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_big_query_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetBigQueryLinkRequest],
+        Union[resources.BigQueryLink, Awaitable[resources.BigQueryLink]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_big_query_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListBigQueryLinksRequest],
+        Union[
+            analytics_admin.ListBigQueryLinksResponse,
+            Awaitable[analytics_admin.ListBigQueryLinksResponse],
         ],
     ]:
         raise NotImplementedError()

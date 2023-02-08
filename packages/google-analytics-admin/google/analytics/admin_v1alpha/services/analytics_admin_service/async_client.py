@@ -81,6 +81,10 @@ class AnalyticsAdminServiceAsyncClient:
     )
     audience_path = staticmethod(AnalyticsAdminServiceClient.audience_path)
     parse_audience_path = staticmethod(AnalyticsAdminServiceClient.parse_audience_path)
+    big_query_link_path = staticmethod(AnalyticsAdminServiceClient.big_query_link_path)
+    parse_big_query_link_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_big_query_link_path
+    )
     conversion_event_path = staticmethod(
         AnalyticsAdminServiceClient.conversion_event_path
     )
@@ -125,6 +129,12 @@ class AnalyticsAdminServiceAsyncClient:
     parse_display_video360_advertiser_link_proposal_path = staticmethod(
         AnalyticsAdminServiceClient.parse_display_video360_advertiser_link_proposal_path
     )
+    expanded_data_set_path = staticmethod(
+        AnalyticsAdminServiceClient.expanded_data_set_path
+    )
+    parse_expanded_data_set_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_expanded_data_set_path
+    )
     firebase_link_path = staticmethod(AnalyticsAdminServiceClient.firebase_link_path)
     parse_firebase_link_path = staticmethod(
         AnalyticsAdminServiceClient.parse_firebase_link_path
@@ -155,6 +165,12 @@ class AnalyticsAdminServiceAsyncClient:
     )
     property_path = staticmethod(AnalyticsAdminServiceClient.property_path)
     parse_property_path = staticmethod(AnalyticsAdminServiceClient.parse_property_path)
+    search_ads360_link_path = staticmethod(
+        AnalyticsAdminServiceClient.search_ads360_link_path
+    )
+    parse_search_ads360_link_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_search_ads360_link_path
+    )
     user_link_path = staticmethod(AnalyticsAdminServiceClient.user_link_path)
     parse_user_link_path = staticmethod(
         AnalyticsAdminServiceClient.parse_user_link_path
@@ -397,7 +413,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_account,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -483,7 +499,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_accounts,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -590,7 +606,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_account,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -705,7 +721,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_account,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -788,7 +804,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.provision_account_ticket,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -972,7 +988,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_property,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1062,7 +1078,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_properties,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1173,7 +1189,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_property,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1207,8 +1223,8 @@ class AnalyticsAdminServiceAsyncClient:
         GoogleAdsLinks, Streams, UserLinks) will be permanently
         purged.
         https://support.google.com/analytics/answer/6154772
-        Returns an error if the target is not found, or is not
-        an GA4 Property.
+        Returns an error if the target is not found, or is not a
+        GA4 Property.
 
         .. code-block:: python
 
@@ -1281,7 +1297,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_property,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1401,7 +1417,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_property,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1506,7 +1522,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_user_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1588,7 +1604,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_get_user_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1694,7 +1710,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_user_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1797,7 +1813,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.audit_user_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1929,7 +1945,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_user_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2018,7 +2034,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_create_user_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2118,7 +2134,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_user_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2203,7 +2219,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_update_user_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2296,7 +2312,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_user_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2371,7 +2387,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_delete_user_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2483,7 +2499,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_firebase_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2579,7 +2595,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_firebase_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2683,7 +2699,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_firebase_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2800,7 +2816,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_global_site_tag,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2914,7 +2930,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_google_ads_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3028,7 +3044,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_google_ads_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3125,7 +3141,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_google_ads_link,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3230,7 +3246,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_google_ads_links,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -7870,6 +7886,7 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> audience.Audience:
         r"""Lookup for a single Audience.
         Audiences created before 2020 may not be supported.
+        Default audiences will not show filter definitions.
 
         .. code-block:: python
 
@@ -7973,6 +7990,7 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.ListAudiencesAsyncPager:
         r"""Lists Audiences on a property.
         Audiences created before 2020 may not be supported.
+        Default audiences will not show filter definitions.
 
         .. code-block:: python
 
@@ -8389,6 +8407,551 @@ class AnalyticsAdminServiceAsyncClient:
             metadata=metadata,
         )
 
+    async def get_search_ads360_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetSearchAds360LinkRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.SearchAds360Link:
+        r"""Look up a single SearchAds360Link
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_get_search_ads360_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetSearchAds360LinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_search_ads360_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetSearchAds360LinkRequest, dict]]):
+                The request object. Request message for
+                GetSearchAds360Link RPC.
+            name (:class:`str`):
+                Required. The name of the
+                SearchAds360Link to get. Example format:
+                properties/1234/SearchAds360Link/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SearchAds360Link:
+                A link between a GA4 property and a
+                Search Ads 360 entity.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.GetSearchAds360LinkRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_search_ads360_link,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_search_ads360_links(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListSearchAds360LinksRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSearchAds360LinksAsyncPager:
+        r"""Lists all SearchAds360Links on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_list_search_ads360_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListSearchAds360LinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_search_ads360_links(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.ListSearchAds360LinksRequest, dict]]):
+                The request object. Request message for
+                ListSearchAds360Links RPC.
+            parent (:class:`str`):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListSearchAds360LinksAsyncPager:
+                Response message for
+                ListSearchAds360Links RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.ListSearchAds360LinksRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_search_ads360_links,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSearchAds360LinksAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_search_ads360_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateSearchAds360LinkRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        search_ads_360_link: Optional[resources.SearchAds360Link] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.SearchAds360Link:
+        r"""Creates a SearchAds360Link.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_create_search_ads360_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateSearchAds360LinkRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_search_ads360_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.CreateSearchAds360LinkRequest, dict]]):
+                The request object. Request message for
+                CreateSearchAds360Link RPC.
+            parent (:class:`str`):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            search_ads_360_link (:class:`google.analytics.admin_v1alpha.types.SearchAds360Link`):
+                Required. The SearchAds360Link to
+                create.
+
+                This corresponds to the ``search_ads_360_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SearchAds360Link:
+                A link between a GA4 property and a
+                Search Ads 360 entity.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, search_ads_360_link])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.CreateSearchAds360LinkRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if search_ads_360_link is not None:
+            request.search_ads_360_link = search_ads_360_link
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_search_ads360_link,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_search_ads360_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteSearchAds360LinkRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a SearchAds360Link on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_delete_search_ads360_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteSearchAds360LinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_search_ads360_link(request=request)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.DeleteSearchAds360LinkRequest, dict]]):
+                The request object. Request message for
+                DeleteSearchAds360Link RPC.
+            name (:class:`str`):
+                Required. The name of the
+                SearchAds360Link to delete. Example
+                format:
+                properties/1234/SearchAds360Links/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.DeleteSearchAds360LinkRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_search_ads360_link,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def update_search_ads360_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateSearchAds360LinkRequest, dict]
+        ] = None,
+        *,
+        search_ads_360_link: Optional[resources.SearchAds360Link] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.SearchAds360Link:
+        r"""Updates a SearchAds360Link on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_update_search_ads360_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateSearchAds360LinkRequest(
+                )
+
+                # Make the request
+                response = await client.update_search_ads360_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.UpdateSearchAds360LinkRequest, dict]]):
+                The request object. Request message for
+                UpdateSearchAds360Link RPC.
+            search_ads_360_link (:class:`google.analytics.admin_v1alpha.types.SearchAds360Link`):
+                The SearchAds360Link to update
+                This corresponds to the ``search_ads_360_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be updated. Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SearchAds360Link:
+                A link between a GA4 property and a
+                Search Ads 360 entity.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([search_ads_360_link, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.UpdateSearchAds360LinkRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if search_ads_360_link is not None:
+            request.search_ads_360_link = search_ads_360_link
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_search_ads360_link,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("search_ads_360_link.name", request.search_ads_360_link.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_attribution_settings(
         self,
         request: Optional[
@@ -8708,6 +9271,384 @@ class AnalyticsAdminServiceAsyncClient:
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def set_automated_ga4_configuration_opt_out(
+        self,
+        request: Optional[
+            Union[analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
+        r"""Sets the opt out status for the automated GA4 setup
+        process for a UA property.
+        Note: this has no effect on GA4 property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_set_automated_ga4_configuration_opt_out():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.SetAutomatedGa4ConfigurationOptOutRequest(
+                    property="property_value",
+                )
+
+                # Make the request
+                response = await client.set_automated_ga4_configuration_opt_out(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.SetAutomatedGa4ConfigurationOptOutRequest, dict]]):
+                The request object. Request for setting the opt out
+                status for the automated GA4 setup process.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SetAutomatedGa4ConfigurationOptOutResponse:
+                Response message for setting the opt
+                out status for the automated GA4 setup
+                process.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.set_automated_ga4_configuration_opt_out,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def fetch_automated_ga4_configuration_opt_out(
+        self,
+        request: Optional[
+            Union[analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
+        r"""Fetches the opt out status for the automated GA4
+        setup process for a UA property.
+        Note: this has no effect on GA4 property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_fetch_automated_ga4_configuration_opt_out():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.FetchAutomatedGa4ConfigurationOptOutRequest(
+                    property="property_value",
+                )
+
+                # Make the request
+                response = await client.fetch_automated_ga4_configuration_opt_out(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.FetchAutomatedGa4ConfigurationOptOutRequest, dict]]):
+                The request object. Request for fetching the opt out
+                status for the automated GA4 setup process.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.FetchAutomatedGa4ConfigurationOptOutResponse:
+                Response message for fetching the opt
+                out status for the automated GA4 setup
+                process.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.fetch_automated_ga4_configuration_opt_out,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_big_query_link(
+        self,
+        request: Optional[Union[analytics_admin.GetBigQueryLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.BigQueryLink:
+        r"""Lookup for a single BigQuery Link.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_get_big_query_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetBigQueryLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_big_query_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetBigQueryLinkRequest, dict]]):
+                The request object. Request message for GetBigQueryLink
+                RPC.
+            name (:class:`str`):
+                Required. The name of the BigQuery link to lookup.
+                Format:
+                properties/{property_id}/bigQueryLinks/{bigquery_link_id}
+                Example: properties/123/bigQueryLinks/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.BigQueryLink:
+                A link between a GA4 Property and
+                BigQuery project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.GetBigQueryLinkRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_big_query_link,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_big_query_links(
+        self,
+        request: Optional[Union[analytics_admin.ListBigQueryLinksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBigQueryLinksAsyncPager:
+        r"""Lists BigQuery Links on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_list_big_query_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListBigQueryLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_big_query_links(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.ListBigQueryLinksRequest, dict]]):
+                The request object. Request message for
+                ListBigQueryLinks RPC.
+            parent (:class:`str`):
+                Required. The name of the property to list BigQuery
+                links under. Format: properties/{property_id} Example:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListBigQueryLinksAsyncPager:
+                Response message for
+                ListBigQueryLinks RPC
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.ListBigQueryLinksRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_big_query_links,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListBigQueryLinksAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 
