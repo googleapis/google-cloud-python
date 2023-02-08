@@ -1150,9 +1150,6 @@ class NodeConfig(proto.Message):
             network firewalls. Each tag within the list must comply with
             `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__. Cannot
             be updated.
-
-            This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
         ip_allocation_policy (google.cloud.orchestration.airflow.service_v1.types.IPAllocationPolicy):
             Optional. The configuration for controlling
             how IPs are allocated in the GKE cluster.
