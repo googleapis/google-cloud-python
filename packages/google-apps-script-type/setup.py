@@ -55,7 +55,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google", "google.apps", "google.apps.script", "google.apps.script.type"]
+namespaces = ["google", "google.apps", "google.apps.script"]
 
 setuptools.setup(
     name=name,
