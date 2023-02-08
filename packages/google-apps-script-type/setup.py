@@ -20,15 +20,13 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-apps-script-type-slides"
+name = "google-apps-script-type"
 
 
-description = "Google Apps Script Type Slides API client library"
+description = "Google Apps Script Type API client library"
 
 version = {}
-with open(
-    os.path.join(package_root, "google/apps/script/type/slides/gapic_version.py")
-) as fp:
+with open(os.path.join(package_root, "google/apps/script/type/gapic_version.py")) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 
