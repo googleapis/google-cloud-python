@@ -51,7 +51,7 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID", credentials_json_path=
 
     # Explicitly use service account credentials by specifying
     # the private key file.
-    client = BetaAnalyticsDataClient().from_service_account_json(credentials_json_path)
+    client = BetaAnalyticsDataClient.from_service_account_json(credentials_json_path)
     # [END analyticsdata_json_credentials_initialize]
 
     # [START analyticsdata_json_credentials_run_report]
