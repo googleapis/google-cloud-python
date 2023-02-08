@@ -83,7 +83,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install documentai-toolbox
+    <your-env>/bin/pip install google-cloud-documentai-toolbox
 
 
 Windows
@@ -94,7 +94,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install documentai-toolbox
+    <your-env>\Scripts\pip.exe install google-cloud-documentai-toolbox
 
 Next Steps
 ~~~~~~~~~~
