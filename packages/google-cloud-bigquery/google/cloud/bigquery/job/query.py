@@ -1381,11 +1381,11 @@ class QueryJob(_AsyncJob):
 
     def result(  # type: ignore  # (complaints about the overloaded signature)
         self,
-        page_size: int = None,
-        max_results: int = None,
+        page_size: Optional[int] = None,
+        max_results: Optional[int] = None,
         retry: "retries.Retry" = DEFAULT_RETRY,
         timeout: float = None,
-        start_index: int = None,
+        start_index: Optional[int] = None,
         job_retry: "retries.Retry" = DEFAULT_JOB_RETRY,
     ) -> Union["RowIterator", _EmptyRowIterator]:
         """Start the job and wait for it to complete and get the result.

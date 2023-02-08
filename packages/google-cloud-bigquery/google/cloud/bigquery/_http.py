@@ -14,20 +14,8 @@
 
 """Create / interact with Google BigQuery connections."""
 
-import os
-import pkg_resources
-
 from google.cloud import _http  # type: ignore  # pytype: disable=import-error
 from google.cloud.bigquery import __version__
-
-
-# TODO: Increase the minimum version of google-cloud-core to 1.6.0
-# and remove this logic. See:
-# https://github.com/googleapis/python-bigquery/issues/509
-if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true":  # pragma: NO COVER
-    release = pkg_resources.get_distribution("google-cloud-core").parsed_version
-    if release < pkg_resources.parse_version("1.6.0"):
-        raise ImportError("google-cloud-core >= 1.6.0 is required to use mTLS feature")
 
 
 class Connection(_http.JSONConnection):

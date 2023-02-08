@@ -39,7 +39,7 @@ dependencies = [
     # NOTE: Maintainers, please do not require google-cloud-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-cloud-core >= 1.4.1, <3.0.0dev",
+    "google-cloud-core >= 1.6.0, <3.0.0dev",
     "google-resumable-media >= 0.6.0, < 3.0dev",
     "packaging >= 20.0.0",
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",  # For the legacy proto-based types.
