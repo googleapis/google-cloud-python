@@ -59,6 +59,7 @@ from google.cloud.contentwarehouse_v1.types import document_schema_service
 from .transports.base import DEFAULT_CLIENT_INFO, DocumentSchemaServiceTransport
 from .transports.grpc import DocumentSchemaServiceGrpcTransport
 from .transports.grpc_asyncio import DocumentSchemaServiceGrpcAsyncIOTransport
+from .transports.rest import DocumentSchemaServiceRestTransport
 
 
 class DocumentSchemaServiceClientMeta(type):
@@ -74,6 +75,7 @@ class DocumentSchemaServiceClientMeta(type):
     )  # type: Dict[str, Type[DocumentSchemaServiceTransport]]
     _transport_registry["grpc"] = DocumentSchemaServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DocumentSchemaServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DocumentSchemaServiceRestTransport
 
     def get_transport_class(
         cls,

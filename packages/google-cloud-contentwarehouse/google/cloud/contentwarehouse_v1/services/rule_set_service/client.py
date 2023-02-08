@@ -54,6 +54,7 @@ from google.cloud.contentwarehouse_v1.types import rule_engine, ruleset_service_
 from .transports.base import DEFAULT_CLIENT_INFO, RuleSetServiceTransport
 from .transports.grpc import RuleSetServiceGrpcTransport
 from .transports.grpc_asyncio import RuleSetServiceGrpcAsyncIOTransport
+from .transports.rest import RuleSetServiceRestTransport
 
 
 class RuleSetServiceClientMeta(type):
@@ -69,6 +70,7 @@ class RuleSetServiceClientMeta(type):
     )  # type: Dict[str, Type[RuleSetServiceTransport]]
     _transport_registry["grpc"] = RuleSetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = RuleSetServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = RuleSetServiceRestTransport
 
     def get_transport_class(
         cls,

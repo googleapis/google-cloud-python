@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -32,6 +34,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -41,6 +44,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.maps.routing_v2.services.routes import (
     RoutesAsyncClient,
@@ -107,6 +112,7 @@ def test__get_default_mtls_endpoint():
     [
         (RoutesClient, "grpc"),
         (RoutesAsyncClient, "grpc_asyncio"),
+        (RoutesClient, "rest"),
     ],
 )
 def test_routes_client_from_service_account_info(client_class, transport_name):
@@ -120,7 +126,11 @@ def test_routes_client_from_service_account_info(client_class, transport_name):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("routes.googleapis.com:443")
+        assert client.transport._host == (
+            "routes.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://routes.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -128,6 +138,7 @@ def test_routes_client_from_service_account_info(client_class, transport_name):
     [
         (transports.RoutesGrpcTransport, "grpc"),
         (transports.RoutesGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.RoutesRestTransport, "rest"),
     ],
 )
 def test_routes_client_service_account_always_use_jwt(transport_class, transport_name):
@@ -151,6 +162,7 @@ def test_routes_client_service_account_always_use_jwt(transport_class, transport
     [
         (RoutesClient, "grpc"),
         (RoutesAsyncClient, "grpc_asyncio"),
+        (RoutesClient, "rest"),
     ],
 )
 def test_routes_client_from_service_account_file(client_class, transport_name):
@@ -171,13 +183,18 @@ def test_routes_client_from_service_account_file(client_class, transport_name):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("routes.googleapis.com:443")
+        assert client.transport._host == (
+            "routes.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://routes.googleapis.com"
+        )
 
 
 def test_routes_client_get_transport_class():
     transport = RoutesClient.get_transport_class()
     available_transports = [
         transports.RoutesGrpcTransport,
+        transports.RoutesRestTransport,
     ]
     assert transport in available_transports
 
@@ -190,6 +207,7 @@ def test_routes_client_get_transport_class():
     [
         (RoutesClient, transports.RoutesGrpcTransport, "grpc"),
         (RoutesAsyncClient, transports.RoutesGrpcAsyncIOTransport, "grpc_asyncio"),
+        (RoutesClient, transports.RoutesRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -329,6 +347,8 @@ def test_routes_client_client_options(client_class, transport_class, transport_n
             "grpc_asyncio",
             "false",
         ),
+        (RoutesClient, transports.RoutesRestTransport, "rest", "true"),
+        (RoutesClient, transports.RoutesRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -514,6 +534,7 @@ def test_routes_client_get_mtls_endpoint_and_cert_source(client_class):
     [
         (RoutesClient, transports.RoutesGrpcTransport, "grpc"),
         (RoutesAsyncClient, transports.RoutesGrpcAsyncIOTransport, "grpc_asyncio"),
+        (RoutesClient, transports.RoutesRestTransport, "rest"),
     ],
 )
 def test_routes_client_client_options_scopes(
@@ -549,6 +570,7 @@ def test_routes_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (RoutesClient, transports.RoutesRestTransport, "rest", None),
     ],
 )
 def test_routes_client_client_options_credentials_file(
@@ -830,6 +852,448 @@ async def test_compute_route_matrix_async_from_dict():
     await test_compute_route_matrix_async(request_type=dict)
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        routes_service.ComputeRoutesRequest,
+        dict,
+    ],
+)
+def test_compute_routes_rest(request_type):
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = routes_service.ComputeRoutesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = routes_service.ComputeRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.compute_routes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, routes_service.ComputeRoutesResponse)
+
+
+def test_compute_routes_rest_required_fields(
+    request_type=routes_service.ComputeRoutesRequest,
+):
+    transport_class = transports.RoutesRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_routes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_routes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = routes_service.ComputeRoutesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = routes_service.ComputeRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.compute_routes(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_compute_routes_rest_unset_required_fields():
+    transport = transports.RoutesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.compute_routes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "origin",
+                "destination",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_compute_routes_rest_interceptors(null_interceptor):
+    transport = transports.RoutesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutesRestInterceptor(),
+    )
+    client = RoutesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutesRestInterceptor, "post_compute_routes"
+    ) as post, mock.patch.object(
+        transports.RoutesRestInterceptor, "pre_compute_routes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = routes_service.ComputeRoutesRequest.pb(
+            routes_service.ComputeRoutesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = routes_service.ComputeRoutesResponse.to_json(
+            routes_service.ComputeRoutesResponse()
+        )
+
+        request = routes_service.ComputeRoutesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = routes_service.ComputeRoutesResponse()
+
+        client.compute_routes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_compute_routes_rest_bad_request(
+    transport: str = "rest", request_type=routes_service.ComputeRoutesRequest
+):
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.compute_routes(request)
+
+
+def test_compute_routes_rest_error():
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        routes_service.ComputeRouteMatrixRequest,
+        dict,
+    ],
+)
+def test_compute_route_matrix_rest(request_type):
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = routes_service.RouteMatrixElement(
+            origin_index=1279,
+            destination_index=1817,
+            condition=routes_service.RouteMatrixElementCondition.ROUTE_EXISTS,
+            distance_meters=1594,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = routes_service.RouteMatrixElement.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        json_return_value = "[{}]".format(json_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        with mock.patch.object(response_value, "iter_content") as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            response = client.compute_route_matrix(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, routes_service.RouteMatrixElement)
+    assert response.origin_index == 1279
+    assert response.destination_index == 1817
+    assert response.condition == routes_service.RouteMatrixElementCondition.ROUTE_EXISTS
+    assert response.distance_meters == 1594
+
+
+def test_compute_route_matrix_rest_required_fields(
+    request_type=routes_service.ComputeRouteMatrixRequest,
+):
+    transport_class = transports.RoutesRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_route_matrix._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_route_matrix._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = routes_service.RouteMatrixElement()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = routes_service.RouteMatrixElement.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = "[{}]".format(json_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            with mock.patch.object(response_value, "iter_content") as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.compute_route_matrix(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_compute_route_matrix_rest_unset_required_fields():
+    transport = transports.RoutesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.compute_route_matrix._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "origins",
+                "destinations",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_compute_route_matrix_rest_interceptors(null_interceptor):
+    transport = transports.RoutesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutesRestInterceptor(),
+    )
+    client = RoutesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutesRestInterceptor, "post_compute_route_matrix"
+    ) as post, mock.patch.object(
+        transports.RoutesRestInterceptor, "pre_compute_route_matrix"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = routes_service.ComputeRouteMatrixRequest.pb(
+            routes_service.ComputeRouteMatrixRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = routes_service.RouteMatrixElement.to_json(
+            routes_service.RouteMatrixElement()
+        )
+        req.return_value._content = "[{}]".format(req.return_value._content)
+
+        request = routes_service.ComputeRouteMatrixRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = routes_service.RouteMatrixElement()
+
+        client.compute_route_matrix(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_compute_route_matrix_rest_bad_request(
+    transport: str = "rest", request_type=routes_service.ComputeRouteMatrixRequest
+):
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.compute_route_matrix(request)
+
+
+def test_compute_route_matrix_rest_error():
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RoutesGrpcTransport(
@@ -911,6 +1375,7 @@ def test_transport_get_channel():
     [
         transports.RoutesGrpcTransport,
         transports.RoutesGrpcAsyncIOTransport,
+        transports.RoutesRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -925,6 +1390,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1055,6 +1521,7 @@ def test_routes_transport_auth_adc(transport_class):
     [
         transports.RoutesGrpcTransport,
         transports.RoutesGrpcAsyncIOTransport,
+        transports.RoutesRestTransport,
     ],
 )
 def test_routes_transport_auth_gdch_credentials(transport_class):
@@ -1149,11 +1616,23 @@ def test_routes_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_routes_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.RoutesRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_routes_host_no_port(transport_name):
@@ -1164,7 +1643,11 @@ def test_routes_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("routes.googleapis.com:443")
+    assert client.transport._host == (
+        "routes.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://routes.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1172,6 +1655,7 @@ def test_routes_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_routes_host_with_port(transport_name):
@@ -1182,7 +1666,36 @@ def test_routes_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("routes.googleapis.com:8000")
+    assert client.transport._host == (
+        "routes.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://routes.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_routes_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = RoutesClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = RoutesClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.compute_routes._session
+    session2 = client2.transport.compute_routes._session
+    assert session1 != session2
+    session1 = client1.transport.compute_route_matrix._session
+    session2 = client2.transport.compute_route_matrix._session
+    assert session1 != session2
 
 
 def test_routes_grpc_transport_channel():
@@ -1445,6 +1958,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1462,6 +1976,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

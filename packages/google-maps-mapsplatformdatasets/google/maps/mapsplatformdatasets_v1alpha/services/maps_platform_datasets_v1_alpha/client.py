@@ -60,6 +60,7 @@ from google.maps.mapsplatformdatasets_v1alpha.types import dataset
 from .transports.base import DEFAULT_CLIENT_INFO, MapsPlatformDatasetsV1AlphaTransport
 from .transports.grpc import MapsPlatformDatasetsV1AlphaGrpcTransport
 from .transports.grpc_asyncio import MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport
+from .transports.rest import MapsPlatformDatasetsV1AlphaRestTransport
 
 
 class MapsPlatformDatasetsV1AlphaClientMeta(type):
@@ -77,6 +78,7 @@ class MapsPlatformDatasetsV1AlphaClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport
+    _transport_registry["rest"] = MapsPlatformDatasetsV1AlphaRestTransport
 
     def get_transport_class(
         cls,

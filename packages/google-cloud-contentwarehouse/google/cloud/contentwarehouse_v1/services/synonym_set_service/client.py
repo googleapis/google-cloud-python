@@ -57,6 +57,7 @@ from google.cloud.contentwarehouse_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, SynonymSetServiceTransport
 from .transports.grpc import SynonymSetServiceGrpcTransport
 from .transports.grpc_asyncio import SynonymSetServiceGrpcAsyncIOTransport
+from .transports.rest import SynonymSetServiceRestTransport
 
 
 class SynonymSetServiceClientMeta(type):
@@ -72,6 +73,7 @@ class SynonymSetServiceClientMeta(type):
     )  # type: Dict[str, Type[SynonymSetServiceTransport]]
     _transport_registry["grpc"] = SynonymSetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = SynonymSetServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = SynonymSetServiceRestTransport
 
     def get_transport_class(
         cls,

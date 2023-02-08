@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -32,11 +34,14 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.contentwarehouse_v1.services.synonym_set_service import (
     SynonymSetServiceAsyncClient,
@@ -100,6 +105,7 @@ def test__get_default_mtls_endpoint():
     [
         (SynonymSetServiceClient, "grpc"),
         (SynonymSetServiceAsyncClient, "grpc_asyncio"),
+        (SynonymSetServiceClient, "rest"),
     ],
 )
 def test_synonym_set_service_client_from_service_account_info(
@@ -115,7 +121,11 @@ def test_synonym_set_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("contentwarehouse.googleapis.com:443")
+        assert client.transport._host == (
+            "contentwarehouse.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://contentwarehouse.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -123,6 +133,7 @@ def test_synonym_set_service_client_from_service_account_info(
     [
         (transports.SynonymSetServiceGrpcTransport, "grpc"),
         (transports.SynonymSetServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.SynonymSetServiceRestTransport, "rest"),
     ],
 )
 def test_synonym_set_service_client_service_account_always_use_jwt(
@@ -148,6 +159,7 @@ def test_synonym_set_service_client_service_account_always_use_jwt(
     [
         (SynonymSetServiceClient, "grpc"),
         (SynonymSetServiceAsyncClient, "grpc_asyncio"),
+        (SynonymSetServiceClient, "rest"),
     ],
 )
 def test_synonym_set_service_client_from_service_account_file(
@@ -170,13 +182,18 @@ def test_synonym_set_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("contentwarehouse.googleapis.com:443")
+        assert client.transport._host == (
+            "contentwarehouse.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://contentwarehouse.googleapis.com"
+        )
 
 
 def test_synonym_set_service_client_get_transport_class():
     transport = SynonymSetServiceClient.get_transport_class()
     available_transports = [
         transports.SynonymSetServiceGrpcTransport,
+        transports.SynonymSetServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -193,6 +210,7 @@ def test_synonym_set_service_client_get_transport_class():
             transports.SynonymSetServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (SynonymSetServiceClient, transports.SynonymSetServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -346,6 +364,18 @@ def test_synonym_set_service_client_client_options(
             SynonymSetServiceAsyncClient,
             transports.SynonymSetServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            SynonymSetServiceClient,
+            transports.SynonymSetServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            SynonymSetServiceClient,
+            transports.SynonymSetServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -547,6 +577,7 @@ def test_synonym_set_service_client_get_mtls_endpoint_and_cert_source(client_cla
             transports.SynonymSetServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (SynonymSetServiceClient, transports.SynonymSetServiceRestTransport, "rest"),
     ],
 )
 def test_synonym_set_service_client_client_options_scopes(
@@ -586,6 +617,12 @@ def test_synonym_set_service_client_client_options_scopes(
             transports.SynonymSetServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            SynonymSetServiceClient,
+            transports.SynonymSetServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2136,6 +2173,1471 @@ async def test_list_synonym_sets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.CreateSynonymSetRequest,
+        dict,
+    ],
+)
+def test_create_synonym_set_rest(request_type):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["synonym_set"] = {
+        "name": "name_value",
+        "context": "context_value",
+        "synonyms": [{"words": ["words_value1", "words_value2"]}],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset.SynonymSet(
+            name="name_value",
+            context="context_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset.SynonymSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_synonym_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, synonymset.SynonymSet)
+    assert response.name == "name_value"
+    assert response.context == "context_value"
+
+
+def test_create_synonym_set_rest_required_fields(
+    request_type=synonymset_service_request.CreateSynonymSetRequest,
+):
+    transport_class = transports.SynonymSetServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = synonymset.SynonymSet()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = synonymset.SynonymSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_synonym_set(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_synonym_set_rest_unset_required_fields():
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_synonym_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "synonymSet",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_synonym_set_rest_interceptors(null_interceptor):
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SynonymSetServiceRestInterceptor(),
+    )
+    client = SynonymSetServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "post_create_synonym_set"
+    ) as post, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "pre_create_synonym_set"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = synonymset_service_request.CreateSynonymSetRequest.pb(
+            synonymset_service_request.CreateSynonymSetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = synonymset.SynonymSet.to_json(
+            synonymset.SynonymSet()
+        )
+
+        request = synonymset_service_request.CreateSynonymSetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = synonymset.SynonymSet()
+
+        client.create_synonym_set(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_synonym_set_rest_bad_request(
+    transport: str = "rest",
+    request_type=synonymset_service_request.CreateSynonymSetRequest,
+):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["synonym_set"] = {
+        "name": "name_value",
+        "context": "context_value",
+        "synonyms": [{"words": ["words_value1", "words_value2"]}],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_synonym_set(request)
+
+
+def test_create_synonym_set_rest_flattened():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset.SynonymSet()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            synonym_set=synonymset.SynonymSet(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset.SynonymSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_synonym_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/synonymSets"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_synonym_set_rest_flattened_error(transport: str = "rest"):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_synonym_set(
+            synonymset_service_request.CreateSynonymSetRequest(),
+            parent="parent_value",
+            synonym_set=synonymset.SynonymSet(name="name_value"),
+        )
+
+
+def test_create_synonym_set_rest_error():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.GetSynonymSetRequest,
+        dict,
+    ],
+)
+def test_get_synonym_set_rest(request_type):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/synonymSets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset.SynonymSet(
+            name="name_value",
+            context="context_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset.SynonymSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_synonym_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, synonymset.SynonymSet)
+    assert response.name == "name_value"
+    assert response.context == "context_value"
+
+
+def test_get_synonym_set_rest_required_fields(
+    request_type=synonymset_service_request.GetSynonymSetRequest,
+):
+    transport_class = transports.SynonymSetServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = synonymset.SynonymSet()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = synonymset.SynonymSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_synonym_set(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_synonym_set_rest_unset_required_fields():
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_synonym_set._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_synonym_set_rest_interceptors(null_interceptor):
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SynonymSetServiceRestInterceptor(),
+    )
+    client = SynonymSetServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "post_get_synonym_set"
+    ) as post, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "pre_get_synonym_set"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = synonymset_service_request.GetSynonymSetRequest.pb(
+            synonymset_service_request.GetSynonymSetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = synonymset.SynonymSet.to_json(
+            synonymset.SynonymSet()
+        )
+
+        request = synonymset_service_request.GetSynonymSetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = synonymset.SynonymSet()
+
+        client.get_synonym_set(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_synonym_set_rest_bad_request(
+    transport: str = "rest",
+    request_type=synonymset_service_request.GetSynonymSetRequest,
+):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/synonymSets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_synonym_set(request)
+
+
+def test_get_synonym_set_rest_flattened():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset.SynonymSet()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/synonymSets/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset.SynonymSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_synonym_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/synonymSets/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_synonym_set_rest_flattened_error(transport: str = "rest"):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_synonym_set(
+            synonymset_service_request.GetSynonymSetRequest(),
+            name="name_value",
+        )
+
+
+def test_get_synonym_set_rest_error():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.UpdateSynonymSetRequest,
+        dict,
+    ],
+)
+def test_update_synonym_set_rest(request_type):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/synonymSets/sample3"}
+    request_init["synonym_set"] = {
+        "name": "name_value",
+        "context": "context_value",
+        "synonyms": [{"words": ["words_value1", "words_value2"]}],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset.SynonymSet(
+            name="name_value",
+            context="context_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset.SynonymSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_synonym_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, synonymset.SynonymSet)
+    assert response.name == "name_value"
+    assert response.context == "context_value"
+
+
+def test_update_synonym_set_rest_required_fields(
+    request_type=synonymset_service_request.UpdateSynonymSetRequest,
+):
+    transport_class = transports.SynonymSetServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = synonymset.SynonymSet()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = synonymset.SynonymSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_synonym_set(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_synonym_set_rest_unset_required_fields():
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_synonym_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "synonymSet",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_synonym_set_rest_interceptors(null_interceptor):
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SynonymSetServiceRestInterceptor(),
+    )
+    client = SynonymSetServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "post_update_synonym_set"
+    ) as post, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "pre_update_synonym_set"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = synonymset_service_request.UpdateSynonymSetRequest.pb(
+            synonymset_service_request.UpdateSynonymSetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = synonymset.SynonymSet.to_json(
+            synonymset.SynonymSet()
+        )
+
+        request = synonymset_service_request.UpdateSynonymSetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = synonymset.SynonymSet()
+
+        client.update_synonym_set(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_synonym_set_rest_bad_request(
+    transport: str = "rest",
+    request_type=synonymset_service_request.UpdateSynonymSetRequest,
+):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/synonymSets/sample3"}
+    request_init["synonym_set"] = {
+        "name": "name_value",
+        "context": "context_value",
+        "synonyms": [{"words": ["words_value1", "words_value2"]}],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_synonym_set(request)
+
+
+def test_update_synonym_set_rest_flattened():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset.SynonymSet()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/synonymSets/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            synonym_set=synonymset.SynonymSet(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset.SynonymSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_synonym_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/synonymSets/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_synonym_set_rest_flattened_error(transport: str = "rest"):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_synonym_set(
+            synonymset_service_request.UpdateSynonymSetRequest(),
+            name="name_value",
+            synonym_set=synonymset.SynonymSet(name="name_value"),
+        )
+
+
+def test_update_synonym_set_rest_error():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.DeleteSynonymSetRequest,
+        dict,
+    ],
+)
+def test_delete_synonym_set_rest(request_type):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/synonymSets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_synonym_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_synonym_set_rest_required_fields(
+    request_type=synonymset_service_request.DeleteSynonymSetRequest,
+):
+    transport_class = transports.SynonymSetServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_synonym_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_synonym_set(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_synonym_set_rest_unset_required_fields():
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_synonym_set._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_synonym_set_rest_interceptors(null_interceptor):
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SynonymSetServiceRestInterceptor(),
+    )
+    client = SynonymSetServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "pre_delete_synonym_set"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = synonymset_service_request.DeleteSynonymSetRequest.pb(
+            synonymset_service_request.DeleteSynonymSetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = synonymset_service_request.DeleteSynonymSetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_synonym_set(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_synonym_set_rest_bad_request(
+    transport: str = "rest",
+    request_type=synonymset_service_request.DeleteSynonymSetRequest,
+):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/synonymSets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_synonym_set(request)
+
+
+def test_delete_synonym_set_rest_flattened():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/synonymSets/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_synonym_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/synonymSets/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_synonym_set_rest_flattened_error(transport: str = "rest"):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_synonym_set(
+            synonymset_service_request.DeleteSynonymSetRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_synonym_set_rest_error():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.ListSynonymSetsRequest,
+        dict,
+    ],
+)
+def test_list_synonym_sets_rest(request_type):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset_service_request.ListSynonymSetsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset_service_request.ListSynonymSetsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_synonym_sets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSynonymSetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_synonym_sets_rest_required_fields(
+    request_type=synonymset_service_request.ListSynonymSetsRequest,
+):
+    transport_class = transports.SynonymSetServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_synonym_sets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_synonym_sets._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = synonymset_service_request.ListSynonymSetsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = synonymset_service_request.ListSynonymSetsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_synonym_sets(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_synonym_sets_rest_unset_required_fields():
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_synonym_sets._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_synonym_sets_rest_interceptors(null_interceptor):
+    transport = transports.SynonymSetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SynonymSetServiceRestInterceptor(),
+    )
+    client = SynonymSetServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "post_list_synonym_sets"
+    ) as post, mock.patch.object(
+        transports.SynonymSetServiceRestInterceptor, "pre_list_synonym_sets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = synonymset_service_request.ListSynonymSetsRequest.pb(
+            synonymset_service_request.ListSynonymSetsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            synonymset_service_request.ListSynonymSetsResponse.to_json(
+                synonymset_service_request.ListSynonymSetsResponse()
+            )
+        )
+
+        request = synonymset_service_request.ListSynonymSetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = synonymset_service_request.ListSynonymSetsResponse()
+
+        client.list_synonym_sets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_synonym_sets_rest_bad_request(
+    transport: str = "rest",
+    request_type=synonymset_service_request.ListSynonymSetsRequest,
+):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_synonym_sets(request)
+
+
+def test_list_synonym_sets_rest_flattened():
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = synonymset_service_request.ListSynonymSetsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = synonymset_service_request.ListSynonymSetsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_synonym_sets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/synonymSets"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_synonym_sets_rest_flattened_error(transport: str = "rest"):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_synonym_sets(
+            synonymset_service_request.ListSynonymSetsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_synonym_sets_rest_pager(transport: str = "rest"):
+    client = SynonymSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            synonymset_service_request.ListSynonymSetsResponse(
+                synonym_sets=[
+                    synonymset.SynonymSet(),
+                    synonymset.SynonymSet(),
+                    synonymset.SynonymSet(),
+                ],
+                next_page_token="abc",
+            ),
+            synonymset_service_request.ListSynonymSetsResponse(
+                synonym_sets=[],
+                next_page_token="def",
+            ),
+            synonymset_service_request.ListSynonymSetsResponse(
+                synonym_sets=[
+                    synonymset.SynonymSet(),
+                ],
+                next_page_token="ghi",
+            ),
+            synonymset_service_request.ListSynonymSetsResponse(
+                synonym_sets=[
+                    synonymset.SynonymSet(),
+                    synonymset.SynonymSet(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            synonymset_service_request.ListSynonymSetsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_synonym_sets(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, synonymset.SynonymSet) for i in results)
+
+        pages = list(client.list_synonym_sets(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SynonymSetServiceGrpcTransport(
@@ -2217,6 +3719,7 @@ def test_transport_get_channel():
     [
         transports.SynonymSetServiceGrpcTransport,
         transports.SynonymSetServiceGrpcAsyncIOTransport,
+        transports.SynonymSetServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2231,6 +3734,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2364,6 +3868,7 @@ def test_synonym_set_service_transport_auth_adc(transport_class):
     [
         transports.SynonymSetServiceGrpcTransport,
         transports.SynonymSetServiceGrpcAsyncIOTransport,
+        transports.SynonymSetServiceRestTransport,
     ],
 )
 def test_synonym_set_service_transport_auth_gdch_credentials(transport_class):
@@ -2463,11 +3968,23 @@ def test_synonym_set_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_synonym_set_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.SynonymSetServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_synonym_set_service_host_no_port(transport_name):
@@ -2478,7 +3995,11 @@ def test_synonym_set_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("contentwarehouse.googleapis.com:443")
+    assert client.transport._host == (
+        "contentwarehouse.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://contentwarehouse.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2486,6 +4007,7 @@ def test_synonym_set_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_synonym_set_service_host_with_port(transport_name):
@@ -2496,7 +4018,45 @@ def test_synonym_set_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("contentwarehouse.googleapis.com:8000")
+    assert client.transport._host == (
+        "contentwarehouse.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://contentwarehouse.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_synonym_set_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = SynonymSetServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = SynonymSetServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_synonym_set._session
+    session2 = client2.transport.create_synonym_set._session
+    assert session1 != session2
+    session1 = client1.transport.get_synonym_set._session
+    session2 = client2.transport.get_synonym_set._session
+    assert session1 != session2
+    session1 = client1.transport.update_synonym_set._session
+    session2 = client2.transport.update_synonym_set._session
+    assert session1 != session2
+    session1 = client1.transport.delete_synonym_set._session
+    session2 = client2.transport.delete_synonym_set._session
+    assert session1 != session2
+    session1 = client1.transport.list_synonym_sets._session
+    session2 = client2.transport.list_synonym_sets._session
+    assert session1 != session2
 
 
 def test_synonym_set_service_grpc_transport_channel():
@@ -2816,6 +4376,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2833,6 +4394,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
