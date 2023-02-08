@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.14.1](https://github.com/googleapis/python-pubsub/compare/v2.14.0...v2.14.1) (2023-02-08)
+
+
+### Bug Fixes
+
+* Add context manager return types ([4f690b9](https://github.com/googleapis/python-pubsub/commit/4f690b9287beefbca6505cf88637f4a8c5077152))
+
+
+### Documentation
+
+* Add documentation for enums ([4f690b9](https://github.com/googleapis/python-pubsub/commit/4f690b9287beefbca6505cf88637f4a8c5077152))
+* Mark revision_id in CommitSchemaRevisionRequest as deprecated ([#861](https://github.com/googleapis/python-pubsub/issues/861)) ([09b846d](https://github.com/googleapis/python-pubsub/commit/09b846ddd066519c0570522b8525ec5705714b0a))
+
 ## [2.14.0](https://github.com/googleapis/python-pubsub/compare/v2.13.12...v2.14.0) (2023-01-18)
 
 
