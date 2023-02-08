@@ -55,9 +55,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
+namespaces = ["google", "google.area120"]
 
 setuptools.setup(
     name=name,
