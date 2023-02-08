@@ -51,7 +51,8 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
-    session.install("mock", "pytest", "pytest-cov")
+    # Pin mock due to https://github.com/googleapis/python-pubsub/issues/840
+    session.install("mock==5.0.0", "pytest", "pytest-cov")
     session.install("-e", ".")
 
     constraints_path = str(
@@ -101,7 +102,8 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest", "google-cloud-testutils")
+    # Pin mock due to https://github.com/googleapis/python-pubsub/issues/840
+    session.install("mock==5.0.0", "pytest", "google-cloud-testutils")
 
     session.install("-e", ".")
 
