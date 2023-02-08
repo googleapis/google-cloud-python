@@ -196,6 +196,101 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "DocumentProcessorServiceClient",
+          "rpcs": {
+            "BatchProcessDocuments": {
+              "methods": [
+                "batch_process_documents"
+              ]
+            },
+            "CreateProcessor": {
+              "methods": [
+                "create_processor"
+              ]
+            },
+            "DeleteProcessor": {
+              "methods": [
+                "delete_processor"
+              ]
+            },
+            "DeleteProcessorVersion": {
+              "methods": [
+                "delete_processor_version"
+              ]
+            },
+            "DeployProcessorVersion": {
+              "methods": [
+                "deploy_processor_version"
+              ]
+            },
+            "DisableProcessor": {
+              "methods": [
+                "disable_processor"
+              ]
+            },
+            "EnableProcessor": {
+              "methods": [
+                "enable_processor"
+              ]
+            },
+            "FetchProcessorTypes": {
+              "methods": [
+                "fetch_processor_types"
+              ]
+            },
+            "GetProcessor": {
+              "methods": [
+                "get_processor"
+              ]
+            },
+            "GetProcessorType": {
+              "methods": [
+                "get_processor_type"
+              ]
+            },
+            "GetProcessorVersion": {
+              "methods": [
+                "get_processor_version"
+              ]
+            },
+            "ListProcessorTypes": {
+              "methods": [
+                "list_processor_types"
+              ]
+            },
+            "ListProcessorVersions": {
+              "methods": [
+                "list_processor_versions"
+              ]
+            },
+            "ListProcessors": {
+              "methods": [
+                "list_processors"
+              ]
+            },
+            "ProcessDocument": {
+              "methods": [
+                "process_document"
+              ]
+            },
+            "ReviewDocument": {
+              "methods": [
+                "review_document"
+              ]
+            },
+            "SetDefaultProcessorVersion": {
+              "methods": [
+                "set_default_processor_version"
+              ]
+            },
+            "UndeployProcessorVersion": {
+              "methods": [
+                "undeploy_processor_version"
+              ]
+            }
+          }
         }
       }
     }

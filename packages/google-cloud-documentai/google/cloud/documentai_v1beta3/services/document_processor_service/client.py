@@ -68,6 +68,7 @@ from google.cloud.documentai_v1beta3.types import processor_type
 from .transports.base import DEFAULT_CLIENT_INFO, DocumentProcessorServiceTransport
 from .transports.grpc import DocumentProcessorServiceGrpcTransport
 from .transports.grpc_asyncio import DocumentProcessorServiceGrpcAsyncIOTransport
+from .transports.rest import DocumentProcessorServiceRestTransport
 
 
 class DocumentProcessorServiceClientMeta(type):
@@ -83,6 +84,7 @@ class DocumentProcessorServiceClientMeta(type):
     )  # type: Dict[str, Type[DocumentProcessorServiceTransport]]
     _transport_registry["grpc"] = DocumentProcessorServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DocumentProcessorServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DocumentProcessorServiceRestTransport
 
     def get_transport_class(
         cls,
