@@ -86,6 +86,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "EssentialContactsServiceClient",
+          "rpcs": {
+            "ComputeContacts": {
+              "methods": [
+                "compute_contacts"
+              ]
+            },
+            "CreateContact": {
+              "methods": [
+                "create_contact"
+              ]
+            },
+            "DeleteContact": {
+              "methods": [
+                "delete_contact"
+              ]
+            },
+            "GetContact": {
+              "methods": [
+                "get_contact"
+              ]
+            },
+            "ListContacts": {
+              "methods": [
+                "list_contacts"
+              ]
+            },
+            "SendTestMessage": {
+              "methods": [
+                "send_test_message"
+              ]
+            },
+            "UpdateContact": {
+              "methods": [
+                "update_contact"
+              ]
+            }
+          }
         }
       }
     }

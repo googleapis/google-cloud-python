@@ -57,6 +57,7 @@ from google.cloud.essential_contacts_v1.types import enums, service
 from .transports.base import DEFAULT_CLIENT_INFO, EssentialContactsServiceTransport
 from .transports.grpc import EssentialContactsServiceGrpcTransport
 from .transports.grpc_asyncio import EssentialContactsServiceGrpcAsyncIOTransport
+from .transports.rest import EssentialContactsServiceRestTransport
 
 
 class EssentialContactsServiceClientMeta(type):
@@ -72,6 +73,7 @@ class EssentialContactsServiceClientMeta(type):
     )  # type: Dict[str, Type[EssentialContactsServiceTransport]]
     _transport_registry["grpc"] = EssentialContactsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = EssentialContactsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = EssentialContactsServiceRestTransport
 
     def get_transport_class(
         cls,
