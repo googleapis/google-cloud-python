@@ -55,6 +55,7 @@ from google.cloud.billing_v1.types import cloud_billing
 from .transports.base import DEFAULT_CLIENT_INFO, CloudBillingTransport
 from .transports.grpc import CloudBillingGrpcTransport
 from .transports.grpc_asyncio import CloudBillingGrpcAsyncIOTransport
+from .transports.rest import CloudBillingRestTransport
 
 
 class CloudBillingClientMeta(type):
@@ -68,6 +69,7 @@ class CloudBillingClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudBillingTransport]]
     _transport_registry["grpc"] = CloudBillingGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudBillingGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudBillingRestTransport
 
     def get_transport_class(
         cls,
