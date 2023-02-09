@@ -58,6 +58,7 @@ from google.cloud.network_management_v1.types import connectivity_test, reachabi
 from .transports.base import DEFAULT_CLIENT_INFO, ReachabilityServiceTransport
 from .transports.grpc import ReachabilityServiceGrpcTransport
 from .transports.grpc_asyncio import ReachabilityServiceGrpcAsyncIOTransport
+from .transports.rest import ReachabilityServiceRestTransport
 
 
 class ReachabilityServiceClientMeta(type):
@@ -73,6 +74,7 @@ class ReachabilityServiceClientMeta(type):
     )  # type: Dict[str, Type[ReachabilityServiceTransport]]
     _transport_registry["grpc"] = ReachabilityServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ReachabilityServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ReachabilityServiceRestTransport
 
     def get_transport_class(
         cls,

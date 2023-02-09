@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import ReachabilityServiceTransport
 from .grpc import ReachabilityServiceGrpcTransport
 from .grpc_asyncio import ReachabilityServiceGrpcAsyncIOTransport
+from .rest import ReachabilityServiceRestInterceptor, ReachabilityServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[ReachabilityServiceTransport]]
 _transport_registry["grpc"] = ReachabilityServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ReachabilityServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = ReachabilityServiceRestTransport
 
 __all__ = (
     "ReachabilityServiceTransport",
     "ReachabilityServiceGrpcTransport",
     "ReachabilityServiceGrpcAsyncIOTransport",
+    "ReachabilityServiceRestTransport",
+    "ReachabilityServiceRestInterceptor",
 )

@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -44,6 +46,7 @@ from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
@@ -51,6 +54,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.network_management_v1.services.reachability_service import (
     ReachabilityServiceAsyncClient,
@@ -115,6 +120,7 @@ def test__get_default_mtls_endpoint():
     [
         (ReachabilityServiceClient, "grpc"),
         (ReachabilityServiceAsyncClient, "grpc_asyncio"),
+        (ReachabilityServiceClient, "rest"),
     ],
 )
 def test_reachability_service_client_from_service_account_info(
@@ -130,7 +136,11 @@ def test_reachability_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("networkmanagement.googleapis.com:443")
+        assert client.transport._host == (
+            "networkmanagement.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://networkmanagement.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -138,6 +148,7 @@ def test_reachability_service_client_from_service_account_info(
     [
         (transports.ReachabilityServiceGrpcTransport, "grpc"),
         (transports.ReachabilityServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ReachabilityServiceRestTransport, "rest"),
     ],
 )
 def test_reachability_service_client_service_account_always_use_jwt(
@@ -163,6 +174,7 @@ def test_reachability_service_client_service_account_always_use_jwt(
     [
         (ReachabilityServiceClient, "grpc"),
         (ReachabilityServiceAsyncClient, "grpc_asyncio"),
+        (ReachabilityServiceClient, "rest"),
     ],
 )
 def test_reachability_service_client_from_service_account_file(
@@ -185,13 +197,18 @@ def test_reachability_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("networkmanagement.googleapis.com:443")
+        assert client.transport._host == (
+            "networkmanagement.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://networkmanagement.googleapis.com"
+        )
 
 
 def test_reachability_service_client_get_transport_class():
     transport = ReachabilityServiceClient.get_transport_class()
     available_transports = [
         transports.ReachabilityServiceGrpcTransport,
+        transports.ReachabilityServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -211,6 +228,11 @@ def test_reachability_service_client_get_transport_class():
             ReachabilityServiceAsyncClient,
             transports.ReachabilityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            ReachabilityServiceClient,
+            transports.ReachabilityServiceRestTransport,
+            "rest",
         ),
     ],
 )
@@ -365,6 +387,18 @@ def test_reachability_service_client_client_options(
             ReachabilityServiceAsyncClient,
             transports.ReachabilityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ReachabilityServiceClient,
+            transports.ReachabilityServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ReachabilityServiceClient,
+            transports.ReachabilityServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -570,6 +604,11 @@ def test_reachability_service_client_get_mtls_endpoint_and_cert_source(client_cl
             transports.ReachabilityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            ReachabilityServiceClient,
+            transports.ReachabilityServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_reachability_service_client_client_options_scopes(
@@ -609,6 +648,12 @@ def test_reachability_service_client_client_options_scopes(
             transports.ReachabilityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ReachabilityServiceClient,
+            transports.ReachabilityServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2340,6 +2385,2441 @@ async def test_delete_connectivity_test_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.ListConnectivityTestsRequest,
+        dict,
+    ],
+)
+def test_list_connectivity_tests_rest(request_type):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/global"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reachability.ListConnectivityTestsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reachability.ListConnectivityTestsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_connectivity_tests(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListConnectivityTestsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_connectivity_tests_rest_required_fields(
+    request_type=reachability.ListConnectivityTestsRequest,
+):
+    transport_class = transports.ReachabilityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_connectivity_tests._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_connectivity_tests._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reachability.ListConnectivityTestsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reachability.ListConnectivityTestsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_connectivity_tests(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_connectivity_tests_rest_unset_required_fields():
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_connectivity_tests._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_connectivity_tests_rest_interceptors(null_interceptor):
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReachabilityServiceRestInterceptor(),
+    )
+    client = ReachabilityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "post_list_connectivity_tests"
+    ) as post, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "pre_list_connectivity_tests"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reachability.ListConnectivityTestsRequest.pb(
+            reachability.ListConnectivityTestsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reachability.ListConnectivityTestsResponse.to_json(
+            reachability.ListConnectivityTestsResponse()
+        )
+
+        request = reachability.ListConnectivityTestsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reachability.ListConnectivityTestsResponse()
+
+        client.list_connectivity_tests(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_connectivity_tests_rest_bad_request(
+    transport: str = "rest", request_type=reachability.ListConnectivityTestsRequest
+):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/global"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_connectivity_tests(request)
+
+
+def test_list_connectivity_tests_rest_flattened():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reachability.ListConnectivityTestsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/global"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reachability.ListConnectivityTestsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_connectivity_tests(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/global}/connectivityTests"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_connectivity_tests_rest_flattened_error(transport: str = "rest"):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_connectivity_tests(
+            reachability.ListConnectivityTestsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_connectivity_tests_rest_pager(transport: str = "rest"):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            reachability.ListConnectivityTestsResponse(
+                resources=[
+                    connectivity_test.ConnectivityTest(),
+                    connectivity_test.ConnectivityTest(),
+                    connectivity_test.ConnectivityTest(),
+                ],
+                next_page_token="abc",
+            ),
+            reachability.ListConnectivityTestsResponse(
+                resources=[],
+                next_page_token="def",
+            ),
+            reachability.ListConnectivityTestsResponse(
+                resources=[
+                    connectivity_test.ConnectivityTest(),
+                ],
+                next_page_token="ghi",
+            ),
+            reachability.ListConnectivityTestsResponse(
+                resources=[
+                    connectivity_test.ConnectivityTest(),
+                    connectivity_test.ConnectivityTest(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            reachability.ListConnectivityTestsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/global"}
+
+        pager = client.list_connectivity_tests(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, connectivity_test.ConnectivityTest) for i in results)
+
+        pages = list(client.list_connectivity_tests(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.GetConnectivityTestRequest,
+        dict,
+    ],
+)
+def test_get_connectivity_test_rest(request_type):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = connectivity_test.ConnectivityTest(
+            name="name_value",
+            description="description_value",
+            protocol="protocol_value",
+            related_projects=["related_projects_value"],
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = connectivity_test.ConnectivityTest.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_connectivity_test(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, connectivity_test.ConnectivityTest)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.protocol == "protocol_value"
+    assert response.related_projects == ["related_projects_value"]
+    assert response.display_name == "display_name_value"
+
+
+def test_get_connectivity_test_rest_required_fields(
+    request_type=reachability.GetConnectivityTestRequest,
+):
+    transport_class = transports.ReachabilityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = connectivity_test.ConnectivityTest()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = connectivity_test.ConnectivityTest.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_connectivity_test(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_connectivity_test_rest_unset_required_fields():
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_connectivity_test._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_connectivity_test_rest_interceptors(null_interceptor):
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReachabilityServiceRestInterceptor(),
+    )
+    client = ReachabilityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "post_get_connectivity_test"
+    ) as post, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "pre_get_connectivity_test"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reachability.GetConnectivityTestRequest.pb(
+            reachability.GetConnectivityTestRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = connectivity_test.ConnectivityTest.to_json(
+            connectivity_test.ConnectivityTest()
+        )
+
+        request = reachability.GetConnectivityTestRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = connectivity_test.ConnectivityTest()
+
+        client.get_connectivity_test(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_connectivity_test_rest_bad_request(
+    transport: str = "rest", request_type=reachability.GetConnectivityTestRequest
+):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_connectivity_test(request)
+
+
+def test_get_connectivity_test_rest_flattened():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = connectivity_test.ConnectivityTest()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/global/connectivityTests/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = connectivity_test.ConnectivityTest.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_connectivity_test(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/global/connectivityTests/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_connectivity_test_rest_flattened_error(transport: str = "rest"):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_connectivity_test(
+            reachability.GetConnectivityTestRequest(),
+            name="name_value",
+        )
+
+
+def test_get_connectivity_test_rest_error():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.CreateConnectivityTestRequest,
+        dict,
+    ],
+)
+def test_create_connectivity_test_rest(request_type):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/global"}
+    request_init["resource"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "source": {
+            "ip_address": "ip_address_value",
+            "port": 453,
+            "instance": "instance_value",
+            "gke_master_cluster": "gke_master_cluster_value",
+            "cloud_sql_instance": "cloud_sql_instance_value",
+            "network": "network_value",
+            "network_type": 1,
+            "project_id": "project_id_value",
+        },
+        "destination": {},
+        "protocol": "protocol_value",
+        "related_projects": ["related_projects_value1", "related_projects_value2"],
+        "display_name": "display_name_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "reachability_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "traces": [
+                {
+                    "endpoint_info": {
+                        "source_ip": "source_ip_value",
+                        "destination_ip": "destination_ip_value",
+                        "protocol": "protocol_value",
+                        "source_port": 1205,
+                        "destination_port": 1734,
+                        "source_network_uri": "source_network_uri_value",
+                        "destination_network_uri": "destination_network_uri_value",
+                    },
+                    "steps": [
+                        {
+                            "description": "description_value",
+                            "state": 1,
+                            "causes_drop": True,
+                            "project_id": "project_id_value",
+                            "instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "interface": "interface_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "network_tags": [
+                                    "network_tags_value1",
+                                    "network_tags_value2",
+                                ],
+                                "service_account": "service_account_value",
+                            },
+                            "firewall": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "direction": "direction_value",
+                                "action": "action_value",
+                                "priority": 898,
+                                "network_uri": "network_uri_value",
+                                "target_tags": [
+                                    "target_tags_value1",
+                                    "target_tags_value2",
+                                ],
+                                "target_service_accounts": [
+                                    "target_service_accounts_value1",
+                                    "target_service_accounts_value2",
+                                ],
+                                "policy": "policy_value",
+                                "firewall_rule_type": 1,
+                            },
+                            "route": {
+                                "route_type": 1,
+                                "next_hop_type": 1,
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "dest_ip_range": "dest_ip_range_value",
+                                "next_hop": "next_hop_value",
+                                "network_uri": "network_uri_value",
+                                "priority": 898,
+                                "instance_tags": [
+                                    "instance_tags_value1",
+                                    "instance_tags_value2",
+                                ],
+                            },
+                            "endpoint": {},
+                            "forwarding_rule": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_protocol": "matched_protocol_value",
+                                "matched_port_range": "matched_port_range_value",
+                                "vip": "vip_value",
+                                "target": "target_value",
+                                "network_uri": "network_uri_value",
+                            },
+                            "vpn_gateway": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "ip_address": "ip_address_value",
+                                "vpn_tunnel_uri": "vpn_tunnel_uri_value",
+                                "region": "region_value",
+                            },
+                            "vpn_tunnel": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "source_gateway": "source_gateway_value",
+                                "remote_gateway": "remote_gateway_value",
+                                "remote_gateway_ip": "remote_gateway_ip_value",
+                                "source_gateway_ip": "source_gateway_ip_value",
+                                "network_uri": "network_uri_value",
+                                "region": "region_value",
+                                "routing_type": 1,
+                            },
+                            "deliver": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "forward": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "abort": {
+                                "cause": 1,
+                                "resource_uri": "resource_uri_value",
+                                "projects_missing_permission": [
+                                    "projects_missing_permission_value1",
+                                    "projects_missing_permission_value2",
+                                ],
+                            },
+                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
+                            "load_balancer": {
+                                "load_balancer_type": 1,
+                                "health_check_uri": "health_check_uri_value",
+                                "backends": [
+                                    {
+                                        "display_name": "display_name_value",
+                                        "uri": "uri_value",
+                                        "health_check_firewall_state": 1,
+                                        "health_check_allowing_firewall_rules": [
+                                            "health_check_allowing_firewall_rules_value1",
+                                            "health_check_allowing_firewall_rules_value2",
+                                        ],
+                                        "health_check_blocking_firewall_rules": [
+                                            "health_check_blocking_firewall_rules_value1",
+                                            "health_check_blocking_firewall_rules_value2",
+                                        ],
+                                    }
+                                ],
+                                "backend_type": 1,
+                                "backend_uri": "backend_uri_value",
+                            },
+                            "network": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_ip_range": "matched_ip_range_value",
+                            },
+                            "gke_master": {
+                                "cluster_uri": "cluster_uri_value",
+                                "cluster_network_uri": "cluster_network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                            },
+                            "cloud_sql_instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "region": "region_value",
+                            },
+                        }
+                    ],
+                }
+            ],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_connectivity_test(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_connectivity_test_rest_required_fields(
+    request_type=reachability.CreateConnectivityTestRequest,
+):
+    transport_class = transports.ReachabilityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["test_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "testId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "testId" in jsonified_request
+    assert jsonified_request["testId"] == request_init["test_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["testId"] = "test_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_connectivity_test._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("test_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "testId" in jsonified_request
+    assert jsonified_request["testId"] == "test_id_value"
+
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_connectivity_test(request)
+
+            expected_params = [
+                (
+                    "testId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_connectivity_test_rest_unset_required_fields():
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_connectivity_test._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("testId",))
+        & set(
+            (
+                "parent",
+                "testId",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_connectivity_test_rest_interceptors(null_interceptor):
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReachabilityServiceRestInterceptor(),
+    )
+    client = ReachabilityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "post_create_connectivity_test"
+    ) as post, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "pre_create_connectivity_test"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reachability.CreateConnectivityTestRequest.pb(
+            reachability.CreateConnectivityTestRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = reachability.CreateConnectivityTestRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_connectivity_test(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_connectivity_test_rest_bad_request(
+    transport: str = "rest", request_type=reachability.CreateConnectivityTestRequest
+):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/global"}
+    request_init["resource"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "source": {
+            "ip_address": "ip_address_value",
+            "port": 453,
+            "instance": "instance_value",
+            "gke_master_cluster": "gke_master_cluster_value",
+            "cloud_sql_instance": "cloud_sql_instance_value",
+            "network": "network_value",
+            "network_type": 1,
+            "project_id": "project_id_value",
+        },
+        "destination": {},
+        "protocol": "protocol_value",
+        "related_projects": ["related_projects_value1", "related_projects_value2"],
+        "display_name": "display_name_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "reachability_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "traces": [
+                {
+                    "endpoint_info": {
+                        "source_ip": "source_ip_value",
+                        "destination_ip": "destination_ip_value",
+                        "protocol": "protocol_value",
+                        "source_port": 1205,
+                        "destination_port": 1734,
+                        "source_network_uri": "source_network_uri_value",
+                        "destination_network_uri": "destination_network_uri_value",
+                    },
+                    "steps": [
+                        {
+                            "description": "description_value",
+                            "state": 1,
+                            "causes_drop": True,
+                            "project_id": "project_id_value",
+                            "instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "interface": "interface_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "network_tags": [
+                                    "network_tags_value1",
+                                    "network_tags_value2",
+                                ],
+                                "service_account": "service_account_value",
+                            },
+                            "firewall": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "direction": "direction_value",
+                                "action": "action_value",
+                                "priority": 898,
+                                "network_uri": "network_uri_value",
+                                "target_tags": [
+                                    "target_tags_value1",
+                                    "target_tags_value2",
+                                ],
+                                "target_service_accounts": [
+                                    "target_service_accounts_value1",
+                                    "target_service_accounts_value2",
+                                ],
+                                "policy": "policy_value",
+                                "firewall_rule_type": 1,
+                            },
+                            "route": {
+                                "route_type": 1,
+                                "next_hop_type": 1,
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "dest_ip_range": "dest_ip_range_value",
+                                "next_hop": "next_hop_value",
+                                "network_uri": "network_uri_value",
+                                "priority": 898,
+                                "instance_tags": [
+                                    "instance_tags_value1",
+                                    "instance_tags_value2",
+                                ],
+                            },
+                            "endpoint": {},
+                            "forwarding_rule": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_protocol": "matched_protocol_value",
+                                "matched_port_range": "matched_port_range_value",
+                                "vip": "vip_value",
+                                "target": "target_value",
+                                "network_uri": "network_uri_value",
+                            },
+                            "vpn_gateway": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "ip_address": "ip_address_value",
+                                "vpn_tunnel_uri": "vpn_tunnel_uri_value",
+                                "region": "region_value",
+                            },
+                            "vpn_tunnel": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "source_gateway": "source_gateway_value",
+                                "remote_gateway": "remote_gateway_value",
+                                "remote_gateway_ip": "remote_gateway_ip_value",
+                                "source_gateway_ip": "source_gateway_ip_value",
+                                "network_uri": "network_uri_value",
+                                "region": "region_value",
+                                "routing_type": 1,
+                            },
+                            "deliver": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "forward": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "abort": {
+                                "cause": 1,
+                                "resource_uri": "resource_uri_value",
+                                "projects_missing_permission": [
+                                    "projects_missing_permission_value1",
+                                    "projects_missing_permission_value2",
+                                ],
+                            },
+                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
+                            "load_balancer": {
+                                "load_balancer_type": 1,
+                                "health_check_uri": "health_check_uri_value",
+                                "backends": [
+                                    {
+                                        "display_name": "display_name_value",
+                                        "uri": "uri_value",
+                                        "health_check_firewall_state": 1,
+                                        "health_check_allowing_firewall_rules": [
+                                            "health_check_allowing_firewall_rules_value1",
+                                            "health_check_allowing_firewall_rules_value2",
+                                        ],
+                                        "health_check_blocking_firewall_rules": [
+                                            "health_check_blocking_firewall_rules_value1",
+                                            "health_check_blocking_firewall_rules_value2",
+                                        ],
+                                    }
+                                ],
+                                "backend_type": 1,
+                                "backend_uri": "backend_uri_value",
+                            },
+                            "network": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_ip_range": "matched_ip_range_value",
+                            },
+                            "gke_master": {
+                                "cluster_uri": "cluster_uri_value",
+                                "cluster_network_uri": "cluster_network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                            },
+                            "cloud_sql_instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "region": "region_value",
+                            },
+                        }
+                    ],
+                }
+            ],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_connectivity_test(request)
+
+
+def test_create_connectivity_test_rest_flattened():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/global"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            test_id="test_id_value",
+            resource=connectivity_test.ConnectivityTest(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_connectivity_test(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/global}/connectivityTests"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_connectivity_test_rest_flattened_error(transport: str = "rest"):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_connectivity_test(
+            reachability.CreateConnectivityTestRequest(),
+            parent="parent_value",
+            test_id="test_id_value",
+            resource=connectivity_test.ConnectivityTest(name="name_value"),
+        )
+
+
+def test_create_connectivity_test_rest_error():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.UpdateConnectivityTestRequest,
+        dict,
+    ],
+)
+def test_update_connectivity_test_rest(request_type):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": {
+            "name": "projects/sample1/locations/global/connectivityTests/sample2"
+        }
+    }
+    request_init["resource"] = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2",
+        "description": "description_value",
+        "source": {
+            "ip_address": "ip_address_value",
+            "port": 453,
+            "instance": "instance_value",
+            "gke_master_cluster": "gke_master_cluster_value",
+            "cloud_sql_instance": "cloud_sql_instance_value",
+            "network": "network_value",
+            "network_type": 1,
+            "project_id": "project_id_value",
+        },
+        "destination": {},
+        "protocol": "protocol_value",
+        "related_projects": ["related_projects_value1", "related_projects_value2"],
+        "display_name": "display_name_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "reachability_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "traces": [
+                {
+                    "endpoint_info": {
+                        "source_ip": "source_ip_value",
+                        "destination_ip": "destination_ip_value",
+                        "protocol": "protocol_value",
+                        "source_port": 1205,
+                        "destination_port": 1734,
+                        "source_network_uri": "source_network_uri_value",
+                        "destination_network_uri": "destination_network_uri_value",
+                    },
+                    "steps": [
+                        {
+                            "description": "description_value",
+                            "state": 1,
+                            "causes_drop": True,
+                            "project_id": "project_id_value",
+                            "instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "interface": "interface_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "network_tags": [
+                                    "network_tags_value1",
+                                    "network_tags_value2",
+                                ],
+                                "service_account": "service_account_value",
+                            },
+                            "firewall": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "direction": "direction_value",
+                                "action": "action_value",
+                                "priority": 898,
+                                "network_uri": "network_uri_value",
+                                "target_tags": [
+                                    "target_tags_value1",
+                                    "target_tags_value2",
+                                ],
+                                "target_service_accounts": [
+                                    "target_service_accounts_value1",
+                                    "target_service_accounts_value2",
+                                ],
+                                "policy": "policy_value",
+                                "firewall_rule_type": 1,
+                            },
+                            "route": {
+                                "route_type": 1,
+                                "next_hop_type": 1,
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "dest_ip_range": "dest_ip_range_value",
+                                "next_hop": "next_hop_value",
+                                "network_uri": "network_uri_value",
+                                "priority": 898,
+                                "instance_tags": [
+                                    "instance_tags_value1",
+                                    "instance_tags_value2",
+                                ],
+                            },
+                            "endpoint": {},
+                            "forwarding_rule": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_protocol": "matched_protocol_value",
+                                "matched_port_range": "matched_port_range_value",
+                                "vip": "vip_value",
+                                "target": "target_value",
+                                "network_uri": "network_uri_value",
+                            },
+                            "vpn_gateway": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "ip_address": "ip_address_value",
+                                "vpn_tunnel_uri": "vpn_tunnel_uri_value",
+                                "region": "region_value",
+                            },
+                            "vpn_tunnel": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "source_gateway": "source_gateway_value",
+                                "remote_gateway": "remote_gateway_value",
+                                "remote_gateway_ip": "remote_gateway_ip_value",
+                                "source_gateway_ip": "source_gateway_ip_value",
+                                "network_uri": "network_uri_value",
+                                "region": "region_value",
+                                "routing_type": 1,
+                            },
+                            "deliver": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "forward": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "abort": {
+                                "cause": 1,
+                                "resource_uri": "resource_uri_value",
+                                "projects_missing_permission": [
+                                    "projects_missing_permission_value1",
+                                    "projects_missing_permission_value2",
+                                ],
+                            },
+                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
+                            "load_balancer": {
+                                "load_balancer_type": 1,
+                                "health_check_uri": "health_check_uri_value",
+                                "backends": [
+                                    {
+                                        "display_name": "display_name_value",
+                                        "uri": "uri_value",
+                                        "health_check_firewall_state": 1,
+                                        "health_check_allowing_firewall_rules": [
+                                            "health_check_allowing_firewall_rules_value1",
+                                            "health_check_allowing_firewall_rules_value2",
+                                        ],
+                                        "health_check_blocking_firewall_rules": [
+                                            "health_check_blocking_firewall_rules_value1",
+                                            "health_check_blocking_firewall_rules_value2",
+                                        ],
+                                    }
+                                ],
+                                "backend_type": 1,
+                                "backend_uri": "backend_uri_value",
+                            },
+                            "network": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_ip_range": "matched_ip_range_value",
+                            },
+                            "gke_master": {
+                                "cluster_uri": "cluster_uri_value",
+                                "cluster_network_uri": "cluster_network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                            },
+                            "cloud_sql_instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "region": "region_value",
+                            },
+                        }
+                    ],
+                }
+            ],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_connectivity_test(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_connectivity_test_rest_required_fields(
+    request_type=reachability.UpdateConnectivityTestRequest,
+):
+    transport_class = transports.ReachabilityServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_connectivity_test._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_connectivity_test(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_connectivity_test_rest_unset_required_fields():
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_connectivity_test._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "updateMask",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_connectivity_test_rest_interceptors(null_interceptor):
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReachabilityServiceRestInterceptor(),
+    )
+    client = ReachabilityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "post_update_connectivity_test"
+    ) as post, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "pre_update_connectivity_test"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reachability.UpdateConnectivityTestRequest.pb(
+            reachability.UpdateConnectivityTestRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = reachability.UpdateConnectivityTestRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_connectivity_test(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_connectivity_test_rest_bad_request(
+    transport: str = "rest", request_type=reachability.UpdateConnectivityTestRequest
+):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": {
+            "name": "projects/sample1/locations/global/connectivityTests/sample2"
+        }
+    }
+    request_init["resource"] = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2",
+        "description": "description_value",
+        "source": {
+            "ip_address": "ip_address_value",
+            "port": 453,
+            "instance": "instance_value",
+            "gke_master_cluster": "gke_master_cluster_value",
+            "cloud_sql_instance": "cloud_sql_instance_value",
+            "network": "network_value",
+            "network_type": 1,
+            "project_id": "project_id_value",
+        },
+        "destination": {},
+        "protocol": "protocol_value",
+        "related_projects": ["related_projects_value1", "related_projects_value2"],
+        "display_name": "display_name_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "reachability_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "traces": [
+                {
+                    "endpoint_info": {
+                        "source_ip": "source_ip_value",
+                        "destination_ip": "destination_ip_value",
+                        "protocol": "protocol_value",
+                        "source_port": 1205,
+                        "destination_port": 1734,
+                        "source_network_uri": "source_network_uri_value",
+                        "destination_network_uri": "destination_network_uri_value",
+                    },
+                    "steps": [
+                        {
+                            "description": "description_value",
+                            "state": 1,
+                            "causes_drop": True,
+                            "project_id": "project_id_value",
+                            "instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "interface": "interface_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "network_tags": [
+                                    "network_tags_value1",
+                                    "network_tags_value2",
+                                ],
+                                "service_account": "service_account_value",
+                            },
+                            "firewall": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "direction": "direction_value",
+                                "action": "action_value",
+                                "priority": 898,
+                                "network_uri": "network_uri_value",
+                                "target_tags": [
+                                    "target_tags_value1",
+                                    "target_tags_value2",
+                                ],
+                                "target_service_accounts": [
+                                    "target_service_accounts_value1",
+                                    "target_service_accounts_value2",
+                                ],
+                                "policy": "policy_value",
+                                "firewall_rule_type": 1,
+                            },
+                            "route": {
+                                "route_type": 1,
+                                "next_hop_type": 1,
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "dest_ip_range": "dest_ip_range_value",
+                                "next_hop": "next_hop_value",
+                                "network_uri": "network_uri_value",
+                                "priority": 898,
+                                "instance_tags": [
+                                    "instance_tags_value1",
+                                    "instance_tags_value2",
+                                ],
+                            },
+                            "endpoint": {},
+                            "forwarding_rule": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_protocol": "matched_protocol_value",
+                                "matched_port_range": "matched_port_range_value",
+                                "vip": "vip_value",
+                                "target": "target_value",
+                                "network_uri": "network_uri_value",
+                            },
+                            "vpn_gateway": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "ip_address": "ip_address_value",
+                                "vpn_tunnel_uri": "vpn_tunnel_uri_value",
+                                "region": "region_value",
+                            },
+                            "vpn_tunnel": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "source_gateway": "source_gateway_value",
+                                "remote_gateway": "remote_gateway_value",
+                                "remote_gateway_ip": "remote_gateway_ip_value",
+                                "source_gateway_ip": "source_gateway_ip_value",
+                                "network_uri": "network_uri_value",
+                                "region": "region_value",
+                                "routing_type": 1,
+                            },
+                            "deliver": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "forward": {
+                                "target": 1,
+                                "resource_uri": "resource_uri_value",
+                            },
+                            "abort": {
+                                "cause": 1,
+                                "resource_uri": "resource_uri_value",
+                                "projects_missing_permission": [
+                                    "projects_missing_permission_value1",
+                                    "projects_missing_permission_value2",
+                                ],
+                            },
+                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
+                            "load_balancer": {
+                                "load_balancer_type": 1,
+                                "health_check_uri": "health_check_uri_value",
+                                "backends": [
+                                    {
+                                        "display_name": "display_name_value",
+                                        "uri": "uri_value",
+                                        "health_check_firewall_state": 1,
+                                        "health_check_allowing_firewall_rules": [
+                                            "health_check_allowing_firewall_rules_value1",
+                                            "health_check_allowing_firewall_rules_value2",
+                                        ],
+                                        "health_check_blocking_firewall_rules": [
+                                            "health_check_blocking_firewall_rules_value1",
+                                            "health_check_blocking_firewall_rules_value2",
+                                        ],
+                                    }
+                                ],
+                                "backend_type": 1,
+                                "backend_uri": "backend_uri_value",
+                            },
+                            "network": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "matched_ip_range": "matched_ip_range_value",
+                            },
+                            "gke_master": {
+                                "cluster_uri": "cluster_uri_value",
+                                "cluster_network_uri": "cluster_network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                            },
+                            "cloud_sql_instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "internal_ip": "internal_ip_value",
+                                "external_ip": "external_ip_value",
+                                "region": "region_value",
+                            },
+                        }
+                    ],
+                }
+            ],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_connectivity_test(request)
+
+
+def test_update_connectivity_test_rest_flattened():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "resource": {
+                "name": "projects/sample1/locations/global/connectivityTests/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            resource=connectivity_test.ConnectivityTest(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_connectivity_test(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{resource.name=projects/*/locations/global/connectivityTests/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_connectivity_test_rest_flattened_error(transport: str = "rest"):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_connectivity_test(
+            reachability.UpdateConnectivityTestRequest(),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            resource=connectivity_test.ConnectivityTest(name="name_value"),
+        )
+
+
+def test_update_connectivity_test_rest_error():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.RerunConnectivityTestRequest,
+        dict,
+    ],
+)
+def test_rerun_connectivity_test_rest(request_type):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rerun_connectivity_test(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_rerun_connectivity_test_rest_required_fields(
+    request_type=reachability.RerunConnectivityTestRequest,
+):
+    transport_class = transports.ReachabilityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rerun_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rerun_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rerun_connectivity_test(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rerun_connectivity_test_rest_unset_required_fields():
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rerun_connectivity_test._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rerun_connectivity_test_rest_interceptors(null_interceptor):
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReachabilityServiceRestInterceptor(),
+    )
+    client = ReachabilityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "post_rerun_connectivity_test"
+    ) as post, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "pre_rerun_connectivity_test"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reachability.RerunConnectivityTestRequest.pb(
+            reachability.RerunConnectivityTestRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = reachability.RerunConnectivityTestRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.rerun_connectivity_test(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rerun_connectivity_test_rest_bad_request(
+    transport: str = "rest", request_type=reachability.RerunConnectivityTestRequest
+):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rerun_connectivity_test(request)
+
+
+def test_rerun_connectivity_test_rest_error():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.DeleteConnectivityTestRequest,
+        dict,
+    ],
+)
+def test_delete_connectivity_test_rest(request_type):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_connectivity_test(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_connectivity_test_rest_required_fields(
+    request_type=reachability.DeleteConnectivityTestRequest,
+):
+    transport_class = transports.ReachabilityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_connectivity_test._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_connectivity_test(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_connectivity_test_rest_unset_required_fields():
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_connectivity_test._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_connectivity_test_rest_interceptors(null_interceptor):
+    transport = transports.ReachabilityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReachabilityServiceRestInterceptor(),
+    )
+    client = ReachabilityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "post_delete_connectivity_test"
+    ) as post, mock.patch.object(
+        transports.ReachabilityServiceRestInterceptor, "pre_delete_connectivity_test"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reachability.DeleteConnectivityTestRequest.pb(
+            reachability.DeleteConnectivityTestRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = reachability.DeleteConnectivityTestRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_connectivity_test(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_connectivity_test_rest_bad_request(
+    transport: str = "rest", request_type=reachability.DeleteConnectivityTestRequest
+):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/global/connectivityTests/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_connectivity_test(request)
+
+
+def test_delete_connectivity_test_rest_flattened():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/global/connectivityTests/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_connectivity_test(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/global/connectivityTests/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_connectivity_test_rest_flattened_error(transport: str = "rest"):
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_connectivity_test(
+            reachability.DeleteConnectivityTestRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_connectivity_test_rest_error():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ReachabilityServiceGrpcTransport(
@@ -2421,6 +4901,7 @@ def test_transport_get_channel():
     [
         transports.ReachabilityServiceGrpcTransport,
         transports.ReachabilityServiceGrpcAsyncIOTransport,
+        transports.ReachabilityServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2435,6 +4916,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2574,6 +5056,7 @@ def test_reachability_service_transport_auth_adc(transport_class):
     [
         transports.ReachabilityServiceGrpcTransport,
         transports.ReachabilityServiceGrpcAsyncIOTransport,
+        transports.ReachabilityServiceRestTransport,
     ],
 )
 def test_reachability_service_transport_auth_gdch_credentials(transport_class):
@@ -2673,11 +5156,40 @@ def test_reachability_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_reachability_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ReachabilityServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_reachability_service_rest_lro_client():
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_reachability_service_host_no_port(transport_name):
@@ -2688,7 +5200,11 @@ def test_reachability_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("networkmanagement.googleapis.com:443")
+    assert client.transport._host == (
+        "networkmanagement.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://networkmanagement.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2696,6 +5212,7 @@ def test_reachability_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_reachability_service_host_with_port(transport_name):
@@ -2706,7 +5223,48 @@ def test_reachability_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("networkmanagement.googleapis.com:8000")
+    assert client.transport._host == (
+        "networkmanagement.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://networkmanagement.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_reachability_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ReachabilityServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ReachabilityServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_connectivity_tests._session
+    session2 = client2.transport.list_connectivity_tests._session
+    assert session1 != session2
+    session1 = client1.transport.get_connectivity_test._session
+    session2 = client2.transport.get_connectivity_test._session
+    assert session1 != session2
+    session1 = client1.transport.create_connectivity_test._session
+    session2 = client2.transport.create_connectivity_test._session
+    assert session1 != session2
+    session1 = client1.transport.update_connectivity_test._session
+    session2 = client2.transport.update_connectivity_test._session
+    assert session1 != session2
+    session1 = client1.transport.rerun_connectivity_test._session
+    session2 = client2.transport.rerun_connectivity_test._session
+    assert session1 != session2
+    session1 = client1.transport.delete_connectivity_test._session
+    session2 = client2.transport.delete_connectivity_test._session
+    assert session1 != session2
 
 
 def test_reachability_service_grpc_transport_channel():
@@ -3034,6 +5592,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3051,6 +5610,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
