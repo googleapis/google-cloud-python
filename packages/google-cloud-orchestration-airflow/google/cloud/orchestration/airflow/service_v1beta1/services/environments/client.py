@@ -65,6 +65,7 @@ from google.cloud.orchestration.airflow.service_v1beta1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, EnvironmentsTransport
 from .transports.grpc import EnvironmentsGrpcTransport
 from .transports.grpc_asyncio import EnvironmentsGrpcAsyncIOTransport
+from .transports.rest import EnvironmentsRestTransport
 
 
 class EnvironmentsClientMeta(type):
@@ -78,6 +79,7 @@ class EnvironmentsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[EnvironmentsTransport]]
     _transport_registry["grpc"] = EnvironmentsGrpcTransport
     _transport_registry["grpc_asyncio"] = EnvironmentsGrpcAsyncIOTransport
+    _transport_registry["rest"] = EnvironmentsRestTransport
 
     def get_transport_class(
         cls,

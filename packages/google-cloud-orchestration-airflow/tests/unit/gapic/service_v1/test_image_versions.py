@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -31,11 +33,14 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.orchestration.airflow.service_v1.services.image_versions import (
     ImageVersionsAsyncClient,
@@ -95,6 +100,7 @@ def test__get_default_mtls_endpoint():
     [
         (ImageVersionsClient, "grpc"),
         (ImageVersionsAsyncClient, "grpc_asyncio"),
+        (ImageVersionsClient, "rest"),
     ],
 )
 def test_image_versions_client_from_service_account_info(client_class, transport_name):
@@ -108,7 +114,11 @@ def test_image_versions_client_from_service_account_info(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("composer.googleapis.com:443")
+        assert client.transport._host == (
+            "composer.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://composer.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -116,6 +126,7 @@ def test_image_versions_client_from_service_account_info(client_class, transport
     [
         (transports.ImageVersionsGrpcTransport, "grpc"),
         (transports.ImageVersionsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ImageVersionsRestTransport, "rest"),
     ],
 )
 def test_image_versions_client_service_account_always_use_jwt(
@@ -141,6 +152,7 @@ def test_image_versions_client_service_account_always_use_jwt(
     [
         (ImageVersionsClient, "grpc"),
         (ImageVersionsAsyncClient, "grpc_asyncio"),
+        (ImageVersionsClient, "rest"),
     ],
 )
 def test_image_versions_client_from_service_account_file(client_class, transport_name):
@@ -161,13 +173,18 @@ def test_image_versions_client_from_service_account_file(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("composer.googleapis.com:443")
+        assert client.transport._host == (
+            "composer.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://composer.googleapis.com"
+        )
 
 
 def test_image_versions_client_get_transport_class():
     transport = ImageVersionsClient.get_transport_class()
     available_transports = [
         transports.ImageVersionsGrpcTransport,
+        transports.ImageVersionsRestTransport,
     ]
     assert transport in available_transports
 
@@ -184,6 +201,7 @@ def test_image_versions_client_get_transport_class():
             transports.ImageVersionsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ImageVersionsClient, transports.ImageVersionsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -329,6 +347,8 @@ def test_image_versions_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (ImageVersionsClient, transports.ImageVersionsRestTransport, "rest", "true"),
+        (ImageVersionsClient, transports.ImageVersionsRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -528,6 +548,7 @@ def test_image_versions_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.ImageVersionsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ImageVersionsClient, transports.ImageVersionsRestTransport, "rest"),
     ],
 )
 def test_image_versions_client_client_options_scopes(
@@ -568,6 +589,7 @@ def test_image_versions_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (ImageVersionsClient, transports.ImageVersionsRestTransport, "rest", None),
     ],
 )
 def test_image_versions_client_client_options_credentials_file(
@@ -1123,6 +1145,245 @@ async def test_list_image_versions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        image_versions.ListImageVersionsRequest,
+        dict,
+    ],
+)
+def test_list_image_versions_rest(request_type):
+    client = ImageVersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = image_versions.ListImageVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = image_versions.ListImageVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_image_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListImageVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_image_versions_rest_interceptors(null_interceptor):
+    transport = transports.ImageVersionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ImageVersionsRestInterceptor(),
+    )
+    client = ImageVersionsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ImageVersionsRestInterceptor, "post_list_image_versions"
+    ) as post, mock.patch.object(
+        transports.ImageVersionsRestInterceptor, "pre_list_image_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = image_versions.ListImageVersionsRequest.pb(
+            image_versions.ListImageVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = image_versions.ListImageVersionsResponse.to_json(
+            image_versions.ListImageVersionsResponse()
+        )
+
+        request = image_versions.ListImageVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = image_versions.ListImageVersionsResponse()
+
+        client.list_image_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_image_versions_rest_bad_request(
+    transport: str = "rest", request_type=image_versions.ListImageVersionsRequest
+):
+    client = ImageVersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_image_versions(request)
+
+
+def test_list_image_versions_rest_flattened():
+    client = ImageVersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = image_versions.ListImageVersionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = image_versions.ListImageVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_image_versions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/imageVersions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_image_versions_rest_flattened_error(transport: str = "rest"):
+    client = ImageVersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_image_versions(
+            image_versions.ListImageVersionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_image_versions_rest_pager(transport: str = "rest"):
+    client = ImageVersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            image_versions.ListImageVersionsResponse(
+                image_versions=[
+                    image_versions.ImageVersion(),
+                    image_versions.ImageVersion(),
+                    image_versions.ImageVersion(),
+                ],
+                next_page_token="abc",
+            ),
+            image_versions.ListImageVersionsResponse(
+                image_versions=[],
+                next_page_token="def",
+            ),
+            image_versions.ListImageVersionsResponse(
+                image_versions=[
+                    image_versions.ImageVersion(),
+                ],
+                next_page_token="ghi",
+            ),
+            image_versions.ListImageVersionsResponse(
+                image_versions=[
+                    image_versions.ImageVersion(),
+                    image_versions.ImageVersion(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            image_versions.ListImageVersionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_image_versions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, image_versions.ImageVersion) for i in results)
+
+        pages = list(client.list_image_versions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ImageVersionsGrpcTransport(
@@ -1204,6 +1465,7 @@ def test_transport_get_channel():
     [
         transports.ImageVersionsGrpcTransport,
         transports.ImageVersionsGrpcAsyncIOTransport,
+        transports.ImageVersionsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1218,6 +1480,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1345,6 +1608,7 @@ def test_image_versions_transport_auth_adc(transport_class):
     [
         transports.ImageVersionsGrpcTransport,
         transports.ImageVersionsGrpcAsyncIOTransport,
+        transports.ImageVersionsRestTransport,
     ],
 )
 def test_image_versions_transport_auth_gdch_credentials(transport_class):
@@ -1442,11 +1706,23 @@ def test_image_versions_grpc_transport_client_cert_source_for_mtls(transport_cla
             )
 
 
+def test_image_versions_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ImageVersionsRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_image_versions_host_no_port(transport_name):
@@ -1457,7 +1733,11 @@ def test_image_versions_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("composer.googleapis.com:443")
+    assert client.transport._host == (
+        "composer.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://composer.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1465,6 +1745,7 @@ def test_image_versions_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_image_versions_host_with_port(transport_name):
@@ -1475,7 +1756,33 @@ def test_image_versions_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("composer.googleapis.com:8000")
+    assert client.transport._host == (
+        "composer.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://composer.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_image_versions_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ImageVersionsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ImageVersionsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_image_versions._session
+    session2 = client2.transport.list_image_versions._session
+    assert session1 != session2
 
 
 def test_image_versions_grpc_transport_channel():
@@ -1744,6 +2051,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1761,6 +2069,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

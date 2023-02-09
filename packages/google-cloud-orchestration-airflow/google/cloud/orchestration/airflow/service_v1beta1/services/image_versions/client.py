@@ -56,6 +56,7 @@ from google.cloud.orchestration.airflow.service_v1beta1.types import image_versi
 from .transports.base import DEFAULT_CLIENT_INFO, ImageVersionsTransport
 from .transports.grpc import ImageVersionsGrpcTransport
 from .transports.grpc_asyncio import ImageVersionsGrpcAsyncIOTransport
+from .transports.rest import ImageVersionsRestTransport
 
 
 class ImageVersionsClientMeta(type):
@@ -69,6 +70,7 @@ class ImageVersionsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ImageVersionsTransport]]
     _transport_registry["grpc"] = ImageVersionsGrpcTransport
     _transport_registry["grpc_asyncio"] = ImageVersionsGrpcAsyncIOTransport
+    _transport_registry["rest"] = ImageVersionsRestTransport
 
     def get_transport_class(
         cls,

@@ -86,6 +86,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "EnvironmentsClient",
+          "rpcs": {
+            "CreateEnvironment": {
+              "methods": [
+                "create_environment"
+              ]
+            },
+            "DeleteEnvironment": {
+              "methods": [
+                "delete_environment"
+              ]
+            },
+            "GetEnvironment": {
+              "methods": [
+                "get_environment"
+              ]
+            },
+            "ListEnvironments": {
+              "methods": [
+                "list_environments"
+              ]
+            },
+            "LoadSnapshot": {
+              "methods": [
+                "load_snapshot"
+              ]
+            },
+            "SaveSnapshot": {
+              "methods": [
+                "save_snapshot"
+              ]
+            },
+            "UpdateEnvironment": {
+              "methods": [
+                "update_environment"
+              ]
+            }
+          }
         }
       }
     },
@@ -103,6 +143,16 @@
         },
         "grpc-async": {
           "libraryClient": "ImageVersionsAsyncClient",
+          "rpcs": {
+            "ListImageVersions": {
+              "methods": [
+                "list_image_versions"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ImageVersionsClient",
           "rpcs": {
             "ListImageVersions": {
               "methods": [
