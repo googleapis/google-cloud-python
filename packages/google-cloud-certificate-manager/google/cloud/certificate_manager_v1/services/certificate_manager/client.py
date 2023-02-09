@@ -65,6 +65,7 @@ from google.cloud.certificate_manager_v1.types import certificate_manager
 from .transports.base import DEFAULT_CLIENT_INFO, CertificateManagerTransport
 from .transports.grpc import CertificateManagerGrpcTransport
 from .transports.grpc_asyncio import CertificateManagerGrpcAsyncIOTransport
+from .transports.rest import CertificateManagerRestTransport
 
 
 class CertificateManagerClientMeta(type):
@@ -80,6 +81,7 @@ class CertificateManagerClientMeta(type):
     )  # type: Dict[str, Type[CertificateManagerTransport]]
     _transport_registry["grpc"] = CertificateManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = CertificateManagerGrpcAsyncIOTransport
+    _transport_registry["rest"] = CertificateManagerRestTransport
 
     def get_transport_class(
         cls,
