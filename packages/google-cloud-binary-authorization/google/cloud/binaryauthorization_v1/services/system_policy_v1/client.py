@@ -53,6 +53,7 @@ from google.cloud.binaryauthorization_v1.types import resources, service
 from .transports.base import DEFAULT_CLIENT_INFO, SystemPolicyV1Transport
 from .transports.grpc import SystemPolicyV1GrpcTransport
 from .transports.grpc_asyncio import SystemPolicyV1GrpcAsyncIOTransport
+from .transports.rest import SystemPolicyV1RestTransport
 
 
 class SystemPolicyV1ClientMeta(type):
@@ -68,6 +69,7 @@ class SystemPolicyV1ClientMeta(type):
     )  # type: Dict[str, Type[SystemPolicyV1Transport]]
     _transport_registry["grpc"] = SystemPolicyV1GrpcTransport
     _transport_registry["grpc_asyncio"] = SystemPolicyV1GrpcAsyncIOTransport
+    _transport_registry["rest"] = SystemPolicyV1RestTransport
 
     def get_transport_class(
         cls,

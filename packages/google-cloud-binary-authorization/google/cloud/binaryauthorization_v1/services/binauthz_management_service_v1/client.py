@@ -56,6 +56,7 @@ from google.cloud.binaryauthorization_v1.types import resources, service
 from .transports.base import DEFAULT_CLIENT_INFO, BinauthzManagementServiceV1Transport
 from .transports.grpc import BinauthzManagementServiceV1GrpcTransport
 from .transports.grpc_asyncio import BinauthzManagementServiceV1GrpcAsyncIOTransport
+from .transports.rest import BinauthzManagementServiceV1RestTransport
 
 
 class BinauthzManagementServiceV1ClientMeta(type):
@@ -73,6 +74,7 @@ class BinauthzManagementServiceV1ClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = BinauthzManagementServiceV1GrpcAsyncIOTransport
+    _transport_registry["rest"] = BinauthzManagementServiceV1RestTransport
 
     def get_transport_class(
         cls,

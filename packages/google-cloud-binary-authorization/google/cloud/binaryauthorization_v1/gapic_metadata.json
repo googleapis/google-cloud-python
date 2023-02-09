@@ -86,6 +86,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "BinauthzManagementServiceV1Client",
+          "rpcs": {
+            "CreateAttestor": {
+              "methods": [
+                "create_attestor"
+              ]
+            },
+            "DeleteAttestor": {
+              "methods": [
+                "delete_attestor"
+              ]
+            },
+            "GetAttestor": {
+              "methods": [
+                "get_attestor"
+              ]
+            },
+            "GetPolicy": {
+              "methods": [
+                "get_policy"
+              ]
+            },
+            "ListAttestors": {
+              "methods": [
+                "list_attestors"
+              ]
+            },
+            "UpdateAttestor": {
+              "methods": [
+                "update_attestor"
+              ]
+            },
+            "UpdatePolicy": {
+              "methods": [
+                "update_policy"
+              ]
+            }
+          }
         }
       }
     },
@@ -110,6 +150,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "SystemPolicyV1Client",
+          "rpcs": {
+            "GetSystemPolicy": {
+              "methods": [
+                "get_system_policy"
+              ]
+            }
+          }
         }
       }
     },
@@ -127,6 +177,16 @@
         },
         "grpc-async": {
           "libraryClient": "ValidationHelperV1AsyncClient",
+          "rpcs": {
+            "ValidateAttestationOccurrence": {
+              "methods": [
+                "validate_attestation_occurrence"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ValidationHelperV1Client",
           "rpcs": {
             "ValidateAttestationOccurrence": {
               "methods": [

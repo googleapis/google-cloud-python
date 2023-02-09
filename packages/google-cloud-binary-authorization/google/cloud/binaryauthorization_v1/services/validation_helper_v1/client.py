@@ -51,6 +51,7 @@ from google.cloud.binaryauthorization_v1.types import service
 from .transports.base import DEFAULT_CLIENT_INFO, ValidationHelperV1Transport
 from .transports.grpc import ValidationHelperV1GrpcTransport
 from .transports.grpc_asyncio import ValidationHelperV1GrpcAsyncIOTransport
+from .transports.rest import ValidationHelperV1RestTransport
 
 
 class ValidationHelperV1ClientMeta(type):
@@ -66,6 +67,7 @@ class ValidationHelperV1ClientMeta(type):
     )  # type: Dict[str, Type[ValidationHelperV1Transport]]
     _transport_registry["grpc"] = ValidationHelperV1GrpcTransport
     _transport_registry["grpc_asyncio"] = ValidationHelperV1GrpcAsyncIOTransport
+    _transport_registry["rest"] = ValidationHelperV1RestTransport
 
     def get_transport_class(
         cls,

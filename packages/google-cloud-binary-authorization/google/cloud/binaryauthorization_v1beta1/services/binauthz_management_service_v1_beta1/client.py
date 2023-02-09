@@ -61,6 +61,7 @@ from .transports.grpc import BinauthzManagementServiceV1Beta1GrpcTransport
 from .transports.grpc_asyncio import (
     BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport,
 )
+from .transports.rest import BinauthzManagementServiceV1Beta1RestTransport
 
 
 class BinauthzManagementServiceV1Beta1ClientMeta(type):
@@ -78,6 +79,7 @@ class BinauthzManagementServiceV1Beta1ClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport
+    _transport_registry["rest"] = BinauthzManagementServiceV1Beta1RestTransport
 
     def get_transport_class(
         cls,

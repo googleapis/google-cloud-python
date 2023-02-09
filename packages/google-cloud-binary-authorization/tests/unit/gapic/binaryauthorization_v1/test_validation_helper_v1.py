@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -31,6 +33,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import json_format
 import grafeas.grafeas_v1.types  # type: ignore
 from grafeas.grafeas_v1.types import common  # type: ignore
 import grpc
@@ -38,6 +41,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.binaryauthorization_v1.services.validation_helper_v1 import (
     ValidationHelperV1AsyncClient,
@@ -97,6 +102,7 @@ def test__get_default_mtls_endpoint():
     [
         (ValidationHelperV1Client, "grpc"),
         (ValidationHelperV1AsyncClient, "grpc_asyncio"),
+        (ValidationHelperV1Client, "rest"),
     ],
 )
 def test_validation_helper_v1_client_from_service_account_info(
@@ -112,7 +118,11 @@ def test_validation_helper_v1_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("binaryauthorization.googleapis.com:443")
+        assert client.transport._host == (
+            "binaryauthorization.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://binaryauthorization.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -120,6 +130,7 @@ def test_validation_helper_v1_client_from_service_account_info(
     [
         (transports.ValidationHelperV1GrpcTransport, "grpc"),
         (transports.ValidationHelperV1GrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ValidationHelperV1RestTransport, "rest"),
     ],
 )
 def test_validation_helper_v1_client_service_account_always_use_jwt(
@@ -145,6 +156,7 @@ def test_validation_helper_v1_client_service_account_always_use_jwt(
     [
         (ValidationHelperV1Client, "grpc"),
         (ValidationHelperV1AsyncClient, "grpc_asyncio"),
+        (ValidationHelperV1Client, "rest"),
     ],
 )
 def test_validation_helper_v1_client_from_service_account_file(
@@ -167,13 +179,18 @@ def test_validation_helper_v1_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("binaryauthorization.googleapis.com:443")
+        assert client.transport._host == (
+            "binaryauthorization.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://binaryauthorization.googleapis.com"
+        )
 
 
 def test_validation_helper_v1_client_get_transport_class():
     transport = ValidationHelperV1Client.get_transport_class()
     available_transports = [
         transports.ValidationHelperV1GrpcTransport,
+        transports.ValidationHelperV1RestTransport,
     ]
     assert transport in available_transports
 
@@ -190,6 +207,7 @@ def test_validation_helper_v1_client_get_transport_class():
             transports.ValidationHelperV1GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ValidationHelperV1Client, transports.ValidationHelperV1RestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -343,6 +361,18 @@ def test_validation_helper_v1_client_client_options(
             ValidationHelperV1AsyncClient,
             transports.ValidationHelperV1GrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ValidationHelperV1Client,
+            transports.ValidationHelperV1RestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ValidationHelperV1Client,
+            transports.ValidationHelperV1RestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -544,6 +574,7 @@ def test_validation_helper_v1_client_get_mtls_endpoint_and_cert_source(client_cl
             transports.ValidationHelperV1GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ValidationHelperV1Client, transports.ValidationHelperV1RestTransport, "rest"),
     ],
 )
 def test_validation_helper_v1_client_client_options_scopes(
@@ -583,6 +614,12 @@ def test_validation_helper_v1_client_client_options_scopes(
             transports.ValidationHelperV1GrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ValidationHelperV1Client,
+            transports.ValidationHelperV1RestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -865,6 +902,249 @@ async def test_validate_attestation_occurrence_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ValidateAttestationOccurrenceRequest,
+        dict,
+    ],
+)
+def test_validate_attestation_occurrence_rest(request_type):
+    client = ValidationHelperV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"attestor": "projects/sample1/attestors/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ValidateAttestationOccurrenceResponse(
+            result=service.ValidateAttestationOccurrenceResponse.Result.VERIFIED,
+            denial_reason="denial_reason_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ValidateAttestationOccurrenceResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.validate_attestation_occurrence(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.ValidateAttestationOccurrenceResponse)
+    assert (
+        response.result == service.ValidateAttestationOccurrenceResponse.Result.VERIFIED
+    )
+    assert response.denial_reason == "denial_reason_value"
+
+
+def test_validate_attestation_occurrence_rest_required_fields(
+    request_type=service.ValidateAttestationOccurrenceRequest,
+):
+    transport_class = transports.ValidationHelperV1RestTransport
+
+    request_init = {}
+    request_init["attestor"] = ""
+    request_init["occurrence_note"] = ""
+    request_init["occurrence_resource_uri"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate_attestation_occurrence._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["attestor"] = "attestor_value"
+    jsonified_request["occurrenceNote"] = "occurrence_note_value"
+    jsonified_request["occurrenceResourceUri"] = "occurrence_resource_uri_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate_attestation_occurrence._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "attestor" in jsonified_request
+    assert jsonified_request["attestor"] == "attestor_value"
+    assert "occurrenceNote" in jsonified_request
+    assert jsonified_request["occurrenceNote"] == "occurrence_note_value"
+    assert "occurrenceResourceUri" in jsonified_request
+    assert jsonified_request["occurrenceResourceUri"] == "occurrence_resource_uri_value"
+
+    client = ValidationHelperV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ValidateAttestationOccurrenceResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ValidateAttestationOccurrenceResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.validate_attestation_occurrence(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_validate_attestation_occurrence_rest_unset_required_fields():
+    transport = transports.ValidationHelperV1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.validate_attestation_occurrence._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "attestor",
+                "attestation",
+                "occurrenceNote",
+                "occurrenceResourceUri",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_validate_attestation_occurrence_rest_interceptors(null_interceptor):
+    transport = transports.ValidationHelperV1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ValidationHelperV1RestInterceptor(),
+    )
+    client = ValidationHelperV1Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ValidationHelperV1RestInterceptor,
+        "post_validate_attestation_occurrence",
+    ) as post, mock.patch.object(
+        transports.ValidationHelperV1RestInterceptor,
+        "pre_validate_attestation_occurrence",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ValidateAttestationOccurrenceRequest.pb(
+            service.ValidateAttestationOccurrenceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            service.ValidateAttestationOccurrenceResponse.to_json(
+                service.ValidateAttestationOccurrenceResponse()
+            )
+        )
+
+        request = service.ValidateAttestationOccurrenceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ValidateAttestationOccurrenceResponse()
+
+        client.validate_attestation_occurrence(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_validate_attestation_occurrence_rest_bad_request(
+    transport: str = "rest", request_type=service.ValidateAttestationOccurrenceRequest
+):
+    client = ValidationHelperV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"attestor": "projects/sample1/attestors/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.validate_attestation_occurrence(request)
+
+
+def test_validate_attestation_occurrence_rest_error():
+    client = ValidationHelperV1Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ValidationHelperV1GrpcTransport(
@@ -946,6 +1226,7 @@ def test_transport_get_channel():
     [
         transports.ValidationHelperV1GrpcTransport,
         transports.ValidationHelperV1GrpcAsyncIOTransport,
+        transports.ValidationHelperV1RestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -960,6 +1241,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1087,6 +1369,7 @@ def test_validation_helper_v1_transport_auth_adc(transport_class):
     [
         transports.ValidationHelperV1GrpcTransport,
         transports.ValidationHelperV1GrpcAsyncIOTransport,
+        transports.ValidationHelperV1RestTransport,
     ],
 )
 def test_validation_helper_v1_transport_auth_gdch_credentials(transport_class):
@@ -1186,11 +1469,23 @@ def test_validation_helper_v1_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_validation_helper_v1_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ValidationHelperV1RestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_validation_helper_v1_host_no_port(transport_name):
@@ -1201,7 +1496,11 @@ def test_validation_helper_v1_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("binaryauthorization.googleapis.com:443")
+    assert client.transport._host == (
+        "binaryauthorization.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://binaryauthorization.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1209,6 +1508,7 @@ def test_validation_helper_v1_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_validation_helper_v1_host_with_port(transport_name):
@@ -1219,7 +1519,33 @@ def test_validation_helper_v1_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("binaryauthorization.googleapis.com:8000")
+    assert client.transport._host == (
+        "binaryauthorization.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://binaryauthorization.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_validation_helper_v1_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ValidationHelperV1Client(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ValidationHelperV1Client(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.validate_attestation_occurrence._session
+    session2 = client2.transport.validate_attestation_occurrence._session
+    assert session1 != session2
 
 
 def test_validation_helper_v1_grpc_transport_channel():
@@ -1490,6 +1816,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1507,6 +1834,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
