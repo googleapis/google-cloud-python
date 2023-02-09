@@ -548,6 +548,16 @@ For AWS providers, use :meth:`aws.Credentials.from_info
         ['https://www.googleapis.com/auth/cloud-platform'])
 
 
+Security considerations
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Note that this library does not perform any validation on the token_url,
+token_info_url, or service_account_impersonation_url fields of the credential
+configuration. It is not recommended to use a credential configuration that you
+did not generate with the gcloud CLI unless you verify that the URL fields point
+to a googleapis.com domain.
+
+
 External credentials (Workforce identity federation)
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -791,6 +801,13 @@ Cloud resources from an OIDC or SAML provider.
 .. _gcloud CLI: https://cloud.google.com/sdk/
 .. _workforce pools user project:
     https://cloud.google.com/iam/docs/workforce-identity-federation#workforce-pools-user-project
+
+
+Note that this library does not perform any validation on the token_url,
+token_info_url, or service_account_impersonation_url fields of the credential
+configuration. It is not recommended to use a credential configuration that you
+did not generate with the gcloud CLI unless you verify that the URL fields point
+to a googleapis.com domain.
 
 
 Impersonated credentials

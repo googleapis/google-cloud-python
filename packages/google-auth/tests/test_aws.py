@@ -1085,16 +1085,6 @@ class TestCredentials(object):
 
             assert credentials.token_info_url == (url + "/introspect")
 
-    def test_token_info_url_bad(self):
-        for url in INVALID_TOKEN_URLS:
-            with pytest.raises(ValueError) as excinfo:
-                self.make_credentials(
-                    credential_source=self.CREDENTIAL_SOURCE.copy(),
-                    token_info_url=(url + "/introspect"),
-                )
-
-            assert excinfo.match(r"The provided token info URL is invalid\.")
-
     def test_token_info_url_negative(self):
         credentials = self.make_credentials(
             credential_source=self.CREDENTIAL_SOURCE.copy(), token_info_url=None
@@ -1111,16 +1101,6 @@ class TestCredentials(object):
 
             assert credentials._token_url == (url + "/token")
 
-    def test_token_url_bad(self):
-        for url in INVALID_TOKEN_URLS:
-            with pytest.raises(ValueError) as excinfo:
-                self.make_credentials(
-                    credential_source=self.CREDENTIAL_SOURCE.copy(),
-                    token_url=(url + "/token"),
-                )
-
-            assert excinfo.match(r"The provided token URL is invalid\.")
-
     def test_service_account_impersonation_url_custom(self):
         for url in VALID_SERVICE_ACCOUNT_IMPERSONATION_URLS:
             credentials = self.make_credentials(
@@ -1132,20 +1112,6 @@ class TestCredentials(object):
 
             assert credentials._service_account_impersonation_url == (
                 url + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
-            )
-
-    def test_service_account_impersonation_url_bad(self):
-        for url in INVALID_SERVICE_ACCOUNT_IMPERSONATION_URLS:
-            with pytest.raises(ValueError) as excinfo:
-                self.make_credentials(
-                    credential_source=self.CREDENTIAL_SOURCE.copy(),
-                    service_account_impersonation_url=(
-                        url + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
-                    ),
-                )
-
-            assert excinfo.match(
-                r"The provided service account impersonation URL is invalid\."
             )
 
     def test_retrieve_subject_token_missing_region_url(self):
