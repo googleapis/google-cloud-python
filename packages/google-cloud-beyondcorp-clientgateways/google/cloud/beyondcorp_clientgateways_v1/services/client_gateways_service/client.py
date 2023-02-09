@@ -63,6 +63,7 @@ from google.cloud.beyondcorp_clientgateways_v1.types import client_gateways_serv
 from .transports.base import DEFAULT_CLIENT_INFO, ClientGatewaysServiceTransport
 from .transports.grpc import ClientGatewaysServiceGrpcTransport
 from .transports.grpc_asyncio import ClientGatewaysServiceGrpcAsyncIOTransport
+from .transports.rest import ClientGatewaysServiceRestTransport
 
 
 class ClientGatewaysServiceClientMeta(type):
@@ -78,6 +79,7 @@ class ClientGatewaysServiceClientMeta(type):
     )  # type: Dict[str, Type[ClientGatewaysServiceTransport]]
     _transport_registry["grpc"] = ClientGatewaysServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ClientGatewaysServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ClientGatewaysServiceRestTransport
 
     def get_transport_class(
         cls,
