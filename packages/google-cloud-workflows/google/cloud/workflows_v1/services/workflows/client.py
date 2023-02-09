@@ -58,6 +58,7 @@ from google.cloud.workflows_v1.types import workflows
 from .transports.base import DEFAULT_CLIENT_INFO, WorkflowsTransport
 from .transports.grpc import WorkflowsGrpcTransport
 from .transports.grpc_asyncio import WorkflowsGrpcAsyncIOTransport
+from .transports.rest import WorkflowsRestTransport
 
 
 class WorkflowsClientMeta(type):
@@ -71,6 +72,7 @@ class WorkflowsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[WorkflowsTransport]]
     _transport_registry["grpc"] = WorkflowsGrpcTransport
     _transport_registry["grpc_asyncio"] = WorkflowsGrpcAsyncIOTransport
+    _transport_registry["rest"] = WorkflowsRestTransport
 
     def get_transport_class(
         cls,
