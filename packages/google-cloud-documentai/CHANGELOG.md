@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.0](https://github.com/googleapis/python-documentai/compare/v2.11.0...v2.12.0) (2023-02-08)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#459](https://github.com/googleapis/python-documentai/issues/459)) ([02d06d6](https://github.com/googleapis/python-documentai/commit/02d06d663a99062a98b6dc0b699ffdec38e2e5de))
+
 ## [2.11.0](https://github.com/googleapis/python-documentai/compare/v2.10.0...v2.11.0) (2023-02-07)
 
 
