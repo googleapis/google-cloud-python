@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -36,6 +38,7 @@ from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -51,6 +54,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.contentwarehouse_v1.services.document_service import (
     DocumentServiceAsyncClient,
@@ -118,6 +123,7 @@ def test__get_default_mtls_endpoint():
     [
         (DocumentServiceClient, "grpc"),
         (DocumentServiceAsyncClient, "grpc_asyncio"),
+        (DocumentServiceClient, "rest"),
     ],
 )
 def test_document_service_client_from_service_account_info(
@@ -133,7 +139,11 @@ def test_document_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("contentwarehouse.googleapis.com:443")
+        assert client.transport._host == (
+            "contentwarehouse.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://contentwarehouse.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -141,6 +151,7 @@ def test_document_service_client_from_service_account_info(
     [
         (transports.DocumentServiceGrpcTransport, "grpc"),
         (transports.DocumentServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.DocumentServiceRestTransport, "rest"),
     ],
 )
 def test_document_service_client_service_account_always_use_jwt(
@@ -166,6 +177,7 @@ def test_document_service_client_service_account_always_use_jwt(
     [
         (DocumentServiceClient, "grpc"),
         (DocumentServiceAsyncClient, "grpc_asyncio"),
+        (DocumentServiceClient, "rest"),
     ],
 )
 def test_document_service_client_from_service_account_file(
@@ -188,13 +200,18 @@ def test_document_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("contentwarehouse.googleapis.com:443")
+        assert client.transport._host == (
+            "contentwarehouse.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://contentwarehouse.googleapis.com"
+        )
 
 
 def test_document_service_client_get_transport_class():
     transport = DocumentServiceClient.get_transport_class()
     available_transports = [
         transports.DocumentServiceGrpcTransport,
+        transports.DocumentServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -211,6 +228,7 @@ def test_document_service_client_get_transport_class():
             transports.DocumentServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DocumentServiceClient, transports.DocumentServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -364,6 +382,18 @@ def test_document_service_client_client_options(
             DocumentServiceAsyncClient,
             transports.DocumentServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            DocumentServiceClient,
+            transports.DocumentServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            DocumentServiceClient,
+            transports.DocumentServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -565,6 +595,7 @@ def test_document_service_client_get_mtls_endpoint_and_cert_source(client_class)
             transports.DocumentServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DocumentServiceClient, transports.DocumentServiceRestTransport, "rest"),
     ],
 )
 def test_document_service_client_client_options_scopes(
@@ -605,6 +636,7 @@ def test_document_service_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (DocumentServiceClient, transports.DocumentServiceRestTransport, "rest", None),
     ],
 )
 def test_document_service_client_client_options_credentials_file(
@@ -2591,6 +2623,1990 @@ async def test_set_acl_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service_request.CreateDocumentRequest,
+        dict,
+    ],
+)
+def test_create_document_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.CreateDocumentResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.CreateDocumentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_document(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, document_service.CreateDocumentResponse)
+
+
+def test_create_document_rest_required_fields(
+    request_type=document_service_request.CreateDocumentRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = document_service.CreateDocumentResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = document_service.CreateDocumentResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_document(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_document_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_document._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "document",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_document_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_create_document"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_create_document"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service_request.CreateDocumentRequest.pb(
+            document_service_request.CreateDocumentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = document_service.CreateDocumentResponse.to_json(
+            document_service.CreateDocumentResponse()
+        )
+
+        request = document_service_request.CreateDocumentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = document_service.CreateDocumentResponse()
+
+        client.create_document(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_document_rest_bad_request(
+    transport: str = "rest", request_type=document_service_request.CreateDocumentRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_document(request)
+
+
+def test_create_document_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.CreateDocumentResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            document=gcc_document.Document(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.CreateDocumentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_document(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/documents" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_document_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_document(
+            document_service_request.CreateDocumentRequest(),
+            parent="parent_value",
+            document=gcc_document.Document(name="name_value"),
+        )
+
+
+def test_create_document_rest_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service_request.GetDocumentRequest,
+        dict,
+    ],
+)
+def test_get_document_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcc_document.Document(
+            name="name_value",
+            reference_id="reference_id_value",
+            display_name="display_name_value",
+            title="title_value",
+            display_uri="display_uri_value",
+            document_schema_name="document_schema_name_value",
+            structured_content_uri="structured_content_uri_value",
+            raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
+            async_enabled=True,
+            text_extraction_disabled=True,
+            creator="creator_value",
+            updater="updater_value",
+            plain_text="plain_text_value",
+            raw_document_path="raw_document_path_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcc_document.Document.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_document(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcc_document.Document)
+    assert response.name == "name_value"
+    assert response.reference_id == "reference_id_value"
+    assert response.display_name == "display_name_value"
+    assert response.title == "title_value"
+    assert response.display_uri == "display_uri_value"
+    assert response.document_schema_name == "document_schema_name_value"
+    assert response.structured_content_uri == "structured_content_uri_value"
+    assert (
+        response.raw_document_file_type
+        == gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF
+    )
+    assert response.async_enabled is True
+    assert response.text_extraction_disabled is True
+    assert response.creator == "creator_value"
+    assert response.updater == "updater_value"
+
+
+def test_get_document_rest_required_fields(
+    request_type=document_service_request.GetDocumentRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcc_document.Document()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcc_document.Document.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_document(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_document_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_document._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_document_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_get_document"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_get_document"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service_request.GetDocumentRequest.pb(
+            document_service_request.GetDocumentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcc_document.Document.to_json(
+            gcc_document.Document()
+        )
+
+        request = document_service_request.GetDocumentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcc_document.Document()
+
+        client.get_document(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_document_rest_bad_request(
+    transport: str = "rest", request_type=document_service_request.GetDocumentRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_document(request)
+
+
+def test_get_document_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcc_document.Document()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/documents/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcc_document.Document.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_document(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/documents/*}:get"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_document_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_document(
+            document_service_request.GetDocumentRequest(),
+            name="name_value",
+        )
+
+
+def test_get_document_rest_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service_request.UpdateDocumentRequest,
+        dict,
+    ],
+)
+def test_update_document_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.UpdateDocumentResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.UpdateDocumentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_document(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, document_service.UpdateDocumentResponse)
+
+
+def test_update_document_rest_required_fields(
+    request_type=document_service_request.UpdateDocumentRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = document_service.UpdateDocumentResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = document_service.UpdateDocumentResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_document(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_document_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_document._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "document",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_document_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_update_document"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_update_document"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service_request.UpdateDocumentRequest.pb(
+            document_service_request.UpdateDocumentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = document_service.UpdateDocumentResponse.to_json(
+            document_service.UpdateDocumentResponse()
+        )
+
+        request = document_service_request.UpdateDocumentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = document_service.UpdateDocumentResponse()
+
+        client.update_document(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_document_rest_bad_request(
+    transport: str = "rest", request_type=document_service_request.UpdateDocumentRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_document(request)
+
+
+def test_update_document_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.UpdateDocumentResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/documents/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            document=gcc_document.Document(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.UpdateDocumentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_document(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/documents/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_document_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_document(
+            document_service_request.UpdateDocumentRequest(),
+            name="name_value",
+            document=gcc_document.Document(name="name_value"),
+        )
+
+
+def test_update_document_rest_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service_request.DeleteDocumentRequest,
+        dict,
+    ],
+)
+def test_delete_document_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_document(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_document_rest_required_fields(
+    request_type=document_service_request.DeleteDocumentRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_document(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_document_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_document._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_document_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_delete_document"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = document_service_request.DeleteDocumentRequest.pb(
+            document_service_request.DeleteDocumentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = document_service_request.DeleteDocumentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_document(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_document_rest_bad_request(
+    transport: str = "rest", request_type=document_service_request.DeleteDocumentRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_document(request)
+
+
+def test_delete_document_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/documents/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_document(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/documents/*}:delete"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_document_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_document(
+            document_service_request.DeleteDocumentRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_document_rest_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service_request.SearchDocumentsRequest,
+        dict,
+    ],
+)
+def test_search_documents_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.SearchDocumentsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.SearchDocumentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_documents(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchDocumentsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_search_documents_rest_required_fields(
+    request_type=document_service_request.SearchDocumentsRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_documents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_documents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = document_service.SearchDocumentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = document_service.SearchDocumentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_documents(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_documents_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_documents._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_documents_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_search_documents"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_search_documents"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service_request.SearchDocumentsRequest.pb(
+            document_service_request.SearchDocumentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = document_service.SearchDocumentsResponse.to_json(
+            document_service.SearchDocumentsResponse()
+        )
+
+        request = document_service_request.SearchDocumentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = document_service.SearchDocumentsResponse()
+
+        client.search_documents(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_documents_rest_bad_request(
+    transport: str = "rest",
+    request_type=document_service_request.SearchDocumentsRequest,
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_documents(request)
+
+
+def test_search_documents_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.SearchDocumentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.SearchDocumentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.search_documents(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/documents:search"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_search_documents_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search_documents(
+            document_service_request.SearchDocumentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_search_documents_rest_pager(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            document_service.SearchDocumentsResponse(
+                matching_documents=[
+                    document_service.SearchDocumentsResponse.MatchingDocument(),
+                    document_service.SearchDocumentsResponse.MatchingDocument(),
+                    document_service.SearchDocumentsResponse.MatchingDocument(),
+                ],
+                next_page_token="abc",
+            ),
+            document_service.SearchDocumentsResponse(
+                matching_documents=[],
+                next_page_token="def",
+            ),
+            document_service.SearchDocumentsResponse(
+                matching_documents=[
+                    document_service.SearchDocumentsResponse.MatchingDocument(),
+                ],
+                next_page_token="ghi",
+            ),
+            document_service.SearchDocumentsResponse(
+                matching_documents=[
+                    document_service.SearchDocumentsResponse.MatchingDocument(),
+                    document_service.SearchDocumentsResponse.MatchingDocument(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            document_service.SearchDocumentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.search_documents(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, document_service.SearchDocumentsResponse.MatchingDocument)
+            for i in results
+        )
+
+        pages = list(client.search_documents(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service_request.FetchAclRequest,
+        dict,
+    ],
+)
+def test_fetch_acl_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.FetchAclResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.FetchAclResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_acl(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, document_service.FetchAclResponse)
+
+
+def test_fetch_acl_rest_required_fields(
+    request_type=document_service_request.FetchAclRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_acl._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_acl._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = document_service.FetchAclResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = document_service.FetchAclResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_acl(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_acl_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_acl._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("resource",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_acl_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_fetch_acl"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_fetch_acl"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service_request.FetchAclRequest.pb(
+            document_service_request.FetchAclRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = document_service.FetchAclResponse.to_json(
+            document_service.FetchAclResponse()
+        )
+
+        request = document_service_request.FetchAclRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = document_service.FetchAclResponse()
+
+        client.fetch_acl(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_acl_rest_bad_request(
+    transport: str = "rest", request_type=document_service_request.FetchAclRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_acl(request)
+
+
+def test_fetch_acl_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.FetchAclResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "resource": "projects/sample1/locations/sample2/documents/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            resource="resource_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.FetchAclResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.fetch_acl(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{resource=projects/*/locations/*/documents/*}:fetchAcl"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_fetch_acl_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_acl(
+            document_service_request.FetchAclRequest(),
+            resource="resource_value",
+        )
+
+
+def test_fetch_acl_rest_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service_request.SetAclRequest,
+        dict,
+    ],
+)
+def test_set_acl_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.SetAclResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.SetAclResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_acl(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, document_service.SetAclResponse)
+
+
+def test_set_acl_rest_required_fields(
+    request_type=document_service_request.SetAclRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_acl._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_acl._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = document_service.SetAclResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = document_service.SetAclResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_acl(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_acl_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_acl._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "resource",
+                "policy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_acl_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_set_acl"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_set_acl"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service_request.SetAclRequest.pb(
+            document_service_request.SetAclRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = document_service.SetAclResponse.to_json(
+            document_service.SetAclResponse()
+        )
+
+        request = document_service_request.SetAclRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = document_service.SetAclResponse()
+
+        client.set_acl(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_acl_rest_bad_request(
+    transport: str = "rest", request_type=document_service_request.SetAclRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_acl(request)
+
+
+def test_set_acl_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.SetAclResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "resource": "projects/sample1/locations/sample2/documents/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            resource="resource_value",
+            policy=policy_pb2.Policy(version=774),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.SetAclResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_acl(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{resource=projects/*/locations/*/documents/*}:setAcl"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_acl_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_acl(
+            document_service_request.SetAclRequest(),
+            resource="resource_value",
+            policy=policy_pb2.Policy(version=774),
+        )
+
+
+def test_set_acl_rest_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DocumentServiceGrpcTransport(
@@ -2672,6 +4688,7 @@ def test_transport_get_channel():
     [
         transports.DocumentServiceGrpcTransport,
         transports.DocumentServiceGrpcAsyncIOTransport,
+        transports.DocumentServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2686,6 +4703,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2821,6 +4839,7 @@ def test_document_service_transport_auth_adc(transport_class):
     [
         transports.DocumentServiceGrpcTransport,
         transports.DocumentServiceGrpcAsyncIOTransport,
+        transports.DocumentServiceRestTransport,
     ],
 )
 def test_document_service_transport_auth_gdch_credentials(transport_class):
@@ -2918,11 +4937,23 @@ def test_document_service_grpc_transport_client_cert_source_for_mtls(transport_c
             )
 
 
+def test_document_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.DocumentServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_document_service_host_no_port(transport_name):
@@ -2933,7 +4964,11 @@ def test_document_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("contentwarehouse.googleapis.com:443")
+    assert client.transport._host == (
+        "contentwarehouse.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://contentwarehouse.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2941,6 +4976,7 @@ def test_document_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_document_service_host_with_port(transport_name):
@@ -2951,7 +4987,51 @@ def test_document_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("contentwarehouse.googleapis.com:8000")
+    assert client.transport._host == (
+        "contentwarehouse.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://contentwarehouse.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_document_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = DocumentServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = DocumentServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_document._session
+    session2 = client2.transport.create_document._session
+    assert session1 != session2
+    session1 = client1.transport.get_document._session
+    session2 = client2.transport.get_document._session
+    assert session1 != session2
+    session1 = client1.transport.update_document._session
+    session2 = client2.transport.update_document._session
+    assert session1 != session2
+    session1 = client1.transport.delete_document._session
+    session2 = client2.transport.delete_document._session
+    assert session1 != session2
+    session1 = client1.transport.search_documents._session
+    session2 = client2.transport.search_documents._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_acl._session
+    session2 = client2.transport.fetch_acl._session
+    assert session1 != session2
+    session1 = client1.transport.set_acl._session
+    session2 = client2.transport.set_acl._session
+    assert session1 != session2
 
 
 def test_document_service_grpc_transport_channel():
@@ -3299,6 +5379,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3316,6 +5397,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
