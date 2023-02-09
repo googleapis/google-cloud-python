@@ -58,6 +58,7 @@ from google.cloud.apigateway_v1.types import apigateway
 from .transports.base import DEFAULT_CLIENT_INFO, ApiGatewayServiceTransport
 from .transports.grpc import ApiGatewayServiceGrpcTransport
 from .transports.grpc_asyncio import ApiGatewayServiceGrpcAsyncIOTransport
+from .transports.rest import ApiGatewayServiceRestTransport
 
 
 class ApiGatewayServiceClientMeta(type):
@@ -73,6 +74,7 @@ class ApiGatewayServiceClientMeta(type):
     )  # type: Dict[str, Type[ApiGatewayServiceTransport]]
     _transport_registry["grpc"] = ApiGatewayServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ApiGatewayServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ApiGatewayServiceRestTransport
 
     def get_transport_class(
         cls,

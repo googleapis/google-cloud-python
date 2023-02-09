@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import ApiGatewayServiceTransport
 from .grpc import ApiGatewayServiceGrpcTransport
 from .grpc_asyncio import ApiGatewayServiceGrpcAsyncIOTransport
+from .rest import ApiGatewayServiceRestInterceptor, ApiGatewayServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ApiGatewayServiceTransport]]
 _transport_registry["grpc"] = ApiGatewayServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ApiGatewayServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = ApiGatewayServiceRestTransport
 
 __all__ = (
     "ApiGatewayServiceTransport",
     "ApiGatewayServiceGrpcTransport",
     "ApiGatewayServiceGrpcAsyncIOTransport",
+    "ApiGatewayServiceRestTransport",
+    "ApiGatewayServiceRestInterceptor",
 )
