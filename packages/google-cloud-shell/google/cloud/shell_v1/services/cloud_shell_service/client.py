@@ -54,6 +54,7 @@ from google.cloud.shell_v1.types import cloudshell
 from .transports.base import DEFAULT_CLIENT_INFO, CloudShellServiceTransport
 from .transports.grpc import CloudShellServiceGrpcTransport
 from .transports.grpc_asyncio import CloudShellServiceGrpcAsyncIOTransport
+from .transports.rest import CloudShellServiceRestTransport
 
 
 class CloudShellServiceClientMeta(type):
@@ -69,6 +70,7 @@ class CloudShellServiceClientMeta(type):
     )  # type: Dict[str, Type[CloudShellServiceTransport]]
     _transport_registry["grpc"] = CloudShellServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudShellServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudShellServiceRestTransport
 
     def get_transport_class(
         cls,
