@@ -54,6 +54,7 @@ from google.cloud.billing.budgets_v1.types import budget_model, budget_service
 from .transports.base import DEFAULT_CLIENT_INFO, BudgetServiceTransport
 from .transports.grpc import BudgetServiceGrpcTransport
 from .transports.grpc_asyncio import BudgetServiceGrpcAsyncIOTransport
+from .transports.rest import BudgetServiceRestTransport
 
 
 class BudgetServiceClientMeta(type):
@@ -67,6 +68,7 @@ class BudgetServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[BudgetServiceTransport]]
     _transport_registry["grpc"] = BudgetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = BudgetServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = BudgetServiceRestTransport
 
     def get_transport_class(
         cls,
