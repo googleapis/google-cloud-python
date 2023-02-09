@@ -72,6 +72,7 @@ from google.cloud.artifactregistry_v1.types import yum_artifact
 from .transports.base import DEFAULT_CLIENT_INFO, ArtifactRegistryTransport
 from .transports.grpc import ArtifactRegistryGrpcTransport
 from .transports.grpc_asyncio import ArtifactRegistryGrpcAsyncIOTransport
+from .transports.rest import ArtifactRegistryRestTransport
 
 
 class ArtifactRegistryClientMeta(type):
@@ -87,6 +88,7 @@ class ArtifactRegistryClientMeta(type):
     )  # type: Dict[str, Type[ArtifactRegistryTransport]]
     _transport_registry["grpc"] = ArtifactRegistryGrpcTransport
     _transport_registry["grpc_asyncio"] = ArtifactRegistryGrpcAsyncIOTransport
+    _transport_registry["rest"] = ArtifactRegistryRestTransport
 
     def get_transport_class(
         cls,

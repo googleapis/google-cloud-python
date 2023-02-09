@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -47,6 +49,7 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
@@ -55,6 +58,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.artifactregistry_v1beta2.services.artifact_registry import (
     ArtifactRegistryAsyncClient,
@@ -121,6 +126,7 @@ def test__get_default_mtls_endpoint():
     [
         (ArtifactRegistryClient, "grpc"),
         (ArtifactRegistryAsyncClient, "grpc_asyncio"),
+        (ArtifactRegistryClient, "rest"),
     ],
 )
 def test_artifact_registry_client_from_service_account_info(
@@ -136,7 +142,11 @@ def test_artifact_registry_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("artifactregistry.googleapis.com:443")
+        assert client.transport._host == (
+            "artifactregistry.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://artifactregistry.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -144,6 +154,7 @@ def test_artifact_registry_client_from_service_account_info(
     [
         (transports.ArtifactRegistryGrpcTransport, "grpc"),
         (transports.ArtifactRegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ArtifactRegistryRestTransport, "rest"),
     ],
 )
 def test_artifact_registry_client_service_account_always_use_jwt(
@@ -169,6 +180,7 @@ def test_artifact_registry_client_service_account_always_use_jwt(
     [
         (ArtifactRegistryClient, "grpc"),
         (ArtifactRegistryAsyncClient, "grpc_asyncio"),
+        (ArtifactRegistryClient, "rest"),
     ],
 )
 def test_artifact_registry_client_from_service_account_file(
@@ -191,13 +203,18 @@ def test_artifact_registry_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("artifactregistry.googleapis.com:443")
+        assert client.transport._host == (
+            "artifactregistry.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://artifactregistry.googleapis.com"
+        )
 
 
 def test_artifact_registry_client_get_transport_class():
     transport = ArtifactRegistryClient.get_transport_class()
     available_transports = [
         transports.ArtifactRegistryGrpcTransport,
+        transports.ArtifactRegistryRestTransport,
     ]
     assert transport in available_transports
 
@@ -214,6 +231,7 @@ def test_artifact_registry_client_get_transport_class():
             transports.ArtifactRegistryGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ArtifactRegistryClient, transports.ArtifactRegistryRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -367,6 +385,18 @@ def test_artifact_registry_client_client_options(
             ArtifactRegistryAsyncClient,
             transports.ArtifactRegistryGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ArtifactRegistryClient,
+            transports.ArtifactRegistryRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ArtifactRegistryClient,
+            transports.ArtifactRegistryRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -568,6 +598,7 @@ def test_artifact_registry_client_get_mtls_endpoint_and_cert_source(client_class
             transports.ArtifactRegistryGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ArtifactRegistryClient, transports.ArtifactRegistryRestTransport, "rest"),
     ],
 )
 def test_artifact_registry_client_client_options_scopes(
@@ -607,6 +638,12 @@ def test_artifact_registry_client_client_options_scopes(
             transports.ArtifactRegistryGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ArtifactRegistryClient,
+            transports.ArtifactRegistryRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -7358,6 +7395,5447 @@ async def test_update_project_settings_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apt_artifact.ImportAptArtifactsRequest,
+        dict,
+    ],
+)
+def test_import_apt_artifacts_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_apt_artifacts(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_apt_artifacts_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_import_apt_artifacts"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_import_apt_artifacts"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apt_artifact.ImportAptArtifactsRequest.pb(
+            apt_artifact.ImportAptArtifactsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = apt_artifact.ImportAptArtifactsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_apt_artifacts(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_apt_artifacts_rest_bad_request(
+    transport: str = "rest", request_type=apt_artifact.ImportAptArtifactsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.import_apt_artifacts(request)
+
+
+def test_import_apt_artifacts_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        yum_artifact.ImportYumArtifactsRequest,
+        dict,
+    ],
+)
+def test_import_yum_artifacts_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_yum_artifacts(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_yum_artifacts_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_import_yum_artifacts"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_import_yum_artifacts"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = yum_artifact.ImportYumArtifactsRequest.pb(
+            yum_artifact.ImportYumArtifactsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = yum_artifact.ImportYumArtifactsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_yum_artifacts(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_yum_artifacts_rest_bad_request(
+    transport: str = "rest", request_type=yum_artifact.ImportYumArtifactsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.import_yum_artifacts(request)
+
+
+def test_import_yum_artifacts_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        repository.ListRepositoriesRequest,
+        dict,
+    ],
+)
+def test_list_repositories_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = repository.ListRepositoriesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = repository.ListRepositoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_repositories(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRepositoriesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_repositories_rest_required_fields(
+    request_type=repository.ListRepositoriesRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_repositories._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_repositories._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = repository.ListRepositoriesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = repository.ListRepositoriesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_repositories(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_repositories_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_repositories._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_repositories_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_list_repositories"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_list_repositories"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = repository.ListRepositoriesRequest.pb(
+            repository.ListRepositoriesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = repository.ListRepositoriesResponse.to_json(
+            repository.ListRepositoriesResponse()
+        )
+
+        request = repository.ListRepositoriesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = repository.ListRepositoriesResponse()
+
+        client.list_repositories(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_repositories_rest_bad_request(
+    transport: str = "rest", request_type=repository.ListRepositoriesRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_repositories(request)
+
+
+def test_list_repositories_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = repository.ListRepositoriesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = repository.ListRepositoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_repositories(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{parent=projects/*/locations/*}/repositories"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_repositories_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_repositories(
+            repository.ListRepositoriesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_repositories_rest_pager(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            repository.ListRepositoriesResponse(
+                repositories=[
+                    repository.Repository(),
+                    repository.Repository(),
+                    repository.Repository(),
+                ],
+                next_page_token="abc",
+            ),
+            repository.ListRepositoriesResponse(
+                repositories=[],
+                next_page_token="def",
+            ),
+            repository.ListRepositoriesResponse(
+                repositories=[
+                    repository.Repository(),
+                ],
+                next_page_token="ghi",
+            ),
+            repository.ListRepositoriesResponse(
+                repositories=[
+                    repository.Repository(),
+                    repository.Repository(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            repository.ListRepositoriesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_repositories(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, repository.Repository) for i in results)
+
+        pages = list(client.list_repositories(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        repository.GetRepositoryRequest,
+        dict,
+    ],
+)
+def test_get_repository_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = repository.Repository(
+            name="name_value",
+            format_=repository.Repository.Format.DOCKER,
+            description="description_value",
+            kms_key_name="kms_key_name_value",
+            maven_config=repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_repository(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repository.Repository)
+    assert response.name == "name_value"
+    assert response.format_ == repository.Repository.Format.DOCKER
+    assert response.description == "description_value"
+    assert response.kms_key_name == "kms_key_name_value"
+
+
+def test_get_repository_rest_required_fields(
+    request_type=repository.GetRepositoryRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_repository._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_repository._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = repository.Repository()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = repository.Repository.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_repository(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_repository_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_repository._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_repository_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_get_repository"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_get_repository"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = repository.GetRepositoryRequest.pb(
+            repository.GetRepositoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = repository.Repository.to_json(
+            repository.Repository()
+        )
+
+        request = repository.GetRepositoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = repository.Repository()
+
+        client.get_repository(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_repository_rest_bad_request(
+    transport: str = "rest", request_type=repository.GetRepositoryRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_repository(request)
+
+
+def test_get_repository_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = repository.Repository()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_repository(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_repository_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_repository(
+            repository.GetRepositoryRequest(),
+            name="name_value",
+        )
+
+
+def test_get_repository_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gda_repository.CreateRepositoryRequest,
+        dict,
+    ],
+)
+def test_create_repository_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["repository"] = {
+        "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
+        "name": "name_value",
+        "format_": 1,
+        "description": "description_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "kms_key_name": "kms_key_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_repository(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_repository_rest_required_fields(
+    request_type=gda_repository.CreateRepositoryRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_repository._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_repository._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("repository_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_repository(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_repository_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_repository._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("repositoryId",)) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_repository_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_create_repository"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_create_repository"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gda_repository.CreateRepositoryRequest.pb(
+            gda_repository.CreateRepositoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gda_repository.CreateRepositoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_repository(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_repository_rest_bad_request(
+    transport: str = "rest", request_type=gda_repository.CreateRepositoryRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["repository"] = {
+        "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
+        "name": "name_value",
+        "format_": 1,
+        "description": "description_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "kms_key_name": "kms_key_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_repository(request)
+
+
+def test_create_repository_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
+            repository_id="repository_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_repository(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{parent=projects/*/locations/*}/repositories"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_repository_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_repository(
+            gda_repository.CreateRepositoryRequest(),
+            parent="parent_value",
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
+            repository_id="repository_id_value",
+        )
+
+
+def test_create_repository_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gda_repository.UpdateRepositoryRequest,
+        dict,
+    ],
+)
+def test_update_repository_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "repository": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+    }
+    request_init["repository"] = {
+        "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
+        "name": "projects/sample1/locations/sample2/repositories/sample3",
+        "format_": 1,
+        "description": "description_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "kms_key_name": "kms_key_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gda_repository.Repository(
+            name="name_value",
+            format_=gda_repository.Repository.Format.DOCKER,
+            description="description_value",
+            kms_key_name="kms_key_name_value",
+            maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gda_repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_repository(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gda_repository.Repository)
+    assert response.name == "name_value"
+    assert response.format_ == gda_repository.Repository.Format.DOCKER
+    assert response.description == "description_value"
+    assert response.kms_key_name == "kms_key_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_repository_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_update_repository"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_update_repository"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gda_repository.UpdateRepositoryRequest.pb(
+            gda_repository.UpdateRepositoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gda_repository.Repository.to_json(
+            gda_repository.Repository()
+        )
+
+        request = gda_repository.UpdateRepositoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gda_repository.Repository()
+
+        client.update_repository(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_repository_rest_bad_request(
+    transport: str = "rest", request_type=gda_repository.UpdateRepositoryRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "repository": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+    }
+    request_init["repository"] = {
+        "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
+        "name": "projects/sample1/locations/sample2/repositories/sample3",
+        "format_": 1,
+        "description": "description_value",
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "kms_key_name": "kms_key_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_repository(request)
+
+
+def test_update_repository_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gda_repository.Repository()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "repository": {
+                "name": "projects/sample1/locations/sample2/repositories/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gda_repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_repository(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{repository.name=projects/*/locations/*/repositories/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_repository_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_repository(
+            gda_repository.UpdateRepositoryRequest(),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_repository_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        repository.DeleteRepositoryRequest,
+        dict,
+    ],
+)
+def test_delete_repository_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_repository(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_repository_rest_required_fields(
+    request_type=repository.DeleteRepositoryRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_repository._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_repository._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_repository(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_repository_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_repository._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_repository_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_delete_repository"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_delete_repository"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = repository.DeleteRepositoryRequest.pb(
+            repository.DeleteRepositoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = repository.DeleteRepositoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_repository(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_repository_rest_bad_request(
+    transport: str = "rest", request_type=repository.DeleteRepositoryRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_repository(request)
+
+
+def test_delete_repository_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_repository(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_repository_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_repository(
+            repository.DeleteRepositoryRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_repository_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        package.ListPackagesRequest,
+        dict,
+    ],
+)
+def test_list_packages_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = package.ListPackagesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = package.ListPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_packages(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPackagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_packages_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_list_packages"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_list_packages"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = package.ListPackagesRequest.pb(package.ListPackagesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = package.ListPackagesResponse.to_json(
+            package.ListPackagesResponse()
+        )
+
+        request = package.ListPackagesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = package.ListPackagesResponse()
+
+        client.list_packages(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_packages_rest_bad_request(
+    transport: str = "rest", request_type=package.ListPackagesRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_packages(request)
+
+
+def test_list_packages_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = package.ListPackagesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = package.ListPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_packages(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{parent=projects/*/locations/*/repositories/*}/packages"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_packages_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_packages(
+            package.ListPackagesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_packages_rest_pager(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            package.ListPackagesResponse(
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                    package.Package(),
+                ],
+                next_page_token="abc",
+            ),
+            package.ListPackagesResponse(
+                packages=[],
+                next_page_token="def",
+            ),
+            package.ListPackagesResponse(
+                packages=[
+                    package.Package(),
+                ],
+                next_page_token="ghi",
+            ),
+            package.ListPackagesResponse(
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(package.ListPackagesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        pager = client.list_packages(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, package.Package) for i in results)
+
+        pages = list(client.list_packages(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        package.GetPackageRequest,
+        dict,
+    ],
+)
+def test_get_package_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = package.Package(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = package.Package.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_package(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, package.Package)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_package_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_get_package"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_get_package"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = package.GetPackageRequest.pb(package.GetPackageRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = package.Package.to_json(package.Package())
+
+        request = package.GetPackageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = package.Package()
+
+        client.get_package(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_package_rest_bad_request(
+    transport: str = "rest", request_type=package.GetPackageRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_package(request)
+
+
+def test_get_package_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = package.Package()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = package.Package.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_package(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_package_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_package(
+            package.GetPackageRequest(),
+            name="name_value",
+        )
+
+
+def test_get_package_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        package.DeletePackageRequest,
+        dict,
+    ],
+)
+def test_delete_package_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_package(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_package_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_delete_package"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_delete_package"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = package.DeletePackageRequest.pb(package.DeletePackageRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = package.DeletePackageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_package(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_package_rest_bad_request(
+    transport: str = "rest", request_type=package.DeletePackageRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_package(request)
+
+
+def test_delete_package_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_package(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_package_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_package(
+            package.DeletePackageRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_package_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        version.ListVersionsRequest,
+        dict,
+    ],
+)
+def test_list_versions_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = version.ListVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = version.ListVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_versions_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_list_versions"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_list_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = version.ListVersionsRequest.pb(version.ListVersionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = version.ListVersionsResponse.to_json(
+            version.ListVersionsResponse()
+        )
+
+        request = version.ListVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = version.ListVersionsResponse()
+
+        client.list_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_versions_rest_bad_request(
+    transport: str = "rest", request_type=version.ListVersionsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_versions(request)
+
+
+def test_list_versions_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = version.ListVersionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = version.ListVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_versions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{parent=projects/*/locations/*/repositories/*/packages/*}/versions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_versions_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_versions(
+            version.ListVersionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_versions_rest_pager(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            version.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                    version.Version(),
+                ],
+                next_page_token="abc",
+            ),
+            version.ListVersionsResponse(
+                versions=[],
+                next_page_token="def",
+            ),
+            version.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            version.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(version.ListVersionsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        pager = client.list_versions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, version.Version) for i in results)
+
+        pages = list(client.list_versions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        version.GetVersionRequest,
+        dict,
+    ],
+)
+def test_get_version_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/versions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = version.Version(
+            name="name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = version.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, version.Version)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_version_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_get_version"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_get_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = version.GetVersionRequest.pb(version.GetVersionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = version.Version.to_json(version.Version())
+
+        request = version.GetVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = version.Version()
+
+        client.get_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_version_rest_bad_request(
+    transport: str = "rest", request_type=version.GetVersionRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/versions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_version(request)
+
+
+def test_get_version_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = version.Version()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/versions/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = version.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_version(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/versions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_version_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_version(
+            version.GetVersionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_version_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        version.DeleteVersionRequest,
+        dict,
+    ],
+)
+def test_delete_version_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/versions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_version_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_delete_version"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_delete_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = version.DeleteVersionRequest.pb(version.DeleteVersionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = version.DeleteVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_version_rest_bad_request(
+    transport: str = "rest", request_type=version.DeleteVersionRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/versions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_version(request)
+
+
+def test_delete_version_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/versions/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_version(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/versions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_version_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_version(
+            version.DeleteVersionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_version_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file.ListFilesRequest,
+        dict,
+    ],
+)
+def test_list_files_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = file.ListFilesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = file.ListFilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_files(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFilesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_files_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_list_files"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_list_files"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = file.ListFilesRequest.pb(file.ListFilesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = file.ListFilesResponse.to_json(
+            file.ListFilesResponse()
+        )
+
+        request = file.ListFilesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = file.ListFilesResponse()
+
+        client.list_files(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_files_rest_bad_request(
+    transport: str = "rest", request_type=file.ListFilesRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_files(request)
+
+
+def test_list_files_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = file.ListFilesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = file.ListFilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_files(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{parent=projects/*/locations/*/repositories/*}/files"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_files_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_files(
+            file.ListFilesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_files_rest_pager(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                    file.File(),
+                    file.File(),
+                ],
+                next_page_token="abc",
+            ),
+            file.ListFilesResponse(
+                files=[],
+                next_page_token="def",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                ],
+                next_page_token="ghi",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                    file.File(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(file.ListFilesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        pager = client.list_files(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, file.File) for i in results)
+
+        pages = list(client.list_files(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file.GetFileRequest,
+        dict,
+    ],
+)
+def test_get_file_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/files/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = file.File(
+            name="name_value",
+            size_bytes=1089,
+            owner="owner_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = file.File.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_file(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, file.File)
+    assert response.name == "name_value"
+    assert response.size_bytes == 1089
+    assert response.owner == "owner_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_file_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_get_file"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_get_file"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = file.GetFileRequest.pb(file.GetFileRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = file.File.to_json(file.File())
+
+        request = file.GetFileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = file.File()
+
+        client.get_file(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_file_rest_bad_request(
+    transport: str = "rest", request_type=file.GetFileRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/files/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_file(request)
+
+
+def test_get_file_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = file.File()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/files/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = file.File.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_file(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*/files/**}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_file_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_file(
+            file.GetFileRequest(),
+            name="name_value",
+        )
+
+
+def test_get_file_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag.ListTagsRequest,
+        dict,
+    ],
+)
+def test_list_tags_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag.ListTagsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag.ListTagsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_tags(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTagsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_tags_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_list_tags"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_list_tags"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = tag.ListTagsRequest.pb(tag.ListTagsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = tag.ListTagsResponse.to_json(tag.ListTagsResponse())
+
+        request = tag.ListTagsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = tag.ListTagsResponse()
+
+        client.list_tags(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_tags_rest_bad_request(
+    transport: str = "rest", request_type=tag.ListTagsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_tags(request)
+
+
+def test_list_tags_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag.ListTagsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag.ListTagsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_tags(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{parent=projects/*/locations/*/repositories/*/packages/*}/tags"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_tags_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_tags(
+            tag.ListTagsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_tags_rest_pager(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+                next_page_token="abc",
+            ),
+            tag.ListTagsResponse(
+                tags=[],
+                next_page_token="def",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(tag.ListTagsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        pager = client.list_tags(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, tag.Tag) for i in results)
+
+        pages = list(client.list_tags(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag.GetTagRequest,
+        dict,
+    ],
+)
+def test_get_tag_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag.Tag(
+            name="name_value",
+            version="version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_tag(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, tag.Tag)
+    assert response.name == "name_value"
+    assert response.version == "version_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_tag_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_get_tag"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_get_tag"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = tag.GetTagRequest.pb(tag.GetTagRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = tag.Tag.to_json(tag.Tag())
+
+        request = tag.GetTagRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = tag.Tag()
+
+        client.get_tag(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_tag_rest_bad_request(
+    transport: str = "rest", request_type=tag.GetTagRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_tag(request)
+
+
+def test_get_tag_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag.Tag()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_tag(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/tags/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_tag_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_tag(
+            tag.GetTagRequest(),
+            name="name_value",
+        )
+
+
+def test_get_tag_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gda_tag.CreateTagRequest,
+        dict,
+    ],
+)
+def test_create_tag_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request_init["tag"] = {"name": "name_value", "version": "version_value"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gda_tag.Tag(
+            name="name_value",
+            version="version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_tag(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gda_tag.Tag)
+    assert response.name == "name_value"
+    assert response.version == "version_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_tag_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_create_tag"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_create_tag"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gda_tag.CreateTagRequest.pb(gda_tag.CreateTagRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gda_tag.Tag.to_json(gda_tag.Tag())
+
+        request = gda_tag.CreateTagRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gda_tag.Tag()
+
+        client.create_tag(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_tag_rest_bad_request(
+    transport: str = "rest", request_type=gda_tag.CreateTagRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request_init["tag"] = {"name": "name_value", "version": "version_value"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_tag(request)
+
+
+def test_create_tag_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gda_tag.Tag()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            tag=gda_tag.Tag(name="name_value"),
+            tag_id="tag_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_tag(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{parent=projects/*/locations/*/repositories/*/packages/*}/tags"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_tag_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_tag(
+            gda_tag.CreateTagRequest(),
+            parent="parent_value",
+            tag=gda_tag.Tag(name="name_value"),
+            tag_id="tag_id_value",
+        )
+
+
+def test_create_tag_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gda_tag.UpdateTagRequest,
+        dict,
+    ],
+)
+def test_update_tag_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "tag": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+        }
+    }
+    request_init["tag"] = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5",
+        "version": "version_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gda_tag.Tag(
+            name="name_value",
+            version="version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_tag(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gda_tag.Tag)
+    assert response.name == "name_value"
+    assert response.version == "version_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_tag_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_update_tag"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_update_tag"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gda_tag.UpdateTagRequest.pb(gda_tag.UpdateTagRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gda_tag.Tag.to_json(gda_tag.Tag())
+
+        request = gda_tag.UpdateTagRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gda_tag.Tag()
+
+        client.update_tag(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_tag_rest_bad_request(
+    transport: str = "rest", request_type=gda_tag.UpdateTagRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "tag": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+        }
+    }
+    request_init["tag"] = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5",
+        "version": "version_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_tag(request)
+
+
+def test_update_tag_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gda_tag.Tag()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "tag": {
+                "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            tag=gda_tag.Tag(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_tag(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{tag.name=projects/*/locations/*/repositories/*/packages/*/tags/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_tag_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_tag(
+            gda_tag.UpdateTagRequest(),
+            tag=gda_tag.Tag(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_tag_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag.DeleteTagRequest,
+        dict,
+    ],
+)
+def test_delete_tag_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_tag(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_tag_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_delete_tag"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = tag.DeleteTagRequest.pb(tag.DeleteTagRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = tag.DeleteTagRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_tag(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_tag_rest_bad_request(
+    transport: str = "rest", request_type=tag.DeleteTagRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_tag(request)
+
+
+def test_delete_tag_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_tag(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/tags/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_tag_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_tag(
+            tag.DeleteTagRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_tag_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+def test_set_iam_policy_rest_required_fields(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = policy_pb2.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_iam_policy_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "resource",
+                "policy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.SetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
+
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+def test_set_iam_policy_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+def test_get_iam_policy_rest_required_fields(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("options",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = policy_pb2.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_iam_policy_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("options",)) & set(("resource",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.GetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
+
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+def test_get_iam_policy_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_rest_required_fields(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request_init["permissions"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["permissions"] = "permissions_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+    assert "permissions" in jsonified_request
+    assert jsonified_request["permissions"] == "permissions_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = iam_policy_pb2.TestIamPermissionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.test_iam_permissions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_test_iam_permissions_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "resource",
+                "permissions",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+def test_test_iam_permissions_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        settings.GetProjectSettingsRequest,
+        dict,
+    ],
+)
+def test_get_project_settings_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/projectSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = settings.ProjectSettings(
+            name="name_value",
+            legacy_redirection_state=settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_project_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, settings.ProjectSettings)
+    assert response.name == "name_value"
+    assert (
+        response.legacy_redirection_state
+        == settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED
+    )
+
+
+def test_get_project_settings_rest_required_fields(
+    request_type=settings.GetProjectSettingsRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_project_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_project_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = settings.ProjectSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = settings.ProjectSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_project_settings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_project_settings_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_project_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_project_settings_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_get_project_settings"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_get_project_settings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = settings.GetProjectSettingsRequest.pb(
+            settings.GetProjectSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = settings.ProjectSettings.to_json(
+            settings.ProjectSettings()
+        )
+
+        request = settings.GetProjectSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = settings.ProjectSettings()
+
+        client.get_project_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_project_settings_rest_bad_request(
+    transport: str = "rest", request_type=settings.GetProjectSettingsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/projectSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_project_settings(request)
+
+
+def test_get_project_settings_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = settings.ProjectSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/projectSettings"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_project_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{name=projects/*/projectSettings}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_project_settings_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_project_settings(
+            settings.GetProjectSettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_project_settings_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        settings.UpdateProjectSettingsRequest,
+        dict,
+    ],
+)
+def test_update_project_settings_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_settings": {"name": "projects/sample1/projectSettings"}}
+    request_init["project_settings"] = {
+        "name": "projects/sample1/projectSettings",
+        "legacy_redirection_state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = settings.ProjectSettings(
+            name="name_value",
+            legacy_redirection_state=settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_project_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, settings.ProjectSettings)
+    assert response.name == "name_value"
+    assert (
+        response.legacy_redirection_state
+        == settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_project_settings_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_update_project_settings"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_update_project_settings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = settings.UpdateProjectSettingsRequest.pb(
+            settings.UpdateProjectSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = settings.ProjectSettings.to_json(
+            settings.ProjectSettings()
+        )
+
+        request = settings.UpdateProjectSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = settings.ProjectSettings()
+
+        client.update_project_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_project_settings_rest_bad_request(
+    transport: str = "rest", request_type=settings.UpdateProjectSettingsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_settings": {"name": "projects/sample1/projectSettings"}}
+    request_init["project_settings"] = {
+        "name": "projects/sample1/projectSettings",
+        "legacy_redirection_state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_project_settings(request)
+
+
+def test_update_project_settings_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = settings.ProjectSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project_settings": {"name": "projects/sample1/projectSettings"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_settings=settings.ProjectSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_project_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta2/{project_settings.name=projects/*/projectSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_project_settings_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_project_settings(
+            settings.UpdateProjectSettingsRequest(),
+            project_settings=settings.ProjectSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_project_settings_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ArtifactRegistryGrpcTransport(
@@ -7439,6 +12917,7 @@ def test_transport_get_channel():
     [
         transports.ArtifactRegistryGrpcTransport,
         transports.ArtifactRegistryGrpcAsyncIOTransport,
+        transports.ArtifactRegistryRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -7453,6 +12932,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -7622,6 +13102,7 @@ def test_artifact_registry_transport_auth_adc(transport_class):
     [
         transports.ArtifactRegistryGrpcTransport,
         transports.ArtifactRegistryGrpcAsyncIOTransport,
+        transports.ArtifactRegistryRestTransport,
     ],
 )
 def test_artifact_registry_transport_auth_gdch_credentials(transport_class):
@@ -7722,11 +13203,40 @@ def test_artifact_registry_grpc_transport_client_cert_source_for_mtls(transport_
             )
 
 
+def test_artifact_registry_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ArtifactRegistryRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_artifact_registry_rest_lro_client():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_artifact_registry_host_no_port(transport_name):
@@ -7737,7 +13247,11 @@ def test_artifact_registry_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("artifactregistry.googleapis.com:443")
+    assert client.transport._host == (
+        "artifactregistry.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://artifactregistry.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -7745,6 +13259,7 @@ def test_artifact_registry_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_artifact_registry_host_with_port(transport_name):
@@ -7755,7 +13270,105 @@ def test_artifact_registry_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("artifactregistry.googleapis.com:8000")
+    assert client.transport._host == (
+        "artifactregistry.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://artifactregistry.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_artifact_registry_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ArtifactRegistryClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ArtifactRegistryClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.import_apt_artifacts._session
+    session2 = client2.transport.import_apt_artifacts._session
+    assert session1 != session2
+    session1 = client1.transport.import_yum_artifacts._session
+    session2 = client2.transport.import_yum_artifacts._session
+    assert session1 != session2
+    session1 = client1.transport.list_repositories._session
+    session2 = client2.transport.list_repositories._session
+    assert session1 != session2
+    session1 = client1.transport.get_repository._session
+    session2 = client2.transport.get_repository._session
+    assert session1 != session2
+    session1 = client1.transport.create_repository._session
+    session2 = client2.transport.create_repository._session
+    assert session1 != session2
+    session1 = client1.transport.update_repository._session
+    session2 = client2.transport.update_repository._session
+    assert session1 != session2
+    session1 = client1.transport.delete_repository._session
+    session2 = client2.transport.delete_repository._session
+    assert session1 != session2
+    session1 = client1.transport.list_packages._session
+    session2 = client2.transport.list_packages._session
+    assert session1 != session2
+    session1 = client1.transport.get_package._session
+    session2 = client2.transport.get_package._session
+    assert session1 != session2
+    session1 = client1.transport.delete_package._session
+    session2 = client2.transport.delete_package._session
+    assert session1 != session2
+    session1 = client1.transport.list_versions._session
+    session2 = client2.transport.list_versions._session
+    assert session1 != session2
+    session1 = client1.transport.get_version._session
+    session2 = client2.transport.get_version._session
+    assert session1 != session2
+    session1 = client1.transport.delete_version._session
+    session2 = client2.transport.delete_version._session
+    assert session1 != session2
+    session1 = client1.transport.list_files._session
+    session2 = client2.transport.list_files._session
+    assert session1 != session2
+    session1 = client1.transport.get_file._session
+    session2 = client2.transport.get_file._session
+    assert session1 != session2
+    session1 = client1.transport.list_tags._session
+    session2 = client2.transport.list_tags._session
+    assert session1 != session2
+    session1 = client1.transport.get_tag._session
+    session2 = client2.transport.get_tag._session
+    assert session1 != session2
+    session1 = client1.transport.create_tag._session
+    session2 = client2.transport.create_tag._session
+    assert session1 != session2
+    session1 = client1.transport.update_tag._session
+    session2 = client2.transport.update_tag._session
+    assert session1 != session2
+    session1 = client1.transport.delete_tag._session
+    session2 = client2.transport.delete_tag._session
+    assert session1 != session2
+    session1 = client1.transport.set_iam_policy._session
+    session2 = client2.transport.set_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.get_iam_policy._session
+    session2 = client2.transport.get_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.test_iam_permissions._session
+    session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+    session1 = client1.transport.get_project_settings._session
+    session2 = client2.transport.get_project_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_project_settings._session
+    session2 = client2.transport.update_project_settings._session
+    assert session1 != session2
 
 
 def test_artifact_registry_grpc_transport_channel():
@@ -8265,6 +13878,120 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
 def test_list_locations(transport: str = "grpc"):
     client = ArtifactRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8555,6 +14282,7 @@ async def test_get_location_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -8572,6 +14300,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
