@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -43,12 +45,15 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.data_fusion_v1.services.data_fusion import (
     DataFusionAsyncClient,
@@ -105,6 +110,7 @@ def test__get_default_mtls_endpoint():
     [
         (DataFusionClient, "grpc"),
         (DataFusionAsyncClient, "grpc_asyncio"),
+        (DataFusionClient, "rest"),
     ],
 )
 def test_data_fusion_client_from_service_account_info(client_class, transport_name):
@@ -118,7 +124,11 @@ def test_data_fusion_client_from_service_account_info(client_class, transport_na
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("datafusion.googleapis.com:443")
+        assert client.transport._host == (
+            "datafusion.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://datafusion.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -126,6 +136,7 @@ def test_data_fusion_client_from_service_account_info(client_class, transport_na
     [
         (transports.DataFusionGrpcTransport, "grpc"),
         (transports.DataFusionGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.DataFusionRestTransport, "rest"),
     ],
 )
 def test_data_fusion_client_service_account_always_use_jwt(
@@ -151,6 +162,7 @@ def test_data_fusion_client_service_account_always_use_jwt(
     [
         (DataFusionClient, "grpc"),
         (DataFusionAsyncClient, "grpc_asyncio"),
+        (DataFusionClient, "rest"),
     ],
 )
 def test_data_fusion_client_from_service_account_file(client_class, transport_name):
@@ -171,13 +183,18 @@ def test_data_fusion_client_from_service_account_file(client_class, transport_na
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("datafusion.googleapis.com:443")
+        assert client.transport._host == (
+            "datafusion.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://datafusion.googleapis.com"
+        )
 
 
 def test_data_fusion_client_get_transport_class():
     transport = DataFusionClient.get_transport_class()
     available_transports = [
         transports.DataFusionGrpcTransport,
+        transports.DataFusionRestTransport,
     ]
     assert transport in available_transports
 
@@ -194,6 +211,7 @@ def test_data_fusion_client_get_transport_class():
             transports.DataFusionGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DataFusionClient, transports.DataFusionRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -337,6 +355,8 @@ def test_data_fusion_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (DataFusionClient, transports.DataFusionRestTransport, "rest", "true"),
+        (DataFusionClient, transports.DataFusionRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -530,6 +550,7 @@ def test_data_fusion_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.DataFusionGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DataFusionClient, transports.DataFusionRestTransport, "rest"),
     ],
 )
 def test_data_fusion_client_client_options_scopes(
@@ -565,6 +586,7 @@ def test_data_fusion_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (DataFusionClient, transports.DataFusionRestTransport, "rest", None),
     ],
 )
 def test_data_fusion_client_client_options_credentials_file(
@@ -2535,6 +2557,2085 @@ async def test_restart_instance_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datafusion.ListAvailableVersionsRequest,
+        dict,
+    ],
+)
+def test_list_available_versions_rest(request_type):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datafusion.ListAvailableVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datafusion.ListAvailableVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_available_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAvailableVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_available_versions_rest_required_fields(
+    request_type=datafusion.ListAvailableVersionsRequest,
+):
+    transport_class = transports.DataFusionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_available_versions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_available_versions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "latest_patch_only",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datafusion.ListAvailableVersionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datafusion.ListAvailableVersionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_available_versions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_available_versions_rest_unset_required_fields():
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_available_versions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "latestPatchOnly",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_available_versions_rest_interceptors(null_interceptor):
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataFusionRestInterceptor(),
+    )
+    client = DataFusionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataFusionRestInterceptor, "post_list_available_versions"
+    ) as post, mock.patch.object(
+        transports.DataFusionRestInterceptor, "pre_list_available_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datafusion.ListAvailableVersionsRequest.pb(
+            datafusion.ListAvailableVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datafusion.ListAvailableVersionsResponse.to_json(
+            datafusion.ListAvailableVersionsResponse()
+        )
+
+        request = datafusion.ListAvailableVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datafusion.ListAvailableVersionsResponse()
+
+        client.list_available_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_available_versions_rest_bad_request(
+    transport: str = "rest", request_type=datafusion.ListAvailableVersionsRequest
+):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_available_versions(request)
+
+
+def test_list_available_versions_rest_flattened():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datafusion.ListAvailableVersionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datafusion.ListAvailableVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_available_versions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/versions" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_available_versions_rest_flattened_error(transport: str = "rest"):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_available_versions(
+            datafusion.ListAvailableVersionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_available_versions_rest_pager(transport: str = "rest"):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datafusion.ListAvailableVersionsResponse(
+                available_versions=[
+                    datafusion.Version(),
+                    datafusion.Version(),
+                    datafusion.Version(),
+                ],
+                next_page_token="abc",
+            ),
+            datafusion.ListAvailableVersionsResponse(
+                available_versions=[],
+                next_page_token="def",
+            ),
+            datafusion.ListAvailableVersionsResponse(
+                available_versions=[
+                    datafusion.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            datafusion.ListAvailableVersionsResponse(
+                available_versions=[
+                    datafusion.Version(),
+                    datafusion.Version(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            datafusion.ListAvailableVersionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_available_versions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, datafusion.Version) for i in results)
+
+        pages = list(client.list_available_versions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datafusion.ListInstancesRequest,
+        dict,
+    ],
+)
+def test_list_instances_rest(request_type):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datafusion.ListInstancesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datafusion.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_instances(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInstancesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_instances_rest_required_fields(
+    request_type=datafusion.ListInstancesRequest,
+):
+    transport_class = transports.DataFusionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_instances._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_instances._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datafusion.ListInstancesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datafusion.ListInstancesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_instances(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_instances_rest_unset_required_fields():
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_instances._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_instances_rest_interceptors(null_interceptor):
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataFusionRestInterceptor(),
+    )
+    client = DataFusionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataFusionRestInterceptor, "post_list_instances"
+    ) as post, mock.patch.object(
+        transports.DataFusionRestInterceptor, "pre_list_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datafusion.ListInstancesRequest.pb(
+            datafusion.ListInstancesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datafusion.ListInstancesResponse.to_json(
+            datafusion.ListInstancesResponse()
+        )
+
+        request = datafusion.ListInstancesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datafusion.ListInstancesResponse()
+
+        client.list_instances(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_instances_rest_bad_request(
+    transport: str = "rest", request_type=datafusion.ListInstancesRequest
+):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_instances(request)
+
+
+def test_list_instances_rest_pager(transport: str = "rest"):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datafusion.ListInstancesResponse(
+                instances=[
+                    datafusion.Instance(),
+                    datafusion.Instance(),
+                    datafusion.Instance(),
+                ],
+                next_page_token="abc",
+            ),
+            datafusion.ListInstancesResponse(
+                instances=[],
+                next_page_token="def",
+            ),
+            datafusion.ListInstancesResponse(
+                instances=[
+                    datafusion.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            datafusion.ListInstancesResponse(
+                instances=[
+                    datafusion.Instance(),
+                    datafusion.Instance(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(datafusion.ListInstancesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_instances(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, datafusion.Instance) for i in results)
+
+        pages = list(client.list_instances(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datafusion.GetInstanceRequest,
+        dict,
+    ],
+)
+def test_get_instance_rest(request_type):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datafusion.Instance(
+            name="name_value",
+            description="description_value",
+            type_=datafusion.Instance.Type.BASIC,
+            enable_stackdriver_logging=True,
+            enable_stackdriver_monitoring=True,
+            private_instance=True,
+            state=datafusion.Instance.State.CREATING,
+            state_message="state_message_value",
+            service_endpoint="service_endpoint_value",
+            zone="zone_value",
+            version="version_value",
+            service_account="service_account_value",
+            display_name="display_name_value",
+            api_endpoint="api_endpoint_value",
+            gcs_bucket="gcs_bucket_value",
+            p4_service_account="p4_service_account_value",
+            tenant_project_id="tenant_project_id_value",
+            dataproc_service_account="dataproc_service_account_value",
+            enable_rbac=True,
+            disabled_reason=[datafusion.Instance.DisabledReason.KMS_KEY_ISSUE],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datafusion.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datafusion.Instance)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.type_ == datafusion.Instance.Type.BASIC
+    assert response.enable_stackdriver_logging is True
+    assert response.enable_stackdriver_monitoring is True
+    assert response.private_instance is True
+    assert response.state == datafusion.Instance.State.CREATING
+    assert response.state_message == "state_message_value"
+    assert response.service_endpoint == "service_endpoint_value"
+    assert response.zone == "zone_value"
+    assert response.version == "version_value"
+    assert response.service_account == "service_account_value"
+    assert response.display_name == "display_name_value"
+    assert response.api_endpoint == "api_endpoint_value"
+    assert response.gcs_bucket == "gcs_bucket_value"
+    assert response.p4_service_account == "p4_service_account_value"
+    assert response.tenant_project_id == "tenant_project_id_value"
+    assert response.dataproc_service_account == "dataproc_service_account_value"
+    assert response.enable_rbac is True
+    assert response.disabled_reason == [
+        datafusion.Instance.DisabledReason.KMS_KEY_ISSUE
+    ]
+
+
+def test_get_instance_rest_required_fields(request_type=datafusion.GetInstanceRequest):
+    transport_class = transports.DataFusionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datafusion.Instance()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datafusion.Instance.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_instance_rest_unset_required_fields():
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_rest_interceptors(null_interceptor):
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataFusionRestInterceptor(),
+    )
+    client = DataFusionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataFusionRestInterceptor, "post_get_instance"
+    ) as post, mock.patch.object(
+        transports.DataFusionRestInterceptor, "pre_get_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datafusion.GetInstanceRequest.pb(datafusion.GetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datafusion.Instance.to_json(datafusion.Instance())
+
+        request = datafusion.GetInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datafusion.Instance()
+
+        client.get_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_instance_rest_bad_request(
+    transport: str = "rest", request_type=datafusion.GetInstanceRequest
+):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_instance(request)
+
+
+def test_get_instance_rest_error():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datafusion.CreateInstanceRequest,
+        dict,
+    ],
+)
+def test_create_instance_rest(request_type):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["instance"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "type_": 1,
+        "enable_stackdriver_logging": True,
+        "enable_stackdriver_monitoring": True,
+        "private_instance": True,
+        "network_config": {
+            "network": "network_value",
+            "ip_allocation": "ip_allocation_value",
+        },
+        "labels": {},
+        "options": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": 1,
+        "state_message": "state_message_value",
+        "service_endpoint": "service_endpoint_value",
+        "zone": "zone_value",
+        "version": "version_value",
+        "service_account": "service_account_value",
+        "display_name": "display_name_value",
+        "available_version": [
+            {
+                "version_number": "version_number_value",
+                "default_version": True,
+                "available_features": [
+                    "available_features_value1",
+                    "available_features_value2",
+                ],
+                "type_": 1,
+            }
+        ],
+        "api_endpoint": "api_endpoint_value",
+        "gcs_bucket": "gcs_bucket_value",
+        "accelerators": [{"accelerator_type": 1, "state": 1}],
+        "p4_service_account": "p4_service_account_value",
+        "tenant_project_id": "tenant_project_id_value",
+        "dataproc_service_account": "dataproc_service_account_value",
+        "enable_rbac": True,
+        "crypto_key_config": {"key_reference": "key_reference_value"},
+        "disabled_reason": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_instance_rest_required_fields(
+    request_type=datafusion.CreateInstanceRequest,
+):
+    transport_class = transports.DataFusionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["instance_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "instanceId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "instanceId" in jsonified_request
+    assert jsonified_request["instanceId"] == request_init["instance_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["instanceId"] = "instance_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_instance._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("instance_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "instanceId" in jsonified_request
+    assert jsonified_request["instanceId"] == "instance_id_value"
+
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_instance(request)
+
+            expected_params = [
+                (
+                    "instanceId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_instance_rest_unset_required_fields():
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("instanceId",))
+        & set(
+            (
+                "parent",
+                "instanceId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_instance_rest_interceptors(null_interceptor):
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataFusionRestInterceptor(),
+    )
+    client = DataFusionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataFusionRestInterceptor, "post_create_instance"
+    ) as post, mock.patch.object(
+        transports.DataFusionRestInterceptor, "pre_create_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datafusion.CreateInstanceRequest.pb(
+            datafusion.CreateInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datafusion.CreateInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_instance_rest_bad_request(
+    transport: str = "rest", request_type=datafusion.CreateInstanceRequest
+):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["instance"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "type_": 1,
+        "enable_stackdriver_logging": True,
+        "enable_stackdriver_monitoring": True,
+        "private_instance": True,
+        "network_config": {
+            "network": "network_value",
+            "ip_allocation": "ip_allocation_value",
+        },
+        "labels": {},
+        "options": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": 1,
+        "state_message": "state_message_value",
+        "service_endpoint": "service_endpoint_value",
+        "zone": "zone_value",
+        "version": "version_value",
+        "service_account": "service_account_value",
+        "display_name": "display_name_value",
+        "available_version": [
+            {
+                "version_number": "version_number_value",
+                "default_version": True,
+                "available_features": [
+                    "available_features_value1",
+                    "available_features_value2",
+                ],
+                "type_": 1,
+            }
+        ],
+        "api_endpoint": "api_endpoint_value",
+        "gcs_bucket": "gcs_bucket_value",
+        "accelerators": [{"accelerator_type": 1, "state": 1}],
+        "p4_service_account": "p4_service_account_value",
+        "tenant_project_id": "tenant_project_id_value",
+        "dataproc_service_account": "dataproc_service_account_value",
+        "enable_rbac": True,
+        "crypto_key_config": {"key_reference": "key_reference_value"},
+        "disabled_reason": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_instance(request)
+
+
+def test_create_instance_rest_flattened():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            instance=datafusion.Instance(name="name_value"),
+            instance_id="instance_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/instances" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_instance_rest_flattened_error(transport: str = "rest"):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_instance(
+            datafusion.CreateInstanceRequest(),
+            parent="parent_value",
+            instance=datafusion.Instance(name="name_value"),
+            instance_id="instance_id_value",
+        )
+
+
+def test_create_instance_rest_error():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datafusion.DeleteInstanceRequest,
+        dict,
+    ],
+)
+def test_delete_instance_rest(request_type):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_instance_rest_required_fields(
+    request_type=datafusion.DeleteInstanceRequest,
+):
+    transport_class = transports.DataFusionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_instance_rest_unset_required_fields():
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_instance_rest_interceptors(null_interceptor):
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataFusionRestInterceptor(),
+    )
+    client = DataFusionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataFusionRestInterceptor, "post_delete_instance"
+    ) as post, mock.patch.object(
+        transports.DataFusionRestInterceptor, "pre_delete_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datafusion.DeleteInstanceRequest.pb(
+            datafusion.DeleteInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datafusion.DeleteInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_instance_rest_bad_request(
+    transport: str = "rest", request_type=datafusion.DeleteInstanceRequest
+):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_instance(request)
+
+
+def test_delete_instance_rest_flattened():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/instances/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_instance_rest_flattened_error(transport: str = "rest"):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_instance(
+            datafusion.DeleteInstanceRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_instance_rest_error():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datafusion.UpdateInstanceRequest,
+        dict,
+    ],
+)
+def test_update_instance_rest(request_type):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    }
+    request_init["instance"] = {
+        "name": "projects/sample1/locations/sample2/instances/sample3",
+        "description": "description_value",
+        "type_": 1,
+        "enable_stackdriver_logging": True,
+        "enable_stackdriver_monitoring": True,
+        "private_instance": True,
+        "network_config": {
+            "network": "network_value",
+            "ip_allocation": "ip_allocation_value",
+        },
+        "labels": {},
+        "options": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": 1,
+        "state_message": "state_message_value",
+        "service_endpoint": "service_endpoint_value",
+        "zone": "zone_value",
+        "version": "version_value",
+        "service_account": "service_account_value",
+        "display_name": "display_name_value",
+        "available_version": [
+            {
+                "version_number": "version_number_value",
+                "default_version": True,
+                "available_features": [
+                    "available_features_value1",
+                    "available_features_value2",
+                ],
+                "type_": 1,
+            }
+        ],
+        "api_endpoint": "api_endpoint_value",
+        "gcs_bucket": "gcs_bucket_value",
+        "accelerators": [{"accelerator_type": 1, "state": 1}],
+        "p4_service_account": "p4_service_account_value",
+        "tenant_project_id": "tenant_project_id_value",
+        "dataproc_service_account": "dataproc_service_account_value",
+        "enable_rbac": True,
+        "crypto_key_config": {"key_reference": "key_reference_value"},
+        "disabled_reason": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_instance_rest_required_fields(
+    request_type=datafusion.UpdateInstanceRequest,
+):
+    transport_class = transports.DataFusionRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_instance._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_instance_rest_unset_required_fields():
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("instance",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_instance_rest_interceptors(null_interceptor):
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataFusionRestInterceptor(),
+    )
+    client = DataFusionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataFusionRestInterceptor, "post_update_instance"
+    ) as post, mock.patch.object(
+        transports.DataFusionRestInterceptor, "pre_update_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datafusion.UpdateInstanceRequest.pb(
+            datafusion.UpdateInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datafusion.UpdateInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_instance_rest_bad_request(
+    transport: str = "rest", request_type=datafusion.UpdateInstanceRequest
+):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    }
+    request_init["instance"] = {
+        "name": "projects/sample1/locations/sample2/instances/sample3",
+        "description": "description_value",
+        "type_": 1,
+        "enable_stackdriver_logging": True,
+        "enable_stackdriver_monitoring": True,
+        "private_instance": True,
+        "network_config": {
+            "network": "network_value",
+            "ip_allocation": "ip_allocation_value",
+        },
+        "labels": {},
+        "options": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": 1,
+        "state_message": "state_message_value",
+        "service_endpoint": "service_endpoint_value",
+        "zone": "zone_value",
+        "version": "version_value",
+        "service_account": "service_account_value",
+        "display_name": "display_name_value",
+        "available_version": [
+            {
+                "version_number": "version_number_value",
+                "default_version": True,
+                "available_features": [
+                    "available_features_value1",
+                    "available_features_value2",
+                ],
+                "type_": 1,
+            }
+        ],
+        "api_endpoint": "api_endpoint_value",
+        "gcs_bucket": "gcs_bucket_value",
+        "accelerators": [{"accelerator_type": 1, "state": 1}],
+        "p4_service_account": "p4_service_account_value",
+        "tenant_project_id": "tenant_project_id_value",
+        "dataproc_service_account": "dataproc_service_account_value",
+        "enable_rbac": True,
+        "crypto_key_config": {"key_reference": "key_reference_value"},
+        "disabled_reason": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_instance(request)
+
+
+def test_update_instance_rest_flattened():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            instance=datafusion.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{instance.name=projects/*/locations/*/instances/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_instance_rest_flattened_error(transport: str = "rest"):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_instance(
+            datafusion.UpdateInstanceRequest(),
+            instance=datafusion.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_instance_rest_error():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datafusion.RestartInstanceRequest,
+        dict,
+    ],
+)
+def test_restart_instance_rest(request_type):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.restart_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_restart_instance_rest_required_fields(
+    request_type=datafusion.RestartInstanceRequest,
+):
+    transport_class = transports.DataFusionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restart_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restart_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.restart_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_restart_instance_rest_unset_required_fields():
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.restart_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_restart_instance_rest_interceptors(null_interceptor):
+    transport = transports.DataFusionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataFusionRestInterceptor(),
+    )
+    client = DataFusionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataFusionRestInterceptor, "post_restart_instance"
+    ) as post, mock.patch.object(
+        transports.DataFusionRestInterceptor, "pre_restart_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datafusion.RestartInstanceRequest.pb(
+            datafusion.RestartInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datafusion.RestartInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.restart_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_restart_instance_rest_bad_request(
+    transport: str = "rest", request_type=datafusion.RestartInstanceRequest
+):
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.restart_instance(request)
+
+
+def test_restart_instance_rest_error():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataFusionGrpcTransport(
@@ -2616,6 +4717,7 @@ def test_transport_get_channel():
     [
         transports.DataFusionGrpcTransport,
         transports.DataFusionGrpcAsyncIOTransport,
+        transports.DataFusionRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2630,6 +4732,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2770,6 +4873,7 @@ def test_data_fusion_transport_auth_adc(transport_class):
     [
         transports.DataFusionGrpcTransport,
         transports.DataFusionGrpcAsyncIOTransport,
+        transports.DataFusionRestTransport,
     ],
 )
 def test_data_fusion_transport_auth_gdch_credentials(transport_class):
@@ -2864,11 +4968,40 @@ def test_data_fusion_grpc_transport_client_cert_source_for_mtls(transport_class)
             )
 
 
+def test_data_fusion_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.DataFusionRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_data_fusion_rest_lro_client():
+    client = DataFusionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_data_fusion_host_no_port(transport_name):
@@ -2879,7 +5012,11 @@ def test_data_fusion_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("datafusion.googleapis.com:443")
+    assert client.transport._host == (
+        "datafusion.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://datafusion.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2887,6 +5024,7 @@ def test_data_fusion_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_data_fusion_host_with_port(transport_name):
@@ -2897,7 +5035,51 @@ def test_data_fusion_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("datafusion.googleapis.com:8000")
+    assert client.transport._host == (
+        "datafusion.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://datafusion.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_data_fusion_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = DataFusionClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = DataFusionClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_available_versions._session
+    session2 = client2.transport.list_available_versions._session
+    assert session1 != session2
+    session1 = client1.transport.list_instances._session
+    session2 = client2.transport.list_instances._session
+    assert session1 != session2
+    session1 = client1.transport.get_instance._session
+    session2 = client2.transport.get_instance._session
+    assert session1 != session2
+    session1 = client1.transport.create_instance._session
+    session2 = client2.transport.create_instance._session
+    assert session1 != session2
+    session1 = client1.transport.delete_instance._session
+    session2 = client2.transport.delete_instance._session
+    assert session1 != session2
+    session1 = client1.transport.update_instance._session
+    session2 = client2.transport.update_instance._session
+    assert session1 != session2
+    session1 = client1.transport.restart_instance._session
+    session2 = client2.transport.restart_instance._session
+    assert session1 != session2
 
 
 def test_data_fusion_grpc_transport_channel():
@@ -3249,6 +5431,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3266,6 +5449,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

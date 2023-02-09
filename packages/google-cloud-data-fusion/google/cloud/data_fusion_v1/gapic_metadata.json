@@ -86,6 +86,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "DataFusionClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "ListAvailableVersions": {
+              "methods": [
+                "list_available_versions"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "RestartInstance": {
+              "methods": [
+                "restart_instance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            }
+          }
         }
       }
     }

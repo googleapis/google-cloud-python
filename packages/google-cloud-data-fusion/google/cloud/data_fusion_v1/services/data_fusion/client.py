@@ -58,6 +58,7 @@ from google.cloud.data_fusion_v1.types import datafusion
 from .transports.base import DEFAULT_CLIENT_INFO, DataFusionTransport
 from .transports.grpc import DataFusionGrpcTransport
 from .transports.grpc_asyncio import DataFusionGrpcAsyncIOTransport
+from .transports.rest import DataFusionRestTransport
 
 
 class DataFusionClientMeta(type):
@@ -71,6 +72,7 @@ class DataFusionClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[DataFusionTransport]]
     _transport_registry["grpc"] = DataFusionGrpcTransport
     _transport_registry["grpc_asyncio"] = DataFusionGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataFusionRestTransport
 
     def get_transport_class(
         cls,
