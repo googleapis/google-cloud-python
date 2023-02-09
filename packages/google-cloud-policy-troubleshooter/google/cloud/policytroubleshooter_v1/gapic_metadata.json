@@ -26,6 +26,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "IamCheckerClient",
+          "rpcs": {
+            "TroubleshootIamPolicy": {
+              "methods": [
+                "troubleshoot_iam_policy"
+              ]
+            }
+          }
         }
       }
     }

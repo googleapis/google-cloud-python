@@ -51,6 +51,7 @@ from google.cloud.policytroubleshooter_v1.types import checker, explanations
 from .transports.base import DEFAULT_CLIENT_INFO, IamCheckerTransport
 from .transports.grpc import IamCheckerGrpcTransport
 from .transports.grpc_asyncio import IamCheckerGrpcAsyncIOTransport
+from .transports.rest import IamCheckerRestTransport
 
 
 class IamCheckerClientMeta(type):
@@ -64,6 +65,7 @@ class IamCheckerClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[IamCheckerTransport]]
     _transport_registry["grpc"] = IamCheckerGrpcTransport
     _transport_registry["grpc_asyncio"] = IamCheckerGrpcAsyncIOTransport
+    _transport_registry["rest"] = IamCheckerRestTransport
 
     def get_transport_class(
         cls,
