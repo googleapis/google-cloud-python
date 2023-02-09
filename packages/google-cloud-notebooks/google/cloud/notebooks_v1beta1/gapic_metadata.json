@@ -206,6 +206,106 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "NotebookServiceClient",
+          "rpcs": {
+            "CreateEnvironment": {
+              "methods": [
+                "create_environment"
+              ]
+            },
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteEnvironment": {
+              "methods": [
+                "delete_environment"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetEnvironment": {
+              "methods": [
+                "get_environment"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "IsInstanceUpgradeable": {
+              "methods": [
+                "is_instance_upgradeable"
+              ]
+            },
+            "ListEnvironments": {
+              "methods": [
+                "list_environments"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "RegisterInstance": {
+              "methods": [
+                "register_instance"
+              ]
+            },
+            "ReportInstanceInfo": {
+              "methods": [
+                "report_instance_info"
+              ]
+            },
+            "ResetInstance": {
+              "methods": [
+                "reset_instance"
+              ]
+            },
+            "SetInstanceAccelerator": {
+              "methods": [
+                "set_instance_accelerator"
+              ]
+            },
+            "SetInstanceLabels": {
+              "methods": [
+                "set_instance_labels"
+              ]
+            },
+            "SetInstanceMachineType": {
+              "methods": [
+                "set_instance_machine_type"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            },
+            "UpgradeInstance": {
+              "methods": [
+                "upgrade_instance"
+              ]
+            },
+            "UpgradeInstanceInternal": {
+              "methods": [
+                "upgrade_instance_internal"
+              ]
+            }
+          }
         }
       }
     }

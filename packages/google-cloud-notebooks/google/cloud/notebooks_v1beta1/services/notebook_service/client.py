@@ -62,6 +62,7 @@ from google.cloud.notebooks_v1beta1.types import environment, instance, service
 from .transports.base import DEFAULT_CLIENT_INFO, NotebookServiceTransport
 from .transports.grpc import NotebookServiceGrpcTransport
 from .transports.grpc_asyncio import NotebookServiceGrpcAsyncIOTransport
+from .transports.rest import NotebookServiceRestTransport
 
 
 class NotebookServiceClientMeta(type):
@@ -77,6 +78,7 @@ class NotebookServiceClientMeta(type):
     )  # type: Dict[str, Type[NotebookServiceTransport]]
     _transport_registry["grpc"] = NotebookServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = NotebookServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = NotebookServiceRestTransport
 
     def get_transport_class(
         cls,
