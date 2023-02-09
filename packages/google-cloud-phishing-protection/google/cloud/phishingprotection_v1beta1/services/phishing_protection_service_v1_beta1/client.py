@@ -56,6 +56,7 @@ from .transports.grpc import PhishingProtectionServiceV1Beta1GrpcTransport
 from .transports.grpc_asyncio import (
     PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport,
 )
+from .transports.rest import PhishingProtectionServiceV1Beta1RestTransport
 
 
 class PhishingProtectionServiceV1Beta1ClientMeta(type):
@@ -73,6 +74,7 @@ class PhishingProtectionServiceV1Beta1ClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
+    _transport_registry["rest"] = PhishingProtectionServiceV1Beta1RestTransport
 
     def get_transport_class(
         cls,
