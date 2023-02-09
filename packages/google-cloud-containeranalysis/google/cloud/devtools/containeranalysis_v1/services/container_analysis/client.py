@@ -56,6 +56,7 @@ from google.cloud.devtools.containeranalysis_v1.types import containeranalysis
 from .transports.base import DEFAULT_CLIENT_INFO, ContainerAnalysisTransport
 from .transports.grpc import ContainerAnalysisGrpcTransport
 from .transports.grpc_asyncio import ContainerAnalysisGrpcAsyncIOTransport
+from .transports.rest import ContainerAnalysisRestTransport
 
 
 class ContainerAnalysisClientMeta(type):
@@ -71,6 +72,7 @@ class ContainerAnalysisClientMeta(type):
     )  # type: Dict[str, Type[ContainerAnalysisTransport]]
     _transport_registry["grpc"] = ContainerAnalysisGrpcTransport
     _transport_registry["grpc_asyncio"] = ContainerAnalysisGrpcAsyncIOTransport
+    _transport_registry["rest"] = ContainerAnalysisRestTransport
 
     def get_transport_class(
         cls,

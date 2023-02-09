@@ -56,6 +56,31 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ContainerAnalysisClient",
+          "rpcs": {
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetVulnerabilityOccurrencesSummary": {
+              "methods": [
+                "get_vulnerability_occurrences_summary"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            }
+          }
         }
       }
     }

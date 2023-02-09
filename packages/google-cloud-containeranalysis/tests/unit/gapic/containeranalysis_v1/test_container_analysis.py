@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -35,12 +37,15 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.type import expr_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.devtools.containeranalysis_v1.services.container_analysis import (
     ContainerAnalysisAsyncClient,
@@ -100,6 +105,7 @@ def test__get_default_mtls_endpoint():
     [
         (ContainerAnalysisClient, "grpc"),
         (ContainerAnalysisAsyncClient, "grpc_asyncio"),
+        (ContainerAnalysisClient, "rest"),
     ],
 )
 def test_container_analysis_client_from_service_account_info(
@@ -115,7 +121,11 @@ def test_container_analysis_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("containeranalysis.googleapis.com:443")
+        assert client.transport._host == (
+            "containeranalysis.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://containeranalysis.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -123,6 +133,7 @@ def test_container_analysis_client_from_service_account_info(
     [
         (transports.ContainerAnalysisGrpcTransport, "grpc"),
         (transports.ContainerAnalysisGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ContainerAnalysisRestTransport, "rest"),
     ],
 )
 def test_container_analysis_client_service_account_always_use_jwt(
@@ -148,6 +159,7 @@ def test_container_analysis_client_service_account_always_use_jwt(
     [
         (ContainerAnalysisClient, "grpc"),
         (ContainerAnalysisAsyncClient, "grpc_asyncio"),
+        (ContainerAnalysisClient, "rest"),
     ],
 )
 def test_container_analysis_client_from_service_account_file(
@@ -170,13 +182,18 @@ def test_container_analysis_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("containeranalysis.googleapis.com:443")
+        assert client.transport._host == (
+            "containeranalysis.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://containeranalysis.googleapis.com"
+        )
 
 
 def test_container_analysis_client_get_transport_class():
     transport = ContainerAnalysisClient.get_transport_class()
     available_transports = [
         transports.ContainerAnalysisGrpcTransport,
+        transports.ContainerAnalysisRestTransport,
     ]
     assert transport in available_transports
 
@@ -193,6 +210,7 @@ def test_container_analysis_client_get_transport_class():
             transports.ContainerAnalysisGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ContainerAnalysisClient, transports.ContainerAnalysisRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -346,6 +364,18 @@ def test_container_analysis_client_client_options(
             ContainerAnalysisAsyncClient,
             transports.ContainerAnalysisGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ContainerAnalysisClient,
+            transports.ContainerAnalysisRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ContainerAnalysisClient,
+            transports.ContainerAnalysisRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -547,6 +577,7 @@ def test_container_analysis_client_get_mtls_endpoint_and_cert_source(client_clas
             transports.ContainerAnalysisGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ContainerAnalysisClient, transports.ContainerAnalysisRestTransport, "rest"),
     ],
 )
 def test_container_analysis_client_client_options_scopes(
@@ -586,6 +617,12 @@ def test_container_analysis_client_client_options_scopes(
             transports.ContainerAnalysisGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ContainerAnalysisClient,
+            transports.ContainerAnalysisRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -1728,6 +1765,1115 @@ async def test_get_vulnerability_occurrences_summary_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/notes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+def test_set_iam_policy_rest_required_fields(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    transport_class = transports.ContainerAnalysisRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = policy_pb2.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_iam_policy_rest_unset_required_fields():
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "resource",
+                "policy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContainerAnalysisRestInterceptor(),
+    )
+    client = ContainerAnalysisClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.SetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
+
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/notes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+def test_set_iam_policy_rest_flattened():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"resource": "projects/sample1/notes/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            resource="resource_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_iam_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{resource=projects/*/notes/*}:setIamPolicy" % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_iam_policy(
+            iam_policy_pb2.SetIamPolicyRequest(),
+            resource="resource_value",
+        )
+
+
+def test_set_iam_policy_rest_error():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/notes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+def test_get_iam_policy_rest_required_fields(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    transport_class = transports.ContainerAnalysisRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = policy_pb2.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_iam_policy_rest_unset_required_fields():
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("resource",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContainerAnalysisRestInterceptor(),
+    )
+    client = ContainerAnalysisClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.GetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
+
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/notes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+def test_get_iam_policy_rest_flattened():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"resource": "projects/sample1/notes/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            resource="resource_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_iam_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{resource=projects/*/notes/*}:getIamPolicy" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_iam_policy(
+            iam_policy_pb2.GetIamPolicyRequest(),
+            resource="resource_value",
+        )
+
+
+def test_get_iam_policy_rest_error():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/notes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_rest_required_fields(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    transport_class = transports.ContainerAnalysisRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request_init["permissions"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["permissions"] = "permissions_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+    assert "permissions" in jsonified_request
+    assert jsonified_request["permissions"] == "permissions_value"
+
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = iam_policy_pb2.TestIamPermissionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.test_iam_permissions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_test_iam_permissions_rest_unset_required_fields():
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "resource",
+                "permissions",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContainerAnalysisRestInterceptor(),
+    )
+    client = ContainerAnalysisClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/notes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+def test_test_iam_permissions_rest_flattened():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"resource": "projects/sample1/notes/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            resource="resource_value",
+            permissions=["permissions_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.test_iam_permissions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{resource=projects/*/notes/*}:testIamPermissions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.test_iam_permissions(
+            iam_policy_pb2.TestIamPermissionsRequest(),
+            resource="resource_value",
+            permissions=["permissions_value"],
+        )
+
+
+def test_test_iam_permissions_rest_error():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        containeranalysis.GetVulnerabilityOccurrencesSummaryRequest,
+        dict,
+    ],
+)
+def test_get_vulnerability_occurrences_summary_rest(request_type):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = containeranalysis.VulnerabilityOccurrencesSummary()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = containeranalysis.VulnerabilityOccurrencesSummary.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_vulnerability_occurrences_summary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, containeranalysis.VulnerabilityOccurrencesSummary)
+
+
+def test_get_vulnerability_occurrences_summary_rest_required_fields(
+    request_type=containeranalysis.GetVulnerabilityOccurrencesSummaryRequest,
+):
+    transport_class = transports.ContainerAnalysisRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_vulnerability_occurrences_summary._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_vulnerability_occurrences_summary._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("filter",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = containeranalysis.VulnerabilityOccurrencesSummary()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = containeranalysis.VulnerabilityOccurrencesSummary.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_vulnerability_occurrences_summary(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_vulnerability_occurrences_summary_rest_unset_required_fields():
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_vulnerability_occurrences_summary._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(("filter",)) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_vulnerability_occurrences_summary_rest_interceptors(null_interceptor):
+    transport = transports.ContainerAnalysisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContainerAnalysisRestInterceptor(),
+    )
+    client = ContainerAnalysisClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor,
+        "post_get_vulnerability_occurrences_summary",
+    ) as post, mock.patch.object(
+        transports.ContainerAnalysisRestInterceptor,
+        "pre_get_vulnerability_occurrences_summary",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = containeranalysis.GetVulnerabilityOccurrencesSummaryRequest.pb(
+            containeranalysis.GetVulnerabilityOccurrencesSummaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            containeranalysis.VulnerabilityOccurrencesSummary.to_json(
+                containeranalysis.VulnerabilityOccurrencesSummary()
+            )
+        )
+
+        request = containeranalysis.GetVulnerabilityOccurrencesSummaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = containeranalysis.VulnerabilityOccurrencesSummary()
+
+        client.get_vulnerability_occurrences_summary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_vulnerability_occurrences_summary_rest_bad_request(
+    transport: str = "rest",
+    request_type=containeranalysis.GetVulnerabilityOccurrencesSummaryRequest,
+):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_vulnerability_occurrences_summary(request)
+
+
+def test_get_vulnerability_occurrences_summary_rest_flattened():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = containeranalysis.VulnerabilityOccurrencesSummary()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            filter="filter_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = containeranalysis.VulnerabilityOccurrencesSummary.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_vulnerability_occurrences_summary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/occurrences:vulnerabilitySummary"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_vulnerability_occurrences_summary_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_vulnerability_occurrences_summary(
+            containeranalysis.GetVulnerabilityOccurrencesSummaryRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_get_vulnerability_occurrences_summary_rest_error():
+    client = ContainerAnalysisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ContainerAnalysisGrpcTransport(
@@ -1809,6 +2955,7 @@ def test_transport_get_channel():
     [
         transports.ContainerAnalysisGrpcTransport,
         transports.ContainerAnalysisGrpcAsyncIOTransport,
+        transports.ContainerAnalysisRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1823,6 +2970,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1955,6 +3103,7 @@ def test_container_analysis_transport_auth_adc(transport_class):
     [
         transports.ContainerAnalysisGrpcTransport,
         transports.ContainerAnalysisGrpcAsyncIOTransport,
+        transports.ContainerAnalysisRestTransport,
     ],
 )
 def test_container_analysis_transport_auth_gdch_credentials(transport_class):
@@ -2052,11 +3201,23 @@ def test_container_analysis_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
+def test_container_analysis_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ContainerAnalysisRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_container_analysis_host_no_port(transport_name):
@@ -2067,7 +3228,11 @@ def test_container_analysis_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("containeranalysis.googleapis.com:443")
+    assert client.transport._host == (
+        "containeranalysis.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://containeranalysis.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2075,6 +3240,7 @@ def test_container_analysis_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_container_analysis_host_with_port(transport_name):
@@ -2085,7 +3251,42 @@ def test_container_analysis_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("containeranalysis.googleapis.com:8000")
+    assert client.transport._host == (
+        "containeranalysis.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://containeranalysis.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_container_analysis_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ContainerAnalysisClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ContainerAnalysisClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.set_iam_policy._session
+    session2 = client2.transport.set_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.get_iam_policy._session
+    session2 = client2.transport.get_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.test_iam_permissions._session
+    session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+    session1 = client1.transport.get_vulnerability_occurrences_summary._session
+    session2 = client2.transport.get_vulnerability_occurrences_summary._session
+    assert session1 != session2
 
 
 def test_container_analysis_grpc_transport_channel():
@@ -2356,6 +3557,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2373,6 +3575,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
