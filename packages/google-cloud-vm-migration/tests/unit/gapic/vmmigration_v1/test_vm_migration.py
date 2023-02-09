@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -49,6 +51,7 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
@@ -56,6 +59,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.vmmigration_v1.services.vm_migration import (
     VmMigrationAsyncClient,
@@ -112,6 +117,7 @@ def test__get_default_mtls_endpoint():
     [
         (VmMigrationClient, "grpc"),
         (VmMigrationAsyncClient, "grpc_asyncio"),
+        (VmMigrationClient, "rest"),
     ],
 )
 def test_vm_migration_client_from_service_account_info(client_class, transport_name):
@@ -125,7 +131,11 @@ def test_vm_migration_client_from_service_account_info(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("vmmigration.googleapis.com:443")
+        assert client.transport._host == (
+            "vmmigration.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://vmmigration.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -133,6 +143,7 @@ def test_vm_migration_client_from_service_account_info(client_class, transport_n
     [
         (transports.VmMigrationGrpcTransport, "grpc"),
         (transports.VmMigrationGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.VmMigrationRestTransport, "rest"),
     ],
 )
 def test_vm_migration_client_service_account_always_use_jwt(
@@ -158,6 +169,7 @@ def test_vm_migration_client_service_account_always_use_jwt(
     [
         (VmMigrationClient, "grpc"),
         (VmMigrationAsyncClient, "grpc_asyncio"),
+        (VmMigrationClient, "rest"),
     ],
 )
 def test_vm_migration_client_from_service_account_file(client_class, transport_name):
@@ -178,13 +190,18 @@ def test_vm_migration_client_from_service_account_file(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("vmmigration.googleapis.com:443")
+        assert client.transport._host == (
+            "vmmigration.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://vmmigration.googleapis.com"
+        )
 
 
 def test_vm_migration_client_get_transport_class():
     transport = VmMigrationClient.get_transport_class()
     available_transports = [
         transports.VmMigrationGrpcTransport,
+        transports.VmMigrationRestTransport,
     ]
     assert transport in available_transports
 
@@ -201,6 +218,7 @@ def test_vm_migration_client_get_transport_class():
             transports.VmMigrationGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (VmMigrationClient, transports.VmMigrationRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -344,6 +362,8 @@ def test_vm_migration_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (VmMigrationClient, transports.VmMigrationRestTransport, "rest", "true"),
+        (VmMigrationClient, transports.VmMigrationRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -537,6 +557,7 @@ def test_vm_migration_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.VmMigrationGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (VmMigrationClient, transports.VmMigrationRestTransport, "rest"),
     ],
 )
 def test_vm_migration_client_client_options_scopes(
@@ -572,6 +593,7 @@ def test_vm_migration_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (VmMigrationClient, transports.VmMigrationRestTransport, "rest", None),
     ],
 )
 def test_vm_migration_client_client_options_credentials_file(
@@ -13540,6 +13562,14898 @@ async def test_get_replication_cycle_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListSourcesRequest,
+        dict,
+    ],
+)
+def test_list_sources_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListSourcesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_sources(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSourcesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_sources_rest_required_fields(request_type=vmmigration.ListSourcesRequest):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sources._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sources._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListSourcesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListSourcesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_sources(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_sources_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_sources._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_sources_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_sources"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_sources"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListSourcesRequest.pb(vmmigration.ListSourcesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListSourcesResponse.to_json(
+            vmmigration.ListSourcesResponse()
+        )
+
+        request = vmmigration.ListSourcesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListSourcesResponse()
+
+        client.list_sources(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_sources_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListSourcesRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_sources(request)
+
+
+def test_list_sources_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListSourcesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_sources(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/sources" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_sources_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sources(
+            vmmigration.ListSourcesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_sources_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListSourcesResponse(
+                sources=[
+                    vmmigration.Source(),
+                    vmmigration.Source(),
+                    vmmigration.Source(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListSourcesResponse(
+                sources=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListSourcesResponse(
+                sources=[
+                    vmmigration.Source(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListSourcesResponse(
+                sources=[
+                    vmmigration.Source(),
+                    vmmigration.Source(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(vmmigration.ListSourcesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_sources(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.Source) for i in results)
+
+        pages = list(client.list_sources(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetSourceRequest,
+        dict,
+    ],
+)
+def test_get_source_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.Source(
+            name="name_value",
+            description="description_value",
+            vmware=vmmigration.VmwareSourceDetails(username="username_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_source(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.Source)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+
+
+def test_get_source_rest_required_fields(request_type=vmmigration.GetSourceRequest):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_source._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_source._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.Source()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.Source.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_source(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_source_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_source._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_source_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_source"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_source"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetSourceRequest.pb(vmmigration.GetSourceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.Source.to_json(vmmigration.Source())
+
+        request = vmmigration.GetSourceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.Source()
+
+        client.get_source(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_source_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetSourceRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_source(request)
+
+
+def test_get_source_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.Source()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/sources/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_source(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_source_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_source(
+            vmmigration.GetSourceRequest(),
+            name="name_value",
+        )
+
+
+def test_get_source_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateSourceRequest,
+        dict,
+    ],
+)
+def test_create_source_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["source"] = {
+        "vmware": {
+            "username": "username_value",
+            "password": "password_value",
+            "vcenter_ip": "vcenter_ip_value",
+            "thumbprint": "thumbprint_value",
+        },
+        "aws": {
+            "access_key_creds": {
+                "access_key_id": "access_key_id_value",
+                "secret_access_key": "secret_access_key_value",
+            },
+            "aws_region": "aws_region_value",
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "inventory_tag_list": [{"key": "key_value", "value": "value_value"}],
+            "inventory_security_group_names": [
+                "inventory_security_group_names_value1",
+                "inventory_security_group_names_value2",
+            ],
+            "migration_resources_user_tags": {},
+            "public_ip": "public_ip_value",
+        },
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "description": "description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_source(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_source_rest_required_fields(
+    request_type=vmmigration.CreateSourceRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["source_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "sourceId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_source._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "sourceId" in jsonified_request
+    assert jsonified_request["sourceId"] == request_init["source_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["sourceId"] = "source_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_source._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "source_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "sourceId" in jsonified_request
+    assert jsonified_request["sourceId"] == "source_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_source(request)
+
+            expected_params = [
+                (
+                    "sourceId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_source_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_source._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "sourceId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "sourceId",
+                "source",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_source_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_source"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_source"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateSourceRequest.pb(
+            vmmigration.CreateSourceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateSourceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_source(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_source_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateSourceRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["source"] = {
+        "vmware": {
+            "username": "username_value",
+            "password": "password_value",
+            "vcenter_ip": "vcenter_ip_value",
+            "thumbprint": "thumbprint_value",
+        },
+        "aws": {
+            "access_key_creds": {
+                "access_key_id": "access_key_id_value",
+                "secret_access_key": "secret_access_key_value",
+            },
+            "aws_region": "aws_region_value",
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "inventory_tag_list": [{"key": "key_value", "value": "value_value"}],
+            "inventory_security_group_names": [
+                "inventory_security_group_names_value1",
+                "inventory_security_group_names_value2",
+            ],
+            "migration_resources_user_tags": {},
+            "public_ip": "public_ip_value",
+        },
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "description": "description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_source(request)
+
+
+def test_create_source_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            source=vmmigration.Source(
+                vmware=vmmigration.VmwareSourceDetails(username="username_value")
+            ),
+            source_id="source_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_source(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/sources" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_source_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_source(
+            vmmigration.CreateSourceRequest(),
+            parent="parent_value",
+            source=vmmigration.Source(
+                vmware=vmmigration.VmwareSourceDetails(username="username_value")
+            ),
+            source_id="source_id_value",
+        )
+
+
+def test_create_source_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateSourceRequest,
+        dict,
+    ],
+)
+def test_update_source_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "source": {"name": "projects/sample1/locations/sample2/sources/sample3"}
+    }
+    request_init["source"] = {
+        "vmware": {
+            "username": "username_value",
+            "password": "password_value",
+            "vcenter_ip": "vcenter_ip_value",
+            "thumbprint": "thumbprint_value",
+        },
+        "aws": {
+            "access_key_creds": {
+                "access_key_id": "access_key_id_value",
+                "secret_access_key": "secret_access_key_value",
+            },
+            "aws_region": "aws_region_value",
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "inventory_tag_list": [{"key": "key_value", "value": "value_value"}],
+            "inventory_security_group_names": [
+                "inventory_security_group_names_value1",
+                "inventory_security_group_names_value2",
+            ],
+            "migration_resources_user_tags": {},
+            "public_ip": "public_ip_value",
+        },
+        "name": "projects/sample1/locations/sample2/sources/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "description": "description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_source(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_source_rest_required_fields(
+    request_type=vmmigration.UpdateSourceRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_source._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_source._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_source(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_source_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_source._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(("source",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_source_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_update_source"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_update_source"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.UpdateSourceRequest.pb(
+            vmmigration.UpdateSourceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.UpdateSourceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_source(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_source_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.UpdateSourceRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "source": {"name": "projects/sample1/locations/sample2/sources/sample3"}
+    }
+    request_init["source"] = {
+        "vmware": {
+            "username": "username_value",
+            "password": "password_value",
+            "vcenter_ip": "vcenter_ip_value",
+            "thumbprint": "thumbprint_value",
+        },
+        "aws": {
+            "access_key_creds": {
+                "access_key_id": "access_key_id_value",
+                "secret_access_key": "secret_access_key_value",
+            },
+            "aws_region": "aws_region_value",
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "inventory_tag_list": [{"key": "key_value", "value": "value_value"}],
+            "inventory_security_group_names": [
+                "inventory_security_group_names_value1",
+                "inventory_security_group_names_value2",
+            ],
+            "migration_resources_user_tags": {},
+            "public_ip": "public_ip_value",
+        },
+        "name": "projects/sample1/locations/sample2/sources/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "description": "description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_source(request)
+
+
+def test_update_source_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "source": {"name": "projects/sample1/locations/sample2/sources/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            source=vmmigration.Source(
+                vmware=vmmigration.VmwareSourceDetails(username="username_value")
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_source(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{source.name=projects/*/locations/*/sources/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_source_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_source(
+            vmmigration.UpdateSourceRequest(),
+            source=vmmigration.Source(
+                vmware=vmmigration.VmwareSourceDetails(username="username_value")
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_source_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteSourceRequest,
+        dict,
+    ],
+)
+def test_delete_source_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_source(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_source_rest_required_fields(
+    request_type=vmmigration.DeleteSourceRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_source._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_source._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_source(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_source_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_source._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_source_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_source"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_delete_source"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.DeleteSourceRequest.pb(
+            vmmigration.DeleteSourceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.DeleteSourceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_source(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_source_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.DeleteSourceRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_source(request)
+
+
+def test_delete_source_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/sources/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_source(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_source_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_source(
+            vmmigration.DeleteSourceRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_source_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.FetchInventoryRequest,
+        dict,
+    ],
+)
+def test_fetch_inventory_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"source": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.FetchInventoryResponse(
+            vmware_vms=vmmigration.VmwareVmsDetails(
+                details=[vmmigration.VmwareVmDetails(vm_id="vm_id_value")]
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.FetchInventoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_inventory(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.FetchInventoryResponse)
+
+
+def test_fetch_inventory_rest_required_fields(
+    request_type=vmmigration.FetchInventoryRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["source"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_inventory._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["source"] = "source_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_inventory._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force_refresh",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "source" in jsonified_request
+    assert jsonified_request["source"] == "source_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.FetchInventoryResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.FetchInventoryResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_inventory(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_inventory_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_inventory._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("forceRefresh",)) & set(("source",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_inventory_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_fetch_inventory"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_fetch_inventory"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.FetchInventoryRequest.pb(
+            vmmigration.FetchInventoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.FetchInventoryResponse.to_json(
+            vmmigration.FetchInventoryResponse()
+        )
+
+        request = vmmigration.FetchInventoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.FetchInventoryResponse()
+
+        client.fetch_inventory(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_inventory_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.FetchInventoryRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"source": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_inventory(request)
+
+
+def test_fetch_inventory_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.FetchInventoryResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "source": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            source="source_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.FetchInventoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.fetch_inventory(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{source=projects/*/locations/*/sources/*}:fetchInventory"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_fetch_inventory_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_inventory(
+            vmmigration.FetchInventoryRequest(),
+            source="source_value",
+        )
+
+
+def test_fetch_inventory_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListUtilizationReportsRequest,
+        dict,
+    ],
+)
+def test_list_utilization_reports_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListUtilizationReportsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListUtilizationReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_utilization_reports(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUtilizationReportsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_utilization_reports_rest_required_fields(
+    request_type=vmmigration.ListUtilizationReportsRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_utilization_reports._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_utilization_reports._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+            "view",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListUtilizationReportsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListUtilizationReportsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_utilization_reports(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_utilization_reports_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_utilization_reports._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+                "view",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_utilization_reports_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_utilization_reports"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_utilization_reports"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListUtilizationReportsRequest.pb(
+            vmmigration.ListUtilizationReportsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListUtilizationReportsResponse.to_json(
+            vmmigration.ListUtilizationReportsResponse()
+        )
+
+        request = vmmigration.ListUtilizationReportsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListUtilizationReportsResponse()
+
+        client.list_utilization_reports(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_utilization_reports_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListUtilizationReportsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_utilization_reports(request)
+
+
+def test_list_utilization_reports_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListUtilizationReportsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListUtilizationReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_utilization_reports(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*}/utilizationReports"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_utilization_reports_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_utilization_reports(
+            vmmigration.ListUtilizationReportsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_utilization_reports_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListUtilizationReportsResponse(
+                utilization_reports=[
+                    vmmigration.UtilizationReport(),
+                    vmmigration.UtilizationReport(),
+                    vmmigration.UtilizationReport(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListUtilizationReportsResponse(
+                utilization_reports=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListUtilizationReportsResponse(
+                utilization_reports=[
+                    vmmigration.UtilizationReport(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListUtilizationReportsResponse(
+                utilization_reports=[
+                    vmmigration.UtilizationReport(),
+                    vmmigration.UtilizationReport(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmmigration.ListUtilizationReportsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        pager = client.list_utilization_reports(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.UtilizationReport) for i in results)
+
+        pages = list(client.list_utilization_reports(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetUtilizationReportRequest,
+        dict,
+    ],
+)
+def test_get_utilization_report_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/utilizationReports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.UtilizationReport(
+            name="name_value",
+            display_name="display_name_value",
+            state=vmmigration.UtilizationReport.State.CREATING,
+            time_frame=vmmigration.UtilizationReport.TimeFrame.WEEK,
+            vm_count=875,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.UtilizationReport.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_utilization_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.UtilizationReport)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == vmmigration.UtilizationReport.State.CREATING
+    assert response.time_frame == vmmigration.UtilizationReport.TimeFrame.WEEK
+    assert response.vm_count == 875
+
+
+def test_get_utilization_report_rest_required_fields(
+    request_type=vmmigration.GetUtilizationReportRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_utilization_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_utilization_report._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.UtilizationReport()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.UtilizationReport.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_utilization_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_utilization_report_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_utilization_report._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("view",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_utilization_report_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_utilization_report"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_utilization_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetUtilizationReportRequest.pb(
+            vmmigration.GetUtilizationReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.UtilizationReport.to_json(
+            vmmigration.UtilizationReport()
+        )
+
+        request = vmmigration.GetUtilizationReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.UtilizationReport()
+
+        client.get_utilization_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_utilization_report_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetUtilizationReportRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/utilizationReports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_utilization_report(request)
+
+
+def test_get_utilization_report_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.UtilizationReport()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/utilizationReports/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.UtilizationReport.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_utilization_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/utilizationReports/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_utilization_report_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_utilization_report(
+            vmmigration.GetUtilizationReportRequest(),
+            name="name_value",
+        )
+
+
+def test_get_utilization_report_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateUtilizationReportRequest,
+        dict,
+    ],
+)
+def test_create_utilization_report_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request_init["utilization_report"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "state": 1,
+        "state_time": {"seconds": 751, "nanos": 543},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "create_time": {},
+        "time_frame": 1,
+        "frame_end_time": {},
+        "vm_count": 875,
+        "vms": [
+            {
+                "vmware_vm_details": {
+                    "vm_id": "vm_id_value",
+                    "datacenter_id": "datacenter_id_value",
+                    "datacenter_description": "datacenter_description_value",
+                    "uuid": "uuid_value",
+                    "display_name": "display_name_value",
+                    "power_state": 1,
+                    "cpu_count": 976,
+                    "memory_mb": 967,
+                    "disk_count": 1075,
+                    "committed_storage_mb": 2120,
+                    "guest_description": "guest_description_value",
+                    "boot_option": 1,
+                },
+                "vm_id": "vm_id_value",
+                "utilization": {
+                    "cpu_max_percent": 1597,
+                    "cpu_average_percent": 2002,
+                    "memory_max_percent": 1934,
+                    "memory_average_percent": 2339,
+                    "disk_io_rate_max_kbps": 2209,
+                    "disk_io_rate_average_kbps": 2614,
+                    "network_throughput_max_kbps": 2935,
+                    "network_throughput_average_kbps": 3340,
+                },
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_utilization_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_utilization_report_rest_required_fields(
+    request_type=vmmigration.CreateUtilizationReportRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["utilization_report_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "utilizationReportId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_utilization_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "utilizationReportId" in jsonified_request
+    assert (
+        jsonified_request["utilizationReportId"]
+        == request_init["utilization_report_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["utilizationReportId"] = "utilization_report_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_utilization_report._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "utilization_report_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "utilizationReportId" in jsonified_request
+    assert jsonified_request["utilizationReportId"] == "utilization_report_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_utilization_report(request)
+
+            expected_params = [
+                (
+                    "utilizationReportId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_utilization_report_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_utilization_report._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "utilizationReportId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "utilizationReport",
+                "utilizationReportId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_utilization_report_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_utilization_report"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_utilization_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateUtilizationReportRequest.pb(
+            vmmigration.CreateUtilizationReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateUtilizationReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_utilization_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_utilization_report_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateUtilizationReportRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request_init["utilization_report"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "state": 1,
+        "state_time": {"seconds": 751, "nanos": 543},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "create_time": {},
+        "time_frame": 1,
+        "frame_end_time": {},
+        "vm_count": 875,
+        "vms": [
+            {
+                "vmware_vm_details": {
+                    "vm_id": "vm_id_value",
+                    "datacenter_id": "datacenter_id_value",
+                    "datacenter_description": "datacenter_description_value",
+                    "uuid": "uuid_value",
+                    "display_name": "display_name_value",
+                    "power_state": 1,
+                    "cpu_count": 976,
+                    "memory_mb": 967,
+                    "disk_count": 1075,
+                    "committed_storage_mb": 2120,
+                    "guest_description": "guest_description_value",
+                    "boot_option": 1,
+                },
+                "vm_id": "vm_id_value",
+                "utilization": {
+                    "cpu_max_percent": 1597,
+                    "cpu_average_percent": 2002,
+                    "memory_max_percent": 1934,
+                    "memory_average_percent": 2339,
+                    "disk_io_rate_max_kbps": 2209,
+                    "disk_io_rate_average_kbps": 2614,
+                    "network_throughput_max_kbps": 2935,
+                    "network_throughput_average_kbps": 3340,
+                },
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_utilization_report(request)
+
+
+def test_create_utilization_report_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            utilization_report=vmmigration.UtilizationReport(name="name_value"),
+            utilization_report_id="utilization_report_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_utilization_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*}/utilizationReports"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_utilization_report_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_utilization_report(
+            vmmigration.CreateUtilizationReportRequest(),
+            parent="parent_value",
+            utilization_report=vmmigration.UtilizationReport(name="name_value"),
+            utilization_report_id="utilization_report_id_value",
+        )
+
+
+def test_create_utilization_report_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteUtilizationReportRequest,
+        dict,
+    ],
+)
+def test_delete_utilization_report_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/utilizationReports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_utilization_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_utilization_report_rest_required_fields(
+    request_type=vmmigration.DeleteUtilizationReportRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_utilization_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_utilization_report._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_utilization_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_utilization_report_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_utilization_report._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_utilization_report_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_utilization_report"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_delete_utilization_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.DeleteUtilizationReportRequest.pb(
+            vmmigration.DeleteUtilizationReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.DeleteUtilizationReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_utilization_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_utilization_report_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.DeleteUtilizationReportRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/utilizationReports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_utilization_report(request)
+
+
+def test_delete_utilization_report_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/utilizationReports/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_utilization_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/utilizationReports/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_utilization_report_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_utilization_report(
+            vmmigration.DeleteUtilizationReportRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_utilization_report_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListDatacenterConnectorsRequest,
+        dict,
+    ],
+)
+def test_list_datacenter_connectors_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListDatacenterConnectorsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListDatacenterConnectorsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_datacenter_connectors(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatacenterConnectorsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_datacenter_connectors_rest_required_fields(
+    request_type=vmmigration.ListDatacenterConnectorsRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_datacenter_connectors._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_datacenter_connectors._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListDatacenterConnectorsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListDatacenterConnectorsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_datacenter_connectors(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_datacenter_connectors_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_datacenter_connectors._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_datacenter_connectors_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_datacenter_connectors"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_datacenter_connectors"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListDatacenterConnectorsRequest.pb(
+            vmmigration.ListDatacenterConnectorsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            vmmigration.ListDatacenterConnectorsResponse.to_json(
+                vmmigration.ListDatacenterConnectorsResponse()
+            )
+        )
+
+        request = vmmigration.ListDatacenterConnectorsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListDatacenterConnectorsResponse()
+
+        client.list_datacenter_connectors(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_datacenter_connectors_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListDatacenterConnectorsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_datacenter_connectors(request)
+
+
+def test_list_datacenter_connectors_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListDatacenterConnectorsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListDatacenterConnectorsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_datacenter_connectors(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*}/datacenterConnectors"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_datacenter_connectors_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_datacenter_connectors(
+            vmmigration.ListDatacenterConnectorsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_datacenter_connectors_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListDatacenterConnectorsResponse(
+                datacenter_connectors=[
+                    vmmigration.DatacenterConnector(),
+                    vmmigration.DatacenterConnector(),
+                    vmmigration.DatacenterConnector(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListDatacenterConnectorsResponse(
+                datacenter_connectors=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListDatacenterConnectorsResponse(
+                datacenter_connectors=[
+                    vmmigration.DatacenterConnector(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListDatacenterConnectorsResponse(
+                datacenter_connectors=[
+                    vmmigration.DatacenterConnector(),
+                    vmmigration.DatacenterConnector(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmmigration.ListDatacenterConnectorsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        pager = client.list_datacenter_connectors(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.DatacenterConnector) for i in results)
+
+        pages = list(client.list_datacenter_connectors(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetDatacenterConnectorRequest,
+        dict,
+    ],
+)
+def test_get_datacenter_connector_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.DatacenterConnector(
+            name="name_value",
+            registration_id="registration_id_value",
+            service_account="service_account_value",
+            version="version_value",
+            bucket="bucket_value",
+            state=vmmigration.DatacenterConnector.State.PENDING,
+            appliance_infrastructure_version="appliance_infrastructure_version_value",
+            appliance_software_version="appliance_software_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.DatacenterConnector.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_datacenter_connector(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.DatacenterConnector)
+    assert response.name == "name_value"
+    assert response.registration_id == "registration_id_value"
+    assert response.service_account == "service_account_value"
+    assert response.version == "version_value"
+    assert response.bucket == "bucket_value"
+    assert response.state == vmmigration.DatacenterConnector.State.PENDING
+    assert (
+        response.appliance_infrastructure_version
+        == "appliance_infrastructure_version_value"
+    )
+    assert response.appliance_software_version == "appliance_software_version_value"
+
+
+def test_get_datacenter_connector_rest_required_fields(
+    request_type=vmmigration.GetDatacenterConnectorRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_datacenter_connector._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_datacenter_connector._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.DatacenterConnector()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.DatacenterConnector.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_datacenter_connector(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_datacenter_connector_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_datacenter_connector._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_datacenter_connector_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_datacenter_connector"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_datacenter_connector"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetDatacenterConnectorRequest.pb(
+            vmmigration.GetDatacenterConnectorRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.DatacenterConnector.to_json(
+            vmmigration.DatacenterConnector()
+        )
+
+        request = vmmigration.GetDatacenterConnectorRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.DatacenterConnector()
+
+        client.get_datacenter_connector(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_datacenter_connector_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetDatacenterConnectorRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_datacenter_connector(request)
+
+
+def test_get_datacenter_connector_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.DatacenterConnector()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.DatacenterConnector.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_datacenter_connector(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/datacenterConnectors/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_datacenter_connector_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_datacenter_connector(
+            vmmigration.GetDatacenterConnectorRequest(),
+            name="name_value",
+        )
+
+
+def test_get_datacenter_connector_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateDatacenterConnectorRequest,
+        dict,
+    ],
+)
+def test_create_datacenter_connector_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request_init["datacenter_connector"] = {
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "name": "name_value",
+        "registration_id": "registration_id_value",
+        "service_account": "service_account_value",
+        "version": "version_value",
+        "bucket": "bucket_value",
+        "state": 1,
+        "state_time": {},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "appliance_infrastructure_version": "appliance_infrastructure_version_value",
+        "appliance_software_version": "appliance_software_version_value",
+        "available_versions": {
+            "new_deployable_appliance": {
+                "version": "version_value",
+                "uri": "uri_value",
+                "critical": True,
+                "release_notes_uri": "release_notes_uri_value",
+            },
+            "in_place_update": {},
+        },
+        "upgrade_status": {
+            "version": "version_value",
+            "state": 1,
+            "error": {},
+            "start_time": {},
+            "previous_version": "previous_version_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_datacenter_connector(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_datacenter_connector_rest_required_fields(
+    request_type=vmmigration.CreateDatacenterConnectorRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["datacenter_connector_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "datacenterConnectorId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_datacenter_connector._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "datacenterConnectorId" in jsonified_request
+    assert (
+        jsonified_request["datacenterConnectorId"]
+        == request_init["datacenter_connector_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["datacenterConnectorId"] = "datacenter_connector_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_datacenter_connector._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "datacenter_connector_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "datacenterConnectorId" in jsonified_request
+    assert jsonified_request["datacenterConnectorId"] == "datacenter_connector_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_datacenter_connector(request)
+
+            expected_params = [
+                (
+                    "datacenterConnectorId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_datacenter_connector_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_datacenter_connector._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "datacenterConnectorId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "datacenterConnectorId",
+                "datacenterConnector",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_datacenter_connector_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_datacenter_connector"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_datacenter_connector"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateDatacenterConnectorRequest.pb(
+            vmmigration.CreateDatacenterConnectorRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateDatacenterConnectorRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_datacenter_connector(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_datacenter_connector_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateDatacenterConnectorRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request_init["datacenter_connector"] = {
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "name": "name_value",
+        "registration_id": "registration_id_value",
+        "service_account": "service_account_value",
+        "version": "version_value",
+        "bucket": "bucket_value",
+        "state": 1,
+        "state_time": {},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "appliance_infrastructure_version": "appliance_infrastructure_version_value",
+        "appliance_software_version": "appliance_software_version_value",
+        "available_versions": {
+            "new_deployable_appliance": {
+                "version": "version_value",
+                "uri": "uri_value",
+                "critical": True,
+                "release_notes_uri": "release_notes_uri_value",
+            },
+            "in_place_update": {},
+        },
+        "upgrade_status": {
+            "version": "version_value",
+            "state": 1,
+            "error": {},
+            "start_time": {},
+            "previous_version": "previous_version_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_datacenter_connector(request)
+
+
+def test_create_datacenter_connector_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            datacenter_connector=vmmigration.DatacenterConnector(
+                create_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            datacenter_connector_id="datacenter_connector_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_datacenter_connector(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*}/datacenterConnectors"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_datacenter_connector_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_datacenter_connector(
+            vmmigration.CreateDatacenterConnectorRequest(),
+            parent="parent_value",
+            datacenter_connector=vmmigration.DatacenterConnector(
+                create_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            datacenter_connector_id="datacenter_connector_id_value",
+        )
+
+
+def test_create_datacenter_connector_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteDatacenterConnectorRequest,
+        dict,
+    ],
+)
+def test_delete_datacenter_connector_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_datacenter_connector(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_datacenter_connector_rest_required_fields(
+    request_type=vmmigration.DeleteDatacenterConnectorRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_datacenter_connector._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_datacenter_connector._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_datacenter_connector(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_datacenter_connector_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_datacenter_connector._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_datacenter_connector_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_datacenter_connector"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_delete_datacenter_connector"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.DeleteDatacenterConnectorRequest.pb(
+            vmmigration.DeleteDatacenterConnectorRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.DeleteDatacenterConnectorRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_datacenter_connector(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_datacenter_connector_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.DeleteDatacenterConnectorRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_datacenter_connector(request)
+
+
+def test_delete_datacenter_connector_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_datacenter_connector(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/datacenterConnectors/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_datacenter_connector_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_datacenter_connector(
+            vmmigration.DeleteDatacenterConnectorRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_datacenter_connector_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpgradeApplianceRequest,
+        dict,
+    ],
+)
+def test_upgrade_appliance_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "datacenter_connector": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.upgrade_appliance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_upgrade_appliance_rest_required_fields(
+    request_type=vmmigration.UpgradeApplianceRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["datacenter_connector"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).upgrade_appliance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["datacenterConnector"] = "datacenter_connector_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).upgrade_appliance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "datacenterConnector" in jsonified_request
+    assert jsonified_request["datacenterConnector"] == "datacenter_connector_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.upgrade_appliance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_upgrade_appliance_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.upgrade_appliance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("datacenterConnector",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_upgrade_appliance_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_upgrade_appliance"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_upgrade_appliance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.UpgradeApplianceRequest.pb(
+            vmmigration.UpgradeApplianceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.UpgradeApplianceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.upgrade_appliance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_upgrade_appliance_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.UpgradeApplianceRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "datacenter_connector": "projects/sample1/locations/sample2/sources/sample3/datacenterConnectors/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.upgrade_appliance(request)
+
+
+def test_upgrade_appliance_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateMigratingVmRequest,
+        dict,
+    ],
+)
+def test_create_migrating_vm_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request_init["migrating_vm"] = {
+        "compute_engine_target_defaults": {
+            "vm_name": "vm_name_value",
+            "target_project": "target_project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "aws_source_vm_details": {"firmware": 1, "committed_storage_bytes": 2464},
+        "name": "name_value",
+        "source_vm_id": "source_vm_id_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "policy": {
+            "idle_duration": {"seconds": 751, "nanos": 543},
+            "skip_os_adaptation": True,
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "last_sync": {"last_sync_time": {}},
+        "state": 1,
+        "state_time": {},
+        "current_sync_info": {
+            "name": "name_value",
+            "cycle_number": 1272,
+            "start_time": {},
+            "end_time": {},
+            "total_pause_duration": {},
+            "progress_percent": 1733,
+            "steps": [
+                {
+                    "initializing_replication": {},
+                    "replicating": {
+                        "total_bytes": 1194,
+                        "replicated_bytes": 1699,
+                        "last_two_minutes_average_bytes_per_second": 4370,
+                        "last_thirty_minutes_average_bytes_per_second": 4700,
+                    },
+                    "post_processing": {},
+                    "start_time": {},
+                    "end_time": {},
+                }
+            ],
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+        "group": "group_value",
+        "labels": {},
+        "recent_clone_jobs": [
+            {
+                "compute_engine_target_details": {
+                    "vm_name": "vm_name_value",
+                    "project": "project_value",
+                    "zone": "zone_value",
+                    "machine_type_series": "machine_type_series_value",
+                    "machine_type": "machine_type_value",
+                    "network_tags": ["network_tags_value1", "network_tags_value2"],
+                    "network_interfaces": {},
+                    "service_account": "service_account_value",
+                    "disk_type": 1,
+                    "labels": {},
+                    "license_type": 1,
+                    "applied_license": {},
+                    "compute_scheduling": {},
+                    "secure_boot": True,
+                    "boot_option": 1,
+                    "metadata": {},
+                    "additional_licenses": [
+                        "additional_licenses_value1",
+                        "additional_licenses_value2",
+                    ],
+                    "hostname": "hostname_value",
+                },
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "error": {},
+                "steps": [
+                    {
+                        "adapting_os": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+        "error": {},
+        "recent_cutover_jobs": [
+            {
+                "compute_engine_target_details": {},
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "progress_percent": 1733,
+                "error": {},
+                "state_message": "state_message_value",
+                "steps": [
+                    {
+                        "previous_replication_cycle": {},
+                        "shutting_down_source_vm": {},
+                        "final_sync": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_migrating_vm(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_migrating_vm_rest_required_fields(
+    request_type=vmmigration.CreateMigratingVmRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["migrating_vm_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "migratingVmId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_migrating_vm._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "migratingVmId" in jsonified_request
+    assert jsonified_request["migratingVmId"] == request_init["migrating_vm_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["migratingVmId"] = "migrating_vm_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_migrating_vm._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "migrating_vm_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "migratingVmId" in jsonified_request
+    assert jsonified_request["migratingVmId"] == "migrating_vm_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_migrating_vm(request)
+
+            expected_params = [
+                (
+                    "migratingVmId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_migrating_vm_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_migrating_vm._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "migratingVmId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "migratingVmId",
+                "migratingVm",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_migrating_vm_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_migrating_vm"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_migrating_vm"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateMigratingVmRequest.pb(
+            vmmigration.CreateMigratingVmRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateMigratingVmRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_migrating_vm(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_migrating_vm_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateMigratingVmRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request_init["migrating_vm"] = {
+        "compute_engine_target_defaults": {
+            "vm_name": "vm_name_value",
+            "target_project": "target_project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "aws_source_vm_details": {"firmware": 1, "committed_storage_bytes": 2464},
+        "name": "name_value",
+        "source_vm_id": "source_vm_id_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "policy": {
+            "idle_duration": {"seconds": 751, "nanos": 543},
+            "skip_os_adaptation": True,
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "last_sync": {"last_sync_time": {}},
+        "state": 1,
+        "state_time": {},
+        "current_sync_info": {
+            "name": "name_value",
+            "cycle_number": 1272,
+            "start_time": {},
+            "end_time": {},
+            "total_pause_duration": {},
+            "progress_percent": 1733,
+            "steps": [
+                {
+                    "initializing_replication": {},
+                    "replicating": {
+                        "total_bytes": 1194,
+                        "replicated_bytes": 1699,
+                        "last_two_minutes_average_bytes_per_second": 4370,
+                        "last_thirty_minutes_average_bytes_per_second": 4700,
+                    },
+                    "post_processing": {},
+                    "start_time": {},
+                    "end_time": {},
+                }
+            ],
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+        "group": "group_value",
+        "labels": {},
+        "recent_clone_jobs": [
+            {
+                "compute_engine_target_details": {
+                    "vm_name": "vm_name_value",
+                    "project": "project_value",
+                    "zone": "zone_value",
+                    "machine_type_series": "machine_type_series_value",
+                    "machine_type": "machine_type_value",
+                    "network_tags": ["network_tags_value1", "network_tags_value2"],
+                    "network_interfaces": {},
+                    "service_account": "service_account_value",
+                    "disk_type": 1,
+                    "labels": {},
+                    "license_type": 1,
+                    "applied_license": {},
+                    "compute_scheduling": {},
+                    "secure_boot": True,
+                    "boot_option": 1,
+                    "metadata": {},
+                    "additional_licenses": [
+                        "additional_licenses_value1",
+                        "additional_licenses_value2",
+                    ],
+                    "hostname": "hostname_value",
+                },
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "error": {},
+                "steps": [
+                    {
+                        "adapting_os": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+        "error": {},
+        "recent_cutover_jobs": [
+            {
+                "compute_engine_target_details": {},
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "progress_percent": 1733,
+                "error": {},
+                "state_message": "state_message_value",
+                "steps": [
+                    {
+                        "previous_replication_cycle": {},
+                        "shutting_down_source_vm": {},
+                        "final_sync": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_migrating_vm(request)
+
+
+def test_create_migrating_vm_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            migrating_vm=vmmigration.MigratingVm(
+                compute_engine_target_defaults=vmmigration.ComputeEngineTargetDefaults(
+                    vm_name="vm_name_value"
+                )
+            ),
+            migrating_vm_id="migrating_vm_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_migrating_vm(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*}/migratingVms"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_migrating_vm_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_migrating_vm(
+            vmmigration.CreateMigratingVmRequest(),
+            parent="parent_value",
+            migrating_vm=vmmigration.MigratingVm(
+                compute_engine_target_defaults=vmmigration.ComputeEngineTargetDefaults(
+                    vm_name="vm_name_value"
+                )
+            ),
+            migrating_vm_id="migrating_vm_id_value",
+        )
+
+
+def test_create_migrating_vm_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListMigratingVmsRequest,
+        dict,
+    ],
+)
+def test_list_migrating_vms_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListMigratingVmsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_migrating_vms(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMigratingVmsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_migrating_vms_rest_required_fields(
+    request_type=vmmigration.ListMigratingVmsRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_migrating_vms._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_migrating_vms._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+            "view",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListMigratingVmsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_migrating_vms(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_migrating_vms_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_migrating_vms._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+                "view",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_migrating_vms_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_migrating_vms"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_migrating_vms"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListMigratingVmsRequest.pb(
+            vmmigration.ListMigratingVmsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListMigratingVmsResponse.to_json(
+            vmmigration.ListMigratingVmsResponse()
+        )
+
+        request = vmmigration.ListMigratingVmsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListMigratingVmsResponse()
+
+        client.list_migrating_vms(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_migrating_vms_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListMigratingVmsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_migrating_vms(request)
+
+
+def test_list_migrating_vms_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListMigratingVmsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_migrating_vms(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*}/migratingVms"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_migrating_vms_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_migrating_vms(
+            vmmigration.ListMigratingVmsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_migrating_vms_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListMigratingVmsResponse(
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                    vmmigration.MigratingVm(),
+                    vmmigration.MigratingVm(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListMigratingVmsResponse(
+                migrating_vms=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListMigratingVmsResponse(
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListMigratingVmsResponse(
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                    vmmigration.MigratingVm(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmmigration.ListMigratingVmsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3"
+        }
+
+        pager = client.list_migrating_vms(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.MigratingVm) for i in results)
+
+        pages = list(client.list_migrating_vms(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetMigratingVmRequest,
+        dict,
+    ],
+)
+def test_get_migrating_vm_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.MigratingVm(
+            name="name_value",
+            source_vm_id="source_vm_id_value",
+            display_name="display_name_value",
+            description="description_value",
+            state=vmmigration.MigratingVm.State.PENDING,
+            group="group_value",
+            compute_engine_target_defaults=vmmigration.ComputeEngineTargetDefaults(
+                vm_name="vm_name_value"
+            ),
+            aws_source_vm_details=vmmigration.AwsSourceVmDetails(
+                firmware=vmmigration.AwsSourceVmDetails.Firmware.EFI
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.MigratingVm.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_migrating_vm(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.MigratingVm)
+    assert response.name == "name_value"
+    assert response.source_vm_id == "source_vm_id_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.state == vmmigration.MigratingVm.State.PENDING
+    assert response.group == "group_value"
+
+
+def test_get_migrating_vm_rest_required_fields(
+    request_type=vmmigration.GetMigratingVmRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_migrating_vm._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_migrating_vm._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.MigratingVm()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.MigratingVm.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_migrating_vm(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_migrating_vm_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_migrating_vm._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("view",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_migrating_vm_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_migrating_vm"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_migrating_vm"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetMigratingVmRequest.pb(
+            vmmigration.GetMigratingVmRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.MigratingVm.to_json(
+            vmmigration.MigratingVm()
+        )
+
+        request = vmmigration.GetMigratingVmRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.MigratingVm()
+
+        client.get_migrating_vm(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_migrating_vm_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetMigratingVmRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_migrating_vm(request)
+
+
+def test_get_migrating_vm_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.MigratingVm()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.MigratingVm.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_migrating_vm(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/migratingVms/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_migrating_vm_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_migrating_vm(
+            vmmigration.GetMigratingVmRequest(),
+            name="name_value",
+        )
+
+
+def test_get_migrating_vm_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateMigratingVmRequest,
+        dict,
+    ],
+)
+def test_update_migrating_vm_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+    }
+    request_init["migrating_vm"] = {
+        "compute_engine_target_defaults": {
+            "vm_name": "vm_name_value",
+            "target_project": "target_project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "aws_source_vm_details": {"firmware": 1, "committed_storage_bytes": 2464},
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4",
+        "source_vm_id": "source_vm_id_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "policy": {
+            "idle_duration": {"seconds": 751, "nanos": 543},
+            "skip_os_adaptation": True,
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "last_sync": {"last_sync_time": {}},
+        "state": 1,
+        "state_time": {},
+        "current_sync_info": {
+            "name": "name_value",
+            "cycle_number": 1272,
+            "start_time": {},
+            "end_time": {},
+            "total_pause_duration": {},
+            "progress_percent": 1733,
+            "steps": [
+                {
+                    "initializing_replication": {},
+                    "replicating": {
+                        "total_bytes": 1194,
+                        "replicated_bytes": 1699,
+                        "last_two_minutes_average_bytes_per_second": 4370,
+                        "last_thirty_minutes_average_bytes_per_second": 4700,
+                    },
+                    "post_processing": {},
+                    "start_time": {},
+                    "end_time": {},
+                }
+            ],
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+        "group": "group_value",
+        "labels": {},
+        "recent_clone_jobs": [
+            {
+                "compute_engine_target_details": {
+                    "vm_name": "vm_name_value",
+                    "project": "project_value",
+                    "zone": "zone_value",
+                    "machine_type_series": "machine_type_series_value",
+                    "machine_type": "machine_type_value",
+                    "network_tags": ["network_tags_value1", "network_tags_value2"],
+                    "network_interfaces": {},
+                    "service_account": "service_account_value",
+                    "disk_type": 1,
+                    "labels": {},
+                    "license_type": 1,
+                    "applied_license": {},
+                    "compute_scheduling": {},
+                    "secure_boot": True,
+                    "boot_option": 1,
+                    "metadata": {},
+                    "additional_licenses": [
+                        "additional_licenses_value1",
+                        "additional_licenses_value2",
+                    ],
+                    "hostname": "hostname_value",
+                },
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "error": {},
+                "steps": [
+                    {
+                        "adapting_os": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+        "error": {},
+        "recent_cutover_jobs": [
+            {
+                "compute_engine_target_details": {},
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "progress_percent": 1733,
+                "error": {},
+                "state_message": "state_message_value",
+                "steps": [
+                    {
+                        "previous_replication_cycle": {},
+                        "shutting_down_source_vm": {},
+                        "final_sync": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_migrating_vm(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_migrating_vm_rest_required_fields(
+    request_type=vmmigration.UpdateMigratingVmRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_migrating_vm._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_migrating_vm._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_migrating_vm(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_migrating_vm_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_migrating_vm._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(("migratingVm",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_migrating_vm_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_update_migrating_vm"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_update_migrating_vm"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.UpdateMigratingVmRequest.pb(
+            vmmigration.UpdateMigratingVmRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.UpdateMigratingVmRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_migrating_vm(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_migrating_vm_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.UpdateMigratingVmRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+    }
+    request_init["migrating_vm"] = {
+        "compute_engine_target_defaults": {
+            "vm_name": "vm_name_value",
+            "target_project": "target_project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "aws_source_vm_details": {"firmware": 1, "committed_storage_bytes": 2464},
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4",
+        "source_vm_id": "source_vm_id_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "policy": {
+            "idle_duration": {"seconds": 751, "nanos": 543},
+            "skip_os_adaptation": True,
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "last_sync": {"last_sync_time": {}},
+        "state": 1,
+        "state_time": {},
+        "current_sync_info": {
+            "name": "name_value",
+            "cycle_number": 1272,
+            "start_time": {},
+            "end_time": {},
+            "total_pause_duration": {},
+            "progress_percent": 1733,
+            "steps": [
+                {
+                    "initializing_replication": {},
+                    "replicating": {
+                        "total_bytes": 1194,
+                        "replicated_bytes": 1699,
+                        "last_two_minutes_average_bytes_per_second": 4370,
+                        "last_thirty_minutes_average_bytes_per_second": 4700,
+                    },
+                    "post_processing": {},
+                    "start_time": {},
+                    "end_time": {},
+                }
+            ],
+            "state": 1,
+            "error": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+        "group": "group_value",
+        "labels": {},
+        "recent_clone_jobs": [
+            {
+                "compute_engine_target_details": {
+                    "vm_name": "vm_name_value",
+                    "project": "project_value",
+                    "zone": "zone_value",
+                    "machine_type_series": "machine_type_series_value",
+                    "machine_type": "machine_type_value",
+                    "network_tags": ["network_tags_value1", "network_tags_value2"],
+                    "network_interfaces": {},
+                    "service_account": "service_account_value",
+                    "disk_type": 1,
+                    "labels": {},
+                    "license_type": 1,
+                    "applied_license": {},
+                    "compute_scheduling": {},
+                    "secure_boot": True,
+                    "boot_option": 1,
+                    "metadata": {},
+                    "additional_licenses": [
+                        "additional_licenses_value1",
+                        "additional_licenses_value2",
+                    ],
+                    "hostname": "hostname_value",
+                },
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "error": {},
+                "steps": [
+                    {
+                        "adapting_os": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+        "error": {},
+        "recent_cutover_jobs": [
+            {
+                "compute_engine_target_details": {},
+                "create_time": {},
+                "end_time": {},
+                "name": "name_value",
+                "state": 1,
+                "state_time": {},
+                "progress_percent": 1733,
+                "error": {},
+                "state_message": "state_message_value",
+                "steps": [
+                    {
+                        "previous_replication_cycle": {},
+                        "shutting_down_source_vm": {},
+                        "final_sync": {},
+                        "preparing_vm_disks": {},
+                        "instantiating_migrated_vm": {},
+                        "start_time": {},
+                        "end_time": {},
+                    }
+                ],
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_migrating_vm(request)
+
+
+def test_update_migrating_vm_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "migrating_vm": {
+                "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            migrating_vm=vmmigration.MigratingVm(
+                compute_engine_target_defaults=vmmigration.ComputeEngineTargetDefaults(
+                    vm_name="vm_name_value"
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_migrating_vm(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{migrating_vm.name=projects/*/locations/*/sources/*/migratingVms/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_migrating_vm_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_migrating_vm(
+            vmmigration.UpdateMigratingVmRequest(),
+            migrating_vm=vmmigration.MigratingVm(
+                compute_engine_target_defaults=vmmigration.ComputeEngineTargetDefaults(
+                    vm_name="vm_name_value"
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_migrating_vm_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteMigratingVmRequest,
+        dict,
+    ],
+)
+def test_delete_migrating_vm_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_migrating_vm(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_migrating_vm_rest_required_fields(
+    request_type=vmmigration.DeleteMigratingVmRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_migrating_vm._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_migrating_vm._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_migrating_vm(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_migrating_vm_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_migrating_vm._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_migrating_vm_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_migrating_vm"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_delete_migrating_vm"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.DeleteMigratingVmRequest.pb(
+            vmmigration.DeleteMigratingVmRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.DeleteMigratingVmRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_migrating_vm(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_migrating_vm_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.DeleteMigratingVmRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_migrating_vm(request)
+
+
+def test_delete_migrating_vm_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_migrating_vm(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/migratingVms/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_migrating_vm_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_migrating_vm(
+            vmmigration.DeleteMigratingVmRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_migrating_vm_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.StartMigrationRequest,
+        dict,
+    ],
+)
+def test_start_migration_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.start_migration(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_start_migration_rest_required_fields(
+    request_type=vmmigration.StartMigrationRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["migrating_vm"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["migratingVm"] = "migrating_vm_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "migratingVm" in jsonified_request
+    assert jsonified_request["migratingVm"] == "migrating_vm_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.start_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_start_migration_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.start_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("migratingVm",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_start_migration_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_start_migration"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_start_migration"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.StartMigrationRequest.pb(
+            vmmigration.StartMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.StartMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.start_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_start_migration_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.StartMigrationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.start_migration(request)
+
+
+def test_start_migration_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            migrating_vm="migrating_vm_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.start_migration(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{migrating_vm=projects/*/locations/*/sources/*/migratingVms/*}:startMigration"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_start_migration_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.start_migration(
+            vmmigration.StartMigrationRequest(),
+            migrating_vm="migrating_vm_value",
+        )
+
+
+def test_start_migration_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ResumeMigrationRequest,
+        dict,
+    ],
+)
+def test_resume_migration_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.resume_migration(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_resume_migration_rest_required_fields(
+    request_type=vmmigration.ResumeMigrationRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["migrating_vm"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["migratingVm"] = "migrating_vm_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "migratingVm" in jsonified_request
+    assert jsonified_request["migratingVm"] == "migrating_vm_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.resume_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_resume_migration_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.resume_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("migratingVm",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_resume_migration_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_resume_migration"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_resume_migration"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ResumeMigrationRequest.pb(
+            vmmigration.ResumeMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.ResumeMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.resume_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_resume_migration_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ResumeMigrationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.resume_migration(request)
+
+
+def test_resume_migration_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.PauseMigrationRequest,
+        dict,
+    ],
+)
+def test_pause_migration_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.pause_migration(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_pause_migration_rest_required_fields(
+    request_type=vmmigration.PauseMigrationRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["migrating_vm"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["migratingVm"] = "migrating_vm_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "migratingVm" in jsonified_request
+    assert jsonified_request["migratingVm"] == "migrating_vm_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.pause_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_pause_migration_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.pause_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("migratingVm",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_pause_migration_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_pause_migration"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_pause_migration"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.PauseMigrationRequest.pb(
+            vmmigration.PauseMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.PauseMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.pause_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_pause_migration_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.PauseMigrationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.pause_migration(request)
+
+
+def test_pause_migration_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.FinalizeMigrationRequest,
+        dict,
+    ],
+)
+def test_finalize_migration_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.finalize_migration(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_finalize_migration_rest_required_fields(
+    request_type=vmmigration.FinalizeMigrationRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["migrating_vm"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).finalize_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["migratingVm"] = "migrating_vm_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).finalize_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "migratingVm" in jsonified_request
+    assert jsonified_request["migratingVm"] == "migrating_vm_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.finalize_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_finalize_migration_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.finalize_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("migratingVm",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_finalize_migration_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_finalize_migration"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_finalize_migration"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.FinalizeMigrationRequest.pb(
+            vmmigration.FinalizeMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.FinalizeMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.finalize_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_finalize_migration_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.FinalizeMigrationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.finalize_migration(request)
+
+
+def test_finalize_migration_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "migrating_vm": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            migrating_vm="migrating_vm_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.finalize_migration(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{migrating_vm=projects/*/locations/*/sources/*/migratingVms/*}:finalizeMigration"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_finalize_migration_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.finalize_migration(
+            vmmigration.FinalizeMigrationRequest(),
+            migrating_vm="migrating_vm_value",
+        )
+
+
+def test_finalize_migration_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateCloneJobRequest,
+        dict,
+    ],
+)
+def test_create_clone_job_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request_init["clone_job"] = {
+        "compute_engine_target_details": {
+            "vm_name": "vm_name_value",
+            "project": "project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "name": "name_value",
+        "state": 1,
+        "state_time": {},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "steps": [
+            {
+                "adapting_os": {},
+                "preparing_vm_disks": {},
+                "instantiating_migrated_vm": {},
+                "start_time": {},
+                "end_time": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_clone_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_clone_job_rest_required_fields(
+    request_type=vmmigration.CreateCloneJobRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["clone_job_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "cloneJobId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_clone_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "cloneJobId" in jsonified_request
+    assert jsonified_request["cloneJobId"] == request_init["clone_job_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["cloneJobId"] = "clone_job_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_clone_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "clone_job_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "cloneJobId" in jsonified_request
+    assert jsonified_request["cloneJobId"] == "clone_job_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_clone_job(request)
+
+            expected_params = [
+                (
+                    "cloneJobId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_clone_job_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_clone_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "cloneJobId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "cloneJobId",
+                "cloneJob",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_clone_job_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_clone_job"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_clone_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateCloneJobRequest.pb(
+            vmmigration.CreateCloneJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateCloneJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_clone_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_clone_job_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateCloneJobRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request_init["clone_job"] = {
+        "compute_engine_target_details": {
+            "vm_name": "vm_name_value",
+            "project": "project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "name": "name_value",
+        "state": 1,
+        "state_time": {},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "steps": [
+            {
+                "adapting_os": {},
+                "preparing_vm_disks": {},
+                "instantiating_migrated_vm": {},
+                "start_time": {},
+                "end_time": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_clone_job(request)
+
+
+def test_create_clone_job_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            clone_job=vmmigration.CloneJob(
+                compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
+                    vm_name="vm_name_value"
+                )
+            ),
+            clone_job_id="clone_job_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_clone_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*/migratingVms/*}/cloneJobs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_clone_job_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_clone_job(
+            vmmigration.CreateCloneJobRequest(),
+            parent="parent_value",
+            clone_job=vmmigration.CloneJob(
+                compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
+                    vm_name="vm_name_value"
+                )
+            ),
+            clone_job_id="clone_job_id_value",
+        )
+
+
+def test_create_clone_job_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelCloneJobRequest,
+        dict,
+    ],
+)
+def test_cancel_clone_job_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cloneJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_clone_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_cancel_clone_job_rest_required_fields(
+    request_type=vmmigration.CancelCloneJobRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_clone_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_clone_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.cancel_clone_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_cancel_clone_job_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.cancel_clone_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_clone_job_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_cancel_clone_job"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_cancel_clone_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CancelCloneJobRequest.pb(
+            vmmigration.CancelCloneJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CancelCloneJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.cancel_clone_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_clone_job_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CancelCloneJobRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cloneJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_clone_job(request)
+
+
+def test_cancel_clone_job_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cloneJobs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.cancel_clone_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/migratingVms/*/cloneJobs/*}:cancel"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_cancel_clone_job_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.cancel_clone_job(
+            vmmigration.CancelCloneJobRequest(),
+            name="name_value",
+        )
+
+
+def test_cancel_clone_job_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListCloneJobsRequest,
+        dict,
+    ],
+)
+def test_list_clone_jobs_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListCloneJobsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_clone_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCloneJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_clone_jobs_rest_required_fields(
+    request_type=vmmigration.ListCloneJobsRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_clone_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_clone_jobs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListCloneJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_clone_jobs(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_clone_jobs_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_clone_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_clone_jobs_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_clone_jobs"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_clone_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListCloneJobsRequest.pb(
+            vmmigration.ListCloneJobsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListCloneJobsResponse.to_json(
+            vmmigration.ListCloneJobsResponse()
+        )
+
+        request = vmmigration.ListCloneJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListCloneJobsResponse()
+
+        client.list_clone_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_clone_jobs_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListCloneJobsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_clone_jobs(request)
+
+
+def test_list_clone_jobs_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListCloneJobsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_clone_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*/migratingVms/*}/cloneJobs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_clone_jobs_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_clone_jobs(
+            vmmigration.ListCloneJobsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_clone_jobs_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                    vmmigration.CloneJob(),
+                    vmmigration.CloneJob(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                    vmmigration.CloneJob(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(vmmigration.ListCloneJobsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        pager = client.list_clone_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.CloneJob) for i in results)
+
+        pages = list(client.list_clone_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetCloneJobRequest,
+        dict,
+    ],
+)
+def test_get_clone_job_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cloneJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.CloneJob(
+            name="name_value",
+            state=vmmigration.CloneJob.State.PENDING,
+            compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
+                vm_name="vm_name_value"
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.CloneJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_clone_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.CloneJob)
+    assert response.name == "name_value"
+    assert response.state == vmmigration.CloneJob.State.PENDING
+
+
+def test_get_clone_job_rest_required_fields(
+    request_type=vmmigration.GetCloneJobRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_clone_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_clone_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.CloneJob()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.CloneJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_clone_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_clone_job_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_clone_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_clone_job_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_clone_job"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_clone_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetCloneJobRequest.pb(vmmigration.GetCloneJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.CloneJob.to_json(vmmigration.CloneJob())
+
+        request = vmmigration.GetCloneJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.CloneJob()
+
+        client.get_clone_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_clone_job_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetCloneJobRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cloneJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_clone_job(request)
+
+
+def test_get_clone_job_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.CloneJob()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cloneJobs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.CloneJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_clone_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/migratingVms/*/cloneJobs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_clone_job_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_clone_job(
+            vmmigration.GetCloneJobRequest(),
+            name="name_value",
+        )
+
+
+def test_get_clone_job_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateCutoverJobRequest,
+        dict,
+    ],
+)
+def test_create_cutover_job_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request_init["cutover_job"] = {
+        "compute_engine_target_details": {
+            "vm_name": "vm_name_value",
+            "project": "project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "name": "name_value",
+        "state": 1,
+        "state_time": {},
+        "progress_percent": 1733,
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "state_message": "state_message_value",
+        "steps": [
+            {
+                "previous_replication_cycle": {
+                    "name": "name_value",
+                    "cycle_number": 1272,
+                    "start_time": {},
+                    "end_time": {},
+                    "total_pause_duration": {"seconds": 751, "nanos": 543},
+                    "progress_percent": 1733,
+                    "steps": [
+                        {
+                            "initializing_replication": {},
+                            "replicating": {
+                                "total_bytes": 1194,
+                                "replicated_bytes": 1699,
+                                "last_two_minutes_average_bytes_per_second": 4370,
+                                "last_thirty_minutes_average_bytes_per_second": 4700,
+                            },
+                            "post_processing": {},
+                            "start_time": {},
+                            "end_time": {},
+                        }
+                    ],
+                    "state": 1,
+                    "error": {},
+                },
+                "shutting_down_source_vm": {},
+                "final_sync": {},
+                "preparing_vm_disks": {},
+                "instantiating_migrated_vm": {},
+                "start_time": {},
+                "end_time": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_cutover_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_cutover_job_rest_required_fields(
+    request_type=vmmigration.CreateCutoverJobRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["cutover_job_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "cutoverJobId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_cutover_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "cutoverJobId" in jsonified_request
+    assert jsonified_request["cutoverJobId"] == request_init["cutover_job_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["cutoverJobId"] = "cutover_job_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_cutover_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "cutover_job_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "cutoverJobId" in jsonified_request
+    assert jsonified_request["cutoverJobId"] == "cutover_job_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_cutover_job(request)
+
+            expected_params = [
+                (
+                    "cutoverJobId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_cutover_job_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_cutover_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "cutoverJobId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "cutoverJobId",
+                "cutoverJob",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_cutover_job_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_cutover_job"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_cutover_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateCutoverJobRequest.pb(
+            vmmigration.CreateCutoverJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateCutoverJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_cutover_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_cutover_job_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateCutoverJobRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request_init["cutover_job"] = {
+        "compute_engine_target_details": {
+            "vm_name": "vm_name_value",
+            "project": "project_value",
+            "zone": "zone_value",
+            "machine_type_series": "machine_type_series_value",
+            "machine_type": "machine_type_value",
+            "network_tags": ["network_tags_value1", "network_tags_value2"],
+            "network_interfaces": [
+                {
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "internal_ip": "internal_ip_value",
+                    "external_ip": "external_ip_value",
+                }
+            ],
+            "service_account": "service_account_value",
+            "disk_type": 1,
+            "labels": {},
+            "license_type": 1,
+            "applied_license": {"type_": 1, "os_license": "os_license_value"},
+            "compute_scheduling": {
+                "on_host_maintenance": 1,
+                "restart_type": 1,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": 1,
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "min_node_cpus": 1379,
+            },
+            "secure_boot": True,
+            "boot_option": 1,
+            "metadata": {},
+            "additional_licenses": [
+                "additional_licenses_value1",
+                "additional_licenses_value2",
+            ],
+            "hostname": "hostname_value",
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "name": "name_value",
+        "state": 1,
+        "state_time": {},
+        "progress_percent": 1733,
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "state_message": "state_message_value",
+        "steps": [
+            {
+                "previous_replication_cycle": {
+                    "name": "name_value",
+                    "cycle_number": 1272,
+                    "start_time": {},
+                    "end_time": {},
+                    "total_pause_duration": {"seconds": 751, "nanos": 543},
+                    "progress_percent": 1733,
+                    "steps": [
+                        {
+                            "initializing_replication": {},
+                            "replicating": {
+                                "total_bytes": 1194,
+                                "replicated_bytes": 1699,
+                                "last_two_minutes_average_bytes_per_second": 4370,
+                                "last_thirty_minutes_average_bytes_per_second": 4700,
+                            },
+                            "post_processing": {},
+                            "start_time": {},
+                            "end_time": {},
+                        }
+                    ],
+                    "state": 1,
+                    "error": {},
+                },
+                "shutting_down_source_vm": {},
+                "final_sync": {},
+                "preparing_vm_disks": {},
+                "instantiating_migrated_vm": {},
+                "start_time": {},
+                "end_time": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_cutover_job(request)
+
+
+def test_create_cutover_job_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            cutover_job=vmmigration.CutoverJob(
+                compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
+                    vm_name="vm_name_value"
+                )
+            ),
+            cutover_job_id="cutover_job_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_cutover_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*/migratingVms/*}/cutoverJobs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_cutover_job_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_cutover_job(
+            vmmigration.CreateCutoverJobRequest(),
+            parent="parent_value",
+            cutover_job=vmmigration.CutoverJob(
+                compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
+                    vm_name="vm_name_value"
+                )
+            ),
+            cutover_job_id="cutover_job_id_value",
+        )
+
+
+def test_create_cutover_job_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelCutoverJobRequest,
+        dict,
+    ],
+)
+def test_cancel_cutover_job_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cutoverJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_cutover_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_cancel_cutover_job_rest_required_fields(
+    request_type=vmmigration.CancelCutoverJobRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_cutover_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_cutover_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.cancel_cutover_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_cancel_cutover_job_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.cancel_cutover_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_cutover_job_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_cancel_cutover_job"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_cancel_cutover_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CancelCutoverJobRequest.pb(
+            vmmigration.CancelCutoverJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CancelCutoverJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.cancel_cutover_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_cutover_job_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CancelCutoverJobRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cutoverJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_cutover_job(request)
+
+
+def test_cancel_cutover_job_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cutoverJobs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.cancel_cutover_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/migratingVms/*/cutoverJobs/*}:cancel"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_cancel_cutover_job_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.cancel_cutover_job(
+            vmmigration.CancelCutoverJobRequest(),
+            name="name_value",
+        )
+
+
+def test_cancel_cutover_job_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListCutoverJobsRequest,
+        dict,
+    ],
+)
+def test_list_cutover_jobs_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListCutoverJobsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_cutover_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCutoverJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_cutover_jobs_rest_required_fields(
+    request_type=vmmigration.ListCutoverJobsRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_cutover_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_cutover_jobs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListCutoverJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_cutover_jobs(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_cutover_jobs_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_cutover_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_cutover_jobs_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_cutover_jobs"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_cutover_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListCutoverJobsRequest.pb(
+            vmmigration.ListCutoverJobsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListCutoverJobsResponse.to_json(
+            vmmigration.ListCutoverJobsResponse()
+        )
+
+        request = vmmigration.ListCutoverJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListCutoverJobsResponse()
+
+        client.list_cutover_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_cutover_jobs_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListCutoverJobsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_cutover_jobs(request)
+
+
+def test_list_cutover_jobs_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListCutoverJobsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_cutover_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*/migratingVms/*}/cutoverJobs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_cutover_jobs_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_cutover_jobs(
+            vmmigration.ListCutoverJobsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_cutover_jobs_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListCutoverJobsResponse(
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                    vmmigration.CutoverJob(),
+                    vmmigration.CutoverJob(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListCutoverJobsResponse(
+                cutover_jobs=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListCutoverJobsResponse(
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListCutoverJobsResponse(
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                    vmmigration.CutoverJob(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmmigration.ListCutoverJobsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        pager = client.list_cutover_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.CutoverJob) for i in results)
+
+        pages = list(client.list_cutover_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetCutoverJobRequest,
+        dict,
+    ],
+)
+def test_get_cutover_job_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cutoverJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.CutoverJob(
+            name="name_value",
+            state=vmmigration.CutoverJob.State.PENDING,
+            progress_percent=1733,
+            state_message="state_message_value",
+            compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
+                vm_name="vm_name_value"
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.CutoverJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_cutover_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.CutoverJob)
+    assert response.name == "name_value"
+    assert response.state == vmmigration.CutoverJob.State.PENDING
+    assert response.progress_percent == 1733
+    assert response.state_message == "state_message_value"
+
+
+def test_get_cutover_job_rest_required_fields(
+    request_type=vmmigration.GetCutoverJobRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cutover_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cutover_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.CutoverJob()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.CutoverJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_cutover_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_cutover_job_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_cutover_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_cutover_job_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_cutover_job"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_cutover_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetCutoverJobRequest.pb(
+            vmmigration.GetCutoverJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.CutoverJob.to_json(
+            vmmigration.CutoverJob()
+        )
+
+        request = vmmigration.GetCutoverJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.CutoverJob()
+
+        client.get_cutover_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_cutover_job_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetCutoverJobRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cutoverJobs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_cutover_job(request)
+
+
+def test_get_cutover_job_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.CutoverJob()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/cutoverJobs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.CutoverJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_cutover_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/migratingVms/*/cutoverJobs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_cutover_job_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_cutover_job(
+            vmmigration.GetCutoverJobRequest(),
+            name="name_value",
+        )
+
+
+def test_get_cutover_job_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListGroupsRequest,
+        dict,
+    ],
+)
+def test_list_groups_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListGroupsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_groups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGroupsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_groups_rest_required_fields(request_type=vmmigration.ListGroupsRequest):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_groups._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_groups._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListGroupsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListGroupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_groups(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_groups_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_groups._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_groups_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_groups"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_groups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListGroupsRequest.pb(vmmigration.ListGroupsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListGroupsResponse.to_json(
+            vmmigration.ListGroupsResponse()
+        )
+
+        request = vmmigration.ListGroupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListGroupsResponse()
+
+        client.list_groups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_groups_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListGroupsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_groups(request)
+
+
+def test_list_groups_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListGroupsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_groups(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/groups" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_groups_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_groups(
+            vmmigration.ListGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_groups_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListGroupsResponse(
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListGroupsResponse(
+                groups=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListGroupsResponse(
+                groups=[
+                    vmmigration.Group(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListGroupsResponse(
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(vmmigration.ListGroupsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_groups(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.Group) for i in results)
+
+        pages = list(client.list_groups(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetGroupRequest,
+        dict,
+    ],
+)
+def test_get_group_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.Group(
+            name="name_value",
+            description="description_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.Group.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.Group)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_group_rest_required_fields(request_type=vmmigration.GetGroupRequest):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.Group()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.Group.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_group_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_group._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_group_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_group"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetGroupRequest.pb(vmmigration.GetGroupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.Group.to_json(vmmigration.Group())
+
+        request = vmmigration.GetGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.Group()
+
+        client.get_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_group_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetGroupRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_group(request)
+
+
+def test_get_group_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.Group()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/groups/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.Group.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/groups/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_group_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_group(
+            vmmigration.GetGroupRequest(),
+            name="name_value",
+        )
+
+
+def test_get_group_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateGroupRequest,
+        dict,
+    ],
+)
+def test_create_group_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["group"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_group_rest_required_fields(request_type=vmmigration.CreateGroupRequest):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["group_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "groupId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "groupId" in jsonified_request
+    assert jsonified_request["groupId"] == request_init["group_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["groupId"] = "group_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_group._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "group_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "groupId" in jsonified_request
+    assert jsonified_request["groupId"] == "group_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_group(request)
+
+            expected_params = [
+                (
+                    "groupId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_group_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_group._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "groupId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "groupId",
+                "group",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_group_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_group"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateGroupRequest.pb(vmmigration.CreateGroupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_group_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateGroupRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["group"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_group(request)
+
+
+def test_create_group_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            group=vmmigration.Group(name="name_value"),
+            group_id="group_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/groups" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_group_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_group(
+            vmmigration.CreateGroupRequest(),
+            parent="parent_value",
+            group=vmmigration.Group(name="name_value"),
+            group_id="group_id_value",
+        )
+
+
+def test_create_group_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateGroupRequest,
+        dict,
+    ],
+)
+def test_update_group_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "group": {"name": "projects/sample1/locations/sample2/groups/sample3"}
+    }
+    request_init["group"] = {
+        "name": "projects/sample1/locations/sample2/groups/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_group_rest_required_fields(request_type=vmmigration.UpdateGroupRequest):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_group._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_group_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_group._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(("group",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_group_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_update_group"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_update_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.UpdateGroupRequest.pb(vmmigration.UpdateGroupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.UpdateGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_group_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.UpdateGroupRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "group": {"name": "projects/sample1/locations/sample2/groups/sample3"}
+    }
+    request_init["group"] = {
+        "name": "projects/sample1/locations/sample2/groups/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_group(request)
+
+
+def test_update_group_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "group": {"name": "projects/sample1/locations/sample2/groups/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            group=vmmigration.Group(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{group.name=projects/*/locations/*/groups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_group_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_group(
+            vmmigration.UpdateGroupRequest(),
+            group=vmmigration.Group(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_group_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteGroupRequest,
+        dict,
+    ],
+)
+def test_delete_group_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_group_rest_required_fields(request_type=vmmigration.DeleteGroupRequest):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_group._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_group_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_group._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_group_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_group"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_delete_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.DeleteGroupRequest.pb(vmmigration.DeleteGroupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.DeleteGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_group_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.DeleteGroupRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_group(request)
+
+
+def test_delete_group_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/groups/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/groups/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_group_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_group(
+            vmmigration.DeleteGroupRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_group_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.AddGroupMigrationRequest,
+        dict,
+    ],
+)
+def test_add_group_migration_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.add_group_migration(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_add_group_migration_rest_required_fields(
+    request_type=vmmigration.AddGroupMigrationRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["group"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_group_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["group"] = "group_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_group_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "group" in jsonified_request
+    assert jsonified_request["group"] == "group_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.add_group_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_group_migration_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_group_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("group",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_add_group_migration_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_add_group_migration"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_add_group_migration"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.AddGroupMigrationRequest.pb(
+            vmmigration.AddGroupMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.AddGroupMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.add_group_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_add_group_migration_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.AddGroupMigrationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.add_group_migration(request)
+
+
+def test_add_group_migration_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"group": "projects/sample1/locations/sample2/groups/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            group="group_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.add_group_migration(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{group=projects/*/locations/*/groups/*}:addGroupMigration"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_add_group_migration_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.add_group_migration(
+            vmmigration.AddGroupMigrationRequest(),
+            group="group_value",
+        )
+
+
+def test_add_group_migration_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.RemoveGroupMigrationRequest,
+        dict,
+    ],
+)
+def test_remove_group_migration_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.remove_group_migration(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_remove_group_migration_rest_required_fields(
+    request_type=vmmigration.RemoveGroupMigrationRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["group"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_group_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["group"] = "group_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_group_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "group" in jsonified_request
+    assert jsonified_request["group"] == "group_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.remove_group_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_group_migration_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_group_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("group",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_remove_group_migration_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_remove_group_migration"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_remove_group_migration"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.RemoveGroupMigrationRequest.pb(
+            vmmigration.RemoveGroupMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.RemoveGroupMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.remove_group_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_remove_group_migration_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.RemoveGroupMigrationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group": "projects/sample1/locations/sample2/groups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.remove_group_migration(request)
+
+
+def test_remove_group_migration_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"group": "projects/sample1/locations/sample2/groups/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            group="group_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.remove_group_migration(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{group=projects/*/locations/*/groups/*}:removeGroupMigration"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_remove_group_migration_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.remove_group_migration(
+            vmmigration.RemoveGroupMigrationRequest(),
+            group="group_value",
+        )
+
+
+def test_remove_group_migration_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListTargetProjectsRequest,
+        dict,
+    ],
+)
+def test_list_target_projects_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListTargetProjectsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_target_projects(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTargetProjectsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_target_projects_rest_required_fields(
+    request_type=vmmigration.ListTargetProjectsRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_target_projects._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_target_projects._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListTargetProjectsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_target_projects(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_target_projects_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_target_projects._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_target_projects_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_target_projects"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_target_projects"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListTargetProjectsRequest.pb(
+            vmmigration.ListTargetProjectsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListTargetProjectsResponse.to_json(
+            vmmigration.ListTargetProjectsResponse()
+        )
+
+        request = vmmigration.ListTargetProjectsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListTargetProjectsResponse()
+
+        client.list_target_projects(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_target_projects_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListTargetProjectsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_target_projects(request)
+
+
+def test_list_target_projects_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListTargetProjectsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_target_projects(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/targetProjects"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_target_projects_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_target_projects(
+            vmmigration.ListTargetProjectsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_target_projects_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListTargetProjectsResponse(
+                target_projects=[
+                    vmmigration.TargetProject(),
+                    vmmigration.TargetProject(),
+                    vmmigration.TargetProject(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListTargetProjectsResponse(
+                target_projects=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListTargetProjectsResponse(
+                target_projects=[
+                    vmmigration.TargetProject(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListTargetProjectsResponse(
+                target_projects=[
+                    vmmigration.TargetProject(),
+                    vmmigration.TargetProject(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmmigration.ListTargetProjectsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_target_projects(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.TargetProject) for i in results)
+
+        pages = list(client.list_target_projects(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetTargetProjectRequest,
+        dict,
+    ],
+)
+def test_get_target_project_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targetProjects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.TargetProject(
+            name="name_value",
+            project="project_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.TargetProject.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_target_project(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.TargetProject)
+    assert response.name == "name_value"
+    assert response.project == "project_value"
+    assert response.description == "description_value"
+
+
+def test_get_target_project_rest_required_fields(
+    request_type=vmmigration.GetTargetProjectRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_target_project._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_target_project._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.TargetProject()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.TargetProject.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_target_project(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_target_project_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_target_project._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_target_project_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_target_project"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_target_project"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetTargetProjectRequest.pb(
+            vmmigration.GetTargetProjectRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.TargetProject.to_json(
+            vmmigration.TargetProject()
+        )
+
+        request = vmmigration.GetTargetProjectRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.TargetProject()
+
+        client.get_target_project(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_target_project_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetTargetProjectRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targetProjects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_target_project(request)
+
+
+def test_get_target_project_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.TargetProject()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/targetProjects/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.TargetProject.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_target_project(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/targetProjects/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_target_project_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_target_project(
+            vmmigration.GetTargetProjectRequest(),
+            name="name_value",
+        )
+
+
+def test_get_target_project_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateTargetProjectRequest,
+        dict,
+    ],
+)
+def test_create_target_project_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["target_project"] = {
+        "name": "name_value",
+        "project": "project_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_target_project(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_target_project_rest_required_fields(
+    request_type=vmmigration.CreateTargetProjectRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["target_project_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "targetProjectId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_target_project._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "targetProjectId" in jsonified_request
+    assert jsonified_request["targetProjectId"] == request_init["target_project_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["targetProjectId"] = "target_project_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_target_project._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "target_project_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "targetProjectId" in jsonified_request
+    assert jsonified_request["targetProjectId"] == "target_project_id_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_target_project(request)
+
+            expected_params = [
+                (
+                    "targetProjectId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_target_project_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_target_project._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "targetProjectId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "targetProjectId",
+                "targetProject",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_target_project_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_target_project"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_create_target_project"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.CreateTargetProjectRequest.pb(
+            vmmigration.CreateTargetProjectRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.CreateTargetProjectRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_target_project(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_target_project_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.CreateTargetProjectRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["target_project"] = {
+        "name": "name_value",
+        "project": "project_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_target_project(request)
+
+
+def test_create_target_project_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            target_project=vmmigration.TargetProject(name="name_value"),
+            target_project_id="target_project_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_target_project(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/targetProjects"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_target_project_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_target_project(
+            vmmigration.CreateTargetProjectRequest(),
+            parent="parent_value",
+            target_project=vmmigration.TargetProject(name="name_value"),
+            target_project_id="target_project_id_value",
+        )
+
+
+def test_create_target_project_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateTargetProjectRequest,
+        dict,
+    ],
+)
+def test_update_target_project_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "target_project": {
+            "name": "projects/sample1/locations/sample2/targetProjects/sample3"
+        }
+    }
+    request_init["target_project"] = {
+        "name": "projects/sample1/locations/sample2/targetProjects/sample3",
+        "project": "project_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_target_project(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_target_project_rest_required_fields(
+    request_type=vmmigration.UpdateTargetProjectRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_target_project._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_target_project._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_target_project(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_target_project_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_target_project._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(("targetProject",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_target_project_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_update_target_project"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_update_target_project"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.UpdateTargetProjectRequest.pb(
+            vmmigration.UpdateTargetProjectRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.UpdateTargetProjectRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_target_project(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_target_project_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.UpdateTargetProjectRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "target_project": {
+            "name": "projects/sample1/locations/sample2/targetProjects/sample3"
+        }
+    }
+    request_init["target_project"] = {
+        "name": "projects/sample1/locations/sample2/targetProjects/sample3",
+        "project": "project_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_target_project(request)
+
+
+def test_update_target_project_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "target_project": {
+                "name": "projects/sample1/locations/sample2/targetProjects/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            target_project=vmmigration.TargetProject(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_target_project(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{target_project.name=projects/*/locations/*/targetProjects/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_target_project_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_target_project(
+            vmmigration.UpdateTargetProjectRequest(),
+            target_project=vmmigration.TargetProject(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_target_project_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteTargetProjectRequest,
+        dict,
+    ],
+)
+def test_delete_target_project_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targetProjects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_target_project(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_target_project_rest_required_fields(
+    request_type=vmmigration.DeleteTargetProjectRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_target_project._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_target_project._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_target_project(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_target_project_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_target_project._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_target_project_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_target_project"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_delete_target_project"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.DeleteTargetProjectRequest.pb(
+            vmmigration.DeleteTargetProjectRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmmigration.DeleteTargetProjectRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_target_project(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_target_project_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.DeleteTargetProjectRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targetProjects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_target_project(request)
+
+
+def test_delete_target_project_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/targetProjects/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_target_project(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/targetProjects/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_target_project_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_target_project(
+            vmmigration.DeleteTargetProjectRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_target_project_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListReplicationCyclesRequest,
+        dict,
+    ],
+)
+def test_list_replication_cycles_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListReplicationCyclesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_replication_cycles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReplicationCyclesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_replication_cycles_rest_required_fields(
+    request_type=vmmigration.ListReplicationCyclesRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["page_token"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "pageToken" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_replication_cycles._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == request_init["page_token"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["pageToken"] = "page_token_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_replication_cycles._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "pageToken" in jsonified_request
+    assert jsonified_request["pageToken"] == "page_token_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ListReplicationCyclesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_replication_cycles(request)
+
+            expected_params = [
+                (
+                    "pageToken",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_replication_cycles_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_replication_cycles._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "pageToken",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_replication_cycles_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_replication_cycles"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_list_replication_cycles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.ListReplicationCyclesRequest.pb(
+            vmmigration.ListReplicationCyclesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ListReplicationCyclesResponse.to_json(
+            vmmigration.ListReplicationCyclesResponse()
+        )
+
+        request = vmmigration.ListReplicationCyclesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ListReplicationCyclesResponse()
+
+        client.list_replication_cycles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_replication_cycles_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.ListReplicationCyclesRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_replication_cycles(request)
+
+
+def test_list_replication_cycles_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ListReplicationCyclesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_replication_cycles(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/sources/*/migratingVms/*}/replicationCycles"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_replication_cycles_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_replication_cycles(
+            vmmigration.ListReplicationCyclesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_replication_cycles_rest_pager(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmmigration.ListReplicationCyclesResponse(
+                replication_cycles=[
+                    vmmigration.ReplicationCycle(),
+                    vmmigration.ReplicationCycle(),
+                    vmmigration.ReplicationCycle(),
+                ],
+                next_page_token="abc",
+            ),
+            vmmigration.ListReplicationCyclesResponse(
+                replication_cycles=[],
+                next_page_token="def",
+            ),
+            vmmigration.ListReplicationCyclesResponse(
+                replication_cycles=[
+                    vmmigration.ReplicationCycle(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListReplicationCyclesResponse(
+                replication_cycles=[
+                    vmmigration.ReplicationCycle(),
+                    vmmigration.ReplicationCycle(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmmigration.ListReplicationCyclesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
+        }
+
+        pager = client.list_replication_cycles(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmmigration.ReplicationCycle) for i in results)
+
+        pages = list(client.list_replication_cycles(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetReplicationCycleRequest,
+        dict,
+    ],
+)
+def test_get_replication_cycle_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/replicationCycles/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ReplicationCycle(
+            name="name_value",
+            cycle_number=1272,
+            progress_percent=1733,
+            state=vmmigration.ReplicationCycle.State.RUNNING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ReplicationCycle.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_replication_cycle(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmmigration.ReplicationCycle)
+    assert response.name == "name_value"
+    assert response.cycle_number == 1272
+    assert response.progress_percent == 1733
+    assert response.state == vmmigration.ReplicationCycle.State.RUNNING
+
+
+def test_get_replication_cycle_rest_required_fields(
+    request_type=vmmigration.GetReplicationCycleRequest,
+):
+    transport_class = transports.VmMigrationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_replication_cycle._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_replication_cycle._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmmigration.ReplicationCycle()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = vmmigration.ReplicationCycle.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_replication_cycle(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_replication_cycle_rest_unset_required_fields():
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_replication_cycle._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_replication_cycle_rest_interceptors(null_interceptor):
+    transport = transports.VmMigrationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmMigrationRestInterceptor(),
+    )
+    client = VmMigrationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_replication_cycle"
+    ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "pre_get_replication_cycle"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmmigration.GetReplicationCycleRequest.pb(
+            vmmigration.GetReplicationCycleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmmigration.ReplicationCycle.to_json(
+            vmmigration.ReplicationCycle()
+        )
+
+        request = vmmigration.GetReplicationCycleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmmigration.ReplicationCycle()
+
+        client.get_replication_cycle(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_replication_cycle_rest_bad_request(
+    transport: str = "rest", request_type=vmmigration.GetReplicationCycleRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/replicationCycles/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_replication_cycle(request)
+
+
+def test_get_replication_cycle_rest_flattened():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmmigration.ReplicationCycle()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4/replicationCycles/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = vmmigration.ReplicationCycle.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_replication_cycle(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sources/*/migratingVms/*/replicationCycles/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_replication_cycle_rest_flattened_error(transport: str = "rest"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_replication_cycle(
+            vmmigration.GetReplicationCycleRequest(),
+            name="name_value",
+        )
+
+
+def test_get_replication_cycle_rest_error():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.VmMigrationGrpcTransport(
@@ -13621,6 +28535,7 @@ def test_transport_get_channel():
     [
         transports.VmMigrationGrpcTransport,
         transports.VmMigrationGrpcAsyncIOTransport,
+        transports.VmMigrationRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -13635,6 +28550,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -13820,6 +28736,7 @@ def test_vm_migration_transport_auth_adc(transport_class):
     [
         transports.VmMigrationGrpcTransport,
         transports.VmMigrationGrpcAsyncIOTransport,
+        transports.VmMigrationRestTransport,
     ],
 )
 def test_vm_migration_transport_auth_gdch_credentials(transport_class):
@@ -13914,11 +28831,40 @@ def test_vm_migration_grpc_transport_client_cert_source_for_mtls(transport_class
             )
 
 
+def test_vm_migration_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.VmMigrationRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_vm_migration_rest_lro_client():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_vm_migration_host_no_port(transport_name):
@@ -13929,7 +28875,11 @@ def test_vm_migration_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("vmmigration.googleapis.com:443")
+    assert client.transport._host == (
+        "vmmigration.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://vmmigration.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -13937,6 +28887,7 @@ def test_vm_migration_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_vm_migration_host_with_port(transport_name):
@@ -13947,7 +28898,168 @@ def test_vm_migration_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("vmmigration.googleapis.com:8000")
+    assert client.transport._host == (
+        "vmmigration.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://vmmigration.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_vm_migration_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = VmMigrationClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = VmMigrationClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_sources._session
+    session2 = client2.transport.list_sources._session
+    assert session1 != session2
+    session1 = client1.transport.get_source._session
+    session2 = client2.transport.get_source._session
+    assert session1 != session2
+    session1 = client1.transport.create_source._session
+    session2 = client2.transport.create_source._session
+    assert session1 != session2
+    session1 = client1.transport.update_source._session
+    session2 = client2.transport.update_source._session
+    assert session1 != session2
+    session1 = client1.transport.delete_source._session
+    session2 = client2.transport.delete_source._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_inventory._session
+    session2 = client2.transport.fetch_inventory._session
+    assert session1 != session2
+    session1 = client1.transport.list_utilization_reports._session
+    session2 = client2.transport.list_utilization_reports._session
+    assert session1 != session2
+    session1 = client1.transport.get_utilization_report._session
+    session2 = client2.transport.get_utilization_report._session
+    assert session1 != session2
+    session1 = client1.transport.create_utilization_report._session
+    session2 = client2.transport.create_utilization_report._session
+    assert session1 != session2
+    session1 = client1.transport.delete_utilization_report._session
+    session2 = client2.transport.delete_utilization_report._session
+    assert session1 != session2
+    session1 = client1.transport.list_datacenter_connectors._session
+    session2 = client2.transport.list_datacenter_connectors._session
+    assert session1 != session2
+    session1 = client1.transport.get_datacenter_connector._session
+    session2 = client2.transport.get_datacenter_connector._session
+    assert session1 != session2
+    session1 = client1.transport.create_datacenter_connector._session
+    session2 = client2.transport.create_datacenter_connector._session
+    assert session1 != session2
+    session1 = client1.transport.delete_datacenter_connector._session
+    session2 = client2.transport.delete_datacenter_connector._session
+    assert session1 != session2
+    session1 = client1.transport.upgrade_appliance._session
+    session2 = client2.transport.upgrade_appliance._session
+    assert session1 != session2
+    session1 = client1.transport.create_migrating_vm._session
+    session2 = client2.transport.create_migrating_vm._session
+    assert session1 != session2
+    session1 = client1.transport.list_migrating_vms._session
+    session2 = client2.transport.list_migrating_vms._session
+    assert session1 != session2
+    session1 = client1.transport.get_migrating_vm._session
+    session2 = client2.transport.get_migrating_vm._session
+    assert session1 != session2
+    session1 = client1.transport.update_migrating_vm._session
+    session2 = client2.transport.update_migrating_vm._session
+    assert session1 != session2
+    session1 = client1.transport.delete_migrating_vm._session
+    session2 = client2.transport.delete_migrating_vm._session
+    assert session1 != session2
+    session1 = client1.transport.start_migration._session
+    session2 = client2.transport.start_migration._session
+    assert session1 != session2
+    session1 = client1.transport.resume_migration._session
+    session2 = client2.transport.resume_migration._session
+    assert session1 != session2
+    session1 = client1.transport.pause_migration._session
+    session2 = client2.transport.pause_migration._session
+    assert session1 != session2
+    session1 = client1.transport.finalize_migration._session
+    session2 = client2.transport.finalize_migration._session
+    assert session1 != session2
+    session1 = client1.transport.create_clone_job._session
+    session2 = client2.transport.create_clone_job._session
+    assert session1 != session2
+    session1 = client1.transport.cancel_clone_job._session
+    session2 = client2.transport.cancel_clone_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_clone_jobs._session
+    session2 = client2.transport.list_clone_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.get_clone_job._session
+    session2 = client2.transport.get_clone_job._session
+    assert session1 != session2
+    session1 = client1.transport.create_cutover_job._session
+    session2 = client2.transport.create_cutover_job._session
+    assert session1 != session2
+    session1 = client1.transport.cancel_cutover_job._session
+    session2 = client2.transport.cancel_cutover_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_cutover_jobs._session
+    session2 = client2.transport.list_cutover_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.get_cutover_job._session
+    session2 = client2.transport.get_cutover_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_groups._session
+    session2 = client2.transport.list_groups._session
+    assert session1 != session2
+    session1 = client1.transport.get_group._session
+    session2 = client2.transport.get_group._session
+    assert session1 != session2
+    session1 = client1.transport.create_group._session
+    session2 = client2.transport.create_group._session
+    assert session1 != session2
+    session1 = client1.transport.update_group._session
+    session2 = client2.transport.update_group._session
+    assert session1 != session2
+    session1 = client1.transport.delete_group._session
+    session2 = client2.transport.delete_group._session
+    assert session1 != session2
+    session1 = client1.transport.add_group_migration._session
+    session2 = client2.transport.add_group_migration._session
+    assert session1 != session2
+    session1 = client1.transport.remove_group_migration._session
+    session2 = client2.transport.remove_group_migration._session
+    assert session1 != session2
+    session1 = client1.transport.list_target_projects._session
+    session2 = client2.transport.list_target_projects._session
+    assert session1 != session2
+    session1 = client1.transport.get_target_project._session
+    session2 = client2.transport.get_target_project._session
+    assert session1 != session2
+    session1 = client1.transport.create_target_project._session
+    session2 = client2.transport.create_target_project._session
+    assert session1 != session2
+    session1 = client1.transport.update_target_project._session
+    session2 = client2.transport.update_target_project._session
+    assert session1 != session2
+    session1 = client1.transport.delete_target_project._session
+    session2 = client2.transport.delete_target_project._session
+    assert session1 != session2
+    session1 = client1.transport.list_replication_cycles._session
+    session2 = client2.transport.list_replication_cycles._session
+    assert session1 != session2
+    session1 = client1.transport.get_replication_cycle._session
+    session2 = client2.transport.get_replication_cycle._session
+    assert session1 != session2
 
 
 def test_vm_migration_grpc_transport_channel():
@@ -14513,6 +29625,352 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_delete_operation(transport: str = "grpc"):
@@ -15371,6 +30829,7 @@ async def test_get_location_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -15388,6 +30847,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

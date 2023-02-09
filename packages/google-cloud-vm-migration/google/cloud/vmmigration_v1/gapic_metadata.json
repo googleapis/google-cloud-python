@@ -476,6 +476,241 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "VmMigrationClient",
+          "rpcs": {
+            "AddGroupMigration": {
+              "methods": [
+                "add_group_migration"
+              ]
+            },
+            "CancelCloneJob": {
+              "methods": [
+                "cancel_clone_job"
+              ]
+            },
+            "CancelCutoverJob": {
+              "methods": [
+                "cancel_cutover_job"
+              ]
+            },
+            "CreateCloneJob": {
+              "methods": [
+                "create_clone_job"
+              ]
+            },
+            "CreateCutoverJob": {
+              "methods": [
+                "create_cutover_job"
+              ]
+            },
+            "CreateDatacenterConnector": {
+              "methods": [
+                "create_datacenter_connector"
+              ]
+            },
+            "CreateGroup": {
+              "methods": [
+                "create_group"
+              ]
+            },
+            "CreateMigratingVm": {
+              "methods": [
+                "create_migrating_vm"
+              ]
+            },
+            "CreateSource": {
+              "methods": [
+                "create_source"
+              ]
+            },
+            "CreateTargetProject": {
+              "methods": [
+                "create_target_project"
+              ]
+            },
+            "CreateUtilizationReport": {
+              "methods": [
+                "create_utilization_report"
+              ]
+            },
+            "DeleteDatacenterConnector": {
+              "methods": [
+                "delete_datacenter_connector"
+              ]
+            },
+            "DeleteGroup": {
+              "methods": [
+                "delete_group"
+              ]
+            },
+            "DeleteMigratingVm": {
+              "methods": [
+                "delete_migrating_vm"
+              ]
+            },
+            "DeleteSource": {
+              "methods": [
+                "delete_source"
+              ]
+            },
+            "DeleteTargetProject": {
+              "methods": [
+                "delete_target_project"
+              ]
+            },
+            "DeleteUtilizationReport": {
+              "methods": [
+                "delete_utilization_report"
+              ]
+            },
+            "FetchInventory": {
+              "methods": [
+                "fetch_inventory"
+              ]
+            },
+            "FinalizeMigration": {
+              "methods": [
+                "finalize_migration"
+              ]
+            },
+            "GetCloneJob": {
+              "methods": [
+                "get_clone_job"
+              ]
+            },
+            "GetCutoverJob": {
+              "methods": [
+                "get_cutover_job"
+              ]
+            },
+            "GetDatacenterConnector": {
+              "methods": [
+                "get_datacenter_connector"
+              ]
+            },
+            "GetGroup": {
+              "methods": [
+                "get_group"
+              ]
+            },
+            "GetMigratingVm": {
+              "methods": [
+                "get_migrating_vm"
+              ]
+            },
+            "GetReplicationCycle": {
+              "methods": [
+                "get_replication_cycle"
+              ]
+            },
+            "GetSource": {
+              "methods": [
+                "get_source"
+              ]
+            },
+            "GetTargetProject": {
+              "methods": [
+                "get_target_project"
+              ]
+            },
+            "GetUtilizationReport": {
+              "methods": [
+                "get_utilization_report"
+              ]
+            },
+            "ListCloneJobs": {
+              "methods": [
+                "list_clone_jobs"
+              ]
+            },
+            "ListCutoverJobs": {
+              "methods": [
+                "list_cutover_jobs"
+              ]
+            },
+            "ListDatacenterConnectors": {
+              "methods": [
+                "list_datacenter_connectors"
+              ]
+            },
+            "ListGroups": {
+              "methods": [
+                "list_groups"
+              ]
+            },
+            "ListMigratingVms": {
+              "methods": [
+                "list_migrating_vms"
+              ]
+            },
+            "ListReplicationCycles": {
+              "methods": [
+                "list_replication_cycles"
+              ]
+            },
+            "ListSources": {
+              "methods": [
+                "list_sources"
+              ]
+            },
+            "ListTargetProjects": {
+              "methods": [
+                "list_target_projects"
+              ]
+            },
+            "ListUtilizationReports": {
+              "methods": [
+                "list_utilization_reports"
+              ]
+            },
+            "PauseMigration": {
+              "methods": [
+                "pause_migration"
+              ]
+            },
+            "RemoveGroupMigration": {
+              "methods": [
+                "remove_group_migration"
+              ]
+            },
+            "ResumeMigration": {
+              "methods": [
+                "resume_migration"
+              ]
+            },
+            "StartMigration": {
+              "methods": [
+                "start_migration"
+              ]
+            },
+            "UpdateGroup": {
+              "methods": [
+                "update_group"
+              ]
+            },
+            "UpdateMigratingVm": {
+              "methods": [
+                "update_migrating_vm"
+              ]
+            },
+            "UpdateSource": {
+              "methods": [
+                "update_source"
+              ]
+            },
+            "UpdateTargetProject": {
+              "methods": [
+                "update_target_project"
+              ]
+            },
+            "UpgradeAppliance": {
+              "methods": [
+                "upgrade_appliance"
+              ]
+            }
+          }
         }
       }
     }

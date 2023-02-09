@@ -64,6 +64,7 @@ from google.cloud.vmmigration_v1.types import vmmigration
 from .transports.base import DEFAULT_CLIENT_INFO, VmMigrationTransport
 from .transports.grpc import VmMigrationGrpcTransport
 from .transports.grpc_asyncio import VmMigrationGrpcAsyncIOTransport
+from .transports.rest import VmMigrationRestTransport
 
 
 class VmMigrationClientMeta(type):
@@ -77,6 +78,7 @@ class VmMigrationClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[VmMigrationTransport]]
     _transport_registry["grpc"] = VmMigrationGrpcTransport
     _transport_registry["grpc_asyncio"] = VmMigrationGrpcAsyncIOTransport
+    _transport_registry["rest"] = VmMigrationRestTransport
 
     def get_transport_class(
         cls,
