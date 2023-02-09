@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import DataformTransport
 from .grpc import DataformGrpcTransport
 from .grpc_asyncio import DataformGrpcAsyncIOTransport
+from .rest import DataformRestInterceptor, DataformRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataformTransport]]
 _transport_registry["grpc"] = DataformGrpcTransport
 _transport_registry["grpc_asyncio"] = DataformGrpcAsyncIOTransport
+_transport_registry["rest"] = DataformRestTransport
 
 __all__ = (
     "DataformTransport",
     "DataformGrpcTransport",
     "DataformGrpcAsyncIOTransport",
+    "DataformRestTransport",
+    "DataformRestInterceptor",
 )

@@ -58,6 +58,7 @@ from google.cloud.dataform_v1beta1.types import dataform
 from .transports.base import DEFAULT_CLIENT_INFO, DataformTransport
 from .transports.grpc import DataformGrpcTransport
 from .transports.grpc_asyncio import DataformGrpcAsyncIOTransport
+from .transports.rest import DataformRestTransport
 
 
 class DataformClientMeta(type):
@@ -71,6 +72,7 @@ class DataformClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[DataformTransport]]
     _transport_registry["grpc"] = DataformGrpcTransport
     _transport_registry["grpc_asyncio"] = DataformGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataformRestTransport
 
     def get_transport_class(
         cls,
