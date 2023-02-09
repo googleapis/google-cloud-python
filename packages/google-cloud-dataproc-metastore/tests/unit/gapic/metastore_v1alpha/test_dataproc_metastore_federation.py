@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -43,12 +45,15 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.metastore_v1alpha.services.dataproc_metastore_federation import (
     DataprocMetastoreFederationAsyncClient,
@@ -111,6 +116,7 @@ def test__get_default_mtls_endpoint():
     [
         (DataprocMetastoreFederationClient, "grpc"),
         (DataprocMetastoreFederationAsyncClient, "grpc_asyncio"),
+        (DataprocMetastoreFederationClient, "rest"),
     ],
 )
 def test_dataproc_metastore_federation_client_from_service_account_info(
@@ -126,7 +132,11 @@ def test_dataproc_metastore_federation_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("metastore.googleapis.com:443")
+        assert client.transport._host == (
+            "metastore.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://metastore.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -134,6 +144,7 @@ def test_dataproc_metastore_federation_client_from_service_account_info(
     [
         (transports.DataprocMetastoreFederationGrpcTransport, "grpc"),
         (transports.DataprocMetastoreFederationGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.DataprocMetastoreFederationRestTransport, "rest"),
     ],
 )
 def test_dataproc_metastore_federation_client_service_account_always_use_jwt(
@@ -159,6 +170,7 @@ def test_dataproc_metastore_federation_client_service_account_always_use_jwt(
     [
         (DataprocMetastoreFederationClient, "grpc"),
         (DataprocMetastoreFederationAsyncClient, "grpc_asyncio"),
+        (DataprocMetastoreFederationClient, "rest"),
     ],
 )
 def test_dataproc_metastore_federation_client_from_service_account_file(
@@ -181,13 +193,18 @@ def test_dataproc_metastore_federation_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("metastore.googleapis.com:443")
+        assert client.transport._host == (
+            "metastore.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://metastore.googleapis.com"
+        )
 
 
 def test_dataproc_metastore_federation_client_get_transport_class():
     transport = DataprocMetastoreFederationClient.get_transport_class()
     available_transports = [
         transports.DataprocMetastoreFederationGrpcTransport,
+        transports.DataprocMetastoreFederationRestTransport,
     ]
     assert transport in available_transports
 
@@ -207,6 +224,11 @@ def test_dataproc_metastore_federation_client_get_transport_class():
             DataprocMetastoreFederationAsyncClient,
             transports.DataprocMetastoreFederationGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            DataprocMetastoreFederationClient,
+            transports.DataprocMetastoreFederationRestTransport,
+            "rest",
         ),
     ],
 )
@@ -365,6 +387,18 @@ def test_dataproc_metastore_federation_client_client_options(
             DataprocMetastoreFederationAsyncClient,
             transports.DataprocMetastoreFederationGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            DataprocMetastoreFederationClient,
+            transports.DataprocMetastoreFederationRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            DataprocMetastoreFederationClient,
+            transports.DataprocMetastoreFederationRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -573,6 +607,11 @@ def test_dataproc_metastore_federation_client_get_mtls_endpoint_and_cert_source(
             transports.DataprocMetastoreFederationGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            DataprocMetastoreFederationClient,
+            transports.DataprocMetastoreFederationRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_dataproc_metastore_federation_client_client_options_scopes(
@@ -612,6 +651,12 @@ def test_dataproc_metastore_federation_client_client_options_scopes(
             transports.DataprocMetastoreFederationGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            DataprocMetastoreFederationClient,
+            transports.DataprocMetastoreFederationRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2156,6 +2201,1542 @@ async def test_delete_federation_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_federation.ListFederationsRequest,
+        dict,
+    ],
+)
+def test_list_federations_rest(request_type):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore_federation.ListFederationsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore_federation.ListFederationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_federations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFederationsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_federations_rest_required_fields(
+    request_type=metastore_federation.ListFederationsRequest,
+):
+    transport_class = transports.DataprocMetastoreFederationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_federations._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_federations._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore_federation.ListFederationsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore_federation.ListFederationsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_federations(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_federations_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_federations._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_federations_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreFederationRestInterceptor(),
+    )
+    client = DataprocMetastoreFederationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "post_list_federations"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "pre_list_federations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore_federation.ListFederationsRequest.pb(
+            metastore_federation.ListFederationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            metastore_federation.ListFederationsResponse.to_json(
+                metastore_federation.ListFederationsResponse()
+            )
+        )
+
+        request = metastore_federation.ListFederationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore_federation.ListFederationsResponse()
+
+        client.list_federations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_federations_rest_bad_request(
+    transport: str = "rest", request_type=metastore_federation.ListFederationsRequest
+):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_federations(request)
+
+
+def test_list_federations_rest_flattened():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore_federation.ListFederationsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore_federation.ListFederationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_federations(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*}/federations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_federations_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_federations(
+            metastore_federation.ListFederationsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_federations_rest_pager(transport: str = "rest"):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            metastore_federation.ListFederationsResponse(
+                federations=[
+                    metastore_federation.Federation(),
+                    metastore_federation.Federation(),
+                    metastore_federation.Federation(),
+                ],
+                next_page_token="abc",
+            ),
+            metastore_federation.ListFederationsResponse(
+                federations=[],
+                next_page_token="def",
+            ),
+            metastore_federation.ListFederationsResponse(
+                federations=[
+                    metastore_federation.Federation(),
+                ],
+                next_page_token="ghi",
+            ),
+            metastore_federation.ListFederationsResponse(
+                federations=[
+                    metastore_federation.Federation(),
+                    metastore_federation.Federation(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            metastore_federation.ListFederationsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_federations(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, metastore_federation.Federation) for i in results)
+
+        pages = list(client.list_federations(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_federation.GetFederationRequest,
+        dict,
+    ],
+)
+def test_get_federation_rest(request_type):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/federations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore_federation.Federation(
+            name="name_value",
+            version="version_value",
+            endpoint_uri="endpoint_uri_value",
+            state=metastore_federation.Federation.State.CREATING,
+            state_message="state_message_value",
+            uid="uid_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore_federation.Federation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_federation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore_federation.Federation)
+    assert response.name == "name_value"
+    assert response.version == "version_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.state == metastore_federation.Federation.State.CREATING
+    assert response.state_message == "state_message_value"
+    assert response.uid == "uid_value"
+
+
+def test_get_federation_rest_required_fields(
+    request_type=metastore_federation.GetFederationRequest,
+):
+    transport_class = transports.DataprocMetastoreFederationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_federation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_federation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore_federation.Federation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore_federation.Federation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_federation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_federation_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_federation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_federation_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreFederationRestInterceptor(),
+    )
+    client = DataprocMetastoreFederationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "post_get_federation"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "pre_get_federation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore_federation.GetFederationRequest.pb(
+            metastore_federation.GetFederationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore_federation.Federation.to_json(
+            metastore_federation.Federation()
+        )
+
+        request = metastore_federation.GetFederationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore_federation.Federation()
+
+        client.get_federation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_federation_rest_bad_request(
+    transport: str = "rest", request_type=metastore_federation.GetFederationRequest
+):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/federations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_federation(request)
+
+
+def test_get_federation_rest_flattened():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore_federation.Federation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/federations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore_federation.Federation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_federation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/federations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_federation_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_federation(
+            metastore_federation.GetFederationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_federation_rest_error():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_federation.CreateFederationRequest,
+        dict,
+    ],
+)
+def test_create_federation_rest(request_type):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["federation"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "version": "version_value",
+        "backend_metastores": {},
+        "endpoint_uri": "endpoint_uri_value",
+        "state": 1,
+        "state_message": "state_message_value",
+        "uid": "uid_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_federation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_federation_rest_required_fields(
+    request_type=metastore_federation.CreateFederationRequest,
+):
+    transport_class = transports.DataprocMetastoreFederationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["federation_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "federationId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_federation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "federationId" in jsonified_request
+    assert jsonified_request["federationId"] == request_init["federation_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["federationId"] = "federation_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_federation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "federation_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "federationId" in jsonified_request
+    assert jsonified_request["federationId"] == "federation_id_value"
+
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_federation(request)
+
+            expected_params = [
+                (
+                    "federationId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_federation_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_federation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "federationId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "federationId",
+                "federation",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_federation_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreFederationRestInterceptor(),
+    )
+    client = DataprocMetastoreFederationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "post_create_federation"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "pre_create_federation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore_federation.CreateFederationRequest.pb(
+            metastore_federation.CreateFederationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore_federation.CreateFederationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_federation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_federation_rest_bad_request(
+    transport: str = "rest", request_type=metastore_federation.CreateFederationRequest
+):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["federation"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "version": "version_value",
+        "backend_metastores": {},
+        "endpoint_uri": "endpoint_uri_value",
+        "state": 1,
+        "state_message": "state_message_value",
+        "uid": "uid_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_federation(request)
+
+
+def test_create_federation_rest_flattened():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            federation=metastore_federation.Federation(name="name_value"),
+            federation_id="federation_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_federation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*}/federations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_federation_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_federation(
+            metastore_federation.CreateFederationRequest(),
+            parent="parent_value",
+            federation=metastore_federation.Federation(name="name_value"),
+            federation_id="federation_id_value",
+        )
+
+
+def test_create_federation_rest_error():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_federation.UpdateFederationRequest,
+        dict,
+    ],
+)
+def test_update_federation_rest(request_type):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "federation": {"name": "projects/sample1/locations/sample2/federations/sample3"}
+    }
+    request_init["federation"] = {
+        "name": "projects/sample1/locations/sample2/federations/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "version": "version_value",
+        "backend_metastores": {},
+        "endpoint_uri": "endpoint_uri_value",
+        "state": 1,
+        "state_message": "state_message_value",
+        "uid": "uid_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_federation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_federation_rest_required_fields(
+    request_type=metastore_federation.UpdateFederationRequest,
+):
+    transport_class = transports.DataprocMetastoreFederationRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_federation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_federation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_federation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_federation_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_federation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "federation",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_federation_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreFederationRestInterceptor(),
+    )
+    client = DataprocMetastoreFederationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "post_update_federation"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "pre_update_federation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore_federation.UpdateFederationRequest.pb(
+            metastore_federation.UpdateFederationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore_federation.UpdateFederationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_federation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_federation_rest_bad_request(
+    transport: str = "rest", request_type=metastore_federation.UpdateFederationRequest
+):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "federation": {"name": "projects/sample1/locations/sample2/federations/sample3"}
+    }
+    request_init["federation"] = {
+        "name": "projects/sample1/locations/sample2/federations/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "version": "version_value",
+        "backend_metastores": {},
+        "endpoint_uri": "endpoint_uri_value",
+        "state": 1,
+        "state_message": "state_message_value",
+        "uid": "uid_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_federation(request)
+
+
+def test_update_federation_rest_flattened():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "federation": {
+                "name": "projects/sample1/locations/sample2/federations/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            federation=metastore_federation.Federation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_federation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{federation.name=projects/*/locations/*/federations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_federation_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_federation(
+            metastore_federation.UpdateFederationRequest(),
+            federation=metastore_federation.Federation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_federation_rest_error():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_federation.DeleteFederationRequest,
+        dict,
+    ],
+)
+def test_delete_federation_rest(request_type):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/federations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_federation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_federation_rest_required_fields(
+    request_type=metastore_federation.DeleteFederationRequest,
+):
+    transport_class = transports.DataprocMetastoreFederationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_federation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_federation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_federation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_federation_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_federation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_federation_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreFederationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreFederationRestInterceptor(),
+    )
+    client = DataprocMetastoreFederationClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "post_delete_federation"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreFederationRestInterceptor, "pre_delete_federation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore_federation.DeleteFederationRequest.pb(
+            metastore_federation.DeleteFederationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore_federation.DeleteFederationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_federation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_federation_rest_bad_request(
+    transport: str = "rest", request_type=metastore_federation.DeleteFederationRequest
+):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/federations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_federation(request)
+
+
+def test_delete_federation_rest_flattened():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/federations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_federation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/federations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_federation_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_federation(
+            metastore_federation.DeleteFederationRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_federation_rest_error():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataprocMetastoreFederationGrpcTransport(
@@ -2237,6 +3818,7 @@ def test_transport_get_channel():
     [
         transports.DataprocMetastoreFederationGrpcTransport,
         transports.DataprocMetastoreFederationGrpcAsyncIOTransport,
+        transports.DataprocMetastoreFederationRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2251,6 +3833,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2389,6 +3972,7 @@ def test_dataproc_metastore_federation_transport_auth_adc(transport_class):
     [
         transports.DataprocMetastoreFederationGrpcTransport,
         transports.DataprocMetastoreFederationGrpcAsyncIOTransport,
+        transports.DataprocMetastoreFederationRestTransport,
     ],
 )
 def test_dataproc_metastore_federation_transport_auth_gdch_credentials(transport_class):
@@ -2493,11 +4077,40 @@ def test_dataproc_metastore_federation_grpc_transport_client_cert_source_for_mtl
             )
 
 
+def test_dataproc_metastore_federation_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.DataprocMetastoreFederationRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_dataproc_metastore_federation_rest_lro_client():
+    client = DataprocMetastoreFederationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_dataproc_metastore_federation_host_no_port(transport_name):
@@ -2508,7 +4121,11 @@ def test_dataproc_metastore_federation_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("metastore.googleapis.com:443")
+    assert client.transport._host == (
+        "metastore.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://metastore.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2516,6 +4133,7 @@ def test_dataproc_metastore_federation_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_dataproc_metastore_federation_host_with_port(transport_name):
@@ -2526,7 +4144,47 @@ def test_dataproc_metastore_federation_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("metastore.googleapis.com:8000")
+    assert client.transport._host == (
+        "metastore.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://metastore.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_dataproc_metastore_federation_client_transport_session_collision(
+    transport_name,
+):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = DataprocMetastoreFederationClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = DataprocMetastoreFederationClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_federations._session
+    session2 = client2.transport.list_federations._session
+    assert session1 != session2
+    session1 = client1.transport.get_federation._session
+    session2 = client2.transport.get_federation._session
+    assert session1 != session2
+    session1 = client1.transport.create_federation._session
+    session2 = client2.transport.create_federation._session
+    assert session1 != session2
+    session1 = client1.transport.update_federation._session
+    session2 = client2.transport.update_federation._session
+    assert session1 != session2
+    session1 = client1.transport.delete_federation._session
+    session2 = client2.transport.delete_federation._session
+    assert session1 != session2
 
 
 def test_dataproc_metastore_federation_grpc_transport_channel():
@@ -2863,6 +4521,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2880,6 +4539,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

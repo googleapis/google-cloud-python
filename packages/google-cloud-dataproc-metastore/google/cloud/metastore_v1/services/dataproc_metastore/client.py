@@ -58,6 +58,7 @@ from google.cloud.metastore_v1.types import metastore
 from .transports.base import DEFAULT_CLIENT_INFO, DataprocMetastoreTransport
 from .transports.grpc import DataprocMetastoreGrpcTransport
 from .transports.grpc_asyncio import DataprocMetastoreGrpcAsyncIOTransport
+from .transports.rest import DataprocMetastoreRestTransport
 
 
 class DataprocMetastoreClientMeta(type):
@@ -73,6 +74,7 @@ class DataprocMetastoreClientMeta(type):
     )  # type: Dict[str, Type[DataprocMetastoreTransport]]
     _transport_registry["grpc"] = DataprocMetastoreGrpcTransport
     _transport_registry["grpc_asyncio"] = DataprocMetastoreGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataprocMetastoreRestTransport
 
     def get_transport_class(
         cls,

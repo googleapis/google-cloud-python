@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -43,6 +45,7 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
@@ -51,6 +54,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.metastore_v1beta.services.dataproc_metastore import (
     DataprocMetastoreAsyncClient,
@@ -111,6 +116,7 @@ def test__get_default_mtls_endpoint():
     [
         (DataprocMetastoreClient, "grpc"),
         (DataprocMetastoreAsyncClient, "grpc_asyncio"),
+        (DataprocMetastoreClient, "rest"),
     ],
 )
 def test_dataproc_metastore_client_from_service_account_info(
@@ -126,7 +132,11 @@ def test_dataproc_metastore_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("metastore.googleapis.com:443")
+        assert client.transport._host == (
+            "metastore.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://metastore.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -134,6 +144,7 @@ def test_dataproc_metastore_client_from_service_account_info(
     [
         (transports.DataprocMetastoreGrpcTransport, "grpc"),
         (transports.DataprocMetastoreGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.DataprocMetastoreRestTransport, "rest"),
     ],
 )
 def test_dataproc_metastore_client_service_account_always_use_jwt(
@@ -159,6 +170,7 @@ def test_dataproc_metastore_client_service_account_always_use_jwt(
     [
         (DataprocMetastoreClient, "grpc"),
         (DataprocMetastoreAsyncClient, "grpc_asyncio"),
+        (DataprocMetastoreClient, "rest"),
     ],
 )
 def test_dataproc_metastore_client_from_service_account_file(
@@ -181,13 +193,18 @@ def test_dataproc_metastore_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("metastore.googleapis.com:443")
+        assert client.transport._host == (
+            "metastore.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://metastore.googleapis.com"
+        )
 
 
 def test_dataproc_metastore_client_get_transport_class():
     transport = DataprocMetastoreClient.get_transport_class()
     available_transports = [
         transports.DataprocMetastoreGrpcTransport,
+        transports.DataprocMetastoreRestTransport,
     ]
     assert transport in available_transports
 
@@ -204,6 +221,7 @@ def test_dataproc_metastore_client_get_transport_class():
             transports.DataprocMetastoreGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DataprocMetastoreClient, transports.DataprocMetastoreRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -357,6 +375,18 @@ def test_dataproc_metastore_client_client_options(
             DataprocMetastoreAsyncClient,
             transports.DataprocMetastoreGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            DataprocMetastoreClient,
+            transports.DataprocMetastoreRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            DataprocMetastoreClient,
+            transports.DataprocMetastoreRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -558,6 +588,7 @@ def test_dataproc_metastore_client_get_mtls_endpoint_and_cert_source(client_clas
             transports.DataprocMetastoreGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DataprocMetastoreClient, transports.DataprocMetastoreRestTransport, "rest"),
     ],
 )
 def test_dataproc_metastore_client_client_options_scopes(
@@ -597,6 +628,12 @@ def test_dataproc_metastore_client_client_options_scopes(
             transports.DataprocMetastoreGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            DataprocMetastoreClient,
+            transports.DataprocMetastoreRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -5543,6 +5580,5754 @@ async def test_alter_metadata_resource_location_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListServicesRequest,
+        dict,
+    ],
+)
+def test_list_services_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListServicesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_services(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListServicesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_services_rest_required_fields(request_type=metastore.ListServicesRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_services._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_services._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.ListServicesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore.ListServicesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_services(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_services_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_services._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_services_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_services"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_list_services"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ListServicesRequest.pb(metastore.ListServicesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore.ListServicesResponse.to_json(
+            metastore.ListServicesResponse()
+        )
+
+        request = metastore.ListServicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.ListServicesResponse()
+
+        client.list_services(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_services_rest_bad_request(
+    transport: str = "rest", request_type=metastore.ListServicesRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_services(request)
+
+
+def test_list_services_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListServicesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_services(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*}/services"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_services_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_services(
+            metastore.ListServicesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_services_rest_pager(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            metastore.ListServicesResponse(
+                services=[
+                    metastore.Service(),
+                    metastore.Service(),
+                    metastore.Service(),
+                ],
+                next_page_token="abc",
+            ),
+            metastore.ListServicesResponse(
+                services=[],
+                next_page_token="def",
+            ),
+            metastore.ListServicesResponse(
+                services=[
+                    metastore.Service(),
+                ],
+                next_page_token="ghi",
+            ),
+            metastore.ListServicesResponse(
+                services=[
+                    metastore.Service(),
+                    metastore.Service(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(metastore.ListServicesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_services(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, metastore.Service) for i in results)
+
+        pages = list(client.list_services(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetServiceRequest,
+        dict,
+    ],
+)
+def test_get_service_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.Service(
+            name="name_value",
+            network="network_value",
+            endpoint_uri="endpoint_uri_value",
+            port=453,
+            state=metastore.Service.State.CREATING,
+            state_message="state_message_value",
+            artifact_gcs_uri="artifact_gcs_uri_value",
+            tier=metastore.Service.Tier.DEVELOPER,
+            uid="uid_value",
+            release_channel=metastore.Service.ReleaseChannel.CANARY,
+            database_type=metastore.Service.DatabaseType.MYSQL,
+            hive_metastore_config=metastore.HiveMetastoreConfig(
+                version="version_value"
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.Service.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore.Service)
+    assert response.name == "name_value"
+    assert response.network == "network_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.port == 453
+    assert response.state == metastore.Service.State.CREATING
+    assert response.state_message == "state_message_value"
+    assert response.artifact_gcs_uri == "artifact_gcs_uri_value"
+    assert response.tier == metastore.Service.Tier.DEVELOPER
+    assert response.uid == "uid_value"
+    assert response.release_channel == metastore.Service.ReleaseChannel.CANARY
+    assert response.database_type == metastore.Service.DatabaseType.MYSQL
+
+
+def test_get_service_rest_required_fields(request_type=metastore.GetServiceRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.Service()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore.Service.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_service_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_service._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_get_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.GetServiceRequest.pb(metastore.GetServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore.Service.to_json(metastore.Service())
+
+        request = metastore.GetServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.Service()
+
+        client.get_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_service_rest_bad_request(
+    transport: str = "rest", request_type=metastore.GetServiceRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_service(request)
+
+
+def test_get_service_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.Service()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/services/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.Service.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/services/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_service_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_service(
+            metastore.GetServiceRequest(),
+            name="name_value",
+        )
+
+
+def test_get_service_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateServiceRequest,
+        dict,
+    ],
+)
+def test_create_service_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["service"] = {
+        "hive_metastore_config": {
+            "version": "version_value",
+            "config_overrides": {},
+            "kerberos_config": {
+                "keytab": {"cloud_secret": "cloud_secret_value"},
+                "principal": "principal_value",
+                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+            },
+            "endpoint_protocol": 1,
+            "auxiliary_versions": {},
+        },
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "network": "network_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "port": 453,
+        "state": 1,
+        "state_message": "state_message_value",
+        "artifact_gcs_uri": "artifact_gcs_uri_value",
+        "tier": 1,
+        "metadata_integration": {
+            "data_catalog_config": {"enabled": True},
+            "dataplex_config": {"lake_resources": {}},
+        },
+        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+        "uid": "uid_value",
+        "metadata_management_activity": {
+            "metadata_exports": [
+                {
+                    "destination_gcs_uri": "destination_gcs_uri_value",
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "database_dump_type": 1,
+                }
+            ],
+            "restores": [
+                {
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "backup": "backup_value",
+                    "type_": 1,
+                    "details": "details_value",
+                }
+            ],
+        },
+        "release_channel": 1,
+        "encryption_config": {"kms_key": "kms_key_value"},
+        "network_config": {
+            "consumers": [
+                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+            ]
+        },
+        "database_type": 1,
+        "telemetry_config": {"log_format": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_service_rest_required_fields(
+    request_type=metastore.CreateServiceRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["service_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "serviceId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "serviceId" in jsonified_request
+    assert jsonified_request["serviceId"] == request_init["service_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["serviceId"] = "service_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "service_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "serviceId" in jsonified_request
+    assert jsonified_request["serviceId"] == "service_id_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_service(request)
+
+            expected_params = [
+                (
+                    "serviceId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_service_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_service._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "serviceId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "serviceId",
+                "service",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_create_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_create_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.CreateServiceRequest.pb(metastore.CreateServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.CreateServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_service_rest_bad_request(
+    transport: str = "rest", request_type=metastore.CreateServiceRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["service"] = {
+        "hive_metastore_config": {
+            "version": "version_value",
+            "config_overrides": {},
+            "kerberos_config": {
+                "keytab": {"cloud_secret": "cloud_secret_value"},
+                "principal": "principal_value",
+                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+            },
+            "endpoint_protocol": 1,
+            "auxiliary_versions": {},
+        },
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "network": "network_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "port": 453,
+        "state": 1,
+        "state_message": "state_message_value",
+        "artifact_gcs_uri": "artifact_gcs_uri_value",
+        "tier": 1,
+        "metadata_integration": {
+            "data_catalog_config": {"enabled": True},
+            "dataplex_config": {"lake_resources": {}},
+        },
+        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+        "uid": "uid_value",
+        "metadata_management_activity": {
+            "metadata_exports": [
+                {
+                    "destination_gcs_uri": "destination_gcs_uri_value",
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "database_dump_type": 1,
+                }
+            ],
+            "restores": [
+                {
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "backup": "backup_value",
+                    "type_": 1,
+                    "details": "details_value",
+                }
+            ],
+        },
+        "release_channel": 1,
+        "encryption_config": {"kms_key": "kms_key_value"},
+        "network_config": {
+            "consumers": [
+                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+            ]
+        },
+        "database_type": 1,
+        "telemetry_config": {"log_format": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_service(request)
+
+
+def test_create_service_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            service=metastore.Service(
+                hive_metastore_config=metastore.HiveMetastoreConfig(
+                    version="version_value"
+                )
+            ),
+            service_id="service_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*}/services"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_service_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_service(
+            metastore.CreateServiceRequest(),
+            parent="parent_value",
+            service=metastore.Service(
+                hive_metastore_config=metastore.HiveMetastoreConfig(
+                    version="version_value"
+                )
+            ),
+            service_id="service_id_value",
+        )
+
+
+def test_create_service_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.UpdateServiceRequest,
+        dict,
+    ],
+)
+def test_update_service_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+    }
+    request_init["service"] = {
+        "hive_metastore_config": {
+            "version": "version_value",
+            "config_overrides": {},
+            "kerberos_config": {
+                "keytab": {"cloud_secret": "cloud_secret_value"},
+                "principal": "principal_value",
+                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+            },
+            "endpoint_protocol": 1,
+            "auxiliary_versions": {},
+        },
+        "name": "projects/sample1/locations/sample2/services/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "network": "network_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "port": 453,
+        "state": 1,
+        "state_message": "state_message_value",
+        "artifact_gcs_uri": "artifact_gcs_uri_value",
+        "tier": 1,
+        "metadata_integration": {
+            "data_catalog_config": {"enabled": True},
+            "dataplex_config": {"lake_resources": {}},
+        },
+        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+        "uid": "uid_value",
+        "metadata_management_activity": {
+            "metadata_exports": [
+                {
+                    "destination_gcs_uri": "destination_gcs_uri_value",
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "database_dump_type": 1,
+                }
+            ],
+            "restores": [
+                {
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "backup": "backup_value",
+                    "type_": 1,
+                    "details": "details_value",
+                }
+            ],
+        },
+        "release_channel": 1,
+        "encryption_config": {"kms_key": "kms_key_value"},
+        "network_config": {
+            "consumers": [
+                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+            ]
+        },
+        "database_type": 1,
+        "telemetry_config": {"log_format": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_service_rest_required_fields(
+    request_type=metastore.UpdateServiceRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_service._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_service_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_service._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "service",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_update_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_update_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.UpdateServiceRequest.pb(metastore.UpdateServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.UpdateServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_service_rest_bad_request(
+    transport: str = "rest", request_type=metastore.UpdateServiceRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+    }
+    request_init["service"] = {
+        "hive_metastore_config": {
+            "version": "version_value",
+            "config_overrides": {},
+            "kerberos_config": {
+                "keytab": {"cloud_secret": "cloud_secret_value"},
+                "principal": "principal_value",
+                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+            },
+            "endpoint_protocol": 1,
+            "auxiliary_versions": {},
+        },
+        "name": "projects/sample1/locations/sample2/services/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "network": "network_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "port": 453,
+        "state": 1,
+        "state_message": "state_message_value",
+        "artifact_gcs_uri": "artifact_gcs_uri_value",
+        "tier": 1,
+        "metadata_integration": {
+            "data_catalog_config": {"enabled": True},
+            "dataplex_config": {"lake_resources": {}},
+        },
+        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+        "uid": "uid_value",
+        "metadata_management_activity": {
+            "metadata_exports": [
+                {
+                    "destination_gcs_uri": "destination_gcs_uri_value",
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "database_dump_type": 1,
+                }
+            ],
+            "restores": [
+                {
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "backup": "backup_value",
+                    "type_": 1,
+                    "details": "details_value",
+                }
+            ],
+        },
+        "release_channel": 1,
+        "encryption_config": {"kms_key": "kms_key_value"},
+        "network_config": {
+            "consumers": [
+                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+            ]
+        },
+        "database_type": 1,
+        "telemetry_config": {"log_format": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_service(request)
+
+
+def test_update_service_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service=metastore.Service(
+                hive_metastore_config=metastore.HiveMetastoreConfig(
+                    version="version_value"
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{service.name=projects/*/locations/*/services/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_service_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_service(
+            metastore.UpdateServiceRequest(),
+            service=metastore.Service(
+                hive_metastore_config=metastore.HiveMetastoreConfig(
+                    version="version_value"
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_service_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.DeleteServiceRequest,
+        dict,
+    ],
+)
+def test_delete_service_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_service_rest_required_fields(
+    request_type=metastore.DeleteServiceRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_service._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_service_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_service._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_delete_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_delete_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.DeleteServiceRequest.pb(metastore.DeleteServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.DeleteServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_service_rest_bad_request(
+    transport: str = "rest", request_type=metastore.DeleteServiceRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_service(request)
+
+
+def test_delete_service_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/services/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/services/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_service_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_service(
+            metastore.DeleteServiceRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_service_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListMetadataImportsRequest,
+        dict,
+    ],
+)
+def test_list_metadata_imports_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListMetadataImportsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.ListMetadataImportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_metadata_imports(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMetadataImportsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_metadata_imports_rest_required_fields(
+    request_type=metastore.ListMetadataImportsRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_metadata_imports._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_metadata_imports._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.ListMetadataImportsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore.ListMetadataImportsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_metadata_imports(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_metadata_imports_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_metadata_imports._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_metadata_imports_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_metadata_imports"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_list_metadata_imports"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ListMetadataImportsRequest.pb(
+            metastore.ListMetadataImportsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore.ListMetadataImportsResponse.to_json(
+            metastore.ListMetadataImportsResponse()
+        )
+
+        request = metastore.ListMetadataImportsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.ListMetadataImportsResponse()
+
+        client.list_metadata_imports(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_metadata_imports_rest_bad_request(
+    transport: str = "rest", request_type=metastore.ListMetadataImportsRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_metadata_imports(request)
+
+
+def test_list_metadata_imports_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListMetadataImportsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.ListMetadataImportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_metadata_imports(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/services/*}/metadataImports"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_metadata_imports_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_metadata_imports(
+            metastore.ListMetadataImportsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_metadata_imports_rest_pager(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            metastore.ListMetadataImportsResponse(
+                metadata_imports=[
+                    metastore.MetadataImport(),
+                    metastore.MetadataImport(),
+                    metastore.MetadataImport(),
+                ],
+                next_page_token="abc",
+            ),
+            metastore.ListMetadataImportsResponse(
+                metadata_imports=[],
+                next_page_token="def",
+            ),
+            metastore.ListMetadataImportsResponse(
+                metadata_imports=[
+                    metastore.MetadataImport(),
+                ],
+                next_page_token="ghi",
+            ),
+            metastore.ListMetadataImportsResponse(
+                metadata_imports=[
+                    metastore.MetadataImport(),
+                    metastore.MetadataImport(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            metastore.ListMetadataImportsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        pager = client.list_metadata_imports(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, metastore.MetadataImport) for i in results)
+
+        pages = list(client.list_metadata_imports(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetMetadataImportRequest,
+        dict,
+    ],
+)
+def test_get_metadata_import_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.MetadataImport(
+            name="name_value",
+            description="description_value",
+            state=metastore.MetadataImport.State.RUNNING,
+            database_dump=metastore.MetadataImport.DatabaseDump(
+                database_type=metastore.MetadataImport.DatabaseDump.DatabaseType.MYSQL
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.MetadataImport.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_metadata_import(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore.MetadataImport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == metastore.MetadataImport.State.RUNNING
+
+
+def test_get_metadata_import_rest_required_fields(
+    request_type=metastore.GetMetadataImportRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_metadata_import._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_metadata_import._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.MetadataImport()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore.MetadataImport.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_metadata_import(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_metadata_import_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_metadata_import._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_metadata_import_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_metadata_import"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_get_metadata_import"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.GetMetadataImportRequest.pb(
+            metastore.GetMetadataImportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore.MetadataImport.to_json(
+            metastore.MetadataImport()
+        )
+
+        request = metastore.GetMetadataImportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.MetadataImport()
+
+        client.get_metadata_import(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_metadata_import_rest_bad_request(
+    transport: str = "rest", request_type=metastore.GetMetadataImportRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_metadata_import(request)
+
+
+def test_get_metadata_import_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.MetadataImport()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.MetadataImport.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_metadata_import(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/services/*/metadataImports/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_metadata_import_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_metadata_import(
+            metastore.GetMetadataImportRequest(),
+            name="name_value",
+        )
+
+
+def test_get_metadata_import_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateMetadataImportRequest,
+        dict,
+    ],
+)
+def test_create_metadata_import_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request_init["metadata_import"] = {
+        "database_dump": {
+            "database_type": 1,
+            "gcs_uri": "gcs_uri_value",
+            "source_database": "source_database_value",
+            "type_": 1,
+        },
+        "name": "name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "end_time": {},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_metadata_import(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_metadata_import_rest_required_fields(
+    request_type=metastore.CreateMetadataImportRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["metadata_import_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "metadataImportId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_metadata_import._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "metadataImportId" in jsonified_request
+    assert jsonified_request["metadataImportId"] == request_init["metadata_import_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["metadataImportId"] = "metadata_import_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_metadata_import._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "metadata_import_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "metadataImportId" in jsonified_request
+    assert jsonified_request["metadataImportId"] == "metadata_import_id_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_metadata_import(request)
+
+            expected_params = [
+                (
+                    "metadataImportId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_metadata_import_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_metadata_import._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "metadataImportId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "metadataImportId",
+                "metadataImport",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_metadata_import_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_create_metadata_import"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_create_metadata_import"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.CreateMetadataImportRequest.pb(
+            metastore.CreateMetadataImportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.CreateMetadataImportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_metadata_import(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_metadata_import_rest_bad_request(
+    transport: str = "rest", request_type=metastore.CreateMetadataImportRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request_init["metadata_import"] = {
+        "database_dump": {
+            "database_type": 1,
+            "gcs_uri": "gcs_uri_value",
+            "source_database": "source_database_value",
+            "type_": 1,
+        },
+        "name": "name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "end_time": {},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_metadata_import(request)
+
+
+def test_create_metadata_import_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            metadata_import=metastore.MetadataImport(
+                database_dump=metastore.MetadataImport.DatabaseDump(
+                    database_type=metastore.MetadataImport.DatabaseDump.DatabaseType.MYSQL
+                )
+            ),
+            metadata_import_id="metadata_import_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_metadata_import(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/services/*}/metadataImports"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_metadata_import_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_metadata_import(
+            metastore.CreateMetadataImportRequest(),
+            parent="parent_value",
+            metadata_import=metastore.MetadataImport(
+                database_dump=metastore.MetadataImport.DatabaseDump(
+                    database_type=metastore.MetadataImport.DatabaseDump.DatabaseType.MYSQL
+                )
+            ),
+            metadata_import_id="metadata_import_id_value",
+        )
+
+
+def test_create_metadata_import_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.UpdateMetadataImportRequest,
+        dict,
+    ],
+)
+def test_update_metadata_import_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "metadata_import": {
+            "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+        }
+    }
+    request_init["metadata_import"] = {
+        "database_dump": {
+            "database_type": 1,
+            "gcs_uri": "gcs_uri_value",
+            "source_database": "source_database_value",
+            "type_": 1,
+        },
+        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "end_time": {},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_metadata_import(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_metadata_import_rest_required_fields(
+    request_type=metastore.UpdateMetadataImportRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_metadata_import._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_metadata_import._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_metadata_import(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_metadata_import_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_metadata_import._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "metadataImport",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_metadata_import_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_update_metadata_import"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_update_metadata_import"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.UpdateMetadataImportRequest.pb(
+            metastore.UpdateMetadataImportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.UpdateMetadataImportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_metadata_import(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_metadata_import_rest_bad_request(
+    transport: str = "rest", request_type=metastore.UpdateMetadataImportRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "metadata_import": {
+            "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+        }
+    }
+    request_init["metadata_import"] = {
+        "database_dump": {
+            "database_type": 1,
+            "gcs_uri": "gcs_uri_value",
+            "source_database": "source_database_value",
+            "type_": 1,
+        },
+        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "end_time": {},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_metadata_import(request)
+
+
+def test_update_metadata_import_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "metadata_import": {
+                "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            metadata_import=metastore.MetadataImport(
+                database_dump=metastore.MetadataImport.DatabaseDump(
+                    database_type=metastore.MetadataImport.DatabaseDump.DatabaseType.MYSQL
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_metadata_import(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{metadata_import.name=projects/*/locations/*/services/*/metadataImports/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_metadata_import_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_metadata_import(
+            metastore.UpdateMetadataImportRequest(),
+            metadata_import=metastore.MetadataImport(
+                database_dump=metastore.MetadataImport.DatabaseDump(
+                    database_type=metastore.MetadataImport.DatabaseDump.DatabaseType.MYSQL
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_metadata_import_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ExportMetadataRequest,
+        dict,
+    ],
+)
+def test_export_metadata_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_metadata(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_export_metadata_rest_required_fields(
+    request_type=metastore.ExportMetadataRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.export_metadata(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_export_metadata_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.export_metadata._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("service",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_metadata_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_export_metadata"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_export_metadata"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ExportMetadataRequest.pb(
+            metastore.ExportMetadataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.ExportMetadataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_metadata(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_metadata_rest_bad_request(
+    transport: str = "rest", request_type=metastore.ExportMetadataRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.export_metadata(request)
+
+
+def test_export_metadata_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.RestoreServiceRequest,
+        dict,
+    ],
+)
+def test_restore_service_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.restore_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_restore_service_rest_required_fields(
+    request_type=metastore.RestoreServiceRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request_init["backup"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restore_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+    jsonified_request["backup"] = "backup_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restore_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+    assert "backup" in jsonified_request
+    assert jsonified_request["backup"] == "backup_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.restore_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_restore_service_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.restore_service._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "service",
+                "backup",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_restore_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_restore_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_restore_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.RestoreServiceRequest.pb(
+            metastore.RestoreServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.RestoreServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.restore_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_restore_service_rest_bad_request(
+    transport: str = "rest", request_type=metastore.RestoreServiceRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.restore_service(request)
+
+
+def test_restore_service_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "service": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service="service_value",
+            backup="backup_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.restore_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{service=projects/*/locations/*/services/*}:restore"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_restore_service_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.restore_service(
+            metastore.RestoreServiceRequest(),
+            service="service_value",
+            backup="backup_value",
+        )
+
+
+def test_restore_service_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListBackupsRequest,
+        dict,
+    ],
+)
+def test_list_backups_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListBackupsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_backups_rest_required_fields(request_type=metastore.ListBackupsRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backups._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backups._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.ListBackupsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore.ListBackupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_backups(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_backups_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_backups._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backups_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_backups"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_list_backups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ListBackupsRequest.pb(metastore.ListBackupsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore.ListBackupsResponse.to_json(
+            metastore.ListBackupsResponse()
+        )
+
+        request = metastore.ListBackupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.ListBackupsResponse()
+
+        client.list_backups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_backups_rest_bad_request(
+    transport: str = "rest", request_type=metastore.ListBackupsRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_backups(request)
+
+
+def test_list_backups_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListBackupsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_backups(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/services/*}/backups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_backups_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_backups(
+            metastore.ListBackupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_backups_rest_pager(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            metastore.ListBackupsResponse(
+                backups=[
+                    metastore.Backup(),
+                    metastore.Backup(),
+                    metastore.Backup(),
+                ],
+                next_page_token="abc",
+            ),
+            metastore.ListBackupsResponse(
+                backups=[],
+                next_page_token="def",
+            ),
+            metastore.ListBackupsResponse(
+                backups=[
+                    metastore.Backup(),
+                ],
+                next_page_token="ghi",
+            ),
+            metastore.ListBackupsResponse(
+                backups=[
+                    metastore.Backup(),
+                    metastore.Backup(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(metastore.ListBackupsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        pager = client.list_backups(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, metastore.Backup) for i in results)
+
+        pages = list(client.list_backups(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetBackupRequest,
+        dict,
+    ],
+)
+def test_get_backup_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.Backup(
+            name="name_value",
+            state=metastore.Backup.State.CREATING,
+            description="description_value",
+            restoring_services=["restoring_services_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore.Backup)
+    assert response.name == "name_value"
+    assert response.state == metastore.Backup.State.CREATING
+    assert response.description == "description_value"
+    assert response.restoring_services == ["restoring_services_value"]
+
+
+def test_get_backup_rest_required_fields(request_type=metastore.GetBackupRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.Backup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore.Backup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_backup(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_backup_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_backup"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_get_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.GetBackupRequest.pb(metastore.GetBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore.Backup.to_json(metastore.Backup())
+
+        request = metastore.GetBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.Backup()
+
+        client.get_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_rest_bad_request(
+    transport: str = "rest", request_type=metastore.GetBackupRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_backup(request)
+
+
+def test_get_backup_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.Backup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/services/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_backup_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup(
+            metastore.GetBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_get_backup_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateBackupRequest,
+        dict,
+    ],
+)
+def test_create_backup_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request_init["backup"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "state": 1,
+        "service_revision": {
+            "hive_metastore_config": {
+                "version": "version_value",
+                "config_overrides": {},
+                "kerberos_config": {
+                    "keytab": {"cloud_secret": "cloud_secret_value"},
+                    "principal": "principal_value",
+                    "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+                },
+                "endpoint_protocol": 1,
+                "auxiliary_versions": {},
+            },
+            "name": "name_value",
+            "create_time": {},
+            "update_time": {},
+            "labels": {},
+            "network": "network_value",
+            "endpoint_uri": "endpoint_uri_value",
+            "port": 453,
+            "state": 1,
+            "state_message": "state_message_value",
+            "artifact_gcs_uri": "artifact_gcs_uri_value",
+            "tier": 1,
+            "metadata_integration": {
+                "data_catalog_config": {"enabled": True},
+                "dataplex_config": {"lake_resources": {}},
+            },
+            "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+            "uid": "uid_value",
+            "metadata_management_activity": {
+                "metadata_exports": [
+                    {
+                        "destination_gcs_uri": "destination_gcs_uri_value",
+                        "start_time": {},
+                        "end_time": {},
+                        "state": 1,
+                        "database_dump_type": 1,
+                    }
+                ],
+                "restores": [
+                    {
+                        "start_time": {},
+                        "end_time": {},
+                        "state": 1,
+                        "backup": "backup_value",
+                        "type_": 1,
+                        "details": "details_value",
+                    }
+                ],
+            },
+            "release_channel": 1,
+            "encryption_config": {"kms_key": "kms_key_value"},
+            "network_config": {
+                "consumers": [
+                    {
+                        "subnetwork": "subnetwork_value",
+                        "endpoint_uri": "endpoint_uri_value",
+                    }
+                ]
+            },
+            "database_type": 1,
+            "telemetry_config": {"log_format": 1},
+        },
+        "description": "description_value",
+        "restoring_services": [
+            "restoring_services_value1",
+            "restoring_services_value2",
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_backup_rest_required_fields(request_type=metastore.CreateBackupRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["backup_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "backupId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "backupId" in jsonified_request
+    assert jsonified_request["backupId"] == request_init["backup_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["backupId"] = "backup_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "backup_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "backupId" in jsonified_request
+    assert jsonified_request["backupId"] == "backup_id_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_backup(request)
+
+            expected_params = [
+                (
+                    "backupId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_backup_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "backupId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "backupId",
+                "backup",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_backup_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_create_backup"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_create_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.CreateBackupRequest.pb(metastore.CreateBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.CreateBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_backup_rest_bad_request(
+    transport: str = "rest", request_type=metastore.CreateBackupRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request_init["backup"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "state": 1,
+        "service_revision": {
+            "hive_metastore_config": {
+                "version": "version_value",
+                "config_overrides": {},
+                "kerberos_config": {
+                    "keytab": {"cloud_secret": "cloud_secret_value"},
+                    "principal": "principal_value",
+                    "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+                },
+                "endpoint_protocol": 1,
+                "auxiliary_versions": {},
+            },
+            "name": "name_value",
+            "create_time": {},
+            "update_time": {},
+            "labels": {},
+            "network": "network_value",
+            "endpoint_uri": "endpoint_uri_value",
+            "port": 453,
+            "state": 1,
+            "state_message": "state_message_value",
+            "artifact_gcs_uri": "artifact_gcs_uri_value",
+            "tier": 1,
+            "metadata_integration": {
+                "data_catalog_config": {"enabled": True},
+                "dataplex_config": {"lake_resources": {}},
+            },
+            "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+            "uid": "uid_value",
+            "metadata_management_activity": {
+                "metadata_exports": [
+                    {
+                        "destination_gcs_uri": "destination_gcs_uri_value",
+                        "start_time": {},
+                        "end_time": {},
+                        "state": 1,
+                        "database_dump_type": 1,
+                    }
+                ],
+                "restores": [
+                    {
+                        "start_time": {},
+                        "end_time": {},
+                        "state": 1,
+                        "backup": "backup_value",
+                        "type_": 1,
+                        "details": "details_value",
+                    }
+                ],
+            },
+            "release_channel": 1,
+            "encryption_config": {"kms_key": "kms_key_value"},
+            "network_config": {
+                "consumers": [
+                    {
+                        "subnetwork": "subnetwork_value",
+                        "endpoint_uri": "endpoint_uri_value",
+                    }
+                ]
+            },
+            "database_type": 1,
+            "telemetry_config": {"log_format": 1},
+        },
+        "description": "description_value",
+        "restoring_services": [
+            "restoring_services_value1",
+            "restoring_services_value2",
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_backup(request)
+
+
+def test_create_backup_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            backup=metastore.Backup(name="name_value"),
+            backup_id="backup_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/services/*}/backups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_backup_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_backup(
+            metastore.CreateBackupRequest(),
+            parent="parent_value",
+            backup=metastore.Backup(name="name_value"),
+            backup_id="backup_id_value",
+        )
+
+
+def test_create_backup_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.DeleteBackupRequest,
+        dict,
+    ],
+)
+def test_delete_backup_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_backup_rest_required_fields(request_type=metastore.DeleteBackupRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_backup(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_backup_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_backup_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_delete_backup"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_delete_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.DeleteBackupRequest.pb(metastore.DeleteBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.DeleteBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_backup_rest_bad_request(
+    transport: str = "rest", request_type=metastore.DeleteBackupRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_backup(request)
+
+
+def test_delete_backup_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/services/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_backup_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_backup(
+            metastore.DeleteBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_backup_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.RemoveIamPolicyRequest,
+        dict,
+    ],
+)
+def test_remove_iam_policy_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/services/sample3/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.RemoveIamPolicyResponse(
+            success=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.remove_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore.RemoveIamPolicyResponse)
+    assert response.success is True
+
+
+def test_remove_iam_policy_rest_required_fields(
+    request_type=metastore.RemoveIamPolicyRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.RemoveIamPolicyResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.remove_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_iam_policy_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("resource",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_remove_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_remove_iam_policy"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_remove_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.RemoveIamPolicyRequest.pb(
+            metastore.RemoveIamPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metastore.RemoveIamPolicyResponse.to_json(
+            metastore.RemoveIamPolicyResponse()
+        )
+
+        request = metastore.RemoveIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.RemoveIamPolicyResponse()
+
+        client.remove_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_remove_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=metastore.RemoveIamPolicyRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/services/sample3/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.remove_iam_policy(request)
+
+
+def test_remove_iam_policy_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.QueryMetadataRequest,
+        dict,
+    ],
+)
+def test_query_metadata_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.query_metadata(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_query_metadata_rest_required_fields(
+    request_type=metastore.QueryMetadataRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request_init["query"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+    jsonified_request["query"] = "query_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == "query_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.query_metadata(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_query_metadata_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.query_metadata._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "service",
+                "query",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_query_metadata_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_query_metadata"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_query_metadata"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.QueryMetadataRequest.pb(metastore.QueryMetadataRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.QueryMetadataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.query_metadata(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_query_metadata_rest_bad_request(
+    transport: str = "rest", request_type=metastore.QueryMetadataRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.query_metadata(request)
+
+
+def test_query_metadata_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.MoveTableToDatabaseRequest,
+        dict,
+    ],
+)
+def test_move_table_to_database_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.move_table_to_database(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_move_table_to_database_rest_required_fields(
+    request_type=metastore.MoveTableToDatabaseRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request_init["table_name"] = ""
+    request_init["db_name"] = ""
+    request_init["destination_db_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_table_to_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+    jsonified_request["tableName"] = "table_name_value"
+    jsonified_request["dbName"] = "db_name_value"
+    jsonified_request["destinationDbName"] = "destination_db_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_table_to_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+    assert "tableName" in jsonified_request
+    assert jsonified_request["tableName"] == "table_name_value"
+    assert "dbName" in jsonified_request
+    assert jsonified_request["dbName"] == "db_name_value"
+    assert "destinationDbName" in jsonified_request
+    assert jsonified_request["destinationDbName"] == "destination_db_name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.move_table_to_database(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_move_table_to_database_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.move_table_to_database._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "service",
+                "tableName",
+                "dbName",
+                "destinationDbName",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_move_table_to_database_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_move_table_to_database"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_move_table_to_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.MoveTableToDatabaseRequest.pb(
+            metastore.MoveTableToDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.MoveTableToDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.move_table_to_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_move_table_to_database_rest_bad_request(
+    transport: str = "rest", request_type=metastore.MoveTableToDatabaseRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.move_table_to_database(request)
+
+
+def test_move_table_to_database_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.AlterMetadataResourceLocationRequest,
+        dict,
+    ],
+)
+def test_alter_metadata_resource_location_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.alter_metadata_resource_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_alter_metadata_resource_location_rest_required_fields(
+    request_type=metastore.AlterMetadataResourceLocationRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request_init["resource_name"] = ""
+    request_init["location_uri"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).alter_metadata_resource_location._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+    jsonified_request["resourceName"] = "resource_name_value"
+    jsonified_request["locationUri"] = "location_uri_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).alter_metadata_resource_location._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+    assert "resourceName" in jsonified_request
+    assert jsonified_request["resourceName"] == "resource_name_value"
+    assert "locationUri" in jsonified_request
+    assert jsonified_request["locationUri"] == "location_uri_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.alter_metadata_resource_location(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_alter_metadata_resource_location_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.alter_metadata_resource_location._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "service",
+                "resourceName",
+                "locationUri",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_alter_metadata_resource_location_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_alter_metadata_resource_location",
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "pre_alter_metadata_resource_location",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.AlterMetadataResourceLocationRequest.pb(
+            metastore.AlterMetadataResourceLocationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = metastore.AlterMetadataResourceLocationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.alter_metadata_resource_location(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_alter_metadata_resource_location_rest_bad_request(
+    transport: str = "rest", request_type=metastore.AlterMetadataResourceLocationRequest
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.alter_metadata_resource_location(request)
+
+
+def test_alter_metadata_resource_location_rest_error():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataprocMetastoreGrpcTransport(
@@ -5624,6 +11409,7 @@ def test_transport_get_channel():
     [
         transports.DataprocMetastoreGrpcTransport,
         transports.DataprocMetastoreGrpcAsyncIOTransport,
+        transports.DataprocMetastoreRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -5638,6 +11424,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -5790,6 +11577,7 @@ def test_dataproc_metastore_transport_auth_adc(transport_class):
     [
         transports.DataprocMetastoreGrpcTransport,
         transports.DataprocMetastoreGrpcAsyncIOTransport,
+        transports.DataprocMetastoreRestTransport,
     ],
 )
 def test_dataproc_metastore_transport_auth_gdch_credentials(transport_class):
@@ -5887,11 +11675,40 @@ def test_dataproc_metastore_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
+def test_dataproc_metastore_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.DataprocMetastoreRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_dataproc_metastore_rest_lro_client():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_dataproc_metastore_host_no_port(transport_name):
@@ -5902,7 +11719,11 @@ def test_dataproc_metastore_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("metastore.googleapis.com:443")
+    assert client.transport._host == (
+        "metastore.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://metastore.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -5910,6 +11731,7 @@ def test_dataproc_metastore_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_dataproc_metastore_host_with_port(transport_name):
@@ -5920,7 +11742,87 @@ def test_dataproc_metastore_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("metastore.googleapis.com:8000")
+    assert client.transport._host == (
+        "metastore.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://metastore.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_dataproc_metastore_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = DataprocMetastoreClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = DataprocMetastoreClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_services._session
+    session2 = client2.transport.list_services._session
+    assert session1 != session2
+    session1 = client1.transport.get_service._session
+    session2 = client2.transport.get_service._session
+    assert session1 != session2
+    session1 = client1.transport.create_service._session
+    session2 = client2.transport.create_service._session
+    assert session1 != session2
+    session1 = client1.transport.update_service._session
+    session2 = client2.transport.update_service._session
+    assert session1 != session2
+    session1 = client1.transport.delete_service._session
+    session2 = client2.transport.delete_service._session
+    assert session1 != session2
+    session1 = client1.transport.list_metadata_imports._session
+    session2 = client2.transport.list_metadata_imports._session
+    assert session1 != session2
+    session1 = client1.transport.get_metadata_import._session
+    session2 = client2.transport.get_metadata_import._session
+    assert session1 != session2
+    session1 = client1.transport.create_metadata_import._session
+    session2 = client2.transport.create_metadata_import._session
+    assert session1 != session2
+    session1 = client1.transport.update_metadata_import._session
+    session2 = client2.transport.update_metadata_import._session
+    assert session1 != session2
+    session1 = client1.transport.export_metadata._session
+    session2 = client2.transport.export_metadata._session
+    assert session1 != session2
+    session1 = client1.transport.restore_service._session
+    session2 = client2.transport.restore_service._session
+    assert session1 != session2
+    session1 = client1.transport.list_backups._session
+    session2 = client2.transport.list_backups._session
+    assert session1 != session2
+    session1 = client1.transport.get_backup._session
+    session2 = client2.transport.get_backup._session
+    assert session1 != session2
+    session1 = client1.transport.create_backup._session
+    session2 = client2.transport.create_backup._session
+    assert session1 != session2
+    session1 = client1.transport.delete_backup._session
+    session2 = client2.transport.delete_backup._session
+    assert session1 != session2
+    session1 = client1.transport.remove_iam_policy._session
+    session2 = client2.transport.remove_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.query_metadata._session
+    session2 = client2.transport.query_metadata._session
+    assert session1 != session2
+    session1 = client1.transport.move_table_to_database._session
+    session2 = client2.transport.move_table_to_database._session
+    assert session1 != session2
+    session1 = client1.transport.alter_metadata_resource_location._session
+    session2 = client2.transport.alter_metadata_resource_location._session
+    assert session1 != session2
 
 
 def test_dataproc_metastore_grpc_transport_channel():
@@ -6386,6 +12288,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -6403,6 +12306,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
