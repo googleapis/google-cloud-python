@@ -216,6 +216,111 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "BareMetalSolutionClient",
+          "rpcs": {
+            "DetachLun": {
+              "methods": [
+                "detach_lun"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetLun": {
+              "methods": [
+                "get_lun"
+              ]
+            },
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            },
+            "GetNfsShare": {
+              "methods": [
+                "get_nfs_share"
+              ]
+            },
+            "GetVolume": {
+              "methods": [
+                "get_volume"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListLuns": {
+              "methods": [
+                "list_luns"
+              ]
+            },
+            "ListNetworkUsage": {
+              "methods": [
+                "list_network_usage"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
+              ]
+            },
+            "ListNfsShares": {
+              "methods": [
+                "list_nfs_shares"
+              ]
+            },
+            "ListVolumes": {
+              "methods": [
+                "list_volumes"
+              ]
+            },
+            "ResetInstance": {
+              "methods": [
+                "reset_instance"
+              ]
+            },
+            "ResizeVolume": {
+              "methods": [
+                "resize_volume"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            },
+            "UpdateNetwork": {
+              "methods": [
+                "update_network"
+              ]
+            },
+            "UpdateNfsShare": {
+              "methods": [
+                "update_nfs_share"
+              ]
+            },
+            "UpdateVolume": {
+              "methods": [
+                "update_volume"
+              ]
+            }
+          }
         }
       }
     }

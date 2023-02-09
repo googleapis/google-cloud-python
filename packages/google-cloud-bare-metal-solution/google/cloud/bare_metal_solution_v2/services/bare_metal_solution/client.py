@@ -66,6 +66,7 @@ from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from .transports.base import DEFAULT_CLIENT_INFO, BareMetalSolutionTransport
 from .transports.grpc import BareMetalSolutionGrpcTransport
 from .transports.grpc_asyncio import BareMetalSolutionGrpcAsyncIOTransport
+from .transports.rest import BareMetalSolutionRestTransport
 
 
 class BareMetalSolutionClientMeta(type):
@@ -81,6 +82,7 @@ class BareMetalSolutionClientMeta(type):
     )  # type: Dict[str, Type[BareMetalSolutionTransport]]
     _transport_registry["grpc"] = BareMetalSolutionGrpcTransport
     _transport_registry["grpc_asyncio"] = BareMetalSolutionGrpcAsyncIOTransport
+    _transport_registry["rest"] = BareMetalSolutionRestTransport
 
     def get_transport_class(
         cls,

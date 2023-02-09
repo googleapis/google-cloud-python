@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -42,12 +44,15 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import (
     BareMetalSolutionAsyncClient,
@@ -117,6 +122,7 @@ def test__get_default_mtls_endpoint():
     [
         (BareMetalSolutionClient, "grpc"),
         (BareMetalSolutionAsyncClient, "grpc_asyncio"),
+        (BareMetalSolutionClient, "rest"),
     ],
 )
 def test_bare_metal_solution_client_from_service_account_info(
@@ -132,7 +138,11 @@ def test_bare_metal_solution_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("baremetalsolution.googleapis.com:443")
+        assert client.transport._host == (
+            "baremetalsolution.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://baremetalsolution.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -140,6 +150,7 @@ def test_bare_metal_solution_client_from_service_account_info(
     [
         (transports.BareMetalSolutionGrpcTransport, "grpc"),
         (transports.BareMetalSolutionGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.BareMetalSolutionRestTransport, "rest"),
     ],
 )
 def test_bare_metal_solution_client_service_account_always_use_jwt(
@@ -165,6 +176,7 @@ def test_bare_metal_solution_client_service_account_always_use_jwt(
     [
         (BareMetalSolutionClient, "grpc"),
         (BareMetalSolutionAsyncClient, "grpc_asyncio"),
+        (BareMetalSolutionClient, "rest"),
     ],
 )
 def test_bare_metal_solution_client_from_service_account_file(
@@ -187,13 +199,18 @@ def test_bare_metal_solution_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("baremetalsolution.googleapis.com:443")
+        assert client.transport._host == (
+            "baremetalsolution.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://baremetalsolution.googleapis.com"
+        )
 
 
 def test_bare_metal_solution_client_get_transport_class():
     transport = BareMetalSolutionClient.get_transport_class()
     available_transports = [
         transports.BareMetalSolutionGrpcTransport,
+        transports.BareMetalSolutionRestTransport,
     ]
     assert transport in available_transports
 
@@ -210,6 +227,7 @@ def test_bare_metal_solution_client_get_transport_class():
             transports.BareMetalSolutionGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (BareMetalSolutionClient, transports.BareMetalSolutionRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -363,6 +381,18 @@ def test_bare_metal_solution_client_client_options(
             BareMetalSolutionAsyncClient,
             transports.BareMetalSolutionGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            BareMetalSolutionClient,
+            transports.BareMetalSolutionRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            BareMetalSolutionClient,
+            transports.BareMetalSolutionRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -564,6 +594,7 @@ def test_bare_metal_solution_client_get_mtls_endpoint_and_cert_source(client_cla
             transports.BareMetalSolutionGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (BareMetalSolutionClient, transports.BareMetalSolutionRestTransport, "rest"),
     ],
 )
 def test_bare_metal_solution_client_client_options_scopes(
@@ -603,6 +634,12 @@ def test_bare_metal_solution_client_client_options_scopes(
             transports.BareMetalSolutionGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            BareMetalSolutionClient,
+            transports.BareMetalSolutionRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -6472,6 +6509,6058 @@ async def test_update_nfs_share_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.ListInstancesRequest,
+        dict,
+    ],
+)
+def test_list_instances_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance.ListInstancesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = instance.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_instances(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInstancesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_instances_rest_required_fields(
+    request_type=instance.ListInstancesRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_instances._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_instances._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = instance.ListInstancesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = instance.ListInstancesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_instances(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_instances_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_instances._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_instances_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_instances"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.ListInstancesRequest.pb(instance.ListInstancesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = instance.ListInstancesResponse.to_json(
+            instance.ListInstancesResponse()
+        )
+
+        request = instance.ListInstancesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = instance.ListInstancesResponse()
+
+        client.list_instances(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_instances_rest_bad_request(
+    transport: str = "rest", request_type=instance.ListInstancesRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_instances(request)
+
+
+def test_list_instances_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance.ListInstancesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = instance.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_instances(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/instances" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_instances_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_instances(
+            instance.ListInstancesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_instances_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            instance.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
+                next_page_token="abc",
+            ),
+            instance.ListInstancesResponse(
+                instances=[],
+                next_page_token="def",
+            ),
+            instance.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            instance.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(instance.ListInstancesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_instances(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, instance.Instance) for i in results)
+
+        pages = list(client.list_instances(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.GetInstanceRequest,
+        dict,
+    ],
+)
+def test_get_instance_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance.Instance(
+            name="name_value",
+            id="id_value",
+            machine_type="machine_type_value",
+            state=instance.Instance.State.PROVISIONING,
+            hyperthreading_enabled=True,
+            interactive_serial_console_enabled=True,
+            os_image="os_image_value",
+            pod="pod_value",
+            network_template="network_template_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, instance.Instance)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.machine_type == "machine_type_value"
+    assert response.state == instance.Instance.State.PROVISIONING
+    assert response.hyperthreading_enabled is True
+    assert response.interactive_serial_console_enabled is True
+    assert response.os_image == "os_image_value"
+    assert response.pod == "pod_value"
+    assert response.network_template == "network_template_value"
+
+
+def test_get_instance_rest_required_fields(request_type=instance.GetInstanceRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = instance.Instance()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = instance.Instance.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_instance_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_instance"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_get_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.GetInstanceRequest.pb(instance.GetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = instance.Instance.to_json(instance.Instance())
+
+        request = instance.GetInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = instance.Instance()
+
+        client.get_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_instance_rest_bad_request(
+    transport: str = "rest", request_type=instance.GetInstanceRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_instance(request)
+
+
+def test_get_instance_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance.Instance()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/instances/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_instance_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_instance(
+            instance.GetInstanceRequest(),
+            name="name_value",
+        )
+
+
+def test_get_instance_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_instance.UpdateInstanceRequest,
+        dict,
+    ],
+)
+def test_update_instance_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    }
+    request_init["instance"] = {
+        "name": "projects/sample1/locations/sample2/instances/sample3",
+        "id": "id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "machine_type": "machine_type_value",
+        "state": 1,
+        "hyperthreading_enabled": True,
+        "labels": {},
+        "luns": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "state": 1,
+                "size_gb": 739,
+                "multiprotocol_type": 1,
+                "storage_volume": "storage_volume_value",
+                "shareable": True,
+                "boot_lun": True,
+                "storage_type": 1,
+                "wwid": "wwid_value",
+            }
+        ],
+        "networks": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "type_": 1,
+                "ip_address": "ip_address_value",
+                "mac_address": ["mac_address_value1", "mac_address_value2"],
+                "state": 1,
+                "vlan_id": "vlan_id_value",
+                "cidr": "cidr_value",
+                "vrf": {
+                    "name": "name_value",
+                    "state": 1,
+                    "qos_policy": {"bandwidth_gbps": 0.1472},
+                    "vlan_attachments": [
+                        {
+                            "peer_vlan_id": 1256,
+                            "peer_ip": "peer_ip_value",
+                            "router_ip": "router_ip_value",
+                        }
+                    ],
+                },
+                "labels": {},
+                "services_cidr": "services_cidr_value",
+                "reservations": [
+                    {
+                        "start_address": "start_address_value",
+                        "end_address": "end_address_value",
+                        "note": "note_value",
+                    }
+                ],
+            }
+        ],
+        "interactive_serial_console_enabled": True,
+        "os_image": "os_image_value",
+        "pod": "pod_value",
+        "network_template": "network_template_value",
+        "logical_interfaces": [
+            {
+                "logical_network_interfaces": [
+                    {
+                        "network": "network_value",
+                        "ip_address": "ip_address_value",
+                        "default_gateway": True,
+                        "network_type": 1,
+                        "id": "id_value",
+                    }
+                ],
+                "name": "name_value",
+                "interface_index": 1576,
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_instance_rest_required_fields(
+    request_type=gcb_instance.UpdateInstanceRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_instance._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_instance_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("instance",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_instance_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_update_instance"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_update_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_instance.UpdateInstanceRequest.pb(
+            gcb_instance.UpdateInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_instance.UpdateInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_instance_rest_bad_request(
+    transport: str = "rest", request_type=gcb_instance.UpdateInstanceRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    }
+    request_init["instance"] = {
+        "name": "projects/sample1/locations/sample2/instances/sample3",
+        "id": "id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "machine_type": "machine_type_value",
+        "state": 1,
+        "hyperthreading_enabled": True,
+        "labels": {},
+        "luns": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "state": 1,
+                "size_gb": 739,
+                "multiprotocol_type": 1,
+                "storage_volume": "storage_volume_value",
+                "shareable": True,
+                "boot_lun": True,
+                "storage_type": 1,
+                "wwid": "wwid_value",
+            }
+        ],
+        "networks": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "type_": 1,
+                "ip_address": "ip_address_value",
+                "mac_address": ["mac_address_value1", "mac_address_value2"],
+                "state": 1,
+                "vlan_id": "vlan_id_value",
+                "cidr": "cidr_value",
+                "vrf": {
+                    "name": "name_value",
+                    "state": 1,
+                    "qos_policy": {"bandwidth_gbps": 0.1472},
+                    "vlan_attachments": [
+                        {
+                            "peer_vlan_id": 1256,
+                            "peer_ip": "peer_ip_value",
+                            "router_ip": "router_ip_value",
+                        }
+                    ],
+                },
+                "labels": {},
+                "services_cidr": "services_cidr_value",
+                "reservations": [
+                    {
+                        "start_address": "start_address_value",
+                        "end_address": "end_address_value",
+                        "note": "note_value",
+                    }
+                ],
+            }
+        ],
+        "interactive_serial_console_enabled": True,
+        "os_image": "os_image_value",
+        "pod": "pod_value",
+        "network_template": "network_template_value",
+        "logical_interfaces": [
+            {
+                "logical_network_interfaces": [
+                    {
+                        "network": "network_value",
+                        "ip_address": "ip_address_value",
+                        "default_gateway": True,
+                        "network_type": 1,
+                        "id": "id_value",
+                    }
+                ],
+                "name": "name_value",
+                "interface_index": 1576,
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_instance(request)
+
+
+def test_update_instance_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            instance=gcb_instance.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{instance.name=projects/*/locations/*/instances/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_instance_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_instance(
+            gcb_instance.UpdateInstanceRequest(),
+            instance=gcb_instance.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_instance_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.ResetInstanceRequest,
+        dict,
+    ],
+)
+def test_reset_instance_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.reset_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_reset_instance_rest_required_fields(
+    request_type=instance.ResetInstanceRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).reset_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).reset_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.reset_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_reset_instance_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.reset_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reset_instance_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_reset_instance"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_reset_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.ResetInstanceRequest.pb(instance.ResetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = instance.ResetInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.reset_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_reset_instance_rest_bad_request(
+    transport: str = "rest", request_type=instance.ResetInstanceRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.reset_instance(request)
+
+
+def test_reset_instance_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.reset_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/instances/*}:reset"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_reset_instance_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.reset_instance(
+            instance.ResetInstanceRequest(),
+            name="name_value",
+        )
+
+
+def test_reset_instance_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.StartInstanceRequest,
+        dict,
+    ],
+)
+def test_start_instance_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.start_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_start_instance_rest_required_fields(
+    request_type=instance.StartInstanceRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.start_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_start_instance_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.start_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_start_instance_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_start_instance"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_start_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.StartInstanceRequest.pb(instance.StartInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = instance.StartInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.start_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_start_instance_rest_bad_request(
+    transport: str = "rest", request_type=instance.StartInstanceRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.start_instance(request)
+
+
+def test_start_instance_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.start_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/instances/*}:start"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_start_instance_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.start_instance(
+            instance.StartInstanceRequest(),
+            name="name_value",
+        )
+
+
+def test_start_instance_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.StopInstanceRequest,
+        dict,
+    ],
+)
+def test_stop_instance_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.stop_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_stop_instance_rest_required_fields(request_type=instance.StopInstanceRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.stop_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_stop_instance_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.stop_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stop_instance_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_stop_instance"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_stop_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.StopInstanceRequest.pb(instance.StopInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = instance.StopInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.stop_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_stop_instance_rest_bad_request(
+    transport: str = "rest", request_type=instance.StopInstanceRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.stop_instance(request)
+
+
+def test_stop_instance_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.stop_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/instances/*}:stop"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_stop_instance_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.stop_instance(
+            instance.StopInstanceRequest(),
+            name="name_value",
+        )
+
+
+def test_stop_instance_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_instance.DetachLunRequest,
+        dict,
+    ],
+)
+def test_detach_lun_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"instance": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.detach_lun(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_detach_lun_rest_required_fields(request_type=gcb_instance.DetachLunRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["lun"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).detach_lun._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["lun"] = "lun_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).detach_lun._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "lun" in jsonified_request
+    assert jsonified_request["lun"] == "lun_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.detach_lun(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_detach_lun_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.detach_lun._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "instance",
+                "lun",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_detach_lun_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_detach_lun"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_detach_lun"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_instance.DetachLunRequest.pb(gcb_instance.DetachLunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_instance.DetachLunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.detach_lun(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_detach_lun_rest_bad_request(
+    transport: str = "rest", request_type=gcb_instance.DetachLunRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"instance": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.detach_lun(request)
+
+
+def test_detach_lun_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "instance": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            instance="instance_value",
+            lun="lun_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.detach_lun(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{instance=projects/*/locations/*/instances/*}:detachLun"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_detach_lun_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.detach_lun(
+            gcb_instance.DetachLunRequest(),
+            instance="instance_value",
+            lun="lun_value",
+        )
+
+
+def test_detach_lun_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.ListVolumesRequest,
+        dict,
+    ],
+)
+def test_list_volumes_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.ListVolumesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.ListVolumesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_volumes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVolumesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_volumes_rest_required_fields(request_type=volume.ListVolumesRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volumes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volumes._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = volume.ListVolumesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = volume.ListVolumesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_volumes(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_volumes_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_volumes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_volumes_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_volumes"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_volumes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = volume.ListVolumesRequest.pb(volume.ListVolumesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = volume.ListVolumesResponse.to_json(
+            volume.ListVolumesResponse()
+        )
+
+        request = volume.ListVolumesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = volume.ListVolumesResponse()
+
+        client.list_volumes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_volumes_rest_bad_request(
+    transport: str = "rest", request_type=volume.ListVolumesRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_volumes(request)
+
+
+def test_list_volumes_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.ListVolumesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.ListVolumesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_volumes(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/volumes" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_volumes_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_volumes(
+            volume.ListVolumesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_volumes_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            volume.ListVolumesResponse(
+                volumes=[
+                    volume.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
+                ],
+                next_page_token="abc",
+            ),
+            volume.ListVolumesResponse(
+                volumes=[],
+                next_page_token="def",
+            ),
+            volume.ListVolumesResponse(
+                volumes=[
+                    volume.Volume(),
+                ],
+                next_page_token="ghi",
+            ),
+            volume.ListVolumesResponse(
+                volumes=[
+                    volume.Volume(),
+                    volume.Volume(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(volume.ListVolumesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_volumes(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, volume.Volume) for i in results)
+
+        pages = list(client.list_volumes(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.GetVolumeRequest,
+        dict,
+    ],
+)
+def test_get_volume_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.Volume(
+            name="name_value",
+            id="id_value",
+            storage_type=volume.Volume.StorageType.SSD,
+            state=volume.Volume.State.CREATING,
+            requested_size_gib=1917,
+            current_size_gib=1710,
+            emergency_size_gib=1898,
+            auto_grown_size_gib=2032,
+            remaining_space_gib=1974,
+            snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
+            snapshot_enabled=True,
+            pod="pod_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_volume(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume.Volume)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.storage_type == volume.Volume.StorageType.SSD
+    assert response.state == volume.Volume.State.CREATING
+    assert response.requested_size_gib == 1917
+    assert response.current_size_gib == 1710
+    assert response.emergency_size_gib == 1898
+    assert response.auto_grown_size_gib == 2032
+    assert response.remaining_space_gib == 1974
+    assert (
+        response.snapshot_auto_delete_behavior
+        == volume.Volume.SnapshotAutoDeleteBehavior.DISABLED
+    )
+    assert response.snapshot_enabled is True
+    assert response.pod == "pod_value"
+
+
+def test_get_volume_rest_required_fields(request_type=volume.GetVolumeRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = volume.Volume()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = volume.Volume.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_volume(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_volume_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_volume._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_volume_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_volume"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_get_volume"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = volume.GetVolumeRequest.pb(volume.GetVolumeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = volume.Volume.to_json(volume.Volume())
+
+        request = volume.GetVolumeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = volume.Volume()
+
+        client.get_volume(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_volume_rest_bad_request(
+    transport: str = "rest", request_type=volume.GetVolumeRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_volume(request)
+
+
+def test_get_volume_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.Volume()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_volume(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/volumes/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_volume_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_volume(
+            volume.GetVolumeRequest(),
+            name="name_value",
+        )
+
+
+def test_get_volume_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_volume.UpdateVolumeRequest,
+        dict,
+    ],
+)
+def test_update_volume_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "volume": {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    }
+    request_init["volume"] = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3",
+        "id": "id_value",
+        "storage_type": 1,
+        "state": 1,
+        "requested_size_gib": 1917,
+        "current_size_gib": 1710,
+        "emergency_size_gib": 1898,
+        "auto_grown_size_gib": 2032,
+        "remaining_space_gib": 1974,
+        "snapshot_reservation_detail": {
+            "reserved_space_gib": 1884,
+            "reserved_space_used_percent": 2859,
+            "reserved_space_remaining_gib": 2933,
+            "reserved_space_percent": 2331,
+        },
+        "snapshot_auto_delete_behavior": 1,
+        "labels": {},
+        "snapshot_enabled": True,
+        "pod": "pod_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_volume(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_volume_rest_required_fields(
+    request_type=gcb_volume.UpdateVolumeRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_volume._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_volume(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_volume_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_volume._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("volume",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_volume_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_update_volume"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_update_volume"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_volume.UpdateVolumeRequest.pb(gcb_volume.UpdateVolumeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_volume.UpdateVolumeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_volume(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_volume_rest_bad_request(
+    transport: str = "rest", request_type=gcb_volume.UpdateVolumeRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "volume": {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    }
+    request_init["volume"] = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3",
+        "id": "id_value",
+        "storage_type": 1,
+        "state": 1,
+        "requested_size_gib": 1917,
+        "current_size_gib": 1710,
+        "emergency_size_gib": 1898,
+        "auto_grown_size_gib": 2032,
+        "remaining_space_gib": 1974,
+        "snapshot_reservation_detail": {
+            "reserved_space_gib": 1884,
+            "reserved_space_used_percent": 2859,
+            "reserved_space_remaining_gib": 2933,
+            "reserved_space_percent": 2331,
+        },
+        "snapshot_auto_delete_behavior": 1,
+        "labels": {},
+        "snapshot_enabled": True,
+        "pod": "pod_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_volume(request)
+
+
+def test_update_volume_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "volume": {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            volume=gcb_volume.Volume(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_volume(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{volume.name=projects/*/locations/*/volumes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_volume_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_volume(
+            gcb_volume.UpdateVolumeRequest(),
+            volume=gcb_volume.Volume(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_volume_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_volume.ResizeVolumeRequest,
+        dict,
+    ],
+)
+def test_resize_volume_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"volume": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.resize_volume(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_resize_volume_rest_required_fields(
+    request_type=gcb_volume.ResizeVolumeRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["volume"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resize_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["volume"] = "volume_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resize_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "volume" in jsonified_request
+    assert jsonified_request["volume"] == "volume_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.resize_volume(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_resize_volume_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.resize_volume._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("volume",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_resize_volume_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_resize_volume"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_resize_volume"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_volume.ResizeVolumeRequest.pb(gcb_volume.ResizeVolumeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_volume.ResizeVolumeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.resize_volume(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_resize_volume_rest_bad_request(
+    transport: str = "rest", request_type=gcb_volume.ResizeVolumeRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"volume": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.resize_volume(request)
+
+
+def test_resize_volume_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "volume": "projects/sample1/locations/sample2/volumes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            volume="volume_value",
+            size_gib=844,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.resize_volume(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{volume=projects/*/locations/*/volumes/*}:resize"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_resize_volume_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resize_volume(
+            gcb_volume.ResizeVolumeRequest(),
+            volume="volume_value",
+            size_gib=844,
+        )
+
+
+def test_resize_volume_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network.ListNetworksRequest,
+        dict,
+    ],
+)
+def test_list_networks_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.ListNetworksResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.ListNetworksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_networks(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNetworksPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_networks_rest_required_fields(request_type=network.ListNetworksRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_networks._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_networks._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = network.ListNetworksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = network.ListNetworksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_networks(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_networks_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_networks._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_networks_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_networks"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_networks"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = network.ListNetworksRequest.pb(network.ListNetworksRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = network.ListNetworksResponse.to_json(
+            network.ListNetworksResponse()
+        )
+
+        request = network.ListNetworksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = network.ListNetworksResponse()
+
+        client.list_networks(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_networks_rest_bad_request(
+    transport: str = "rest", request_type=network.ListNetworksRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_networks(request)
+
+
+def test_list_networks_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.ListNetworksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.ListNetworksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_networks(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/networks" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_networks_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_networks(
+            network.ListNetworksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_networks_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            network.ListNetworksResponse(
+                networks=[
+                    network.Network(),
+                    network.Network(),
+                    network.Network(),
+                ],
+                next_page_token="abc",
+            ),
+            network.ListNetworksResponse(
+                networks=[],
+                next_page_token="def",
+            ),
+            network.ListNetworksResponse(
+                networks=[
+                    network.Network(),
+                ],
+                next_page_token="ghi",
+            ),
+            network.ListNetworksResponse(
+                networks=[
+                    network.Network(),
+                    network.Network(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(network.ListNetworksResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_networks(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, network.Network) for i in results)
+
+        pages = list(client.list_networks(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network.ListNetworkUsageRequest,
+        dict,
+    ],
+)
+def test_list_network_usage_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.ListNetworkUsageResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.ListNetworkUsageResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_network_usage(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network.ListNetworkUsageResponse)
+
+
+def test_list_network_usage_rest_required_fields(
+    request_type=network.ListNetworkUsageRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["location"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_network_usage._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["location"] = "location_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_network_usage._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "location" in jsonified_request
+    assert jsonified_request["location"] == "location_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = network.ListNetworkUsageResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = network.ListNetworkUsageResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_network_usage(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_network_usage_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_network_usage._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("location",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_network_usage_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_network_usage"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_network_usage"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = network.ListNetworkUsageRequest.pb(
+            network.ListNetworkUsageRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = network.ListNetworkUsageResponse.to_json(
+            network.ListNetworkUsageResponse()
+        )
+
+        request = network.ListNetworkUsageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = network.ListNetworkUsageResponse()
+
+        client.list_network_usage(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_network_usage_rest_bad_request(
+    transport: str = "rest", request_type=network.ListNetworkUsageRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_network_usage(request)
+
+
+def test_list_network_usage_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.ListNetworkUsageResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"location": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            location="location_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.ListNetworkUsageResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_network_usage(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{location=projects/*/locations/*}/networks:listNetworkUsage"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_network_usage_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_network_usage(
+            network.ListNetworkUsageRequest(),
+            location="location_value",
+        )
+
+
+def test_list_network_usage_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network.GetNetworkRequest,
+        dict,
+    ],
+)
+def test_get_network_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/networks/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.Network(
+            name="name_value",
+            id="id_value",
+            type_=network.Network.Type.CLIENT,
+            ip_address="ip_address_value",
+            mac_address=["mac_address_value"],
+            state=network.Network.State.PROVISIONING,
+            vlan_id="vlan_id_value",
+            cidr="cidr_value",
+            services_cidr="services_cidr_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_network(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network.Network)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.type_ == network.Network.Type.CLIENT
+    assert response.ip_address == "ip_address_value"
+    assert response.mac_address == ["mac_address_value"]
+    assert response.state == network.Network.State.PROVISIONING
+    assert response.vlan_id == "vlan_id_value"
+    assert response.cidr == "cidr_value"
+    assert response.services_cidr == "services_cidr_value"
+
+
+def test_get_network_rest_required_fields(request_type=network.GetNetworkRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_network._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_network._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = network.Network()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = network.Network.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_network(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_network_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_network._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_network_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_network"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_get_network"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = network.GetNetworkRequest.pb(network.GetNetworkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = network.Network.to_json(network.Network())
+
+        request = network.GetNetworkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = network.Network()
+
+        client.get_network(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_network_rest_bad_request(
+    transport: str = "rest", request_type=network.GetNetworkRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/networks/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_network(request)
+
+
+def test_get_network_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.Network()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/networks/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_network(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/networks/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_network_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_network(
+            network.GetNetworkRequest(),
+            name="name_value",
+        )
+
+
+def test_get_network_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_network.UpdateNetworkRequest,
+        dict,
+    ],
+)
+def test_update_network_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "network": {"name": "projects/sample1/locations/sample2/networks/sample3"}
+    }
+    request_init["network"] = {
+        "name": "projects/sample1/locations/sample2/networks/sample3",
+        "id": "id_value",
+        "type_": 1,
+        "ip_address": "ip_address_value",
+        "mac_address": ["mac_address_value1", "mac_address_value2"],
+        "state": 1,
+        "vlan_id": "vlan_id_value",
+        "cidr": "cidr_value",
+        "vrf": {
+            "name": "name_value",
+            "state": 1,
+            "qos_policy": {"bandwidth_gbps": 0.1472},
+            "vlan_attachments": [
+                {
+                    "peer_vlan_id": 1256,
+                    "peer_ip": "peer_ip_value",
+                    "router_ip": "router_ip_value",
+                }
+            ],
+        },
+        "labels": {},
+        "services_cidr": "services_cidr_value",
+        "reservations": [
+            {
+                "start_address": "start_address_value",
+                "end_address": "end_address_value",
+                "note": "note_value",
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_network(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_network_rest_required_fields(
+    request_type=gcb_network.UpdateNetworkRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_network._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_network._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_network(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_network_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_network._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("network",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_network_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_update_network"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_update_network"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_network.UpdateNetworkRequest.pb(
+            gcb_network.UpdateNetworkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_network.UpdateNetworkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_network(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_network_rest_bad_request(
+    transport: str = "rest", request_type=gcb_network.UpdateNetworkRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "network": {"name": "projects/sample1/locations/sample2/networks/sample3"}
+    }
+    request_init["network"] = {
+        "name": "projects/sample1/locations/sample2/networks/sample3",
+        "id": "id_value",
+        "type_": 1,
+        "ip_address": "ip_address_value",
+        "mac_address": ["mac_address_value1", "mac_address_value2"],
+        "state": 1,
+        "vlan_id": "vlan_id_value",
+        "cidr": "cidr_value",
+        "vrf": {
+            "name": "name_value",
+            "state": 1,
+            "qos_policy": {"bandwidth_gbps": 0.1472},
+            "vlan_attachments": [
+                {
+                    "peer_vlan_id": 1256,
+                    "peer_ip": "peer_ip_value",
+                    "router_ip": "router_ip_value",
+                }
+            ],
+        },
+        "labels": {},
+        "services_cidr": "services_cidr_value",
+        "reservations": [
+            {
+                "start_address": "start_address_value",
+                "end_address": "end_address_value",
+                "note": "note_value",
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_network(request)
+
+
+def test_update_network_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "network": {"name": "projects/sample1/locations/sample2/networks/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            network=gcb_network.Network(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_network(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{network.name=projects/*/locations/*/networks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_network_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_network(
+            gcb_network.UpdateNetworkRequest(),
+            network=gcb_network.Network(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_network_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lun.GetLunRequest,
+        dict,
+    ],
+)
+def test_get_lun_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/luns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lun.Lun(
+            name="name_value",
+            id="id_value",
+            state=lun.Lun.State.CREATING,
+            size_gb=739,
+            multiprotocol_type=lun.Lun.MultiprotocolType.LINUX,
+            storage_volume="storage_volume_value",
+            shareable=True,
+            boot_lun=True,
+            storage_type=lun.Lun.StorageType.SSD,
+            wwid="wwid_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = lun.Lun.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_lun(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lun.Lun)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.state == lun.Lun.State.CREATING
+    assert response.size_gb == 739
+    assert response.multiprotocol_type == lun.Lun.MultiprotocolType.LINUX
+    assert response.storage_volume == "storage_volume_value"
+    assert response.shareable is True
+    assert response.boot_lun is True
+    assert response.storage_type == lun.Lun.StorageType.SSD
+    assert response.wwid == "wwid_value"
+
+
+def test_get_lun_rest_required_fields(request_type=lun.GetLunRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_lun._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_lun._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = lun.Lun()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = lun.Lun.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_lun(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_lun_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_lun._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_lun_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_lun"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_get_lun"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lun.GetLunRequest.pb(lun.GetLunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = lun.Lun.to_json(lun.Lun())
+
+        request = lun.GetLunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lun.Lun()
+
+        client.get_lun(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_lun_rest_bad_request(
+    transport: str = "rest", request_type=lun.GetLunRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/luns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_lun(request)
+
+
+def test_get_lun_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lun.Lun()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/volumes/sample3/luns/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = lun.Lun.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_lun(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/volumes/*/luns/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_lun_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_lun(
+            lun.GetLunRequest(),
+            name="name_value",
+        )
+
+
+def test_get_lun_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lun.ListLunsRequest,
+        dict,
+    ],
+)
+def test_list_luns_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lun.ListLunsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = lun.ListLunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_luns(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLunsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_luns_rest_required_fields(request_type=lun.ListLunsRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_luns._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_luns._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = lun.ListLunsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = lun.ListLunsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_luns(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_luns_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_luns._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_luns_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_luns"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_luns"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lun.ListLunsRequest.pb(lun.ListLunsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = lun.ListLunsResponse.to_json(lun.ListLunsResponse())
+
+        request = lun.ListLunsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lun.ListLunsResponse()
+
+        client.list_luns(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_luns_rest_bad_request(
+    transport: str = "rest", request_type=lun.ListLunsRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_luns(request)
+
+
+def test_list_luns_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lun.ListLunsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/volumes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = lun.ListLunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_luns(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*/volumes/*}/luns"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_luns_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_luns(
+            lun.ListLunsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_luns_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            lun.ListLunsResponse(
+                luns=[
+                    lun.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
+                ],
+                next_page_token="abc",
+            ),
+            lun.ListLunsResponse(
+                luns=[],
+                next_page_token="def",
+            ),
+            lun.ListLunsResponse(
+                luns=[
+                    lun.Lun(),
+                ],
+                next_page_token="ghi",
+            ),
+            lun.ListLunsResponse(
+                luns=[
+                    lun.Lun(),
+                    lun.Lun(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(lun.ListLunsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/volumes/sample3"
+        }
+
+        pager = client.list_luns(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, lun.Lun) for i in results)
+
+        pages = list(client.list_luns(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.GetNfsShareRequest,
+        dict,
+    ],
+)
+def test_get_nfs_share_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = nfs_share.NfsShare(
+            name="name_value",
+            nfs_share_id="nfs_share_id_value",
+            state=nfs_share.NfsShare.State.PROVISIONED,
+            volume="volume_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_nfs_share(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, nfs_share.NfsShare)
+    assert response.name == "name_value"
+    assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.state == nfs_share.NfsShare.State.PROVISIONED
+    assert response.volume == "volume_value"
+
+
+def test_get_nfs_share_rest_required_fields(request_type=nfs_share.GetNfsShareRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = nfs_share.NfsShare()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = nfs_share.NfsShare.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_nfs_share(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_nfs_share_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_nfs_share._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_nfs_share_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_nfs_share"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_get_nfs_share"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = nfs_share.GetNfsShareRequest.pb(nfs_share.GetNfsShareRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = nfs_share.NfsShare.to_json(nfs_share.NfsShare())
+
+        request = nfs_share.GetNfsShareRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = nfs_share.NfsShare()
+
+        client.get_nfs_share(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_nfs_share_rest_bad_request(
+    transport: str = "rest", request_type=nfs_share.GetNfsShareRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_nfs_share(request)
+
+
+def test_get_nfs_share_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = nfs_share.NfsShare()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/nfsShares/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_nfs_share(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/nfsShares/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_nfs_share_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_nfs_share(
+            nfs_share.GetNfsShareRequest(),
+            name="name_value",
+        )
+
+
+def test_get_nfs_share_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.ListNfsSharesRequest,
+        dict,
+    ],
+)
+def test_list_nfs_shares_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = nfs_share.ListNfsSharesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_nfs_shares(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNfsSharesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_nfs_shares_rest_required_fields(
+    request_type=nfs_share.ListNfsSharesRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_nfs_shares._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_nfs_shares._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = nfs_share.ListNfsSharesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_nfs_shares(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_nfs_shares_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_nfs_shares._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_nfs_shares_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_nfs_shares"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_nfs_shares"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = nfs_share.ListNfsSharesRequest.pb(nfs_share.ListNfsSharesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = nfs_share.ListNfsSharesResponse.to_json(
+            nfs_share.ListNfsSharesResponse()
+        )
+
+        request = nfs_share.ListNfsSharesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = nfs_share.ListNfsSharesResponse()
+
+        client.list_nfs_shares(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_nfs_shares_rest_bad_request(
+    transport: str = "rest", request_type=nfs_share.ListNfsSharesRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_nfs_shares(request)
+
+
+def test_list_nfs_shares_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = nfs_share.ListNfsSharesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_nfs_shares(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/nfsShares" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_nfs_shares_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_nfs_shares(
+            nfs_share.ListNfsSharesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_nfs_shares_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="abc",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[],
+                next_page_token="def",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="ghi",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(nfs_share.ListNfsSharesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_nfs_shares(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, nfs_share.NfsShare) for i in results)
+
+        pages = list(client.list_nfs_shares(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_nfs_share.UpdateNfsShareRequest,
+        dict,
+    ],
+)
+def test_update_nfs_share_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "nfs_share": {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    }
+    request_init["nfs_share"] = {
+        "name": "projects/sample1/locations/sample2/nfsShares/sample3",
+        "nfs_share_id": "nfs_share_id_value",
+        "state": 1,
+        "volume": "volume_value",
+        "allowed_clients": [
+            {
+                "network": "network_value",
+                "share_ip": "share_ip_value",
+                "allowed_clients_cidr": "allowed_clients_cidr_value",
+                "mount_permissions": 1,
+                "allow_dev": True,
+                "allow_suid": True,
+                "no_root_squash": True,
+            }
+        ],
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_nfs_share(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_nfs_share_rest_required_fields(
+    request_type=gcb_nfs_share.UpdateNfsShareRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_nfs_share._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_nfs_share(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_nfs_share_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_nfs_share._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("nfsShare",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_nfs_share_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_update_nfs_share"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_update_nfs_share"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_nfs_share.UpdateNfsShareRequest.pb(
+            gcb_nfs_share.UpdateNfsShareRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_nfs_share.UpdateNfsShareRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_nfs_share(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_nfs_share_rest_bad_request(
+    transport: str = "rest", request_type=gcb_nfs_share.UpdateNfsShareRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "nfs_share": {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    }
+    request_init["nfs_share"] = {
+        "name": "projects/sample1/locations/sample2/nfsShares/sample3",
+        "nfs_share_id": "nfs_share_id_value",
+        "state": 1,
+        "volume": "volume_value",
+        "allowed_clients": [
+            {
+                "network": "network_value",
+                "share_ip": "share_ip_value",
+                "allowed_clients_cidr": "allowed_clients_cidr_value",
+                "mount_permissions": 1,
+                "allow_dev": True,
+                "allow_suid": True,
+                "no_root_squash": True,
+            }
+        ],
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_nfs_share(request)
+
+
+def test_update_nfs_share_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "nfs_share": {
+                "name": "projects/sample1/locations/sample2/nfsShares/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_nfs_share(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{nfs_share.name=projects/*/locations/*/nfsShares/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_nfs_share_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_nfs_share(
+            gcb_nfs_share.UpdateNfsShareRequest(),
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_nfs_share_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.BareMetalSolutionGrpcTransport(
@@ -6553,6 +12642,7 @@ def test_transport_get_channel():
     [
         transports.BareMetalSolutionGrpcTransport,
         transports.BareMetalSolutionGrpcAsyncIOTransport,
+        transports.BareMetalSolutionRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -6567,6 +12657,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -6720,6 +12811,7 @@ def test_bare_metal_solution_transport_auth_adc(transport_class):
     [
         transports.BareMetalSolutionGrpcTransport,
         transports.BareMetalSolutionGrpcAsyncIOTransport,
+        transports.BareMetalSolutionRestTransport,
     ],
 )
 def test_bare_metal_solution_transport_auth_gdch_credentials(transport_class):
@@ -6819,11 +12911,40 @@ def test_bare_metal_solution_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_bare_metal_solution_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.BareMetalSolutionRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_bare_metal_solution_rest_lro_client():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_bare_metal_solution_host_no_port(transport_name):
@@ -6834,7 +12955,11 @@ def test_bare_metal_solution_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("baremetalsolution.googleapis.com:443")
+    assert client.transport._host == (
+        "baremetalsolution.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://baremetalsolution.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -6842,6 +12967,7 @@ def test_bare_metal_solution_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_bare_metal_solution_host_with_port(transport_name):
@@ -6852,7 +12978,90 @@ def test_bare_metal_solution_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("baremetalsolution.googleapis.com:8000")
+    assert client.transport._host == (
+        "baremetalsolution.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://baremetalsolution.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_bare_metal_solution_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = BareMetalSolutionClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = BareMetalSolutionClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_instances._session
+    session2 = client2.transport.list_instances._session
+    assert session1 != session2
+    session1 = client1.transport.get_instance._session
+    session2 = client2.transport.get_instance._session
+    assert session1 != session2
+    session1 = client1.transport.update_instance._session
+    session2 = client2.transport.update_instance._session
+    assert session1 != session2
+    session1 = client1.transport.reset_instance._session
+    session2 = client2.transport.reset_instance._session
+    assert session1 != session2
+    session1 = client1.transport.start_instance._session
+    session2 = client2.transport.start_instance._session
+    assert session1 != session2
+    session1 = client1.transport.stop_instance._session
+    session2 = client2.transport.stop_instance._session
+    assert session1 != session2
+    session1 = client1.transport.detach_lun._session
+    session2 = client2.transport.detach_lun._session
+    assert session1 != session2
+    session1 = client1.transport.list_volumes._session
+    session2 = client2.transport.list_volumes._session
+    assert session1 != session2
+    session1 = client1.transport.get_volume._session
+    session2 = client2.transport.get_volume._session
+    assert session1 != session2
+    session1 = client1.transport.update_volume._session
+    session2 = client2.transport.update_volume._session
+    assert session1 != session2
+    session1 = client1.transport.resize_volume._session
+    session2 = client2.transport.resize_volume._session
+    assert session1 != session2
+    session1 = client1.transport.list_networks._session
+    session2 = client2.transport.list_networks._session
+    assert session1 != session2
+    session1 = client1.transport.list_network_usage._session
+    session2 = client2.transport.list_network_usage._session
+    assert session1 != session2
+    session1 = client1.transport.get_network._session
+    session2 = client2.transport.get_network._session
+    assert session1 != session2
+    session1 = client1.transport.update_network._session
+    session2 = client2.transport.update_network._session
+    assert session1 != session2
+    session1 = client1.transport.get_lun._session
+    session2 = client2.transport.get_lun._session
+    assert session1 != session2
+    session1 = client1.transport.list_luns._session
+    session2 = client2.transport.list_luns._session
+    assert session1 != session2
+    session1 = client1.transport.get_nfs_share._session
+    session2 = client2.transport.get_nfs_share._session
+    assert session1 != session2
+    session1 = client1.transport.list_nfs_shares._session
+    session2 = client2.transport.list_nfs_shares._session
+    assert session1 != session2
+    session1 = client1.transport.update_nfs_share._session
+    session2 = client2.transport.update_nfs_share._session
+    assert session1 != session2
 
 
 def test_bare_metal_solution_grpc_transport_channel():
@@ -7320,6 +13529,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -7337,6 +13547,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
