@@ -126,6 +126,66 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "CloudFilestoreManagerClient",
+          "rpcs": {
+            "CreateBackup": {
+              "methods": [
+                "create_backup"
+              ]
+            },
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "RestoreInstance": {
+              "methods": [
+                "restore_instance"
+              ]
+            },
+            "UpdateBackup": {
+              "methods": [
+                "update_backup"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            }
+          }
         }
       }
     }

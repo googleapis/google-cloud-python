@@ -62,6 +62,7 @@ from google.cloud.filestore_v1.types import cloud_filestore_service
 from .transports.base import DEFAULT_CLIENT_INFO, CloudFilestoreManagerTransport
 from .transports.grpc import CloudFilestoreManagerGrpcTransport
 from .transports.grpc_asyncio import CloudFilestoreManagerGrpcAsyncIOTransport
+from .transports.rest import CloudFilestoreManagerRestTransport
 
 
 class CloudFilestoreManagerClientMeta(type):
@@ -77,6 +78,7 @@ class CloudFilestoreManagerClientMeta(type):
     )  # type: Dict[str, Type[CloudFilestoreManagerTransport]]
     _transport_registry["grpc"] = CloudFilestoreManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudFilestoreManagerGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudFilestoreManagerRestTransport
 
     def get_transport_class(
         cls,
