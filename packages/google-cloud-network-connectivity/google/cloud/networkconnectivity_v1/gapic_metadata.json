@@ -118,60 +118,6 @@
           }
         }
       }
-    },
-    "PolicyBasedRoutingService": {
-      "clients": {
-        "grpc": {
-          "libraryClient": "PolicyBasedRoutingServiceClient",
-          "rpcs": {
-            "CreatePolicyBasedRoute": {
-              "methods": [
-                "create_policy_based_route"
-              ]
-            },
-            "DeletePolicyBasedRoute": {
-              "methods": [
-                "delete_policy_based_route"
-              ]
-            },
-            "GetPolicyBasedRoute": {
-              "methods": [
-                "get_policy_based_route"
-              ]
-            },
-            "ListPolicyBasedRoutes": {
-              "methods": [
-                "list_policy_based_routes"
-              ]
-            }
-          }
-        },
-        "grpc-async": {
-          "libraryClient": "PolicyBasedRoutingServiceAsyncClient",
-          "rpcs": {
-            "CreatePolicyBasedRoute": {
-              "methods": [
-                "create_policy_based_route"
-              ]
-            },
-            "DeletePolicyBasedRoute": {
-              "methods": [
-                "delete_policy_based_route"
-              ]
-            },
-            "GetPolicyBasedRoute": {
-              "methods": [
-                "get_policy_based_route"
-              ]
-            },
-            "ListPolicyBasedRoutes": {
-              "methods": [
-                "list_policy_based_routes"
-              ]
-            }
-          }
-        }
-      }
     }
   }
 }
