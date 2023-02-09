@@ -71,6 +71,7 @@ from google.cloud.eventarc_v1.types import trigger as gce_trigger
 from .transports.base import DEFAULT_CLIENT_INFO, EventarcTransport
 from .transports.grpc import EventarcGrpcTransport
 from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
+from .transports.rest import EventarcRestTransport
 
 
 class EventarcClientMeta(type):
@@ -84,6 +85,7 @@ class EventarcClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[EventarcTransport]]
     _transport_registry["grpc"] = EventarcGrpcTransport
     _transport_registry["grpc_asyncio"] = EventarcGrpcAsyncIOTransport
+    _transport_registry["rest"] = EventarcRestTransport
 
     def get_transport_class(
         cls,
