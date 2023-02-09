@@ -80,6 +80,7 @@ from google.cloud.servicemanagement_v1.types import resources, servicemanager
 from .transports.base import DEFAULT_CLIENT_INFO, ServiceManagerTransport
 from .transports.grpc import ServiceManagerGrpcTransport
 from .transports.grpc_asyncio import ServiceManagerGrpcAsyncIOTransport
+from .transports.rest import ServiceManagerRestTransport
 
 
 class ServiceManagerClientMeta(type):
@@ -95,6 +96,7 @@ class ServiceManagerClientMeta(type):
     )  # type: Dict[str, Type[ServiceManagerTransport]]
     _transport_registry["grpc"] = ServiceManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = ServiceManagerGrpcAsyncIOTransport
+    _transport_registry["rest"] = ServiceManagerRestTransport
 
     def get_transport_class(
         cls,

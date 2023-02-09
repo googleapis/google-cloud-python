@@ -146,6 +146,76 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ServiceManagerClient",
+          "rpcs": {
+            "CreateService": {
+              "methods": [
+                "create_service"
+              ]
+            },
+            "CreateServiceConfig": {
+              "methods": [
+                "create_service_config"
+              ]
+            },
+            "CreateServiceRollout": {
+              "methods": [
+                "create_service_rollout"
+              ]
+            },
+            "DeleteService": {
+              "methods": [
+                "delete_service"
+              ]
+            },
+            "GenerateConfigReport": {
+              "methods": [
+                "generate_config_report"
+              ]
+            },
+            "GetService": {
+              "methods": [
+                "get_service"
+              ]
+            },
+            "GetServiceConfig": {
+              "methods": [
+                "get_service_config"
+              ]
+            },
+            "GetServiceRollout": {
+              "methods": [
+                "get_service_rollout"
+              ]
+            },
+            "ListServiceConfigs": {
+              "methods": [
+                "list_service_configs"
+              ]
+            },
+            "ListServiceRollouts": {
+              "methods": [
+                "list_service_rollouts"
+              ]
+            },
+            "ListServices": {
+              "methods": [
+                "list_services"
+              ]
+            },
+            "SubmitConfigSource": {
+              "methods": [
+                "submit_config_source"
+              ]
+            },
+            "UndeleteService": {
+              "methods": [
+                "undelete_service"
+              ]
+            }
+          }
         }
       }
     }

@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api import auth_pb2  # type: ignore
@@ -66,6 +68,7 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import api_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import source_context_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import type_pb2  # type: ignore
@@ -75,6 +78,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.servicemanagement_v1.services.service_manager import (
     ServiceManagerAsyncClient,
@@ -134,6 +139,7 @@ def test__get_default_mtls_endpoint():
     [
         (ServiceManagerClient, "grpc"),
         (ServiceManagerAsyncClient, "grpc_asyncio"),
+        (ServiceManagerClient, "rest"),
     ],
 )
 def test_service_manager_client_from_service_account_info(client_class, transport_name):
@@ -147,7 +153,11 @@ def test_service_manager_client_from_service_account_info(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("servicemanagement.googleapis.com:443")
+        assert client.transport._host == (
+            "servicemanagement.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://servicemanagement.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -155,6 +165,7 @@ def test_service_manager_client_from_service_account_info(client_class, transpor
     [
         (transports.ServiceManagerGrpcTransport, "grpc"),
         (transports.ServiceManagerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ServiceManagerRestTransport, "rest"),
     ],
 )
 def test_service_manager_client_service_account_always_use_jwt(
@@ -180,6 +191,7 @@ def test_service_manager_client_service_account_always_use_jwt(
     [
         (ServiceManagerClient, "grpc"),
         (ServiceManagerAsyncClient, "grpc_asyncio"),
+        (ServiceManagerClient, "rest"),
     ],
 )
 def test_service_manager_client_from_service_account_file(client_class, transport_name):
@@ -200,13 +212,18 @@ def test_service_manager_client_from_service_account_file(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("servicemanagement.googleapis.com:443")
+        assert client.transport._host == (
+            "servicemanagement.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://servicemanagement.googleapis.com"
+        )
 
 
 def test_service_manager_client_get_transport_class():
     transport = ServiceManagerClient.get_transport_class()
     available_transports = [
         transports.ServiceManagerGrpcTransport,
+        transports.ServiceManagerRestTransport,
     ]
     assert transport in available_transports
 
@@ -223,6 +240,7 @@ def test_service_manager_client_get_transport_class():
             transports.ServiceManagerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ServiceManagerClient, transports.ServiceManagerRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -368,6 +386,8 @@ def test_service_manager_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (ServiceManagerClient, transports.ServiceManagerRestTransport, "rest", "true"),
+        (ServiceManagerClient, transports.ServiceManagerRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -567,6 +587,7 @@ def test_service_manager_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.ServiceManagerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ServiceManagerClient, transports.ServiceManagerRestTransport, "rest"),
     ],
 )
 def test_service_manager_client_client_options_scopes(
@@ -607,6 +628,7 @@ def test_service_manager_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (ServiceManagerClient, transports.ServiceManagerRestTransport, "rest", None),
     ],
 )
 def test_service_manager_client_client_options_credentials_file(
@@ -4374,6 +4396,4369 @@ async def test_generate_config_report_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.ListServicesRequest,
+        dict,
+    ],
+)
+def test_list_services_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.ListServicesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_services(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListServicesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_services_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_list_services"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_list_services"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.ListServicesRequest.pb(
+            servicemanager.ListServicesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = servicemanager.ListServicesResponse.to_json(
+            servicemanager.ListServicesResponse()
+        )
+
+        request = servicemanager.ListServicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = servicemanager.ListServicesResponse()
+
+        client.list_services(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_services_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.ListServicesRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_services(request)
+
+
+def test_list_services_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.ListServicesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            producer_project_id="producer_project_id_value",
+            consumer_id="consumer_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_services(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services" % client.transport._host, args[1]
+        )
+
+
+def test_list_services_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_services(
+            servicemanager.ListServicesRequest(),
+            producer_project_id="producer_project_id_value",
+            consumer_id="consumer_id_value",
+        )
+
+
+def test_list_services_rest_pager(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            servicemanager.ListServicesResponse(
+                services=[
+                    resources.ManagedService(),
+                    resources.ManagedService(),
+                    resources.ManagedService(),
+                ],
+                next_page_token="abc",
+            ),
+            servicemanager.ListServicesResponse(
+                services=[],
+                next_page_token="def",
+            ),
+            servicemanager.ListServicesResponse(
+                services=[
+                    resources.ManagedService(),
+                ],
+                next_page_token="ghi",
+            ),
+            servicemanager.ListServicesResponse(
+                services=[
+                    resources.ManagedService(),
+                    resources.ManagedService(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            servicemanager.ListServicesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_services(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.ManagedService) for i in results)
+
+        pages = list(client.list_services(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.GetServiceRequest,
+        dict,
+    ],
+)
+def test_get_service_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.ManagedService(
+            service_name="service_name_value",
+            producer_project_id="producer_project_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.ManagedService.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.ManagedService)
+    assert response.service_name == "service_name_value"
+    assert response.producer_project_id == "producer_project_id_value"
+
+
+def test_get_service_rest_required_fields(
+    request_type=servicemanager.GetServiceRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.ManagedService()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.ManagedService.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_service_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_service._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("serviceName",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_service_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_get_service"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_get_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.GetServiceRequest.pb(
+            servicemanager.GetServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.ManagedService.to_json(
+            resources.ManagedService()
+        )
+
+        request = servicemanager.GetServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.ManagedService()
+
+        client.get_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_service_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.GetServiceRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_service(request)
+
+
+def test_get_service_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.ManagedService()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.ManagedService.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}" % client.transport._host, args[1]
+        )
+
+
+def test_get_service_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_service(
+            servicemanager.GetServiceRequest(),
+            service_name="service_name_value",
+        )
+
+
+def test_get_service_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.CreateServiceRequest,
+        dict,
+    ],
+)
+def test_create_service_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request_init["service"] = {
+        "service_name": "service_name_value",
+        "producer_project_id": "producer_project_id_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_service_rest_required_fields(
+    request_type=servicemanager.CreateServiceRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_service_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_service._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("service",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_service_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_create_service"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_create_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.CreateServiceRequest.pb(
+            servicemanager.CreateServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = servicemanager.CreateServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_service_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.CreateServiceRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request_init["service"] = {
+        "service_name": "service_name_value",
+        "producer_project_id": "producer_project_id_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_service(request)
+
+
+def test_create_service_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service=resources.ManagedService(service_name="service_name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services" % client.transport._host, args[1]
+        )
+
+
+def test_create_service_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_service(
+            servicemanager.CreateServiceRequest(),
+            service=resources.ManagedService(service_name="service_name_value"),
+        )
+
+
+def test_create_service_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.DeleteServiceRequest,
+        dict,
+    ],
+)
+def test_delete_service_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_service_rest_required_fields(
+    request_type=servicemanager.DeleteServiceRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_service_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_service._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("serviceName",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_service_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_delete_service"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_delete_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.DeleteServiceRequest.pb(
+            servicemanager.DeleteServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = servicemanager.DeleteServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_service_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.DeleteServiceRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_service(request)
+
+
+def test_delete_service_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_service_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_service(
+            servicemanager.DeleteServiceRequest(),
+            service_name="service_name_value",
+        )
+
+
+def test_delete_service_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.UndeleteServiceRequest,
+        dict,
+    ],
+)
+def test_undelete_service_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.undelete_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_undelete_service_rest_required_fields(
+    request_type=servicemanager.UndeleteServiceRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).undelete_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).undelete_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.undelete_service(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_undelete_service_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.undelete_service._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("serviceName",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_undelete_service_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_undelete_service"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_undelete_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.UndeleteServiceRequest.pb(
+            servicemanager.UndeleteServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = servicemanager.UndeleteServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.undelete_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_undelete_service_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.UndeleteServiceRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.undelete_service(request)
+
+
+def test_undelete_service_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.undelete_service(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}:undelete" % client.transport._host, args[1]
+        )
+
+
+def test_undelete_service_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.undelete_service(
+            servicemanager.UndeleteServiceRequest(),
+            service_name="service_name_value",
+        )
+
+
+def test_undelete_service_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.ListServiceConfigsRequest,
+        dict,
+    ],
+)
+def test_list_service_configs_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.ListServiceConfigsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.ListServiceConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_service_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListServiceConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_service_configs_rest_required_fields(
+    request_type=servicemanager.ListServiceConfigsRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_service_configs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_service_configs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = servicemanager.ListServiceConfigsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = servicemanager.ListServiceConfigsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_service_configs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_service_configs_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_service_configs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("serviceName",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_service_configs_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_list_service_configs"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_list_service_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.ListServiceConfigsRequest.pb(
+            servicemanager.ListServiceConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = servicemanager.ListServiceConfigsResponse.to_json(
+            servicemanager.ListServiceConfigsResponse()
+        )
+
+        request = servicemanager.ListServiceConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = servicemanager.ListServiceConfigsResponse()
+
+        client.list_service_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_service_configs_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.ListServiceConfigsRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_service_configs(request)
+
+
+def test_list_service_configs_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.ListServiceConfigsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.ListServiceConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_service_configs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}/configs" % client.transport._host, args[1]
+        )
+
+
+def test_list_service_configs_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_service_configs(
+            servicemanager.ListServiceConfigsRequest(),
+            service_name="service_name_value",
+        )
+
+
+def test_list_service_configs_rest_pager(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            servicemanager.ListServiceConfigsResponse(
+                service_configs=[
+                    service_pb2.Service(),
+                    service_pb2.Service(),
+                    service_pb2.Service(),
+                ],
+                next_page_token="abc",
+            ),
+            servicemanager.ListServiceConfigsResponse(
+                service_configs=[],
+                next_page_token="def",
+            ),
+            servicemanager.ListServiceConfigsResponse(
+                service_configs=[
+                    service_pb2.Service(),
+                ],
+                next_page_token="ghi",
+            ),
+            servicemanager.ListServiceConfigsResponse(
+                service_configs=[
+                    service_pb2.Service(),
+                    service_pb2.Service(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            servicemanager.ListServiceConfigsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"service_name": "sample1"}
+
+        pager = client.list_service_configs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service_pb2.Service) for i in results)
+
+        pages = list(client.list_service_configs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.GetServiceConfigRequest,
+        dict,
+    ],
+)
+def test_get_service_config_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1", "config_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service_pb2.Service(
+            name="name_value",
+            title="title_value",
+            producer_project_id="producer_project_id_value",
+            id="id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_service_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service_pb2.Service)
+    assert response.name == "name_value"
+    assert response.title == "title_value"
+    assert response.producer_project_id == "producer_project_id_value"
+    assert response.id == "id_value"
+
+
+def test_get_service_config_rest_required_fields(
+    request_type=servicemanager.GetServiceConfigRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request_init["config_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+    jsonified_request["configId"] = "config_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+    assert "configId" in jsonified_request
+    assert jsonified_request["configId"] == "config_id_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service_pb2.Service()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_service_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_service_config_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_service_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("view",))
+        & set(
+            (
+                "serviceName",
+                "configId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_service_config_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_get_service_config"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_get_service_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.GetServiceConfigRequest.pb(
+            servicemanager.GetServiceConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(service_pb2.Service())
+
+        request = servicemanager.GetServiceConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service_pb2.Service()
+
+        client.get_service_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_service_config_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.GetServiceConfigRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1", "config_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_service_config(request)
+
+
+def test_get_service_config_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service_pb2.Service()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1", "config_id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+            config_id="config_id_value",
+            view=servicemanager.GetServiceConfigRequest.ConfigView.FULL,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_service_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}/configs/{config_id}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_service_config_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_service_config(
+            servicemanager.GetServiceConfigRequest(),
+            service_name="service_name_value",
+            config_id="config_id_value",
+            view=servicemanager.GetServiceConfigRequest.ConfigView.FULL,
+        )
+
+
+def test_get_service_config_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.CreateServiceConfigRequest,
+        dict,
+    ],
+)
+def test_create_service_config_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request_init["service_config"] = {
+        "name": "name_value",
+        "title": "title_value",
+        "producer_project_id": "producer_project_id_value",
+        "id": "id_value",
+        "apis": [
+            {
+                "name": "name_value",
+                "methods": [
+                    {
+                        "name": "name_value",
+                        "request_type_url": "request_type_url_value",
+                        "request_streaming": True,
+                        "response_type_url": "response_type_url_value",
+                        "response_streaming": True,
+                        "options": [
+                            {
+                                "name": "name_value",
+                                "value": {
+                                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                                    "value": b"\x08\x0c\x10\xdb\x07",
+                                },
+                            }
+                        ],
+                        "syntax": 1,
+                    }
+                ],
+                "options": {},
+                "version": "version_value",
+                "source_context": {"file_name": "file_name_value"},
+                "mixins": [{"name": "name_value", "root": "root_value"}],
+                "syntax": 1,
+            }
+        ],
+        "types": [
+            {
+                "name": "name_value",
+                "fields": [
+                    {
+                        "kind": 1,
+                        "cardinality": 1,
+                        "number": 649,
+                        "name": "name_value",
+                        "type_url": "type.googleapis.com/google.protobuf.Empty",
+                        "oneof_index": 1166,
+                        "packed": True,
+                        "options": {},
+                        "json_name": "json_name_value",
+                        "default_value": "default_value_value",
+                    }
+                ],
+                "oneofs": ["oneofs_value1", "oneofs_value2"],
+                "options": {},
+                "source_context": {},
+                "syntax": 1,
+            }
+        ],
+        "enums": [
+            {
+                "name": "name_value",
+                "enumvalue": [{"name": "name_value", "number": 649, "options": {}}],
+                "options": {},
+                "source_context": {},
+                "syntax": 1,
+            }
+        ],
+        "documentation": {
+            "summary": "summary_value",
+            "pages": [
+                {"name": "name_value", "content": "content_value", "subpages": {}}
+            ],
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "description": "description_value",
+                    "deprecation_description": "deprecation_description_value",
+                }
+            ],
+            "documentation_root_url": "documentation_root_url_value",
+            "service_root_url": "service_root_url_value",
+            "overview": "overview_value",
+        },
+        "backend": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "address": "address_value",
+                    "deadline": 0.8220000000000001,
+                    "min_deadline": 0.1241,
+                    "operation_deadline": 0.1894,
+                    "path_translation": 1,
+                    "jwt_audience": "jwt_audience_value",
+                    "disable_auth": True,
+                    "protocol": "protocol_value",
+                }
+            ]
+        },
+        "http": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "get": "get_value",
+                    "put": "put_value",
+                    "post": "post_value",
+                    "delete": "delete_value",
+                    "patch": "patch_value",
+                    "custom": {"kind": "kind_value", "path": "path_value"},
+                    "body": "body_value",
+                    "response_body": "response_body_value",
+                    "additional_bindings": {},
+                }
+            ],
+            "fully_decode_reserved_expansion": True,
+        },
+        "quota": {
+            "limits": [
+                {
+                    "name": "name_value",
+                    "description": "description_value",
+                    "default_limit": 1379,
+                    "max_limit": 964,
+                    "free_tier": 949,
+                    "duration": "duration_value",
+                    "metric": "metric_value",
+                    "unit": "unit_value",
+                    "values": {},
+                    "display_name": "display_name_value",
+                }
+            ],
+            "metric_rules": [{"selector": "selector_value", "metric_costs": {}}],
+        },
+        "authentication": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "oauth": {"canonical_scopes": "canonical_scopes_value"},
+                    "allow_without_credential": True,
+                    "requirements": [
+                        {
+                            "provider_id": "provider_id_value",
+                            "audiences": "audiences_value",
+                        }
+                    ],
+                }
+            ],
+            "providers": [
+                {
+                    "id": "id_value",
+                    "issuer": "issuer_value",
+                    "jwks_uri": "jwks_uri_value",
+                    "audiences": "audiences_value",
+                    "authorization_url": "authorization_url_value",
+                    "jwt_locations": [
+                        {
+                            "header": "header_value",
+                            "query": "query_value",
+                            "cookie": "cookie_value",
+                            "value_prefix": "value_prefix_value",
+                        }
+                    ],
+                }
+            ],
+        },
+        "context": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "requested": ["requested_value1", "requested_value2"],
+                    "provided": ["provided_value1", "provided_value2"],
+                    "allowed_request_extensions": [
+                        "allowed_request_extensions_value1",
+                        "allowed_request_extensions_value2",
+                    ],
+                    "allowed_response_extensions": [
+                        "allowed_response_extensions_value1",
+                        "allowed_response_extensions_value2",
+                    ],
+                }
+            ]
+        },
+        "usage": {
+            "requirements": ["requirements_value1", "requirements_value2"],
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "allow_unregistered_calls": True,
+                    "skip_service_control": True,
+                }
+            ],
+            "producer_notification_channel": "producer_notification_channel_value",
+        },
+        "endpoints": [
+            {
+                "name": "name_value",
+                "aliases": ["aliases_value1", "aliases_value2"],
+                "target": "target_value",
+                "allow_cors": True,
+            }
+        ],
+        "control": {"environment": "environment_value"},
+        "logs": [
+            {
+                "name": "name_value",
+                "labels": [
+                    {
+                        "key": "key_value",
+                        "value_type": 1,
+                        "description": "description_value",
+                    }
+                ],
+                "description": "description_value",
+                "display_name": "display_name_value",
+            }
+        ],
+        "metrics": [
+            {
+                "name": "name_value",
+                "type": "type_value",
+                "labels": {},
+                "metric_kind": 1,
+                "value_type": 1,
+                "unit": "unit_value",
+                "description": "description_value",
+                "display_name": "display_name_value",
+                "metadata": {
+                    "launch_stage": 6,
+                    "sample_period": {"seconds": 751, "nanos": 543},
+                    "ingest_delay": {},
+                },
+                "launch_stage": 6,
+                "monitored_resource_types": [
+                    "monitored_resource_types_value1",
+                    "monitored_resource_types_value2",
+                ],
+            }
+        ],
+        "monitored_resources": [
+            {
+                "name": "name_value",
+                "type": "type_value",
+                "display_name": "display_name_value",
+                "description": "description_value",
+                "labels": {},
+                "launch_stage": 6,
+            }
+        ],
+        "billing": {
+            "consumer_destinations": [
+                {
+                    "monitored_resource": "monitored_resource_value",
+                    "metrics": ["metrics_value1", "metrics_value2"],
+                }
+            ]
+        },
+        "logging": {
+            "producer_destinations": [
+                {
+                    "monitored_resource": "monitored_resource_value",
+                    "logs": ["logs_value1", "logs_value2"],
+                }
+            ],
+            "consumer_destinations": {},
+        },
+        "monitoring": {
+            "producer_destinations": [
+                {
+                    "monitored_resource": "monitored_resource_value",
+                    "metrics": ["metrics_value1", "metrics_value2"],
+                }
+            ],
+            "consumer_destinations": {},
+        },
+        "system_parameters": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "parameters": [
+                        {
+                            "name": "name_value",
+                            "http_header": "http_header_value",
+                            "url_query_parameter": "url_query_parameter_value",
+                        }
+                    ],
+                }
+            ]
+        },
+        "source_info": {"source_files": {}},
+        "publishing": {
+            "method_settings": [
+                {
+                    "selector": "selector_value",
+                    "long_running": {
+                        "initial_poll_delay": {},
+                        "poll_delay_multiplier": 0.22510000000000002,
+                        "max_poll_delay": {},
+                        "total_poll_timeout": {},
+                    },
+                }
+            ],
+            "new_issue_uri": "new_issue_uri_value",
+            "documentation_uri": "documentation_uri_value",
+            "api_short_name": "api_short_name_value",
+            "github_label": "github_label_value",
+            "codeowner_github_teams": [
+                "codeowner_github_teams_value1",
+                "codeowner_github_teams_value2",
+            ],
+            "doc_tag_prefix": "doc_tag_prefix_value",
+            "organization": 1,
+            "library_settings": [
+                {
+                    "version": "version_value",
+                    "launch_stage": 6,
+                    "rest_numeric_enums": True,
+                    "java_settings": {
+                        "library_package": "library_package_value",
+                        "service_class_names": {},
+                        "common": {
+                            "reference_docs_uri": "reference_docs_uri_value",
+                            "destinations": [10],
+                        },
+                    },
+                    "cpp_settings": {"common": {}},
+                    "php_settings": {"common": {}},
+                    "python_settings": {"common": {}},
+                    "node_settings": {"common": {}},
+                    "dotnet_settings": {"common": {}},
+                    "ruby_settings": {"common": {}},
+                    "go_settings": {"common": {}},
+                }
+            ],
+        },
+        "config_version": {"value": 541},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service_pb2.Service(
+            name="name_value",
+            title="title_value",
+            producer_project_id="producer_project_id_value",
+            id="id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_service_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service_pb2.Service)
+    assert response.name == "name_value"
+    assert response.title == "title_value"
+    assert response.producer_project_id == "producer_project_id_value"
+    assert response.id == "id_value"
+
+
+def test_create_service_config_rest_required_fields(
+    request_type=servicemanager.CreateServiceConfigRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service_pb2.Service()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_service_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_service_config_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_service_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "serviceName",
+                "serviceConfig",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_service_config_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_create_service_config"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_create_service_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.CreateServiceConfigRequest.pb(
+            servicemanager.CreateServiceConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(service_pb2.Service())
+
+        request = servicemanager.CreateServiceConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service_pb2.Service()
+
+        client.create_service_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_service_config_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.CreateServiceConfigRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request_init["service_config"] = {
+        "name": "name_value",
+        "title": "title_value",
+        "producer_project_id": "producer_project_id_value",
+        "id": "id_value",
+        "apis": [
+            {
+                "name": "name_value",
+                "methods": [
+                    {
+                        "name": "name_value",
+                        "request_type_url": "request_type_url_value",
+                        "request_streaming": True,
+                        "response_type_url": "response_type_url_value",
+                        "response_streaming": True,
+                        "options": [
+                            {
+                                "name": "name_value",
+                                "value": {
+                                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                                    "value": b"\x08\x0c\x10\xdb\x07",
+                                },
+                            }
+                        ],
+                        "syntax": 1,
+                    }
+                ],
+                "options": {},
+                "version": "version_value",
+                "source_context": {"file_name": "file_name_value"},
+                "mixins": [{"name": "name_value", "root": "root_value"}],
+                "syntax": 1,
+            }
+        ],
+        "types": [
+            {
+                "name": "name_value",
+                "fields": [
+                    {
+                        "kind": 1,
+                        "cardinality": 1,
+                        "number": 649,
+                        "name": "name_value",
+                        "type_url": "type.googleapis.com/google.protobuf.Empty",
+                        "oneof_index": 1166,
+                        "packed": True,
+                        "options": {},
+                        "json_name": "json_name_value",
+                        "default_value": "default_value_value",
+                    }
+                ],
+                "oneofs": ["oneofs_value1", "oneofs_value2"],
+                "options": {},
+                "source_context": {},
+                "syntax": 1,
+            }
+        ],
+        "enums": [
+            {
+                "name": "name_value",
+                "enumvalue": [{"name": "name_value", "number": 649, "options": {}}],
+                "options": {},
+                "source_context": {},
+                "syntax": 1,
+            }
+        ],
+        "documentation": {
+            "summary": "summary_value",
+            "pages": [
+                {"name": "name_value", "content": "content_value", "subpages": {}}
+            ],
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "description": "description_value",
+                    "deprecation_description": "deprecation_description_value",
+                }
+            ],
+            "documentation_root_url": "documentation_root_url_value",
+            "service_root_url": "service_root_url_value",
+            "overview": "overview_value",
+        },
+        "backend": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "address": "address_value",
+                    "deadline": 0.8220000000000001,
+                    "min_deadline": 0.1241,
+                    "operation_deadline": 0.1894,
+                    "path_translation": 1,
+                    "jwt_audience": "jwt_audience_value",
+                    "disable_auth": True,
+                    "protocol": "protocol_value",
+                }
+            ]
+        },
+        "http": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "get": "get_value",
+                    "put": "put_value",
+                    "post": "post_value",
+                    "delete": "delete_value",
+                    "patch": "patch_value",
+                    "custom": {"kind": "kind_value", "path": "path_value"},
+                    "body": "body_value",
+                    "response_body": "response_body_value",
+                    "additional_bindings": {},
+                }
+            ],
+            "fully_decode_reserved_expansion": True,
+        },
+        "quota": {
+            "limits": [
+                {
+                    "name": "name_value",
+                    "description": "description_value",
+                    "default_limit": 1379,
+                    "max_limit": 964,
+                    "free_tier": 949,
+                    "duration": "duration_value",
+                    "metric": "metric_value",
+                    "unit": "unit_value",
+                    "values": {},
+                    "display_name": "display_name_value",
+                }
+            ],
+            "metric_rules": [{"selector": "selector_value", "metric_costs": {}}],
+        },
+        "authentication": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "oauth": {"canonical_scopes": "canonical_scopes_value"},
+                    "allow_without_credential": True,
+                    "requirements": [
+                        {
+                            "provider_id": "provider_id_value",
+                            "audiences": "audiences_value",
+                        }
+                    ],
+                }
+            ],
+            "providers": [
+                {
+                    "id": "id_value",
+                    "issuer": "issuer_value",
+                    "jwks_uri": "jwks_uri_value",
+                    "audiences": "audiences_value",
+                    "authorization_url": "authorization_url_value",
+                    "jwt_locations": [
+                        {
+                            "header": "header_value",
+                            "query": "query_value",
+                            "cookie": "cookie_value",
+                            "value_prefix": "value_prefix_value",
+                        }
+                    ],
+                }
+            ],
+        },
+        "context": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "requested": ["requested_value1", "requested_value2"],
+                    "provided": ["provided_value1", "provided_value2"],
+                    "allowed_request_extensions": [
+                        "allowed_request_extensions_value1",
+                        "allowed_request_extensions_value2",
+                    ],
+                    "allowed_response_extensions": [
+                        "allowed_response_extensions_value1",
+                        "allowed_response_extensions_value2",
+                    ],
+                }
+            ]
+        },
+        "usage": {
+            "requirements": ["requirements_value1", "requirements_value2"],
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "allow_unregistered_calls": True,
+                    "skip_service_control": True,
+                }
+            ],
+            "producer_notification_channel": "producer_notification_channel_value",
+        },
+        "endpoints": [
+            {
+                "name": "name_value",
+                "aliases": ["aliases_value1", "aliases_value2"],
+                "target": "target_value",
+                "allow_cors": True,
+            }
+        ],
+        "control": {"environment": "environment_value"},
+        "logs": [
+            {
+                "name": "name_value",
+                "labels": [
+                    {
+                        "key": "key_value",
+                        "value_type": 1,
+                        "description": "description_value",
+                    }
+                ],
+                "description": "description_value",
+                "display_name": "display_name_value",
+            }
+        ],
+        "metrics": [
+            {
+                "name": "name_value",
+                "type": "type_value",
+                "labels": {},
+                "metric_kind": 1,
+                "value_type": 1,
+                "unit": "unit_value",
+                "description": "description_value",
+                "display_name": "display_name_value",
+                "metadata": {
+                    "launch_stage": 6,
+                    "sample_period": {"seconds": 751, "nanos": 543},
+                    "ingest_delay": {},
+                },
+                "launch_stage": 6,
+                "monitored_resource_types": [
+                    "monitored_resource_types_value1",
+                    "monitored_resource_types_value2",
+                ],
+            }
+        ],
+        "monitored_resources": [
+            {
+                "name": "name_value",
+                "type": "type_value",
+                "display_name": "display_name_value",
+                "description": "description_value",
+                "labels": {},
+                "launch_stage": 6,
+            }
+        ],
+        "billing": {
+            "consumer_destinations": [
+                {
+                    "monitored_resource": "monitored_resource_value",
+                    "metrics": ["metrics_value1", "metrics_value2"],
+                }
+            ]
+        },
+        "logging": {
+            "producer_destinations": [
+                {
+                    "monitored_resource": "monitored_resource_value",
+                    "logs": ["logs_value1", "logs_value2"],
+                }
+            ],
+            "consumer_destinations": {},
+        },
+        "monitoring": {
+            "producer_destinations": [
+                {
+                    "monitored_resource": "monitored_resource_value",
+                    "metrics": ["metrics_value1", "metrics_value2"],
+                }
+            ],
+            "consumer_destinations": {},
+        },
+        "system_parameters": {
+            "rules": [
+                {
+                    "selector": "selector_value",
+                    "parameters": [
+                        {
+                            "name": "name_value",
+                            "http_header": "http_header_value",
+                            "url_query_parameter": "url_query_parameter_value",
+                        }
+                    ],
+                }
+            ]
+        },
+        "source_info": {"source_files": {}},
+        "publishing": {
+            "method_settings": [
+                {
+                    "selector": "selector_value",
+                    "long_running": {
+                        "initial_poll_delay": {},
+                        "poll_delay_multiplier": 0.22510000000000002,
+                        "max_poll_delay": {},
+                        "total_poll_timeout": {},
+                    },
+                }
+            ],
+            "new_issue_uri": "new_issue_uri_value",
+            "documentation_uri": "documentation_uri_value",
+            "api_short_name": "api_short_name_value",
+            "github_label": "github_label_value",
+            "codeowner_github_teams": [
+                "codeowner_github_teams_value1",
+                "codeowner_github_teams_value2",
+            ],
+            "doc_tag_prefix": "doc_tag_prefix_value",
+            "organization": 1,
+            "library_settings": [
+                {
+                    "version": "version_value",
+                    "launch_stage": 6,
+                    "rest_numeric_enums": True,
+                    "java_settings": {
+                        "library_package": "library_package_value",
+                        "service_class_names": {},
+                        "common": {
+                            "reference_docs_uri": "reference_docs_uri_value",
+                            "destinations": [10],
+                        },
+                    },
+                    "cpp_settings": {"common": {}},
+                    "php_settings": {"common": {}},
+                    "python_settings": {"common": {}},
+                    "node_settings": {"common": {}},
+                    "dotnet_settings": {"common": {}},
+                    "ruby_settings": {"common": {}},
+                    "go_settings": {"common": {}},
+                }
+            ],
+        },
+        "config_version": {"value": 541},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_service_config(request)
+
+
+def test_create_service_config_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service_pb2.Service()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+            service_config=service_pb2.Service(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_service_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}/configs" % client.transport._host, args[1]
+        )
+
+
+def test_create_service_config_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_service_config(
+            servicemanager.CreateServiceConfigRequest(),
+            service_name="service_name_value",
+            service_config=service_pb2.Service(name="name_value"),
+        )
+
+
+def test_create_service_config_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.SubmitConfigSourceRequest,
+        dict,
+    ],
+)
+def test_submit_config_source_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.submit_config_source(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_submit_config_source_rest_required_fields(
+    request_type=servicemanager.SubmitConfigSourceRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).submit_config_source._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).submit_config_source._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.submit_config_source(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_submit_config_source_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.submit_config_source._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "serviceName",
+                "configSource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_submit_config_source_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_submit_config_source"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_submit_config_source"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.SubmitConfigSourceRequest.pb(
+            servicemanager.SubmitConfigSourceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = servicemanager.SubmitConfigSourceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.submit_config_source(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_submit_config_source_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.SubmitConfigSourceRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.submit_config_source(request)
+
+
+def test_submit_config_source_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+            config_source=resources.ConfigSource(id="id_value"),
+            validate_only=True,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.submit_config_source(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}/configs:submit" % client.transport._host,
+            args[1],
+        )
+
+
+def test_submit_config_source_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.submit_config_source(
+            servicemanager.SubmitConfigSourceRequest(),
+            service_name="service_name_value",
+            config_source=resources.ConfigSource(id="id_value"),
+            validate_only=True,
+        )
+
+
+def test_submit_config_source_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.ListServiceRolloutsRequest,
+        dict,
+    ],
+)
+def test_list_service_rollouts_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.ListServiceRolloutsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.ListServiceRolloutsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_service_rollouts(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListServiceRolloutsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_service_rollouts_rest_required_fields(
+    request_type=servicemanager.ListServiceRolloutsRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "filter" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_service_rollouts._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == request_init["filter"]
+
+    jsonified_request["serviceName"] = "service_name_value"
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_service_rollouts._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = servicemanager.ListServiceRolloutsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = servicemanager.ListServiceRolloutsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_service_rollouts(request)
+
+            expected_params = [
+                (
+                    "filter",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_service_rollouts_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_service_rollouts._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "serviceName",
+                "filter",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_service_rollouts_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_list_service_rollouts"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_list_service_rollouts"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.ListServiceRolloutsRequest.pb(
+            servicemanager.ListServiceRolloutsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = servicemanager.ListServiceRolloutsResponse.to_json(
+            servicemanager.ListServiceRolloutsResponse()
+        )
+
+        request = servicemanager.ListServiceRolloutsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = servicemanager.ListServiceRolloutsResponse()
+
+        client.list_service_rollouts(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_service_rollouts_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.ListServiceRolloutsRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_service_rollouts(request)
+
+
+def test_list_service_rollouts_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.ListServiceRolloutsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+            filter="filter_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.ListServiceRolloutsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_service_rollouts(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}/rollouts" % client.transport._host, args[1]
+        )
+
+
+def test_list_service_rollouts_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_service_rollouts(
+            servicemanager.ListServiceRolloutsRequest(),
+            service_name="service_name_value",
+            filter="filter_value",
+        )
+
+
+def test_list_service_rollouts_rest_pager(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            servicemanager.ListServiceRolloutsResponse(
+                rollouts=[
+                    resources.Rollout(),
+                    resources.Rollout(),
+                    resources.Rollout(),
+                ],
+                next_page_token="abc",
+            ),
+            servicemanager.ListServiceRolloutsResponse(
+                rollouts=[],
+                next_page_token="def",
+            ),
+            servicemanager.ListServiceRolloutsResponse(
+                rollouts=[
+                    resources.Rollout(),
+                ],
+                next_page_token="ghi",
+            ),
+            servicemanager.ListServiceRolloutsResponse(
+                rollouts=[
+                    resources.Rollout(),
+                    resources.Rollout(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            servicemanager.ListServiceRolloutsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"service_name": "sample1"}
+
+        pager = client.list_service_rollouts(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Rollout) for i in results)
+
+        pages = list(client.list_service_rollouts(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.GetServiceRolloutRequest,
+        dict,
+    ],
+)
+def test_get_service_rollout_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1", "rollout_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Rollout(
+            rollout_id="rollout_id_value",
+            created_by="created_by_value",
+            status=resources.Rollout.RolloutStatus.IN_PROGRESS,
+            service_name="service_name_value",
+            traffic_percent_strategy=resources.Rollout.TrafficPercentStrategy(
+                percentages={"key_value": 0.541}
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Rollout.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_service_rollout(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Rollout)
+    assert response.rollout_id == "rollout_id_value"
+    assert response.created_by == "created_by_value"
+    assert response.status == resources.Rollout.RolloutStatus.IN_PROGRESS
+    assert response.service_name == "service_name_value"
+
+
+def test_get_service_rollout_rest_required_fields(
+    request_type=servicemanager.GetServiceRolloutRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request_init["rollout_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+    jsonified_request["rolloutId"] = "rollout_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_service_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+    assert "rolloutId" in jsonified_request
+    assert jsonified_request["rolloutId"] == "rollout_id_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Rollout()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Rollout.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_service_rollout(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_service_rollout_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_service_rollout._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "serviceName",
+                "rolloutId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_service_rollout_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_get_service_rollout"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_get_service_rollout"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.GetServiceRolloutRequest.pb(
+            servicemanager.GetServiceRolloutRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Rollout.to_json(resources.Rollout())
+
+        request = servicemanager.GetServiceRolloutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Rollout()
+
+        client.get_service_rollout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_service_rollout_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.GetServiceRolloutRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1", "rollout_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_service_rollout(request)
+
+
+def test_get_service_rollout_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Rollout()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1", "rollout_id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+            rollout_id="rollout_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Rollout.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_service_rollout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}/rollouts/{rollout_id}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_service_rollout_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_service_rollout(
+            servicemanager.GetServiceRolloutRequest(),
+            service_name="service_name_value",
+            rollout_id="rollout_id_value",
+        )
+
+
+def test_get_service_rollout_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.CreateServiceRolloutRequest,
+        dict,
+    ],
+)
+def test_create_service_rollout_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request_init["rollout"] = {
+        "rollout_id": "rollout_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "created_by": "created_by_value",
+        "status": 1,
+        "traffic_percent_strategy": {"percentages": {}},
+        "delete_service_strategy": {},
+        "service_name": "service_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_service_rollout(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_service_rollout_rest_required_fields(
+    request_type=servicemanager.CreateServiceRolloutRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request_init["service_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["serviceName"] = "service_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_service_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "serviceName" in jsonified_request
+    assert jsonified_request["serviceName"] == "service_name_value"
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_service_rollout(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_service_rollout_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_service_rollout._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "serviceName",
+                "rollout",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_service_rollout_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_create_service_rollout"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_create_service_rollout"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.CreateServiceRolloutRequest.pb(
+            servicemanager.CreateServiceRolloutRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = servicemanager.CreateServiceRolloutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_service_rollout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_service_rollout_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.CreateServiceRolloutRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request_init["rollout"] = {
+        "rollout_id": "rollout_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "created_by": "created_by_value",
+        "status": 1,
+        "traffic_percent_strategy": {"percentages": {}},
+        "delete_service_strategy": {},
+        "service_name": "service_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_service_rollout(request)
+
+
+def test_create_service_rollout_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"service_name": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            service_name="service_name_value",
+            rollout=resources.Rollout(rollout_id="rollout_id_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_service_rollout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services/{service_name}/rollouts" % client.transport._host, args[1]
+        )
+
+
+def test_create_service_rollout_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_service_rollout(
+            servicemanager.CreateServiceRolloutRequest(),
+            service_name="service_name_value",
+            rollout=resources.Rollout(rollout_id="rollout_id_value"),
+        )
+
+
+def test_create_service_rollout_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        servicemanager.GenerateConfigReportRequest,
+        dict,
+    ],
+)
+def test_generate_config_report_rest(request_type):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.GenerateConfigReportResponse(
+            service_name="service_name_value",
+            id="id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.GenerateConfigReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_config_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, servicemanager.GenerateConfigReportResponse)
+    assert response.service_name == "service_name_value"
+    assert response.id == "id_value"
+
+
+def test_generate_config_report_rest_required_fields(
+    request_type=servicemanager.GenerateConfigReportRequest,
+):
+    transport_class = transports.ServiceManagerRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_config_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_config_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = servicemanager.GenerateConfigReportResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = servicemanager.GenerateConfigReportResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_config_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_config_report_rest_unset_required_fields():
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.generate_config_report._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("newConfig",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_config_report_rest_interceptors(null_interceptor):
+    transport = transports.ServiceManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceManagerRestInterceptor(),
+    )
+    client = ServiceManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_generate_config_report"
+    ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "pre_generate_config_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = servicemanager.GenerateConfigReportRequest.pb(
+            servicemanager.GenerateConfigReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = servicemanager.GenerateConfigReportResponse.to_json(
+            servicemanager.GenerateConfigReportResponse()
+        )
+
+        request = servicemanager.GenerateConfigReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = servicemanager.GenerateConfigReportResponse()
+
+        client.generate_config_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_config_report_rest_bad_request(
+    transport: str = "rest", request_type=servicemanager.GenerateConfigReportRequest
+):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_config_report(request)
+
+
+def test_generate_config_report_rest_flattened():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = servicemanager.GenerateConfigReportResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            new_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+            old_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = servicemanager.GenerateConfigReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.generate_config_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/services:generateConfigReport" % client.transport._host, args[1]
+        )
+
+
+def test_generate_config_report_rest_flattened_error(transport: str = "rest"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.generate_config_report(
+            servicemanager.GenerateConfigReportRequest(),
+            new_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+            old_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+        )
+
+
+def test_generate_config_report_rest_error():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ServiceManagerGrpcTransport(
@@ -4455,6 +8840,7 @@ def test_transport_get_channel():
     [
         transports.ServiceManagerGrpcTransport,
         transports.ServiceManagerGrpcAsyncIOTransport,
+        transports.ServiceManagerRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4469,6 +8855,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -4630,6 +9017,7 @@ def test_service_manager_transport_auth_adc(transport_class):
     [
         transports.ServiceManagerGrpcTransport,
         transports.ServiceManagerGrpcAsyncIOTransport,
+        transports.ServiceManagerRestTransport,
     ],
 )
 def test_service_manager_transport_auth_gdch_credentials(transport_class):
@@ -4732,11 +9120,40 @@ def test_service_manager_grpc_transport_client_cert_source_for_mtls(transport_cl
             )
 
 
+def test_service_manager_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ServiceManagerRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_service_manager_rest_lro_client():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_service_manager_host_no_port(transport_name):
@@ -4747,7 +9164,11 @@ def test_service_manager_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("servicemanagement.googleapis.com:443")
+    assert client.transport._host == (
+        "servicemanagement.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://servicemanagement.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -4755,6 +9176,7 @@ def test_service_manager_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_service_manager_host_with_port(transport_name):
@@ -4765,7 +9187,69 @@ def test_service_manager_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("servicemanagement.googleapis.com:8000")
+    assert client.transport._host == (
+        "servicemanagement.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://servicemanagement.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_service_manager_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ServiceManagerClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ServiceManagerClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_services._session
+    session2 = client2.transport.list_services._session
+    assert session1 != session2
+    session1 = client1.transport.get_service._session
+    session2 = client2.transport.get_service._session
+    assert session1 != session2
+    session1 = client1.transport.create_service._session
+    session2 = client2.transport.create_service._session
+    assert session1 != session2
+    session1 = client1.transport.delete_service._session
+    session2 = client2.transport.delete_service._session
+    assert session1 != session2
+    session1 = client1.transport.undelete_service._session
+    session2 = client2.transport.undelete_service._session
+    assert session1 != session2
+    session1 = client1.transport.list_service_configs._session
+    session2 = client2.transport.list_service_configs._session
+    assert session1 != session2
+    session1 = client1.transport.get_service_config._session
+    session2 = client2.transport.get_service_config._session
+    assert session1 != session2
+    session1 = client1.transport.create_service_config._session
+    session2 = client2.transport.create_service_config._session
+    assert session1 != session2
+    session1 = client1.transport.submit_config_source._session
+    session2 = client2.transport.submit_config_source._session
+    assert session1 != session2
+    session1 = client1.transport.list_service_rollouts._session
+    session2 = client2.transport.list_service_rollouts._session
+    assert session1 != session2
+    session1 = client1.transport.get_service_rollout._session
+    session2 = client2.transport.get_service_rollout._session
+    assert session1 != session2
+    session1 = client1.transport.create_service_rollout._session
+    session2 = client2.transport.create_service_rollout._session
+    assert session1 != session2
+    session1 = client1.transport.generate_config_report._session
+    session2 = client2.transport.generate_config_report._session
+    assert session1 != session2
 
 
 def test_service_manager_grpc_transport_channel():
@@ -5070,6 +9554,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -5087,6 +9572,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
