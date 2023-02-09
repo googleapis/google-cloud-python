@@ -54,6 +54,7 @@ from google.cloud.appengine_admin_v1.types import appengine, certificate
 from .transports.base import DEFAULT_CLIENT_INFO, AuthorizedCertificatesTransport
 from .transports.grpc import AuthorizedCertificatesGrpcTransport
 from .transports.grpc_asyncio import AuthorizedCertificatesGrpcAsyncIOTransport
+from .transports.rest import AuthorizedCertificatesRestTransport
 
 
 class AuthorizedCertificatesClientMeta(type):
@@ -69,6 +70,7 @@ class AuthorizedCertificatesClientMeta(type):
     )  # type: Dict[str, Type[AuthorizedCertificatesTransport]]
     _transport_registry["grpc"] = AuthorizedCertificatesGrpcTransport
     _transport_registry["grpc_asyncio"] = AuthorizedCertificatesGrpcAsyncIOTransport
+    _transport_registry["rest"] = AuthorizedCertificatesRestTransport
 
     def get_transport_class(
         cls,

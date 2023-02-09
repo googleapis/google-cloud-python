@@ -19,6 +19,10 @@ from typing import Dict, Type
 from .base import AuthorizedCertificatesTransport
 from .grpc import AuthorizedCertificatesGrpcTransport
 from .grpc_asyncio import AuthorizedCertificatesGrpcAsyncIOTransport
+from .rest import (
+    AuthorizedCertificatesRestInterceptor,
+    AuthorizedCertificatesRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +30,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[AuthorizedCertificatesTransport]]
 _transport_registry["grpc"] = AuthorizedCertificatesGrpcTransport
 _transport_registry["grpc_asyncio"] = AuthorizedCertificatesGrpcAsyncIOTransport
+_transport_registry["rest"] = AuthorizedCertificatesRestTransport
 
 __all__ = (
     "AuthorizedCertificatesTransport",
     "AuthorizedCertificatesGrpcTransport",
     "AuthorizedCertificatesGrpcAsyncIOTransport",
+    "AuthorizedCertificatesRestTransport",
+    "AuthorizedCertificatesRestInterceptor",
 )

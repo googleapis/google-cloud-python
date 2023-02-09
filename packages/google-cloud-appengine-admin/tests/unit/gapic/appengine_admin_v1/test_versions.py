@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -44,12 +46,15 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.appengine_admin_v1.services.versions import (
     VersionsAsyncClient,
@@ -106,6 +111,7 @@ def test__get_default_mtls_endpoint():
     [
         (VersionsClient, "grpc"),
         (VersionsAsyncClient, "grpc_asyncio"),
+        (VersionsClient, "rest"),
     ],
 )
 def test_versions_client_from_service_account_info(client_class, transport_name):
@@ -119,7 +125,11 @@ def test_versions_client_from_service_account_info(client_class, transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("appengine.googleapis.com:443")
+        assert client.transport._host == (
+            "appengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://appengine.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -127,6 +137,7 @@ def test_versions_client_from_service_account_info(client_class, transport_name)
     [
         (transports.VersionsGrpcTransport, "grpc"),
         (transports.VersionsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.VersionsRestTransport, "rest"),
     ],
 )
 def test_versions_client_service_account_always_use_jwt(
@@ -152,6 +163,7 @@ def test_versions_client_service_account_always_use_jwt(
     [
         (VersionsClient, "grpc"),
         (VersionsAsyncClient, "grpc_asyncio"),
+        (VersionsClient, "rest"),
     ],
 )
 def test_versions_client_from_service_account_file(client_class, transport_name):
@@ -172,13 +184,18 @@ def test_versions_client_from_service_account_file(client_class, transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("appengine.googleapis.com:443")
+        assert client.transport._host == (
+            "appengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://appengine.googleapis.com"
+        )
 
 
 def test_versions_client_get_transport_class():
     transport = VersionsClient.get_transport_class()
     available_transports = [
         transports.VersionsGrpcTransport,
+        transports.VersionsRestTransport,
     ]
     assert transport in available_transports
 
@@ -191,6 +208,7 @@ def test_versions_client_get_transport_class():
     [
         (VersionsClient, transports.VersionsGrpcTransport, "grpc"),
         (VersionsAsyncClient, transports.VersionsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (VersionsClient, transports.VersionsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -332,6 +350,8 @@ def test_versions_client_client_options(client_class, transport_class, transport
             "grpc_asyncio",
             "false",
         ),
+        (VersionsClient, transports.VersionsRestTransport, "rest", "true"),
+        (VersionsClient, transports.VersionsRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -521,6 +541,7 @@ def test_versions_client_get_mtls_endpoint_and_cert_source(client_class):
     [
         (VersionsClient, transports.VersionsGrpcTransport, "grpc"),
         (VersionsAsyncClient, transports.VersionsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (VersionsClient, transports.VersionsRestTransport, "rest"),
     ],
 )
 def test_versions_client_client_options_scopes(
@@ -556,6 +577,7 @@ def test_versions_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (VersionsClient, transports.VersionsRestTransport, "rest", None),
     ],
 )
 def test_versions_client_client_options_credentials_file(
@@ -1662,6 +1684,1356 @@ async def test_delete_version_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.ListVersionsRequest,
+        dict,
+    ],
+)
+def test_list_versions_rest(request_type):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1/services/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = appengine.ListVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = appengine.ListVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_versions_rest_interceptors(null_interceptor):
+    transport = transports.VersionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.VersionsRestInterceptor(),
+    )
+    client = VersionsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VersionsRestInterceptor, "post_list_versions"
+    ) as post, mock.patch.object(
+        transports.VersionsRestInterceptor, "pre_list_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.ListVersionsRequest.pb(appengine.ListVersionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = appengine.ListVersionsResponse.to_json(
+            appengine.ListVersionsResponse()
+        )
+
+        request = appengine.ListVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = appengine.ListVersionsResponse()
+
+        client.list_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_versions_rest_bad_request(
+    transport: str = "rest", request_type=appengine.ListVersionsRequest
+):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1/services/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_versions(request)
+
+
+def test_list_versions_rest_pager(transport: str = "rest"):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            appengine.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                    version.Version(),
+                ],
+                next_page_token="abc",
+            ),
+            appengine.ListVersionsResponse(
+                versions=[],
+                next_page_token="def",
+            ),
+            appengine.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            appengine.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(appengine.ListVersionsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "apps/sample1/services/sample2"}
+
+        pager = client.list_versions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, version.Version) for i in results)
+
+        pages = list(client.list_versions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.GetVersionRequest,
+        dict,
+    ],
+)
+def test_get_version_rest(request_type):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/services/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = version.Version(
+            name="name_value",
+            id="id_value",
+            inbound_services=[version.InboundServiceType.INBOUND_SERVICE_MAIL],
+            instance_class="instance_class_value",
+            zones=["zones_value"],
+            runtime="runtime_value",
+            runtime_channel="runtime_channel_value",
+            threadsafe=True,
+            vm=True,
+            app_engine_apis=True,
+            env="env_value",
+            serving_status=version.ServingStatus.SERVING,
+            created_by="created_by_value",
+            disk_usage_bytes=1701,
+            runtime_api_version="runtime_api_version_value",
+            runtime_main_executable_path="runtime_main_executable_path_value",
+            service_account="service_account_value",
+            nobuild_files_regex="nobuild_files_regex_value",
+            version_url="version_url_value",
+            automatic_scaling=version.AutomaticScaling(
+                cool_down_period=duration_pb2.Duration(seconds=751)
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = version.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, version.Version)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.inbound_services == [
+        version.InboundServiceType.INBOUND_SERVICE_MAIL
+    ]
+    assert response.instance_class == "instance_class_value"
+    assert response.zones == ["zones_value"]
+    assert response.runtime == "runtime_value"
+    assert response.runtime_channel == "runtime_channel_value"
+    assert response.threadsafe is True
+    assert response.vm is True
+    assert response.app_engine_apis is True
+    assert response.env == "env_value"
+    assert response.serving_status == version.ServingStatus.SERVING
+    assert response.created_by == "created_by_value"
+    assert response.disk_usage_bytes == 1701
+    assert response.runtime_api_version == "runtime_api_version_value"
+    assert response.runtime_main_executable_path == "runtime_main_executable_path_value"
+    assert response.service_account == "service_account_value"
+    assert response.nobuild_files_regex == "nobuild_files_regex_value"
+    assert response.version_url == "version_url_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_version_rest_interceptors(null_interceptor):
+    transport = transports.VersionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.VersionsRestInterceptor(),
+    )
+    client = VersionsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VersionsRestInterceptor, "post_get_version"
+    ) as post, mock.patch.object(
+        transports.VersionsRestInterceptor, "pre_get_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.GetVersionRequest.pb(appengine.GetVersionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = version.Version.to_json(version.Version())
+
+        request = appengine.GetVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = version.Version()
+
+        client.get_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_version_rest_bad_request(
+    transport: str = "rest", request_type=appengine.GetVersionRequest
+):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/services/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_version(request)
+
+
+def test_get_version_rest_error():
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.CreateVersionRequest,
+        dict,
+    ],
+)
+def test_create_version_rest(request_type):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1/services/sample2"}
+    request_init["version"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "automatic_scaling": {
+            "cool_down_period": {"seconds": 751, "nanos": 543},
+            "cpu_utilization": {
+                "aggregation_window_length": {},
+                "target_utilization": 0.19540000000000002,
+            },
+            "max_concurrent_requests": 2499,
+            "max_idle_instances": 1898,
+            "max_total_instances": 2032,
+            "max_pending_latency": {},
+            "min_idle_instances": 1896,
+            "min_total_instances": 2030,
+            "min_pending_latency": {},
+            "request_utilization": {
+                "target_request_count_per_second": 3320,
+                "target_concurrent_requests": 2820,
+            },
+            "disk_utilization": {
+                "target_write_bytes_per_second": 3096,
+                "target_write_ops_per_second": 2883,
+                "target_read_bytes_per_second": 2953,
+                "target_read_ops_per_second": 2740,
+            },
+            "network_utilization": {
+                "target_sent_bytes_per_second": 2983,
+                "target_sent_packets_per_second": 3179,
+                "target_received_bytes_per_second": 3380,
+                "target_received_packets_per_second": 3576,
+            },
+            "standard_scheduler_settings": {
+                "target_cpu_utilization": 0.23770000000000002,
+                "target_throughput_utilization": 0.3163,
+                "min_instances": 1387,
+                "max_instances": 1389,
+            },
+        },
+        "basic_scaling": {"idle_timeout": {}, "max_instances": 1389},
+        "manual_scaling": {"instances": 968},
+        "inbound_services": [1],
+        "instance_class": "instance_class_value",
+        "network": {
+            "forwarded_ports": ["forwarded_ports_value1", "forwarded_ports_value2"],
+            "instance_tag": "instance_tag_value",
+            "name": "name_value",
+            "subnetwork_name": "subnetwork_name_value",
+            "session_affinity": True,
+        },
+        "zones": ["zones_value1", "zones_value2"],
+        "resources": {
+            "cpu": 0.328,
+            "disk_gb": 0.723,
+            "memory_gb": 0.961,
+            "volumes": [
+                {
+                    "name": "name_value",
+                    "volume_type": "volume_type_value",
+                    "size_gb": 0.739,
+                }
+            ],
+            "kms_key_reference": "kms_key_reference_value",
+        },
+        "runtime": "runtime_value",
+        "runtime_channel": "runtime_channel_value",
+        "threadsafe": True,
+        "vm": True,
+        "app_engine_apis": True,
+        "beta_settings": {},
+        "env": "env_value",
+        "serving_status": 1,
+        "created_by": "created_by_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "disk_usage_bytes": 1701,
+        "runtime_api_version": "runtime_api_version_value",
+        "runtime_main_executable_path": "runtime_main_executable_path_value",
+        "service_account": "service_account_value",
+        "handlers": [
+            {
+                "url_regex": "url_regex_value",
+                "static_files": {
+                    "path": "path_value",
+                    "upload_path_regex": "upload_path_regex_value",
+                    "http_headers": {},
+                    "mime_type": "mime_type_value",
+                    "expiration": {},
+                    "require_matching_file": True,
+                    "application_readable": True,
+                },
+                "script": {"script_path": "script_path_value"},
+                "api_endpoint": {"script_path": "script_path_value"},
+                "security_level": 1,
+                "login": 1,
+                "auth_fail_action": 1,
+                "redirect_http_response_code": 1,
+            }
+        ],
+        "error_handlers": [
+            {
+                "error_code": 1,
+                "static_file": "static_file_value",
+                "mime_type": "mime_type_value",
+            }
+        ],
+        "libraries": [{"name": "name_value", "version": "version_value"}],
+        "api_config": {
+            "auth_fail_action": 1,
+            "login": 1,
+            "script": "script_value",
+            "security_level": 1,
+            "url": "url_value",
+        },
+        "env_variables": {},
+        "build_env_variables": {},
+        "default_expiration": {},
+        "health_check": {
+            "disable_health_check": True,
+            "host": "host_value",
+            "healthy_threshold": 1819,
+            "unhealthy_threshold": 2046,
+            "restart_threshold": 1841,
+            "check_interval": {},
+            "timeout": {},
+        },
+        "readiness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "app_start_timeout": {},
+        },
+        "liveness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "initial_delay": {},
+        },
+        "nobuild_files_regex": "nobuild_files_regex_value",
+        "deployment": {
+            "files": {},
+            "container": {"image": "image_value"},
+            "zip_": {"source_url": "source_url_value", "files_count": 1179},
+            "cloud_build_options": {
+                "app_yaml_path": "app_yaml_path_value",
+                "cloud_build_timeout": {},
+            },
+        },
+        "version_url": "version_url_value",
+        "endpoints_api_service": {
+            "name": "name_value",
+            "config_id": "config_id_value",
+            "rollout_strategy": 1,
+            "disable_trace_sampling": True,
+        },
+        "entrypoint": {"shell": "shell_value"},
+        "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_version_rest_interceptors(null_interceptor):
+    transport = transports.VersionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.VersionsRestInterceptor(),
+    )
+    client = VersionsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VersionsRestInterceptor, "post_create_version"
+    ) as post, mock.patch.object(
+        transports.VersionsRestInterceptor, "pre_create_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.CreateVersionRequest.pb(appengine.CreateVersionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = appengine.CreateVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_version_rest_bad_request(
+    transport: str = "rest", request_type=appengine.CreateVersionRequest
+):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1/services/sample2"}
+    request_init["version"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "automatic_scaling": {
+            "cool_down_period": {"seconds": 751, "nanos": 543},
+            "cpu_utilization": {
+                "aggregation_window_length": {},
+                "target_utilization": 0.19540000000000002,
+            },
+            "max_concurrent_requests": 2499,
+            "max_idle_instances": 1898,
+            "max_total_instances": 2032,
+            "max_pending_latency": {},
+            "min_idle_instances": 1896,
+            "min_total_instances": 2030,
+            "min_pending_latency": {},
+            "request_utilization": {
+                "target_request_count_per_second": 3320,
+                "target_concurrent_requests": 2820,
+            },
+            "disk_utilization": {
+                "target_write_bytes_per_second": 3096,
+                "target_write_ops_per_second": 2883,
+                "target_read_bytes_per_second": 2953,
+                "target_read_ops_per_second": 2740,
+            },
+            "network_utilization": {
+                "target_sent_bytes_per_second": 2983,
+                "target_sent_packets_per_second": 3179,
+                "target_received_bytes_per_second": 3380,
+                "target_received_packets_per_second": 3576,
+            },
+            "standard_scheduler_settings": {
+                "target_cpu_utilization": 0.23770000000000002,
+                "target_throughput_utilization": 0.3163,
+                "min_instances": 1387,
+                "max_instances": 1389,
+            },
+        },
+        "basic_scaling": {"idle_timeout": {}, "max_instances": 1389},
+        "manual_scaling": {"instances": 968},
+        "inbound_services": [1],
+        "instance_class": "instance_class_value",
+        "network": {
+            "forwarded_ports": ["forwarded_ports_value1", "forwarded_ports_value2"],
+            "instance_tag": "instance_tag_value",
+            "name": "name_value",
+            "subnetwork_name": "subnetwork_name_value",
+            "session_affinity": True,
+        },
+        "zones": ["zones_value1", "zones_value2"],
+        "resources": {
+            "cpu": 0.328,
+            "disk_gb": 0.723,
+            "memory_gb": 0.961,
+            "volumes": [
+                {
+                    "name": "name_value",
+                    "volume_type": "volume_type_value",
+                    "size_gb": 0.739,
+                }
+            ],
+            "kms_key_reference": "kms_key_reference_value",
+        },
+        "runtime": "runtime_value",
+        "runtime_channel": "runtime_channel_value",
+        "threadsafe": True,
+        "vm": True,
+        "app_engine_apis": True,
+        "beta_settings": {},
+        "env": "env_value",
+        "serving_status": 1,
+        "created_by": "created_by_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "disk_usage_bytes": 1701,
+        "runtime_api_version": "runtime_api_version_value",
+        "runtime_main_executable_path": "runtime_main_executable_path_value",
+        "service_account": "service_account_value",
+        "handlers": [
+            {
+                "url_regex": "url_regex_value",
+                "static_files": {
+                    "path": "path_value",
+                    "upload_path_regex": "upload_path_regex_value",
+                    "http_headers": {},
+                    "mime_type": "mime_type_value",
+                    "expiration": {},
+                    "require_matching_file": True,
+                    "application_readable": True,
+                },
+                "script": {"script_path": "script_path_value"},
+                "api_endpoint": {"script_path": "script_path_value"},
+                "security_level": 1,
+                "login": 1,
+                "auth_fail_action": 1,
+                "redirect_http_response_code": 1,
+            }
+        ],
+        "error_handlers": [
+            {
+                "error_code": 1,
+                "static_file": "static_file_value",
+                "mime_type": "mime_type_value",
+            }
+        ],
+        "libraries": [{"name": "name_value", "version": "version_value"}],
+        "api_config": {
+            "auth_fail_action": 1,
+            "login": 1,
+            "script": "script_value",
+            "security_level": 1,
+            "url": "url_value",
+        },
+        "env_variables": {},
+        "build_env_variables": {},
+        "default_expiration": {},
+        "health_check": {
+            "disable_health_check": True,
+            "host": "host_value",
+            "healthy_threshold": 1819,
+            "unhealthy_threshold": 2046,
+            "restart_threshold": 1841,
+            "check_interval": {},
+            "timeout": {},
+        },
+        "readiness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "app_start_timeout": {},
+        },
+        "liveness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "initial_delay": {},
+        },
+        "nobuild_files_regex": "nobuild_files_regex_value",
+        "deployment": {
+            "files": {},
+            "container": {"image": "image_value"},
+            "zip_": {"source_url": "source_url_value", "files_count": 1179},
+            "cloud_build_options": {
+                "app_yaml_path": "app_yaml_path_value",
+                "cloud_build_timeout": {},
+            },
+        },
+        "version_url": "version_url_value",
+        "endpoints_api_service": {
+            "name": "name_value",
+            "config_id": "config_id_value",
+            "rollout_strategy": 1,
+            "disable_trace_sampling": True,
+        },
+        "entrypoint": {"shell": "shell_value"},
+        "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_version(request)
+
+
+def test_create_version_rest_error():
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.UpdateVersionRequest,
+        dict,
+    ],
+)
+def test_update_version_rest(request_type):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/services/sample2/versions/sample3"}
+    request_init["version"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "automatic_scaling": {
+            "cool_down_period": {"seconds": 751, "nanos": 543},
+            "cpu_utilization": {
+                "aggregation_window_length": {},
+                "target_utilization": 0.19540000000000002,
+            },
+            "max_concurrent_requests": 2499,
+            "max_idle_instances": 1898,
+            "max_total_instances": 2032,
+            "max_pending_latency": {},
+            "min_idle_instances": 1896,
+            "min_total_instances": 2030,
+            "min_pending_latency": {},
+            "request_utilization": {
+                "target_request_count_per_second": 3320,
+                "target_concurrent_requests": 2820,
+            },
+            "disk_utilization": {
+                "target_write_bytes_per_second": 3096,
+                "target_write_ops_per_second": 2883,
+                "target_read_bytes_per_second": 2953,
+                "target_read_ops_per_second": 2740,
+            },
+            "network_utilization": {
+                "target_sent_bytes_per_second": 2983,
+                "target_sent_packets_per_second": 3179,
+                "target_received_bytes_per_second": 3380,
+                "target_received_packets_per_second": 3576,
+            },
+            "standard_scheduler_settings": {
+                "target_cpu_utilization": 0.23770000000000002,
+                "target_throughput_utilization": 0.3163,
+                "min_instances": 1387,
+                "max_instances": 1389,
+            },
+        },
+        "basic_scaling": {"idle_timeout": {}, "max_instances": 1389},
+        "manual_scaling": {"instances": 968},
+        "inbound_services": [1],
+        "instance_class": "instance_class_value",
+        "network": {
+            "forwarded_ports": ["forwarded_ports_value1", "forwarded_ports_value2"],
+            "instance_tag": "instance_tag_value",
+            "name": "name_value",
+            "subnetwork_name": "subnetwork_name_value",
+            "session_affinity": True,
+        },
+        "zones": ["zones_value1", "zones_value2"],
+        "resources": {
+            "cpu": 0.328,
+            "disk_gb": 0.723,
+            "memory_gb": 0.961,
+            "volumes": [
+                {
+                    "name": "name_value",
+                    "volume_type": "volume_type_value",
+                    "size_gb": 0.739,
+                }
+            ],
+            "kms_key_reference": "kms_key_reference_value",
+        },
+        "runtime": "runtime_value",
+        "runtime_channel": "runtime_channel_value",
+        "threadsafe": True,
+        "vm": True,
+        "app_engine_apis": True,
+        "beta_settings": {},
+        "env": "env_value",
+        "serving_status": 1,
+        "created_by": "created_by_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "disk_usage_bytes": 1701,
+        "runtime_api_version": "runtime_api_version_value",
+        "runtime_main_executable_path": "runtime_main_executable_path_value",
+        "service_account": "service_account_value",
+        "handlers": [
+            {
+                "url_regex": "url_regex_value",
+                "static_files": {
+                    "path": "path_value",
+                    "upload_path_regex": "upload_path_regex_value",
+                    "http_headers": {},
+                    "mime_type": "mime_type_value",
+                    "expiration": {},
+                    "require_matching_file": True,
+                    "application_readable": True,
+                },
+                "script": {"script_path": "script_path_value"},
+                "api_endpoint": {"script_path": "script_path_value"},
+                "security_level": 1,
+                "login": 1,
+                "auth_fail_action": 1,
+                "redirect_http_response_code": 1,
+            }
+        ],
+        "error_handlers": [
+            {
+                "error_code": 1,
+                "static_file": "static_file_value",
+                "mime_type": "mime_type_value",
+            }
+        ],
+        "libraries": [{"name": "name_value", "version": "version_value"}],
+        "api_config": {
+            "auth_fail_action": 1,
+            "login": 1,
+            "script": "script_value",
+            "security_level": 1,
+            "url": "url_value",
+        },
+        "env_variables": {},
+        "build_env_variables": {},
+        "default_expiration": {},
+        "health_check": {
+            "disable_health_check": True,
+            "host": "host_value",
+            "healthy_threshold": 1819,
+            "unhealthy_threshold": 2046,
+            "restart_threshold": 1841,
+            "check_interval": {},
+            "timeout": {},
+        },
+        "readiness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "app_start_timeout": {},
+        },
+        "liveness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "initial_delay": {},
+        },
+        "nobuild_files_regex": "nobuild_files_regex_value",
+        "deployment": {
+            "files": {},
+            "container": {"image": "image_value"},
+            "zip_": {"source_url": "source_url_value", "files_count": 1179},
+            "cloud_build_options": {
+                "app_yaml_path": "app_yaml_path_value",
+                "cloud_build_timeout": {},
+            },
+        },
+        "version_url": "version_url_value",
+        "endpoints_api_service": {
+            "name": "name_value",
+            "config_id": "config_id_value",
+            "rollout_strategy": 1,
+            "disable_trace_sampling": True,
+        },
+        "entrypoint": {"shell": "shell_value"},
+        "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_version_rest_interceptors(null_interceptor):
+    transport = transports.VersionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.VersionsRestInterceptor(),
+    )
+    client = VersionsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VersionsRestInterceptor, "post_update_version"
+    ) as post, mock.patch.object(
+        transports.VersionsRestInterceptor, "pre_update_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.UpdateVersionRequest.pb(appengine.UpdateVersionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = appengine.UpdateVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_version_rest_bad_request(
+    transport: str = "rest", request_type=appengine.UpdateVersionRequest
+):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/services/sample2/versions/sample3"}
+    request_init["version"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "automatic_scaling": {
+            "cool_down_period": {"seconds": 751, "nanos": 543},
+            "cpu_utilization": {
+                "aggregation_window_length": {},
+                "target_utilization": 0.19540000000000002,
+            },
+            "max_concurrent_requests": 2499,
+            "max_idle_instances": 1898,
+            "max_total_instances": 2032,
+            "max_pending_latency": {},
+            "min_idle_instances": 1896,
+            "min_total_instances": 2030,
+            "min_pending_latency": {},
+            "request_utilization": {
+                "target_request_count_per_second": 3320,
+                "target_concurrent_requests": 2820,
+            },
+            "disk_utilization": {
+                "target_write_bytes_per_second": 3096,
+                "target_write_ops_per_second": 2883,
+                "target_read_bytes_per_second": 2953,
+                "target_read_ops_per_second": 2740,
+            },
+            "network_utilization": {
+                "target_sent_bytes_per_second": 2983,
+                "target_sent_packets_per_second": 3179,
+                "target_received_bytes_per_second": 3380,
+                "target_received_packets_per_second": 3576,
+            },
+            "standard_scheduler_settings": {
+                "target_cpu_utilization": 0.23770000000000002,
+                "target_throughput_utilization": 0.3163,
+                "min_instances": 1387,
+                "max_instances": 1389,
+            },
+        },
+        "basic_scaling": {"idle_timeout": {}, "max_instances": 1389},
+        "manual_scaling": {"instances": 968},
+        "inbound_services": [1],
+        "instance_class": "instance_class_value",
+        "network": {
+            "forwarded_ports": ["forwarded_ports_value1", "forwarded_ports_value2"],
+            "instance_tag": "instance_tag_value",
+            "name": "name_value",
+            "subnetwork_name": "subnetwork_name_value",
+            "session_affinity": True,
+        },
+        "zones": ["zones_value1", "zones_value2"],
+        "resources": {
+            "cpu": 0.328,
+            "disk_gb": 0.723,
+            "memory_gb": 0.961,
+            "volumes": [
+                {
+                    "name": "name_value",
+                    "volume_type": "volume_type_value",
+                    "size_gb": 0.739,
+                }
+            ],
+            "kms_key_reference": "kms_key_reference_value",
+        },
+        "runtime": "runtime_value",
+        "runtime_channel": "runtime_channel_value",
+        "threadsafe": True,
+        "vm": True,
+        "app_engine_apis": True,
+        "beta_settings": {},
+        "env": "env_value",
+        "serving_status": 1,
+        "created_by": "created_by_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "disk_usage_bytes": 1701,
+        "runtime_api_version": "runtime_api_version_value",
+        "runtime_main_executable_path": "runtime_main_executable_path_value",
+        "service_account": "service_account_value",
+        "handlers": [
+            {
+                "url_regex": "url_regex_value",
+                "static_files": {
+                    "path": "path_value",
+                    "upload_path_regex": "upload_path_regex_value",
+                    "http_headers": {},
+                    "mime_type": "mime_type_value",
+                    "expiration": {},
+                    "require_matching_file": True,
+                    "application_readable": True,
+                },
+                "script": {"script_path": "script_path_value"},
+                "api_endpoint": {"script_path": "script_path_value"},
+                "security_level": 1,
+                "login": 1,
+                "auth_fail_action": 1,
+                "redirect_http_response_code": 1,
+            }
+        ],
+        "error_handlers": [
+            {
+                "error_code": 1,
+                "static_file": "static_file_value",
+                "mime_type": "mime_type_value",
+            }
+        ],
+        "libraries": [{"name": "name_value", "version": "version_value"}],
+        "api_config": {
+            "auth_fail_action": 1,
+            "login": 1,
+            "script": "script_value",
+            "security_level": 1,
+            "url": "url_value",
+        },
+        "env_variables": {},
+        "build_env_variables": {},
+        "default_expiration": {},
+        "health_check": {
+            "disable_health_check": True,
+            "host": "host_value",
+            "healthy_threshold": 1819,
+            "unhealthy_threshold": 2046,
+            "restart_threshold": 1841,
+            "check_interval": {},
+            "timeout": {},
+        },
+        "readiness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "app_start_timeout": {},
+        },
+        "liveness_check": {
+            "path": "path_value",
+            "host": "host_value",
+            "failure_threshold": 1812,
+            "success_threshold": 1829,
+            "check_interval": {},
+            "timeout": {},
+            "initial_delay": {},
+        },
+        "nobuild_files_regex": "nobuild_files_regex_value",
+        "deployment": {
+            "files": {},
+            "container": {"image": "image_value"},
+            "zip_": {"source_url": "source_url_value", "files_count": 1179},
+            "cloud_build_options": {
+                "app_yaml_path": "app_yaml_path_value",
+                "cloud_build_timeout": {},
+            },
+        },
+        "version_url": "version_url_value",
+        "endpoints_api_service": {
+            "name": "name_value",
+            "config_id": "config_id_value",
+            "rollout_strategy": 1,
+            "disable_trace_sampling": True,
+        },
+        "entrypoint": {"shell": "shell_value"},
+        "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_version(request)
+
+
+def test_update_version_rest_error():
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DeleteVersionRequest,
+        dict,
+    ],
+)
+def test_delete_version_rest(request_type):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/services/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_version_rest_interceptors(null_interceptor):
+    transport = transports.VersionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.VersionsRestInterceptor(),
+    )
+    client = VersionsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VersionsRestInterceptor, "post_delete_version"
+    ) as post, mock.patch.object(
+        transports.VersionsRestInterceptor, "pre_delete_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.DeleteVersionRequest.pb(appengine.DeleteVersionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = appengine.DeleteVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_version_rest_bad_request(
+    transport: str = "rest", request_type=appengine.DeleteVersionRequest
+):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/services/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_version(request)
+
+
+def test_delete_version_rest_error():
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.VersionsGrpcTransport(
@@ -1743,6 +3115,7 @@ def test_transport_get_channel():
     [
         transports.VersionsGrpcTransport,
         transports.VersionsGrpcAsyncIOTransport,
+        transports.VersionsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1757,6 +3130,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1907,6 +3281,7 @@ def test_versions_transport_auth_adc(transport_class):
     [
         transports.VersionsGrpcTransport,
         transports.VersionsGrpcAsyncIOTransport,
+        transports.VersionsRestTransport,
     ],
 )
 def test_versions_transport_auth_gdch_credentials(transport_class):
@@ -2005,11 +3380,40 @@ def test_versions_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_versions_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.VersionsRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_versions_rest_lro_client():
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_versions_host_no_port(transport_name):
@@ -2020,7 +3424,11 @@ def test_versions_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("appengine.googleapis.com:443")
+    assert client.transport._host == (
+        "appengine.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://appengine.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2028,6 +3436,7 @@ def test_versions_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_versions_host_with_port(transport_name):
@@ -2038,7 +3447,45 @@ def test_versions_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("appengine.googleapis.com:8000")
+    assert client.transport._host == (
+        "appengine.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://appengine.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_versions_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = VersionsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = VersionsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_versions._session
+    session2 = client2.transport.list_versions._session
+    assert session1 != session2
+    session1 = client1.transport.get_version._session
+    session2 = client2.transport.get_version._session
+    assert session1 != session2
+    session1 = client1.transport.create_version._session
+    session2 = client2.transport.create_version._session
+    assert session1 != session2
+    session1 = client1.transport.update_version._session
+    session2 = client2.transport.update_version._session
+    assert session1 != session2
+    session1 = client1.transport.delete_version._session
+    session2 = client2.transport.delete_version._session
+    assert session1 != session2
 
 
 def test_versions_grpc_transport_channel():
@@ -2335,6 +3782,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2352,6 +3800,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

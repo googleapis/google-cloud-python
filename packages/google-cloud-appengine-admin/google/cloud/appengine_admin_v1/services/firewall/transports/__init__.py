@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import FirewallTransport
 from .grpc import FirewallGrpcTransport
 from .grpc_asyncio import FirewallGrpcAsyncIOTransport
+from .rest import FirewallRestInterceptor, FirewallRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[FirewallTransport]]
 _transport_registry["grpc"] = FirewallGrpcTransport
 _transport_registry["grpc_asyncio"] = FirewallGrpcAsyncIOTransport
+_transport_registry["rest"] = FirewallRestTransport
 
 __all__ = (
     "FirewallTransport",
     "FirewallGrpcTransport",
     "FirewallGrpcAsyncIOTransport",
+    "FirewallRestTransport",
+    "FirewallRestInterceptor",
 )

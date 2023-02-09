@@ -58,6 +58,7 @@ from google.cloud.appengine_admin_v1.types import service
 from .transports.base import DEFAULT_CLIENT_INFO, ServicesTransport
 from .transports.grpc import ServicesGrpcTransport
 from .transports.grpc_asyncio import ServicesGrpcAsyncIOTransport
+from .transports.rest import ServicesRestTransport
 
 
 class ServicesClientMeta(type):
@@ -71,6 +72,7 @@ class ServicesClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ServicesTransport]]
     _transport_registry["grpc"] = ServicesGrpcTransport
     _transport_registry["grpc_asyncio"] = ServicesGrpcAsyncIOTransport
+    _transport_registry["rest"] = ServicesRestTransport
 
     def get_transport_class(
         cls,

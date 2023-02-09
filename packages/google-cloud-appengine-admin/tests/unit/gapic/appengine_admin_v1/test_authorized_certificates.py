@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -32,12 +34,15 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.appengine_admin_v1.services.authorized_certificates import (
     AuthorizedCertificatesAsyncClient,
@@ -98,6 +103,7 @@ def test__get_default_mtls_endpoint():
     [
         (AuthorizedCertificatesClient, "grpc"),
         (AuthorizedCertificatesAsyncClient, "grpc_asyncio"),
+        (AuthorizedCertificatesClient, "rest"),
     ],
 )
 def test_authorized_certificates_client_from_service_account_info(
@@ -113,7 +119,11 @@ def test_authorized_certificates_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("appengine.googleapis.com:443")
+        assert client.transport._host == (
+            "appengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://appengine.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -121,6 +131,7 @@ def test_authorized_certificates_client_from_service_account_info(
     [
         (transports.AuthorizedCertificatesGrpcTransport, "grpc"),
         (transports.AuthorizedCertificatesGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AuthorizedCertificatesRestTransport, "rest"),
     ],
 )
 def test_authorized_certificates_client_service_account_always_use_jwt(
@@ -146,6 +157,7 @@ def test_authorized_certificates_client_service_account_always_use_jwt(
     [
         (AuthorizedCertificatesClient, "grpc"),
         (AuthorizedCertificatesAsyncClient, "grpc_asyncio"),
+        (AuthorizedCertificatesClient, "rest"),
     ],
 )
 def test_authorized_certificates_client_from_service_account_file(
@@ -168,13 +180,18 @@ def test_authorized_certificates_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("appengine.googleapis.com:443")
+        assert client.transport._host == (
+            "appengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://appengine.googleapis.com"
+        )
 
 
 def test_authorized_certificates_client_get_transport_class():
     transport = AuthorizedCertificatesClient.get_transport_class()
     available_transports = [
         transports.AuthorizedCertificatesGrpcTransport,
+        transports.AuthorizedCertificatesRestTransport,
     ]
     assert transport in available_transports
 
@@ -194,6 +211,11 @@ def test_authorized_certificates_client_get_transport_class():
             AuthorizedCertificatesAsyncClient,
             transports.AuthorizedCertificatesGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            AuthorizedCertificatesClient,
+            transports.AuthorizedCertificatesRestTransport,
+            "rest",
         ),
     ],
 )
@@ -348,6 +370,18 @@ def test_authorized_certificates_client_client_options(
             AuthorizedCertificatesAsyncClient,
             transports.AuthorizedCertificatesGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            AuthorizedCertificatesClient,
+            transports.AuthorizedCertificatesRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            AuthorizedCertificatesClient,
+            transports.AuthorizedCertificatesRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -553,6 +587,11 @@ def test_authorized_certificates_client_get_mtls_endpoint_and_cert_source(client
             transports.AuthorizedCertificatesGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            AuthorizedCertificatesClient,
+            transports.AuthorizedCertificatesRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_authorized_certificates_client_client_options_scopes(
@@ -592,6 +631,12 @@ def test_authorized_certificates_client_client_options_scopes(
             transports.AuthorizedCertificatesGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            AuthorizedCertificatesClient,
+            transports.AuthorizedCertificatesRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -1760,6 +1805,790 @@ async def test_delete_authorized_certificate_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.ListAuthorizedCertificatesRequest,
+        dict,
+    ],
+)
+def test_list_authorized_certificates_rest(request_type):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = appengine.ListAuthorizedCertificatesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = appengine.ListAuthorizedCertificatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_authorized_certificates(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAuthorizedCertificatesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_authorized_certificates_rest_interceptors(null_interceptor):
+    transport = transports.AuthorizedCertificatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AuthorizedCertificatesRestInterceptor(),
+    )
+    client = AuthorizedCertificatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "post_list_authorized_certificates",
+    ) as post, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "pre_list_authorized_certificates",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.ListAuthorizedCertificatesRequest.pb(
+            appengine.ListAuthorizedCertificatesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            appengine.ListAuthorizedCertificatesResponse.to_json(
+                appengine.ListAuthorizedCertificatesResponse()
+            )
+        )
+
+        request = appengine.ListAuthorizedCertificatesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = appengine.ListAuthorizedCertificatesResponse()
+
+        client.list_authorized_certificates(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_authorized_certificates_rest_bad_request(
+    transport: str = "rest", request_type=appengine.ListAuthorizedCertificatesRequest
+):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_authorized_certificates(request)
+
+
+def test_list_authorized_certificates_rest_pager(transport: str = "rest"):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            appengine.ListAuthorizedCertificatesResponse(
+                certificates=[
+                    certificate.AuthorizedCertificate(),
+                    certificate.AuthorizedCertificate(),
+                    certificate.AuthorizedCertificate(),
+                ],
+                next_page_token="abc",
+            ),
+            appengine.ListAuthorizedCertificatesResponse(
+                certificates=[],
+                next_page_token="def",
+            ),
+            appengine.ListAuthorizedCertificatesResponse(
+                certificates=[
+                    certificate.AuthorizedCertificate(),
+                ],
+                next_page_token="ghi",
+            ),
+            appengine.ListAuthorizedCertificatesResponse(
+                certificates=[
+                    certificate.AuthorizedCertificate(),
+                    certificate.AuthorizedCertificate(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            appengine.ListAuthorizedCertificatesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "apps/sample1"}
+
+        pager = client.list_authorized_certificates(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, certificate.AuthorizedCertificate) for i in results)
+
+        pages = list(client.list_authorized_certificates(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.GetAuthorizedCertificateRequest,
+        dict,
+    ],
+)
+def test_get_authorized_certificate_rest(request_type):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/authorizedCertificates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = certificate.AuthorizedCertificate(
+            name="name_value",
+            id="id_value",
+            display_name="display_name_value",
+            domain_names=["domain_names_value"],
+            visible_domain_mappings=["visible_domain_mappings_value"],
+            domain_mappings_count=2238,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = certificate.AuthorizedCertificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_authorized_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, certificate.AuthorizedCertificate)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.display_name == "display_name_value"
+    assert response.domain_names == ["domain_names_value"]
+    assert response.visible_domain_mappings == ["visible_domain_mappings_value"]
+    assert response.domain_mappings_count == 2238
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_authorized_certificate_rest_interceptors(null_interceptor):
+    transport = transports.AuthorizedCertificatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AuthorizedCertificatesRestInterceptor(),
+    )
+    client = AuthorizedCertificatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "post_get_authorized_certificate",
+    ) as post, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "pre_get_authorized_certificate",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.GetAuthorizedCertificateRequest.pb(
+            appengine.GetAuthorizedCertificateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = certificate.AuthorizedCertificate.to_json(
+            certificate.AuthorizedCertificate()
+        )
+
+        request = appengine.GetAuthorizedCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = certificate.AuthorizedCertificate()
+
+        client.get_authorized_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_authorized_certificate_rest_bad_request(
+    transport: str = "rest", request_type=appengine.GetAuthorizedCertificateRequest
+):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/authorizedCertificates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_authorized_certificate(request)
+
+
+def test_get_authorized_certificate_rest_error():
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.CreateAuthorizedCertificateRequest,
+        dict,
+    ],
+)
+def test_create_authorized_certificate_rest(request_type):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1"}
+    request_init["certificate"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "display_name": "display_name_value",
+        "domain_names": ["domain_names_value1", "domain_names_value2"],
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "certificate_raw_data": {
+            "public_certificate": "public_certificate_value",
+            "private_key": "private_key_value",
+        },
+        "managed_certificate": {"last_renewal_time": {}, "status": 1},
+        "visible_domain_mappings": [
+            "visible_domain_mappings_value1",
+            "visible_domain_mappings_value2",
+        ],
+        "domain_mappings_count": 2238,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = certificate.AuthorizedCertificate(
+            name="name_value",
+            id="id_value",
+            display_name="display_name_value",
+            domain_names=["domain_names_value"],
+            visible_domain_mappings=["visible_domain_mappings_value"],
+            domain_mappings_count=2238,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = certificate.AuthorizedCertificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_authorized_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, certificate.AuthorizedCertificate)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.display_name == "display_name_value"
+    assert response.domain_names == ["domain_names_value"]
+    assert response.visible_domain_mappings == ["visible_domain_mappings_value"]
+    assert response.domain_mappings_count == 2238
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_authorized_certificate_rest_interceptors(null_interceptor):
+    transport = transports.AuthorizedCertificatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AuthorizedCertificatesRestInterceptor(),
+    )
+    client = AuthorizedCertificatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "post_create_authorized_certificate",
+    ) as post, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "pre_create_authorized_certificate",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.CreateAuthorizedCertificateRequest.pb(
+            appengine.CreateAuthorizedCertificateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = certificate.AuthorizedCertificate.to_json(
+            certificate.AuthorizedCertificate()
+        )
+
+        request = appengine.CreateAuthorizedCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = certificate.AuthorizedCertificate()
+
+        client.create_authorized_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_authorized_certificate_rest_bad_request(
+    transport: str = "rest", request_type=appengine.CreateAuthorizedCertificateRequest
+):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1"}
+    request_init["certificate"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "display_name": "display_name_value",
+        "domain_names": ["domain_names_value1", "domain_names_value2"],
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "certificate_raw_data": {
+            "public_certificate": "public_certificate_value",
+            "private_key": "private_key_value",
+        },
+        "managed_certificate": {"last_renewal_time": {}, "status": 1},
+        "visible_domain_mappings": [
+            "visible_domain_mappings_value1",
+            "visible_domain_mappings_value2",
+        ],
+        "domain_mappings_count": 2238,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_authorized_certificate(request)
+
+
+def test_create_authorized_certificate_rest_error():
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.UpdateAuthorizedCertificateRequest,
+        dict,
+    ],
+)
+def test_update_authorized_certificate_rest(request_type):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/authorizedCertificates/sample2"}
+    request_init["certificate"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "display_name": "display_name_value",
+        "domain_names": ["domain_names_value1", "domain_names_value2"],
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "certificate_raw_data": {
+            "public_certificate": "public_certificate_value",
+            "private_key": "private_key_value",
+        },
+        "managed_certificate": {"last_renewal_time": {}, "status": 1},
+        "visible_domain_mappings": [
+            "visible_domain_mappings_value1",
+            "visible_domain_mappings_value2",
+        ],
+        "domain_mappings_count": 2238,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = certificate.AuthorizedCertificate(
+            name="name_value",
+            id="id_value",
+            display_name="display_name_value",
+            domain_names=["domain_names_value"],
+            visible_domain_mappings=["visible_domain_mappings_value"],
+            domain_mappings_count=2238,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = certificate.AuthorizedCertificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_authorized_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, certificate.AuthorizedCertificate)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.display_name == "display_name_value"
+    assert response.domain_names == ["domain_names_value"]
+    assert response.visible_domain_mappings == ["visible_domain_mappings_value"]
+    assert response.domain_mappings_count == 2238
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_authorized_certificate_rest_interceptors(null_interceptor):
+    transport = transports.AuthorizedCertificatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AuthorizedCertificatesRestInterceptor(),
+    )
+    client = AuthorizedCertificatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "post_update_authorized_certificate",
+    ) as post, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "pre_update_authorized_certificate",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.UpdateAuthorizedCertificateRequest.pb(
+            appengine.UpdateAuthorizedCertificateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = certificate.AuthorizedCertificate.to_json(
+            certificate.AuthorizedCertificate()
+        )
+
+        request = appengine.UpdateAuthorizedCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = certificate.AuthorizedCertificate()
+
+        client.update_authorized_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_authorized_certificate_rest_bad_request(
+    transport: str = "rest", request_type=appengine.UpdateAuthorizedCertificateRequest
+):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/authorizedCertificates/sample2"}
+    request_init["certificate"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "display_name": "display_name_value",
+        "domain_names": ["domain_names_value1", "domain_names_value2"],
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "certificate_raw_data": {
+            "public_certificate": "public_certificate_value",
+            "private_key": "private_key_value",
+        },
+        "managed_certificate": {"last_renewal_time": {}, "status": 1},
+        "visible_domain_mappings": [
+            "visible_domain_mappings_value1",
+            "visible_domain_mappings_value2",
+        ],
+        "domain_mappings_count": 2238,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_authorized_certificate(request)
+
+
+def test_update_authorized_certificate_rest_error():
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DeleteAuthorizedCertificateRequest,
+        dict,
+    ],
+)
+def test_delete_authorized_certificate_rest(request_type):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/authorizedCertificates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_authorized_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_authorized_certificate_rest_interceptors(null_interceptor):
+    transport = transports.AuthorizedCertificatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AuthorizedCertificatesRestInterceptor(),
+    )
+    client = AuthorizedCertificatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
+        "pre_delete_authorized_certificate",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = appengine.DeleteAuthorizedCertificateRequest.pb(
+            appengine.DeleteAuthorizedCertificateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = appengine.DeleteAuthorizedCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_authorized_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_authorized_certificate_rest_bad_request(
+    transport: str = "rest", request_type=appengine.DeleteAuthorizedCertificateRequest
+):
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "apps/sample1/authorizedCertificates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_authorized_certificate(request)
+
+
+def test_delete_authorized_certificate_rest_error():
+    client = AuthorizedCertificatesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AuthorizedCertificatesGrpcTransport(
@@ -1841,6 +2670,7 @@ def test_transport_get_channel():
     [
         transports.AuthorizedCertificatesGrpcTransport,
         transports.AuthorizedCertificatesGrpcAsyncIOTransport,
+        transports.AuthorizedCertificatesRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1855,6 +2685,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2000,6 +2831,7 @@ def test_authorized_certificates_transport_auth_adc(transport_class):
     [
         transports.AuthorizedCertificatesGrpcTransport,
         transports.AuthorizedCertificatesGrpcAsyncIOTransport,
+        transports.AuthorizedCertificatesRestTransport,
     ],
 )
 def test_authorized_certificates_transport_auth_gdch_credentials(transport_class):
@@ -2105,11 +2937,23 @@ def test_authorized_certificates_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_authorized_certificates_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.AuthorizedCertificatesRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_authorized_certificates_host_no_port(transport_name):
@@ -2120,7 +2964,11 @@ def test_authorized_certificates_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("appengine.googleapis.com:443")
+    assert client.transport._host == (
+        "appengine.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://appengine.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2128,6 +2976,7 @@ def test_authorized_certificates_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_authorized_certificates_host_with_port(transport_name):
@@ -2138,7 +2987,45 @@ def test_authorized_certificates_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("appengine.googleapis.com:8000")
+    assert client.transport._host == (
+        "appengine.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://appengine.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_authorized_certificates_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = AuthorizedCertificatesClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = AuthorizedCertificatesClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_authorized_certificates._session
+    session2 = client2.transport.list_authorized_certificates._session
+    assert session1 != session2
+    session1 = client1.transport.get_authorized_certificate._session
+    session2 = client2.transport.get_authorized_certificate._session
+    assert session1 != session2
+    session1 = client1.transport.create_authorized_certificate._session
+    session2 = client2.transport.create_authorized_certificate._session
+    assert session1 != session2
+    session1 = client1.transport.update_authorized_certificate._session
+    session2 = client2.transport.update_authorized_certificate._session
+    assert session1 != session2
+    session1 = client1.transport.delete_authorized_certificate._session
+    session2 = client2.transport.delete_authorized_certificate._session
+    assert session1 != session2
 
 
 def test_authorized_certificates_grpc_transport_channel():
@@ -2409,6 +3296,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2426,6 +3314,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

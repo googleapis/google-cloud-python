@@ -57,6 +57,7 @@ from google.cloud.appengine_admin_v1.types import operation as ga_operation
 from .transports.base import DEFAULT_CLIENT_INFO, DomainMappingsTransport
 from .transports.grpc import DomainMappingsGrpcTransport
 from .transports.grpc_asyncio import DomainMappingsGrpcAsyncIOTransport
+from .transports.rest import DomainMappingsRestTransport
 
 
 class DomainMappingsClientMeta(type):
@@ -72,6 +73,7 @@ class DomainMappingsClientMeta(type):
     )  # type: Dict[str, Type[DomainMappingsTransport]]
     _transport_registry["grpc"] = DomainMappingsGrpcTransport
     _transport_registry["grpc_asyncio"] = DomainMappingsGrpcAsyncIOTransport
+    _transport_registry["rest"] = DomainMappingsRestTransport
 
     def get_transport_class(
         cls,

@@ -58,6 +58,7 @@ from google.cloud.appengine_admin_v1.types import operation as ga_operation
 from .transports.base import DEFAULT_CLIENT_INFO, InstancesTransport
 from .transports.grpc import InstancesGrpcTransport
 from .transports.grpc_asyncio import InstancesGrpcAsyncIOTransport
+from .transports.rest import InstancesRestTransport
 
 
 class InstancesClientMeta(type):
@@ -71,6 +72,7 @@ class InstancesClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[InstancesTransport]]
     _transport_registry["grpc"] = InstancesGrpcTransport
     _transport_registry["grpc_asyncio"] = InstancesGrpcAsyncIOTransport
+    _transport_registry["rest"] = InstancesRestTransport
 
     def get_transport_class(
         cls,

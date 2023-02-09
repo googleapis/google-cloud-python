@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -42,12 +44,15 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.appengine_admin_v1.services.instances import (
     InstancesAsyncClient,
@@ -103,6 +108,7 @@ def test__get_default_mtls_endpoint():
     [
         (InstancesClient, "grpc"),
         (InstancesAsyncClient, "grpc_asyncio"),
+        (InstancesClient, "rest"),
     ],
 )
 def test_instances_client_from_service_account_info(client_class, transport_name):
@@ -116,7 +122,11 @@ def test_instances_client_from_service_account_info(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("appengine.googleapis.com:443")
+        assert client.transport._host == (
+            "appengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://appengine.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -124,6 +134,7 @@ def test_instances_client_from_service_account_info(client_class, transport_name
     [
         (transports.InstancesGrpcTransport, "grpc"),
         (transports.InstancesGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.InstancesRestTransport, "rest"),
     ],
 )
 def test_instances_client_service_account_always_use_jwt(
@@ -149,6 +160,7 @@ def test_instances_client_service_account_always_use_jwt(
     [
         (InstancesClient, "grpc"),
         (InstancesAsyncClient, "grpc_asyncio"),
+        (InstancesClient, "rest"),
     ],
 )
 def test_instances_client_from_service_account_file(client_class, transport_name):
@@ -169,13 +181,18 @@ def test_instances_client_from_service_account_file(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("appengine.googleapis.com:443")
+        assert client.transport._host == (
+            "appengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://appengine.googleapis.com"
+        )
 
 
 def test_instances_client_get_transport_class():
     transport = InstancesClient.get_transport_class()
     available_transports = [
         transports.InstancesGrpcTransport,
+        transports.InstancesRestTransport,
     ]
     assert transport in available_transports
 
@@ -192,6 +209,7 @@ def test_instances_client_get_transport_class():
             transports.InstancesGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (InstancesClient, transports.InstancesRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -333,6 +351,8 @@ def test_instances_client_client_options(client_class, transport_class, transpor
             "grpc_asyncio",
             "false",
         ),
+        (InstancesClient, transports.InstancesRestTransport, "rest", "true"),
+        (InstancesClient, transports.InstancesRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -526,6 +546,7 @@ def test_instances_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.InstancesGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (InstancesClient, transports.InstancesRestTransport, "rest"),
     ],
 )
 def test_instances_client_client_options_scopes(
@@ -561,6 +582,7 @@ def test_instances_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (InstancesClient, transports.InstancesRestTransport, "rest", None),
     ],
 )
 def test_instances_client_client_options_credentials_file(
@@ -1504,6 +1526,587 @@ async def test_debug_instance_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.ListInstancesRequest,
+        dict,
+    ],
+)
+def test_list_instances_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1/services/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = appengine.ListInstancesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = appengine.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_instances(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInstancesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_instances_rest_interceptors(null_interceptor):
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.InstancesRestInterceptor(),
+    )
+    client = InstancesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstancesRestInterceptor, "post_list_instances"
+    ) as post, mock.patch.object(
+        transports.InstancesRestInterceptor, "pre_list_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.ListInstancesRequest.pb(appengine.ListInstancesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = appengine.ListInstancesResponse.to_json(
+            appengine.ListInstancesResponse()
+        )
+
+        request = appengine.ListInstancesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = appengine.ListInstancesResponse()
+
+        client.list_instances(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_instances_rest_bad_request(
+    transport: str = "rest", request_type=appengine.ListInstancesRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "apps/sample1/services/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_instances(request)
+
+
+def test_list_instances_rest_pager(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            appengine.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
+                next_page_token="abc",
+            ),
+            appengine.ListInstancesResponse(
+                instances=[],
+                next_page_token="def",
+            ),
+            appengine.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            appengine.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(appengine.ListInstancesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "apps/sample1/services/sample2/versions/sample3"}
+
+        pager = client.list_instances(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, instance.Instance) for i in results)
+
+        pages = list(client.list_instances(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.GetInstanceRequest,
+        dict,
+    ],
+)
+def test_get_instance_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "apps/sample1/services/sample2/versions/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance.Instance(
+            name="name_value",
+            id="id_value",
+            app_engine_release="app_engine_release_value",
+            availability=instance.Instance.Availability.RESIDENT,
+            vm_name="vm_name_value",
+            vm_zone_name="vm_zone_name_value",
+            vm_id="vm_id_value",
+            requests=892,
+            errors=669,
+            qps=0.34,
+            average_latency=1578,
+            memory_usage=1293,
+            vm_status="vm_status_value",
+            vm_debug_enabled=True,
+            vm_ip="vm_ip_value",
+            vm_liveness=instance.Instance.Liveness.LivenessState.UNKNOWN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, instance.Instance)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.app_engine_release == "app_engine_release_value"
+    assert response.availability == instance.Instance.Availability.RESIDENT
+    assert response.vm_name == "vm_name_value"
+    assert response.vm_zone_name == "vm_zone_name_value"
+    assert response.vm_id == "vm_id_value"
+    assert response.requests == 892
+    assert response.errors == 669
+    assert math.isclose(response.qps, 0.34, rel_tol=1e-6)
+    assert response.average_latency == 1578
+    assert response.memory_usage == 1293
+    assert response.vm_status == "vm_status_value"
+    assert response.vm_debug_enabled is True
+    assert response.vm_ip == "vm_ip_value"
+    assert response.vm_liveness == instance.Instance.Liveness.LivenessState.UNKNOWN
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_rest_interceptors(null_interceptor):
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.InstancesRestInterceptor(),
+    )
+    client = InstancesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstancesRestInterceptor, "post_get_instance"
+    ) as post, mock.patch.object(
+        transports.InstancesRestInterceptor, "pre_get_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.GetInstanceRequest.pb(appengine.GetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = instance.Instance.to_json(instance.Instance())
+
+        request = appengine.GetInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = instance.Instance()
+
+        client.get_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_instance_rest_bad_request(
+    transport: str = "rest", request_type=appengine.GetInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "apps/sample1/services/sample2/versions/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_instance(request)
+
+
+def test_get_instance_rest_error():
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DeleteInstanceRequest,
+        dict,
+    ],
+)
+def test_delete_instance_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "apps/sample1/services/sample2/versions/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_instance_rest_interceptors(null_interceptor):
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.InstancesRestInterceptor(),
+    )
+    client = InstancesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.InstancesRestInterceptor, "post_delete_instance"
+    ) as post, mock.patch.object(
+        transports.InstancesRestInterceptor, "pre_delete_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.DeleteInstanceRequest.pb(
+            appengine.DeleteInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = appengine.DeleteInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_instance_rest_bad_request(
+    transport: str = "rest", request_type=appengine.DeleteInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "apps/sample1/services/sample2/versions/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_instance(request)
+
+
+def test_delete_instance_rest_error():
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DebugInstanceRequest,
+        dict,
+    ],
+)
+def test_debug_instance_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "apps/sample1/services/sample2/versions/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.debug_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_debug_instance_rest_interceptors(null_interceptor):
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.InstancesRestInterceptor(),
+    )
+    client = InstancesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.InstancesRestInterceptor, "post_debug_instance"
+    ) as post, mock.patch.object(
+        transports.InstancesRestInterceptor, "pre_debug_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = appengine.DebugInstanceRequest.pb(appengine.DebugInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = appengine.DebugInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.debug_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_debug_instance_rest_bad_request(
+    transport: str = "rest", request_type=appengine.DebugInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "apps/sample1/services/sample2/versions/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.debug_instance(request)
+
+
+def test_debug_instance_rest_error():
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.InstancesGrpcTransport(
@@ -1585,6 +2188,7 @@ def test_transport_get_channel():
     [
         transports.InstancesGrpcTransport,
         transports.InstancesGrpcAsyncIOTransport,
+        transports.InstancesRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1599,6 +2203,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1748,6 +2353,7 @@ def test_instances_transport_auth_adc(transport_class):
     [
         transports.InstancesGrpcTransport,
         transports.InstancesGrpcAsyncIOTransport,
+        transports.InstancesRestTransport,
     ],
 )
 def test_instances_transport_auth_gdch_credentials(transport_class):
@@ -1846,11 +2452,40 @@ def test_instances_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_instances_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.InstancesRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_instances_rest_lro_client():
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_instances_host_no_port(transport_name):
@@ -1861,7 +2496,11 @@ def test_instances_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("appengine.googleapis.com:443")
+    assert client.transport._host == (
+        "appengine.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://appengine.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1869,6 +2508,7 @@ def test_instances_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_instances_host_with_port(transport_name):
@@ -1879,7 +2519,42 @@ def test_instances_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("appengine.googleapis.com:8000")
+    assert client.transport._host == (
+        "appengine.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://appengine.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_instances_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = InstancesClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = InstancesClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_instances._session
+    session2 = client2.transport.list_instances._session
+    assert session1 != session2
+    session1 = client1.transport.get_instance._session
+    session2 = client2.transport.get_instance._session
+    assert session1 != session2
+    session1 = client1.transport.delete_instance._session
+    session2 = client2.transport.delete_instance._session
+    assert session1 != session2
+    session1 = client1.transport.debug_instance._session
+    session2 = client2.transport.debug_instance._session
+    assert session1 != session2
 
 
 def test_instances_grpc_transport_channel():
@@ -2207,6 +2882,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2224,6 +2900,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

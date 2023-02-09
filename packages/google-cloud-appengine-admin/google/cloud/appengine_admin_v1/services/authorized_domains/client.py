@@ -52,6 +52,7 @@ from google.cloud.appengine_admin_v1.types import appengine, domain
 from .transports.base import DEFAULT_CLIENT_INFO, AuthorizedDomainsTransport
 from .transports.grpc import AuthorizedDomainsGrpcTransport
 from .transports.grpc_asyncio import AuthorizedDomainsGrpcAsyncIOTransport
+from .transports.rest import AuthorizedDomainsRestTransport
 
 
 class AuthorizedDomainsClientMeta(type):
@@ -67,6 +68,7 @@ class AuthorizedDomainsClientMeta(type):
     )  # type: Dict[str, Type[AuthorizedDomainsTransport]]
     _transport_registry["grpc"] = AuthorizedDomainsGrpcTransport
     _transport_registry["grpc_asyncio"] = AuthorizedDomainsGrpcAsyncIOTransport
+    _transport_registry["rest"] = AuthorizedDomainsRestTransport
 
     def get_transport_class(
         cls,

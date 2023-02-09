@@ -52,6 +52,7 @@ from google.cloud.appengine_admin_v1.types import appengine, firewall
 from .transports.base import DEFAULT_CLIENT_INFO, FirewallTransport
 from .transports.grpc import FirewallGrpcTransport
 from .transports.grpc_asyncio import FirewallGrpcAsyncIOTransport
+from .transports.rest import FirewallRestTransport
 
 
 class FirewallClientMeta(type):
@@ -65,6 +66,7 @@ class FirewallClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[FirewallTransport]]
     _transport_registry["grpc"] = FirewallGrpcTransport
     _transport_registry["grpc_asyncio"] = FirewallGrpcAsyncIOTransport
+    _transport_registry["rest"] = FirewallRestTransport
 
     def get_transport_class(
         cls,
