@@ -56,6 +56,31 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "VpcAccessServiceClient",
+          "rpcs": {
+            "CreateConnector": {
+              "methods": [
+                "create_connector"
+              ]
+            },
+            "DeleteConnector": {
+              "methods": [
+                "delete_connector"
+              ]
+            },
+            "GetConnector": {
+              "methods": [
+                "get_connector"
+              ]
+            },
+            "ListConnectors": {
+              "methods": [
+                "list_connectors"
+              ]
+            }
+          }
         }
       }
     }

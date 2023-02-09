@@ -58,6 +58,7 @@ from google.cloud.vpcaccess_v1.types import vpc_access
 from .transports.base import DEFAULT_CLIENT_INFO, VpcAccessServiceTransport
 from .transports.grpc import VpcAccessServiceGrpcTransport
 from .transports.grpc_asyncio import VpcAccessServiceGrpcAsyncIOTransport
+from .transports.rest import VpcAccessServiceRestTransport
 
 
 class VpcAccessServiceClientMeta(type):
@@ -73,6 +74,7 @@ class VpcAccessServiceClientMeta(type):
     )  # type: Dict[str, Type[VpcAccessServiceTransport]]
     _transport_registry["grpc"] = VpcAccessServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = VpcAccessServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = VpcAccessServiceRestTransport
 
     def get_transport_class(
         cls,
