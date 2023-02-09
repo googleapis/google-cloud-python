@@ -64,6 +64,7 @@ from google.cloud.contact_center_insights_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, ContactCenterInsightsTransport
 from .transports.grpc import ContactCenterInsightsGrpcTransport
 from .transports.grpc_asyncio import ContactCenterInsightsGrpcAsyncIOTransport
+from .transports.rest import ContactCenterInsightsRestTransport
 
 
 class ContactCenterInsightsClientMeta(type):
@@ -79,6 +80,7 @@ class ContactCenterInsightsClientMeta(type):
     )  # type: Dict[str, Type[ContactCenterInsightsTransport]]
     _transport_registry["grpc"] = ContactCenterInsightsGrpcTransport
     _transport_registry["grpc_asyncio"] = ContactCenterInsightsGrpcAsyncIOTransport
+    _transport_registry["rest"] = ContactCenterInsightsRestTransport
 
     def get_transport_class(
         cls,
