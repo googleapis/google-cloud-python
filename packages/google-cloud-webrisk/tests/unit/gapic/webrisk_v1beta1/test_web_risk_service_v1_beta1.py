@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -31,12 +33,15 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.webrisk_v1beta1.services.web_risk_service_v1_beta1 import (
     WebRiskServiceV1Beta1AsyncClient,
@@ -96,6 +101,7 @@ def test__get_default_mtls_endpoint():
     [
         (WebRiskServiceV1Beta1Client, "grpc"),
         (WebRiskServiceV1Beta1AsyncClient, "grpc_asyncio"),
+        (WebRiskServiceV1Beta1Client, "rest"),
     ],
 )
 def test_web_risk_service_v1_beta1_client_from_service_account_info(
@@ -111,7 +117,11 @@ def test_web_risk_service_v1_beta1_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("webrisk.googleapis.com:443")
+        assert client.transport._host == (
+            "webrisk.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://webrisk.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -119,6 +129,7 @@ def test_web_risk_service_v1_beta1_client_from_service_account_info(
     [
         (transports.WebRiskServiceV1Beta1GrpcTransport, "grpc"),
         (transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.WebRiskServiceV1Beta1RestTransport, "rest"),
     ],
 )
 def test_web_risk_service_v1_beta1_client_service_account_always_use_jwt(
@@ -144,6 +155,7 @@ def test_web_risk_service_v1_beta1_client_service_account_always_use_jwt(
     [
         (WebRiskServiceV1Beta1Client, "grpc"),
         (WebRiskServiceV1Beta1AsyncClient, "grpc_asyncio"),
+        (WebRiskServiceV1Beta1Client, "rest"),
     ],
 )
 def test_web_risk_service_v1_beta1_client_from_service_account_file(
@@ -166,13 +178,18 @@ def test_web_risk_service_v1_beta1_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("webrisk.googleapis.com:443")
+        assert client.transport._host == (
+            "webrisk.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://webrisk.googleapis.com"
+        )
 
 
 def test_web_risk_service_v1_beta1_client_get_transport_class():
     transport = WebRiskServiceV1Beta1Client.get_transport_class()
     available_transports = [
         transports.WebRiskServiceV1Beta1GrpcTransport,
+        transports.WebRiskServiceV1Beta1RestTransport,
     ]
     assert transport in available_transports
 
@@ -192,6 +209,11 @@ def test_web_risk_service_v1_beta1_client_get_transport_class():
             WebRiskServiceV1Beta1AsyncClient,
             transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            WebRiskServiceV1Beta1Client,
+            transports.WebRiskServiceV1Beta1RestTransport,
+            "rest",
         ),
     ],
 )
@@ -346,6 +368,18 @@ def test_web_risk_service_v1_beta1_client_client_options(
             WebRiskServiceV1Beta1AsyncClient,
             transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            WebRiskServiceV1Beta1Client,
+            transports.WebRiskServiceV1Beta1RestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            WebRiskServiceV1Beta1Client,
+            transports.WebRiskServiceV1Beta1RestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -553,6 +587,11 @@ def test_web_risk_service_v1_beta1_client_get_mtls_endpoint_and_cert_source(
             transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            WebRiskServiceV1Beta1Client,
+            transports.WebRiskServiceV1Beta1RestTransport,
+            "rest",
+        ),
     ],
 )
 def test_web_risk_service_v1_beta1_client_client_options_scopes(
@@ -592,6 +631,12 @@ def test_web_risk_service_v1_beta1_client_client_options_scopes(
             transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            WebRiskServiceV1Beta1Client,
+            transports.WebRiskServiceV1Beta1RestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -1278,6 +1323,863 @@ async def test_search_hashes_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webrisk.ComputeThreatListDiffRequest,
+        dict,
+    ],
+)
+def test_compute_threat_list_diff_rest(request_type):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = webrisk.ComputeThreatListDiffResponse(
+            response_type=webrisk.ComputeThreatListDiffResponse.ResponseType.DIFF,
+            new_version_token=b"new_version_token_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = webrisk.ComputeThreatListDiffResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.compute_threat_list_diff(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, webrisk.ComputeThreatListDiffResponse)
+    assert (
+        response.response_type
+        == webrisk.ComputeThreatListDiffResponse.ResponseType.DIFF
+    )
+    assert response.new_version_token == b"new_version_token_blob"
+
+
+def test_compute_threat_list_diff_rest_required_fields(
+    request_type=webrisk.ComputeThreatListDiffRequest,
+):
+    transport_class = transports.WebRiskServiceV1Beta1RestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_threat_list_diff._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_threat_list_diff._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "constraints",
+            "threat_type",
+            "version_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = webrisk.ComputeThreatListDiffResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = webrisk.ComputeThreatListDiffResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.compute_threat_list_diff(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_compute_threat_list_diff_rest_unset_required_fields():
+    transport = transports.WebRiskServiceV1Beta1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.compute_threat_list_diff._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "constraints",
+                "threatType",
+                "versionToken",
+            )
+        )
+        & set(
+            (
+                "threatType",
+                "constraints",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_compute_threat_list_diff_rest_interceptors(null_interceptor):
+    transport = transports.WebRiskServiceV1Beta1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WebRiskServiceV1Beta1RestInterceptor(),
+    )
+    client = WebRiskServiceV1Beta1Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WebRiskServiceV1Beta1RestInterceptor, "post_compute_threat_list_diff"
+    ) as post, mock.patch.object(
+        transports.WebRiskServiceV1Beta1RestInterceptor, "pre_compute_threat_list_diff"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = webrisk.ComputeThreatListDiffRequest.pb(
+            webrisk.ComputeThreatListDiffRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = webrisk.ComputeThreatListDiffResponse.to_json(
+            webrisk.ComputeThreatListDiffResponse()
+        )
+
+        request = webrisk.ComputeThreatListDiffRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = webrisk.ComputeThreatListDiffResponse()
+
+        client.compute_threat_list_diff(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_compute_threat_list_diff_rest_bad_request(
+    transport: str = "rest", request_type=webrisk.ComputeThreatListDiffRequest
+):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.compute_threat_list_diff(request)
+
+
+def test_compute_threat_list_diff_rest_flattened():
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = webrisk.ComputeThreatListDiffResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            threat_type=webrisk.ThreatType.MALWARE,
+            version_token=b"version_token_blob",
+            constraints=webrisk.ComputeThreatListDiffRequest.Constraints(
+                max_diff_entries=1687
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = webrisk.ComputeThreatListDiffResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.compute_threat_list_diff(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/threatLists:computeDiff" % client.transport._host, args[1]
+        )
+
+
+def test_compute_threat_list_diff_rest_flattened_error(transport: str = "rest"):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.compute_threat_list_diff(
+            webrisk.ComputeThreatListDiffRequest(),
+            threat_type=webrisk.ThreatType.MALWARE,
+            version_token=b"version_token_blob",
+            constraints=webrisk.ComputeThreatListDiffRequest.Constraints(
+                max_diff_entries=1687
+            ),
+        )
+
+
+def test_compute_threat_list_diff_rest_error():
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webrisk.SearchUrisRequest,
+        dict,
+    ],
+)
+def test_search_uris_rest(request_type):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = webrisk.SearchUrisResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = webrisk.SearchUrisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_uris(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, webrisk.SearchUrisResponse)
+
+
+def test_search_uris_rest_required_fields(request_type=webrisk.SearchUrisRequest):
+    transport_class = transports.WebRiskServiceV1Beta1RestTransport
+
+    request_init = {}
+    request_init["uri"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "uri" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_uris._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "uri" in jsonified_request
+    assert jsonified_request["uri"] == request_init["uri"]
+
+    jsonified_request["uri"] = "uri_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_uris._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "threat_types",
+            "uri",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "uri" in jsonified_request
+    assert jsonified_request["uri"] == "uri_value"
+
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = webrisk.SearchUrisResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = webrisk.SearchUrisResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_uris(request)
+
+            expected_params = [
+                (
+                    "uri",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_uris_rest_unset_required_fields():
+    transport = transports.WebRiskServiceV1Beta1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_uris._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "threatTypes",
+                "uri",
+            )
+        )
+        & set(
+            (
+                "uri",
+                "threatTypes",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_uris_rest_interceptors(null_interceptor):
+    transport = transports.WebRiskServiceV1Beta1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WebRiskServiceV1Beta1RestInterceptor(),
+    )
+    client = WebRiskServiceV1Beta1Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WebRiskServiceV1Beta1RestInterceptor, "post_search_uris"
+    ) as post, mock.patch.object(
+        transports.WebRiskServiceV1Beta1RestInterceptor, "pre_search_uris"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = webrisk.SearchUrisRequest.pb(webrisk.SearchUrisRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = webrisk.SearchUrisResponse.to_json(
+            webrisk.SearchUrisResponse()
+        )
+
+        request = webrisk.SearchUrisRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = webrisk.SearchUrisResponse()
+
+        client.search_uris(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_uris_rest_bad_request(
+    transport: str = "rest", request_type=webrisk.SearchUrisRequest
+):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_uris(request)
+
+
+def test_search_uris_rest_flattened():
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = webrisk.SearchUrisResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            uri="uri_value",
+            threat_types=[webrisk.ThreatType.MALWARE],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = webrisk.SearchUrisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.search_uris(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/uris:search" % client.transport._host, args[1]
+        )
+
+
+def test_search_uris_rest_flattened_error(transport: str = "rest"):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search_uris(
+            webrisk.SearchUrisRequest(),
+            uri="uri_value",
+            threat_types=[webrisk.ThreatType.MALWARE],
+        )
+
+
+def test_search_uris_rest_error():
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webrisk.SearchHashesRequest,
+        dict,
+    ],
+)
+def test_search_hashes_rest(request_type):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = webrisk.SearchHashesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = webrisk.SearchHashesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_hashes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, webrisk.SearchHashesResponse)
+
+
+def test_search_hashes_rest_required_fields(request_type=webrisk.SearchHashesRequest):
+    transport_class = transports.WebRiskServiceV1Beta1RestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_hashes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_hashes._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "hash_prefix",
+            "threat_types",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = webrisk.SearchHashesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = webrisk.SearchHashesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_hashes(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_hashes_rest_unset_required_fields():
+    transport = transports.WebRiskServiceV1Beta1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_hashes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "hashPrefix",
+                "threatTypes",
+            )
+        )
+        & set(("threatTypes",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_hashes_rest_interceptors(null_interceptor):
+    transport = transports.WebRiskServiceV1Beta1RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WebRiskServiceV1Beta1RestInterceptor(),
+    )
+    client = WebRiskServiceV1Beta1Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WebRiskServiceV1Beta1RestInterceptor, "post_search_hashes"
+    ) as post, mock.patch.object(
+        transports.WebRiskServiceV1Beta1RestInterceptor, "pre_search_hashes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = webrisk.SearchHashesRequest.pb(webrisk.SearchHashesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = webrisk.SearchHashesResponse.to_json(
+            webrisk.SearchHashesResponse()
+        )
+
+        request = webrisk.SearchHashesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = webrisk.SearchHashesResponse()
+
+        client.search_hashes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_hashes_rest_bad_request(
+    transport: str = "rest", request_type=webrisk.SearchHashesRequest
+):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_hashes(request)
+
+
+def test_search_hashes_rest_flattened():
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = webrisk.SearchHashesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            hash_prefix=b"hash_prefix_blob",
+            threat_types=[webrisk.ThreatType.MALWARE],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = webrisk.SearchHashesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.search_hashes(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/hashes:search" % client.transport._host, args[1]
+        )
+
+
+def test_search_hashes_rest_flattened_error(transport: str = "rest"):
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search_hashes(
+            webrisk.SearchHashesRequest(),
+            hash_prefix=b"hash_prefix_blob",
+            threat_types=[webrisk.ThreatType.MALWARE],
+        )
+
+
+def test_search_hashes_rest_error():
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.WebRiskServiceV1Beta1GrpcTransport(
@@ -1359,6 +2261,7 @@ def test_transport_get_channel():
     [
         transports.WebRiskServiceV1Beta1GrpcTransport,
         transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
+        transports.WebRiskServiceV1Beta1RestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1373,6 +2276,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1504,6 +2408,7 @@ def test_web_risk_service_v1_beta1_transport_auth_adc(transport_class):
     [
         transports.WebRiskServiceV1Beta1GrpcTransport,
         transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
+        transports.WebRiskServiceV1Beta1RestTransport,
     ],
 )
 def test_web_risk_service_v1_beta1_transport_auth_gdch_credentials(transport_class):
@@ -1605,11 +2510,23 @@ def test_web_risk_service_v1_beta1_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_web_risk_service_v1_beta1_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.WebRiskServiceV1Beta1RestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_web_risk_service_v1_beta1_host_no_port(transport_name):
@@ -1620,7 +2537,11 @@ def test_web_risk_service_v1_beta1_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("webrisk.googleapis.com:443")
+    assert client.transport._host == (
+        "webrisk.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://webrisk.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1628,6 +2549,7 @@ def test_web_risk_service_v1_beta1_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_web_risk_service_v1_beta1_host_with_port(transport_name):
@@ -1638,7 +2560,39 @@ def test_web_risk_service_v1_beta1_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("webrisk.googleapis.com:8000")
+    assert client.transport._host == (
+        "webrisk.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://webrisk.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_web_risk_service_v1_beta1_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = WebRiskServiceV1Beta1Client(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = WebRiskServiceV1Beta1Client(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.compute_threat_list_diff._session
+    session2 = client2.transport.compute_threat_list_diff._session
+    assert session1 != session2
+    session1 = client1.transport.search_uris._session
+    session2 = client2.transport.search_uris._session
+    assert session1 != session2
+    session1 = client1.transport.search_hashes._session
+    session2 = client2.transport.search_hashes._session
+    assert session1 != session2
 
 
 def test_web_risk_service_v1_beta1_grpc_transport_channel():
@@ -1909,6 +2863,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1926,6 +2881,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

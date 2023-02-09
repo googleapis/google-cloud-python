@@ -53,6 +53,7 @@ from google.cloud.webrisk_v1beta1.types import webrisk
 from .transports.base import DEFAULT_CLIENT_INFO, WebRiskServiceV1Beta1Transport
 from .transports.grpc import WebRiskServiceV1Beta1GrpcTransport
 from .transports.grpc_asyncio import WebRiskServiceV1Beta1GrpcAsyncIOTransport
+from .transports.rest import WebRiskServiceV1Beta1RestTransport
 
 
 class WebRiskServiceV1Beta1ClientMeta(type):
@@ -68,6 +69,7 @@ class WebRiskServiceV1Beta1ClientMeta(type):
     )  # type: Dict[str, Type[WebRiskServiceV1Beta1Transport]]
     _transport_registry["grpc"] = WebRiskServiceV1Beta1GrpcTransport
     _transport_registry["grpc_asyncio"] = WebRiskServiceV1Beta1GrpcAsyncIOTransport
+    _transport_registry["rest"] = WebRiskServiceV1Beta1RestTransport
 
     def get_transport_class(
         cls,

@@ -56,6 +56,31 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "WebRiskServiceClient",
+          "rpcs": {
+            "ComputeThreatListDiff": {
+              "methods": [
+                "compute_threat_list_diff"
+              ]
+            },
+            "CreateSubmission": {
+              "methods": [
+                "create_submission"
+              ]
+            },
+            "SearchHashes": {
+              "methods": [
+                "search_hashes"
+              ]
+            },
+            "SearchUris": {
+              "methods": [
+                "search_uris"
+              ]
+            }
+          }
         }
       }
     }

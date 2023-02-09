@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import WebRiskServiceTransport
 from .grpc import WebRiskServiceGrpcTransport
 from .grpc_asyncio import WebRiskServiceGrpcAsyncIOTransport
+from .rest import WebRiskServiceRestInterceptor, WebRiskServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[WebRiskServiceTransport]]
 _transport_registry["grpc"] = WebRiskServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = WebRiskServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = WebRiskServiceRestTransport
 
 __all__ = (
     "WebRiskServiceTransport",
     "WebRiskServiceGrpcTransport",
     "WebRiskServiceGrpcAsyncIOTransport",
+    "WebRiskServiceRestTransport",
+    "WebRiskServiceRestInterceptor",
 )
