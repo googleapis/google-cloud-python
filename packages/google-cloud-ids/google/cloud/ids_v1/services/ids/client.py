@@ -57,6 +57,7 @@ from google.cloud.ids_v1.types import ids
 from .transports.base import DEFAULT_CLIENT_INFO, IDSTransport
 from .transports.grpc import IDSGrpcTransport
 from .transports.grpc_asyncio import IDSGrpcAsyncIOTransport
+from .transports.rest import IDSRestTransport
 
 
 class IDSClientMeta(type):
@@ -70,6 +71,7 @@ class IDSClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[IDSTransport]]
     _transport_registry["grpc"] = IDSGrpcTransport
     _transport_registry["grpc_asyncio"] = IDSGrpcAsyncIOTransport
+    _transport_registry["rest"] = IDSRestTransport
 
     def get_transport_class(
         cls,

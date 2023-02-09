@@ -56,6 +56,31 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "IDSClient",
+          "rpcs": {
+            "CreateEndpoint": {
+              "methods": [
+                "create_endpoint"
+              ]
+            },
+            "DeleteEndpoint": {
+              "methods": [
+                "delete_endpoint"
+              ]
+            },
+            "GetEndpoint": {
+              "methods": [
+                "get_endpoint"
+              ]
+            },
+            "ListEndpoints": {
+              "methods": [
+                "list_endpoints"
+              ]
+            }
+          }
         }
       }
     }
