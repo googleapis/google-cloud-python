@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.3.1...google-cloud-contentwarehouse-v0.4.0) (2023-02-09)
+
+
+### Features
+
+* enable "rest" transport in Python for services supporting numeric enums ([#10839](https://github.com/googleapis/google-cloud-python/issues/10839)) ([ad59d56](https://github.com/googleapis/google-cloud-python/commit/ad59d569bda339ed31500602e2db369afdbfcf0b))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.3.0...google-cloud-contentwarehouse-v0.3.1) (2023-01-20)
 
 
