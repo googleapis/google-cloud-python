@@ -3,7 +3,7 @@ Python Client for Advisory Notifications
 
 |preview| |pypi| |versions|
 
-`Advisory Notifications`_: 
+`Advisory Notifications`_: Advisory Notifications provides well-targeted, timely, and compliant communications about critical security and privacy events in the Google Cloud console and allows you to securely investigate the event, take action, and get support.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
