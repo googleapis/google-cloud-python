@@ -196,6 +196,101 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AutoMlClient",
+          "rpcs": {
+            "CreateDataset": {
+              "methods": [
+                "create_dataset"
+              ]
+            },
+            "CreateModel": {
+              "methods": [
+                "create_model"
+              ]
+            },
+            "DeleteDataset": {
+              "methods": [
+                "delete_dataset"
+              ]
+            },
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
+            "DeployModel": {
+              "methods": [
+                "deploy_model"
+              ]
+            },
+            "ExportData": {
+              "methods": [
+                "export_data"
+              ]
+            },
+            "ExportModel": {
+              "methods": [
+                "export_model"
+              ]
+            },
+            "GetAnnotationSpec": {
+              "methods": [
+                "get_annotation_spec"
+              ]
+            },
+            "GetDataset": {
+              "methods": [
+                "get_dataset"
+              ]
+            },
+            "GetModel": {
+              "methods": [
+                "get_model"
+              ]
+            },
+            "GetModelEvaluation": {
+              "methods": [
+                "get_model_evaluation"
+              ]
+            },
+            "ImportData": {
+              "methods": [
+                "import_data"
+              ]
+            },
+            "ListDatasets": {
+              "methods": [
+                "list_datasets"
+              ]
+            },
+            "ListModelEvaluations": {
+              "methods": [
+                "list_model_evaluations"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "UndeployModel": {
+              "methods": [
+                "undeploy_model"
+              ]
+            },
+            "UpdateDataset": {
+              "methods": [
+                "update_dataset"
+              ]
+            },
+            "UpdateModel": {
+              "methods": [
+                "update_model"
+              ]
+            }
+          }
         }
       }
     },
@@ -218,6 +313,21 @@
         },
         "grpc-async": {
           "libraryClient": "PredictionServiceAsyncClient",
+          "rpcs": {
+            "BatchPredict": {
+              "methods": [
+                "batch_predict"
+              ]
+            },
+            "Predict": {
+              "methods": [
+                "predict"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "PredictionServiceClient",
           "rpcs": {
             "BatchPredict": {
               "methods": [

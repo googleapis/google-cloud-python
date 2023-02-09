@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import AutoMlTransport
 from .grpc import AutoMlGrpcTransport
 from .grpc_asyncio import AutoMlGrpcAsyncIOTransport
+from .rest import AutoMlRestTransport
+from .rest import AutoMlRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[AutoMlTransport]]
 _transport_registry["grpc"] = AutoMlGrpcTransport
 _transport_registry["grpc_asyncio"] = AutoMlGrpcAsyncIOTransport
+_transport_registry["rest"] = AutoMlRestTransport
 
 __all__ = (
     "AutoMlTransport",
     "AutoMlGrpcTransport",
     "AutoMlGrpcAsyncIOTransport",
+    "AutoMlRestTransport",
+    "AutoMlRestInterceptor",
 )

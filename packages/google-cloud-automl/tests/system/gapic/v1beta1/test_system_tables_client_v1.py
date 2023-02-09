@@ -59,8 +59,11 @@ class TestSystemTablesClient(object):
         assert op.cancelled()
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_list_datasets(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_list_datasets(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         # will raise if not found
         next(
@@ -70,14 +73,20 @@ class TestSystemTablesClient(object):
         )
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_list_models(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_list_models(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         model = self.ensure_model_ready(client)
         # will raise if not found
         next(iter([m for m in client.list_models(timeout=10) if m.name == model.name]))
 
-    def test_create_delete_dataset(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_create_delete_dataset(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         display_name = _id("t_cr_dl")
         dataset = client.create_dataset(display_name)
         assert dataset is not None
@@ -87,8 +96,11 @@ class TestSystemTablesClient(object):
         client.delete_dataset(dataset=dataset)
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_import_data(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_import_data(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         display_name = _id("t_import")
         dataset = client.create_dataset(display_name)
         op = client.import_data(
@@ -99,8 +111,11 @@ class TestSystemTablesClient(object):
         client.delete_dataset(dataset=dataset)
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_import_pandas_dataframe(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_import_pandas_dataframe(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         display_name = _id("t_import_pandas")
         dataset = client.create_dataset(display_name)
         dataframe = pandas.DataFrame({"test-col1": [1, 2], "test-col2": [3, 4]})
@@ -128,8 +143,11 @@ class TestSystemTablesClient(object):
         return dataset
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_list_column_specs(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_list_column_specs(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         # will raise if not found
         next(
@@ -143,22 +161,31 @@ class TestSystemTablesClient(object):
         )
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_get_column_spec(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_get_column_spec(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         name = [d for d in client.list_column_specs(dataset=dataset)][0].name
         assert client.get_column_spec(name).name == name
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_list_table_specs(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_list_table_specs(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         name = [d for d in client.list_table_specs(dataset=dataset)][0].name
         assert client.get_table_spec(name).name == name
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_set_column_nullable(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_set_column_nullable(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         client.update_column_spec(
             dataset=dataset, column_spec_display_name="POutcome", nullable=True
@@ -167,8 +194,11 @@ class TestSystemTablesClient(object):
         assert columns["POutcome"].data_type.nullable == True
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_set_target_column(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_set_target_column(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         client.set_target_column(dataset=dataset, column_spec_display_name="Age")
         columns = {c.display_name: c for c in client.list_column_specs(dataset=dataset)}
@@ -179,8 +209,11 @@ class TestSystemTablesClient(object):
         )
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_set_weight_column(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_set_weight_column(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         client.set_weight_column(dataset=dataset, column_spec_display_name="Duration")
         columns = {c.display_name: c for c in client.list_column_specs(dataset=dataset)}
@@ -191,8 +224,11 @@ class TestSystemTablesClient(object):
         )
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_set_weight_and_target_column(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_set_weight_and_target_column(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         client.set_weight_column(dataset=dataset, column_spec_display_name="Day")
         client.set_target_column(dataset=dataset, column_spec_display_name="Campaign")
@@ -207,8 +243,11 @@ class TestSystemTablesClient(object):
         )
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_create_delete_model(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_create_delete_model(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         dataset = self.ensure_dataset_ready(client)
         client.set_target_column(dataset=dataset, column_spec_display_name="Deposit")
         display_name = _id("t_cr_dl")
@@ -219,8 +258,11 @@ class TestSystemTablesClient(object):
         client.delete_model(model_display_name=display_name)
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_list_model_evaluations(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_list_model_evaluations(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         model = self.ensure_model_online(client)
         # will raise if not found
         next(
@@ -234,15 +276,21 @@ class TestSystemTablesClient(object):
         )
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_get_model_evaluation(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_get_model_evaluation(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         model = self.ensure_model_online(client)
         name = [m for m in client.list_model_evaluations(model=model)][0].name
         assert client.get_model_evaluation(model_evaluation_name=name).name == name
 
     @vpcsc_config.skip_if_inside_vpcsc
-    def test_online_predict(self):
-        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_online_predict(self, transport):
+        client = automl_v1beta1.TablesClient(
+            project=PROJECT, region=REGION, transport=transport
+        )
         model = self.ensure_model_online(client)
         result = client.predict(
             inputs={

@@ -71,6 +71,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import AutoMlTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AutoMlGrpcTransport
 from .transports.grpc_asyncio import AutoMlGrpcAsyncIOTransport
+from .transports.rest import AutoMlRestTransport
 
 
 class AutoMlClientMeta(type):
@@ -84,6 +85,7 @@ class AutoMlClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AutoMlTransport]]
     _transport_registry["grpc"] = AutoMlGrpcTransport
     _transport_registry["grpc_asyncio"] = AutoMlGrpcAsyncIOTransport
+    _transport_registry["rest"] = AutoMlRestTransport
 
     def get_transport_class(
         cls,
