@@ -128,7 +128,13 @@
             "component": "google-cloud-advisorynotifications",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/advisorynotifications/gapic_version.py"
+                "google/cloud/advisorynotifications/gapic_version.py",
+                "google/cloud/advisorynotifications_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.advisorynotifications.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }
