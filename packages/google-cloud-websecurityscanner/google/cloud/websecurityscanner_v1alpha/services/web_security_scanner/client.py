@@ -63,6 +63,7 @@ from google.cloud.websecurityscanner_v1alpha.types import scan_config
 from .transports.base import DEFAULT_CLIENT_INFO, WebSecurityScannerTransport
 from .transports.grpc import WebSecurityScannerGrpcTransport
 from .transports.grpc_asyncio import WebSecurityScannerGrpcAsyncIOTransport
+from .transports.rest import WebSecurityScannerRestTransport
 
 
 class WebSecurityScannerClientMeta(type):
@@ -78,6 +79,7 @@ class WebSecurityScannerClientMeta(type):
     )  # type: Dict[str, Type[WebSecurityScannerTransport]]
     _transport_registry["grpc"] = WebSecurityScannerGrpcTransport
     _transport_registry["grpc_asyncio"] = WebSecurityScannerGrpcAsyncIOTransport
+    _transport_registry["rest"] = WebSecurityScannerRestTransport
 
     def get_transport_class(
         cls,

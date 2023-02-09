@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import WebSecurityScannerTransport
 from .grpc import WebSecurityScannerGrpcTransport
 from .grpc_asyncio import WebSecurityScannerGrpcAsyncIOTransport
+from .rest import WebSecurityScannerRestInterceptor, WebSecurityScannerRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[WebSecurityScannerTransport]]
 _transport_registry["grpc"] = WebSecurityScannerGrpcTransport
 _transport_registry["grpc_asyncio"] = WebSecurityScannerGrpcAsyncIOTransport
+_transport_registry["rest"] = WebSecurityScannerRestTransport
 
 __all__ = (
     "WebSecurityScannerTransport",
     "WebSecurityScannerGrpcTransport",
     "WebSecurityScannerGrpcAsyncIOTransport",
+    "WebSecurityScannerRestTransport",
+    "WebSecurityScannerRestInterceptor",
 )
