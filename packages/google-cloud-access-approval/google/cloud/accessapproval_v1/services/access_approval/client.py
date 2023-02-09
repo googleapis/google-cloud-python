@@ -55,6 +55,7 @@ from google.cloud.accessapproval_v1.types import accessapproval
 from .transports.base import DEFAULT_CLIENT_INFO, AccessApprovalTransport
 from .transports.grpc import AccessApprovalGrpcTransport
 from .transports.grpc_asyncio import AccessApprovalGrpcAsyncIOTransport
+from .transports.rest import AccessApprovalRestTransport
 
 
 class AccessApprovalClientMeta(type):
@@ -70,6 +71,7 @@ class AccessApprovalClientMeta(type):
     )  # type: Dict[str, Type[AccessApprovalTransport]]
     _transport_registry["grpc"] = AccessApprovalGrpcTransport
     _transport_registry["grpc_asyncio"] = AccessApprovalGrpcAsyncIOTransport
+    _transport_registry["rest"] = AccessApprovalRestTransport
 
     def get_transport_class(
         cls,
