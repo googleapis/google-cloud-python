@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -43,12 +45,15 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.assuredworkloads_v1beta1.services.assured_workloads_service import (
     AssuredWorkloadsServiceAsyncClient,
@@ -109,6 +114,7 @@ def test__get_default_mtls_endpoint():
     [
         (AssuredWorkloadsServiceClient, "grpc"),
         (AssuredWorkloadsServiceAsyncClient, "grpc_asyncio"),
+        (AssuredWorkloadsServiceClient, "rest"),
     ],
 )
 def test_assured_workloads_service_client_from_service_account_info(
@@ -124,7 +130,11 @@ def test_assured_workloads_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("assuredworkloads.googleapis.com:443")
+        assert client.transport._host == (
+            "assuredworkloads.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://assuredworkloads.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -132,6 +142,7 @@ def test_assured_workloads_service_client_from_service_account_info(
     [
         (transports.AssuredWorkloadsServiceGrpcTransport, "grpc"),
         (transports.AssuredWorkloadsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AssuredWorkloadsServiceRestTransport, "rest"),
     ],
 )
 def test_assured_workloads_service_client_service_account_always_use_jwt(
@@ -157,6 +168,7 @@ def test_assured_workloads_service_client_service_account_always_use_jwt(
     [
         (AssuredWorkloadsServiceClient, "grpc"),
         (AssuredWorkloadsServiceAsyncClient, "grpc_asyncio"),
+        (AssuredWorkloadsServiceClient, "rest"),
     ],
 )
 def test_assured_workloads_service_client_from_service_account_file(
@@ -179,13 +191,18 @@ def test_assured_workloads_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("assuredworkloads.googleapis.com:443")
+        assert client.transport._host == (
+            "assuredworkloads.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://assuredworkloads.googleapis.com"
+        )
 
 
 def test_assured_workloads_service_client_get_transport_class():
     transport = AssuredWorkloadsServiceClient.get_transport_class()
     available_transports = [
         transports.AssuredWorkloadsServiceGrpcTransport,
+        transports.AssuredWorkloadsServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -205,6 +222,11 @@ def test_assured_workloads_service_client_get_transport_class():
             AssuredWorkloadsServiceAsyncClient,
             transports.AssuredWorkloadsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            AssuredWorkloadsServiceClient,
+            transports.AssuredWorkloadsServiceRestTransport,
+            "rest",
         ),
     ],
 )
@@ -359,6 +381,18 @@ def test_assured_workloads_service_client_client_options(
             AssuredWorkloadsServiceAsyncClient,
             transports.AssuredWorkloadsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            AssuredWorkloadsServiceClient,
+            transports.AssuredWorkloadsServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            AssuredWorkloadsServiceClient,
+            transports.AssuredWorkloadsServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -566,6 +600,11 @@ def test_assured_workloads_service_client_get_mtls_endpoint_and_cert_source(
             transports.AssuredWorkloadsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            AssuredWorkloadsServiceClient,
+            transports.AssuredWorkloadsServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_assured_workloads_service_client_client_options_scopes(
@@ -605,6 +644,12 @@ def test_assured_workloads_service_client_client_options_scopes(
             transports.AssuredWorkloadsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            AssuredWorkloadsServiceClient,
+            transports.AssuredWorkloadsServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2327,6 +2372,928 @@ async def test_list_workloads_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.CreateWorkloadRequest,
+        dict,
+    ],
+)
+def test_create_workload_rest(request_type):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request_init["workload"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "resources": [{"resource_id": 1172, "resource_type": 1}],
+        "compliance_regime": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "billing_account": "billing_account_value",
+        "il4_settings": {
+            "kms_settings": {
+                "next_rotation_time": {},
+                "rotation_period": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "cjis_settings": {"kms_settings": {}},
+        "fedramp_high_settings": {"kms_settings": {}},
+        "fedramp_moderate_settings": {"kms_settings": {}},
+        "etag": "etag_value",
+        "labels": {},
+        "provisioned_resources_parent": "provisioned_resources_parent_value",
+        "kms_settings": {},
+        "resource_settings": [
+            {
+                "resource_id": "resource_id_value",
+                "resource_type": 1,
+                "display_name": "display_name_value",
+            }
+        ],
+        "kaj_enrollment_state": 1,
+        "enable_sovereign_controls": True,
+        "saa_enrollment_response": {"setup_status": 1, "setup_errors": [1]},
+        "compliant_but_disallowed_services": [
+            "compliant_but_disallowed_services_value1",
+            "compliant_but_disallowed_services_value2",
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_workload(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_workload_rest_required_fields(
+    request_type=assuredworkloads.CreateWorkloadRequest,
+):
+    transport_class = transports.AssuredWorkloadsServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_workload._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_workload._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("external_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_workload(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_workload_rest_unset_required_fields():
+    transport = transports.AssuredWorkloadsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_workload._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("externalId",))
+        & set(
+            (
+                "parent",
+                "workload",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_workload_rest_interceptors(null_interceptor):
+    transport = transports.AssuredWorkloadsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AssuredWorkloadsServiceRestInterceptor(),
+    )
+    client = AssuredWorkloadsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AssuredWorkloadsServiceRestInterceptor, "post_create_workload"
+    ) as post, mock.patch.object(
+        transports.AssuredWorkloadsServiceRestInterceptor, "pre_create_workload"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = assuredworkloads.CreateWorkloadRequest.pb(
+            assuredworkloads.CreateWorkloadRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = assuredworkloads.CreateWorkloadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_workload(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_workload_rest_bad_request(
+    transport: str = "rest", request_type=assuredworkloads.CreateWorkloadRequest
+):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request_init["workload"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "resources": [{"resource_id": 1172, "resource_type": 1}],
+        "compliance_regime": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "billing_account": "billing_account_value",
+        "il4_settings": {
+            "kms_settings": {
+                "next_rotation_time": {},
+                "rotation_period": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "cjis_settings": {"kms_settings": {}},
+        "fedramp_high_settings": {"kms_settings": {}},
+        "fedramp_moderate_settings": {"kms_settings": {}},
+        "etag": "etag_value",
+        "labels": {},
+        "provisioned_resources_parent": "provisioned_resources_parent_value",
+        "kms_settings": {},
+        "resource_settings": [
+            {
+                "resource_id": "resource_id_value",
+                "resource_type": 1,
+                "display_name": "display_name_value",
+            }
+        ],
+        "kaj_enrollment_state": 1,
+        "enable_sovereign_controls": True,
+        "saa_enrollment_response": {"setup_status": 1, "setup_errors": [1]},
+        "compliant_but_disallowed_services": [
+            "compliant_but_disallowed_services_value1",
+            "compliant_but_disallowed_services_value2",
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_workload(request)
+
+
+def test_create_workload_rest_flattened():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            workload=assuredworkloads.Workload(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_workload(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=organizations/*/locations/*}/workloads"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_workload_rest_flattened_error(transport: str = "rest"):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_workload(
+            assuredworkloads.CreateWorkloadRequest(),
+            parent="parent_value",
+            workload=assuredworkloads.Workload(name="name_value"),
+        )
+
+
+def test_create_workload_rest_error():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+def test_update_workload_rest_no_http_options():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = assuredworkloads.UpdateWorkloadRequest()
+    with pytest.raises(RuntimeError):
+        client.update_workload(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.RestrictAllowedResourcesRequest,
+        dict,
+    ],
+)
+def test_restrict_allowed_resources_rest(request_type):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/workloads/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = assuredworkloads.RestrictAllowedResourcesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = assuredworkloads.RestrictAllowedResourcesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.restrict_allowed_resources(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, assuredworkloads.RestrictAllowedResourcesResponse)
+
+
+def test_restrict_allowed_resources_rest_required_fields(
+    request_type=assuredworkloads.RestrictAllowedResourcesRequest,
+):
+    transport_class = transports.AssuredWorkloadsServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restrict_allowed_resources._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restrict_allowed_resources._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = assuredworkloads.RestrictAllowedResourcesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = assuredworkloads.RestrictAllowedResourcesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.restrict_allowed_resources(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_restrict_allowed_resources_rest_unset_required_fields():
+    transport = transports.AssuredWorkloadsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.restrict_allowed_resources._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "restrictionType",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_restrict_allowed_resources_rest_interceptors(null_interceptor):
+    transport = transports.AssuredWorkloadsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AssuredWorkloadsServiceRestInterceptor(),
+    )
+    client = AssuredWorkloadsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AssuredWorkloadsServiceRestInterceptor,
+        "post_restrict_allowed_resources",
+    ) as post, mock.patch.object(
+        transports.AssuredWorkloadsServiceRestInterceptor,
+        "pre_restrict_allowed_resources",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = assuredworkloads.RestrictAllowedResourcesRequest.pb(
+            assuredworkloads.RestrictAllowedResourcesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            assuredworkloads.RestrictAllowedResourcesResponse.to_json(
+                assuredworkloads.RestrictAllowedResourcesResponse()
+            )
+        )
+
+        request = assuredworkloads.RestrictAllowedResourcesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = assuredworkloads.RestrictAllowedResourcesResponse()
+
+        client.restrict_allowed_resources(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_restrict_allowed_resources_rest_bad_request(
+    transport: str = "rest",
+    request_type=assuredworkloads.RestrictAllowedResourcesRequest,
+):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/workloads/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.restrict_allowed_resources(request)
+
+
+def test_restrict_allowed_resources_rest_error():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.DeleteWorkloadRequest,
+        dict,
+    ],
+)
+def test_delete_workload_rest(request_type):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/workloads/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_workload(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_workload_rest_required_fields(
+    request_type=assuredworkloads.DeleteWorkloadRequest,
+):
+    transport_class = transports.AssuredWorkloadsServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_workload._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_workload._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("etag",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_workload(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_workload_rest_unset_required_fields():
+    transport = transports.AssuredWorkloadsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_workload._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_workload_rest_interceptors(null_interceptor):
+    transport = transports.AssuredWorkloadsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AssuredWorkloadsServiceRestInterceptor(),
+    )
+    client = AssuredWorkloadsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AssuredWorkloadsServiceRestInterceptor, "pre_delete_workload"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = assuredworkloads.DeleteWorkloadRequest.pb(
+            assuredworkloads.DeleteWorkloadRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = assuredworkloads.DeleteWorkloadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_workload(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_workload_rest_bad_request(
+    transport: str = "rest", request_type=assuredworkloads.DeleteWorkloadRequest
+):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/workloads/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_workload(request)
+
+
+def test_delete_workload_rest_flattened():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/locations/sample2/workloads/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_workload(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=organizations/*/locations/*/workloads/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_workload_rest_flattened_error(transport: str = "rest"):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_workload(
+            assuredworkloads.DeleteWorkloadRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_workload_rest_error():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+def test_get_workload_rest_no_http_options():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = assuredworkloads.GetWorkloadRequest()
+    with pytest.raises(RuntimeError):
+        client.get_workload(request)
+
+
+def test_analyze_workload_move_rest_no_http_options():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = assuredworkloads.AnalyzeWorkloadMoveRequest()
+    with pytest.raises(RuntimeError):
+        client.analyze_workload_move(request)
+
+
+def test_list_workloads_rest_no_http_options():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = assuredworkloads.ListWorkloadsRequest()
+    with pytest.raises(RuntimeError):
+        client.list_workloads(request)
+
+
+def test_update_workload_rest_error():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.update_workload({})
+    assert "Method UpdateWorkload is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_get_workload_rest_error():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.get_workload({})
+    assert "Method GetWorkload is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_analyze_workload_move_rest_error():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.analyze_workload_move({})
+    assert "Method AnalyzeWorkloadMove is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_list_workloads_rest_error():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.list_workloads({})
+    assert "Method ListWorkloads is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AssuredWorkloadsServiceGrpcTransport(
@@ -2408,6 +3375,7 @@ def test_transport_get_channel():
     [
         transports.AssuredWorkloadsServiceGrpcTransport,
         transports.AssuredWorkloadsServiceGrpcAsyncIOTransport,
+        transports.AssuredWorkloadsServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2422,6 +3390,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2564,6 +3533,7 @@ def test_assured_workloads_service_transport_auth_adc(transport_class):
     [
         transports.AssuredWorkloadsServiceGrpcTransport,
         transports.AssuredWorkloadsServiceGrpcAsyncIOTransport,
+        transports.AssuredWorkloadsServiceRestTransport,
     ],
 )
 def test_assured_workloads_service_transport_auth_gdch_credentials(transport_class):
@@ -2665,11 +3635,40 @@ def test_assured_workloads_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_assured_workloads_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.AssuredWorkloadsServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_assured_workloads_service_rest_lro_client():
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_assured_workloads_service_host_no_port(transport_name):
@@ -2680,7 +3679,11 @@ def test_assured_workloads_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("assuredworkloads.googleapis.com:443")
+    assert client.transport._host == (
+        "assuredworkloads.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://assuredworkloads.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2688,6 +3691,7 @@ def test_assured_workloads_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_assured_workloads_service_host_with_port(transport_name):
@@ -2698,7 +3702,51 @@ def test_assured_workloads_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("assuredworkloads.googleapis.com:8000")
+    assert client.transport._host == (
+        "assuredworkloads.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://assuredworkloads.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_assured_workloads_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = AssuredWorkloadsServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = AssuredWorkloadsServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_workload._session
+    session2 = client2.transport.create_workload._session
+    assert session1 != session2
+    session1 = client1.transport.update_workload._session
+    session2 = client2.transport.update_workload._session
+    assert session1 != session2
+    session1 = client1.transport.restrict_allowed_resources._session
+    session2 = client2.transport.restrict_allowed_resources._session
+    assert session1 != session2
+    session1 = client1.transport.delete_workload._session
+    session2 = client2.transport.delete_workload._session
+    assert session1 != session2
+    session1 = client1.transport.get_workload._session
+    session2 = client2.transport.get_workload._session
+    assert session1 != session2
+    session1 = client1.transport.analyze_workload_move._session
+    session2 = client2.transport.analyze_workload_move._session
+    assert session1 != session2
+    session1 = client1.transport.list_workloads._session
+    session2 = client2.transport.list_workloads._session
+    assert session1 != session2
 
 
 def test_assured_workloads_service_grpc_transport_channel():
@@ -3031,6 +4079,124 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "organizations/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/operations/sample3"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "organizations/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = AssuredWorkloadsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
 def test_get_operation(transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3323,6 +4489,7 @@ async def test_list_operations_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3340,6 +4507,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

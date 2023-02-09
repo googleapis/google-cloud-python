@@ -106,6 +106,56 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AssuredWorkloadsServiceClient",
+          "rpcs": {
+            "AcknowledgeViolation": {
+              "methods": [
+                "acknowledge_violation"
+              ]
+            },
+            "CreateWorkload": {
+              "methods": [
+                "create_workload"
+              ]
+            },
+            "DeleteWorkload": {
+              "methods": [
+                "delete_workload"
+              ]
+            },
+            "GetViolation": {
+              "methods": [
+                "get_violation"
+              ]
+            },
+            "GetWorkload": {
+              "methods": [
+                "get_workload"
+              ]
+            },
+            "ListViolations": {
+              "methods": [
+                "list_violations"
+              ]
+            },
+            "ListWorkloads": {
+              "methods": [
+                "list_workloads"
+              ]
+            },
+            "RestrictAllowedResources": {
+              "methods": [
+                "restrict_allowed_resources"
+              ]
+            },
+            "UpdateWorkload": {
+              "methods": [
+                "update_workload"
+              ]
+            }
+          }
         }
       }
     }

@@ -58,6 +58,7 @@ from google.cloud.assuredworkloads_v1.types import assuredworkloads
 from .transports.base import DEFAULT_CLIENT_INFO, AssuredWorkloadsServiceTransport
 from .transports.grpc import AssuredWorkloadsServiceGrpcTransport
 from .transports.grpc_asyncio import AssuredWorkloadsServiceGrpcAsyncIOTransport
+from .transports.rest import AssuredWorkloadsServiceRestTransport
 
 
 class AssuredWorkloadsServiceClientMeta(type):
@@ -73,6 +74,7 @@ class AssuredWorkloadsServiceClientMeta(type):
     )  # type: Dict[str, Type[AssuredWorkloadsServiceTransport]]
     _transport_registry["grpc"] = AssuredWorkloadsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AssuredWorkloadsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AssuredWorkloadsServiceRestTransport
 
     def get_transport_class(
         cls,

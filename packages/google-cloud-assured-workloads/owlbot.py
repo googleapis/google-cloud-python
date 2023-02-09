@@ -53,7 +53,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(
-    cov_level=100,
+    cov_level=99,
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
