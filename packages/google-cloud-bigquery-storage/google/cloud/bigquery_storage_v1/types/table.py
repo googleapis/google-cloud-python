@@ -120,6 +120,10 @@ class TableFieldSchema(proto.Message):
             If scale is specified but not precision, then it is invalid.
         scale (int):
             Optional. See documentation for precision.
+        default_value_expression (str):
+            Optional. A SQL expression to specify the [default value]
+            (https://cloud.google.com/bigquery/docs/default-values) for
+            this field.
     """
 
     class Type(proto.Enum):
@@ -229,6 +233,10 @@ class TableFieldSchema(proto.Message):
     scale: int = proto.Field(
         proto.INT64,
         number=9,
+    )
+    default_value_expression: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
