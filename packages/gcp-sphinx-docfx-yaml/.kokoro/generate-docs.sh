@@ -127,8 +127,8 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
     if [[ "${name}" == "clouderroreporting" ]]; then
       name="clouderrorreporting"
     fi
-    if [[ "${name}" == "iam" ]]; then
-      name="iamcredentials"
+    if [[ "${name}" == "iamcredentials" ]]; then
+      name="iam"
     fi
 
     python3 -m docuploader create-metadata \
