@@ -66,6 +66,7 @@ __protobuf__ = proto.module(
         "GetGuestAttributesRequest",
         "GetGuestAttributesResponse",
         "SimulateMaintenanceEventRequest",
+        "AcceleratorConfig",
         "ShieldedInstanceConfig",
     },
 )
@@ -389,6 +390,8 @@ class Node(proto.Message):
         queued_resource (str):
             Output only. The qualified name of the
             QueuedResource that requested this Node.
+        accelerator_config (google.cloud.tpu_v2alpha1.types.AcceleratorConfig):
+            The AccleratorConfig for the TPU Node.
         shielded_instance_config (google.cloud.tpu_v2alpha1.types.ShieldedInstanceConfig):
             Shielded Instance options.
     """
@@ -587,6 +590,11 @@ class Node(proto.Message):
     queued_resource: str = proto.Field(
         proto.STRING,
         number=43,
+    )
+    accelerator_config: "AcceleratorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=44,
+        message="AcceleratorConfig",
     )
     shielded_instance_config: "ShieldedInstanceConfig" = proto.Field(
         proto.MESSAGE,
@@ -1366,6 +1374,8 @@ class AcceleratorType(proto.Message):
             The resource name.
         type_ (str):
             The accelerator type.
+        accelerator_configs (MutableSequence[google.cloud.tpu_v2alpha1.types.AcceleratorConfig]):
+            The accelerator config.
     """
 
     name: str = proto.Field(
@@ -1375,6 +1385,11 @@ class AcceleratorType(proto.Message):
     type_: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    accelerator_configs: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="AcceleratorConfig",
     )
 
 
@@ -1757,6 +1772,45 @@ class SimulateMaintenanceEventRequest(proto.Message):
         number=1,
     )
     worker_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AcceleratorConfig(proto.Message):
+    r"""A TPU accelerator configuration.
+
+    Attributes:
+        type_ (google.cloud.tpu_v2alpha1.types.AcceleratorConfig.Type):
+            Required. Type of TPU.
+        topology (str):
+            Required. Topology of TPU in chips.
+    """
+
+    class Type(proto.Enum):
+        r"""TPU type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified version.
+            V2 (2):
+                TPU v2.
+            V3 (4):
+                TPU v3.
+            V4 (7):
+                TPU v4.
+        """
+        TYPE_UNSPECIFIED = 0
+        V2 = 2
+        V3 = 4
+        V4 = 7
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    topology: str = proto.Field(
         proto.STRING,
         number=2,
     )

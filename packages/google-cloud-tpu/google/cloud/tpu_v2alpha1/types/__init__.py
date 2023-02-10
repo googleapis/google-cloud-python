@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .cloud_tpu import (
+    AcceleratorConfig,
     AcceleratorType,
     AccessConfig,
     AttachedDisk,
@@ -59,6 +60,7 @@ from .cloud_tpu import (
 )
 
 __all__ = (
+    "AcceleratorConfig",
     "AcceleratorType",
     "AccessConfig",
     "AttachedDisk",
