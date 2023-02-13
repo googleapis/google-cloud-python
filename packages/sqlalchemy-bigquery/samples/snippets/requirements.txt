@@ -19,7 +19,7 @@ mako==1.2.2
 markupsafe==2.1.1
 packaging==21.3
 proto-plus==1.22.1
-protobuf==4.21.5
+protobuf==4.21.6
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyparsing==3.0.9
