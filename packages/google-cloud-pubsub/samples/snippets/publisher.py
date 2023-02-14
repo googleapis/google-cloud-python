@@ -22,7 +22,6 @@ at https://cloud.google.com/pubsub/docs.
 """
 
 import argparse
-from typing import Callable
 
 
 def list_topics(project_id: str) -> None:
@@ -139,6 +138,7 @@ def publish_messages_with_error_handler(project_id: str, topic_id: str) -> None:
     """Publishes multiple messages to a Pub/Sub topic with an error handler."""
     from concurrent import futures
     from google.cloud import pubsub_v1
+    from typing import Callable
 
     # TODO(developer)
     # project_id = "your-project-id"
