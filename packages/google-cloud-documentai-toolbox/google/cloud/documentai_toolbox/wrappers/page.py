@@ -16,17 +16,10 @@
 """Wrappers for Document AI Page type."""
 
 import dataclasses
-from typing import List, Union
+from typing import List
 
 from google.cloud import documentai
 import pandas as pd
-
-ElementWithLayout = Union[
-    documentai.Document.Page.Paragraph,
-    documentai.Document.Page.Line,
-    documentai.Document.Page.Token,
-    documentai.Document.Page.Table.TableCell,
-]
 
 
 @dataclasses.dataclass
@@ -157,14 +150,30 @@ class Line:
     text: str
 
 
-def _text_from_element_with_layout(
-    element_with_layout: ElementWithLayout, text: str
-) -> str:
-    r"""Returns a text from a single element.
+@dataclasses.dataclass
+class FormField:
+    """Represents a wrapped documentai.Document.Page.FormField.
+
+    Attributes:
+        documentai_formfield (google.cloud.documentai.Document.Page.FormField):
+            Required. The original google.cloud.documentai.Document.Page.FormField object.
+        field_name (str):
+            Required. The form field name
+        field_value (str):
+            Required. The form field value
+    """
+
+    documentai_formfield: documentai.Document.Page.FormField
+    field_name: str
+    field_value: str
+
+
+def _text_from_layout(layout: documentai.Document.Page.Layout, text: str) -> str:
+    r"""Returns a text from a single layout element.
 
     Args:
-        element_with_layout (ElementWithLayout):
-            Required. a element with layout attribute.
+        layout (documentai.Document.Page.Layout):
+            Required. an element with layout fields.
         text (str):
             Required. UTF-8 encoded text in reading order
             from the document.
@@ -176,10 +185,7 @@ def _text_from_element_with_layout(
 
     result_text = ""
 
-    if not element_with_layout.layout.text_anchor.text_segments:
-        return ""
-
-    for text_segment in element_with_layout.layout.text_anchor.text_segments:
+    for text_segment in layout.text_anchor.text_segments:
         result_text += text[int(text_segment.start_index) : int(text_segment.end_index)]
 
     return result_text
@@ -206,9 +212,7 @@ def _get_paragraphs(
         result.append(
             Paragraph(
                 documentai_paragraph=paragraph,
-                text=_text_from_element_with_layout(
-                    element_with_layout=paragraph, text=text
-                ),
+                text=_text_from_layout(layout=paragraph.layout, text=text),
             )
         )
 
@@ -234,8 +238,51 @@ def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Li
         result.append(
             Line(
                 documentai_line=line,
-                text=_text_from_element_with_layout(
-                    element_with_layout=line, text=text
+                text=_text_from_layout(layout=line.layout, text=text),
+            )
+        )
+
+    return result
+
+
+def _trim_text(text: str) -> str:
+    r"""Remove extra space characters from text (blank, newline, tab, etc.)
+
+    Args:
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+    Returns:
+        str:
+            Text without trailing spaces/newlines
+    """
+    return text.strip().replace("\n", " ")
+
+
+def _get_form_fields(
+    form_fields: List[documentai.Document.Page.FormField], text: str
+) -> List[FormField]:
+    r"""Returns a list of FormField.
+
+    Args:
+        form_fields (List[documentai.Document.Page.FormField]):
+            Required. A list of documentai.Document.Page.FormField objects.
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+    Returns:
+        List[FormField]:
+            A list of FormFields.
+    """
+    result = []
+
+    for form_field in form_fields:
+        result.append(
+            FormField(
+                documentai_formfield=form_field,
+                field_name=_trim_text(_text_from_layout(form_field.field_name, text)),
+                field_value=_trim_text(
+                    _text_from_layout(form_field.field_value, text),
                 ),
             )
         )
@@ -264,9 +311,7 @@ def _table_rows_from_documentai_table_rows(
         row_text = []
 
         for cell in row.cells:
-            row_text.append(
-                _text_from_element_with_layout(element_with_layout=cell, text=text)
-            )
+            row_text.append(_text_from_layout(layout=cell.layout, text=text))
 
         body_rows.append([x.replace("\n", "") for x in row_text])
     return body_rows
@@ -297,6 +342,7 @@ class Page:
     documentai_page: documentai.Document.Page = dataclasses.field(repr=False)
     text: str = dataclasses.field(repr=False)
 
+    form_fields: List[FormField] = dataclasses.field(init=False, repr=False)
     lines: List[Line] = dataclasses.field(init=False, repr=False)
     paragraphs: List[Paragraph] = dataclasses.field(init=False, repr=False)
     tables: List[Table] = dataclasses.field(init=False, repr=False)
@@ -311,6 +357,9 @@ class Page:
                 )
             )
 
+        self.form_fields = _get_form_fields(
+            form_fields=self.documentai_page.form_fields, text=self.text
+        )
         self.lines = _get_lines(lines=self.documentai_page.lines, text=self.text)
         self.paragraphs = _get_paragraphs(
             paragraphs=self.documentai_page.paragraphs, text=self.text

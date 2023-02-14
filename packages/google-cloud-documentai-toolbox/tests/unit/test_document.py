@@ -1,3 +1,4 @@
+# pylint: disable=protected-access
 # -*- coding: utf-8 -*-
 # Copyright 2022 Google LLC
 #
@@ -50,6 +51,13 @@ def get_bytes_single_file_mock():
 def get_bytes_multiple_files_mock():
     with mock.patch.object(document, "_get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/1")
+        yield byte_factory
+
+
+@pytest.fixture
+def get_bytes_form_parser_mock():
+    with mock.patch.object(document, "_get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes("tests/unit/resources/form_parser")
         yield byte_factory
 
 
@@ -126,7 +134,6 @@ def test_document_from_gcs_with_multiple_shards(get_bytes_multiple_files_mock):
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
 def test_print_gcs_document_tree_with_one_folder(mock_storage, capfd):
-
     client = mock_storage.Client.return_value
 
     mock_bucket = mock.Mock()
@@ -166,7 +173,6 @@ def test_print_gcs_document_tree_with_one_folder(mock_storage, capfd):
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
 def test_print_gcs_document_tree_with_3_documents(mock_storage, capfd):
-
     client = mock_storage.Client.return_value
 
     mock_bucket = mock.Mock()
@@ -208,7 +214,6 @@ def test_print_gcs_document_tree_with_3_documents(mock_storage, capfd):
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
 def test_print_gcs_document_tree_with_more_than_5_document(mock_storage, capfd):
-
     client = mock_storage.Client.return_value
 
     mock_bucket = mock.Mock()
@@ -272,7 +277,6 @@ def test_print_gcs_document_tree_with_gcs_uri_contains_file_type():
 
 
 def test_search_page_with_target_string(get_bytes_single_file_mock):
-
     doc = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0/"
     )
@@ -299,7 +303,6 @@ def test_search_page_with_regex_and_str(get_bytes_single_file_mock):
         ValueError,
         match="Exactly one of target_string and pattern must be specified.",
     ):
-
         doc = document.Document.from_gcs(
             gcs_bucket_name="test-directory",
             gcs_prefix="documentai/output/123456789/0/",
@@ -324,7 +327,6 @@ def test_search_page_with_none(get_bytes_single_file_mock):
 
 
 def test_get_entity_by_type(get_bytes_single_file_mock):
-
     doc = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
     )
@@ -336,3 +338,16 @@ def test_get_entity_by_type(get_bytes_single_file_mock):
     assert len(actual) == 1
     assert actual[0].type_ == "receiver_address"
     assert actual[0].mention_text == "222 Main Street\nAnytown, USA"
+
+
+def test_get_form_field_by_name(get_bytes_form_parser_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+    actual = doc.get_form_field_by_name(target_field="Phone #:")
+
+    get_bytes_form_parser_mock.assert_called_once()
+
+    assert len(actual) == 1
+    assert actual[0].field_name == "Phone #:"
+    assert actual[0].field_value == "(906) 917-3486"

@@ -1,3 +1,4 @@
+# pylint: disable=protected-access
 # -*- coding: utf-8 -*-
 # Copyright 2022 Google LLC
 #
@@ -24,6 +25,16 @@ import pytest
 def docproto():
     with open(
         "tests/unit/resources/0/toolbox_invoice_test-0.json", "r", encoding="utf-8"
+    ) as f:
+        return documentai.Document.from_json(f.read())
+
+
+@pytest.fixture
+def docproto_form_parser():
+    with open(
+        "tests/unit/resources/form_parser/pretrained-form-parser-v1.0-2020-09-23_full-output.json",
+        "r",
+        encoding="utf-8",
     ) as f:
         return documentai.Document.from_json(f.read())
 
@@ -109,6 +120,13 @@ def test_table_to_dataframe():
     assert len(contents.values) == 2
 
 
+def test_trim_text():
+    input_text = "Sally\nWalker\n"
+    output_text = page._trim_text(input_text)
+
+    assert output_text == "Sally Walker"
+
+
 def test_table_wrapper_from_documentai_table(docproto):
     docproto_page = docproto.pages[0]
 
@@ -147,8 +165,8 @@ def test_body_for_table_rows_from_documentai_table_rows(docproto):
 def test_text_from_element_with_layout(docproto):
     docproto_page = docproto.pages[0]
 
-    text = page._text_from_element_with_layout(
-        element_with_layout=docproto_page.paragraphs[0], text=docproto.text
+    text = page._text_from_layout(
+        layout=docproto_page.paragraphs[0].layout, text=docproto.text
     )
 
     assert text == "Invoice\n"
@@ -174,7 +192,30 @@ def test_get_lines(docproto):
     assert lines[36].text == "Supplies used for Project Q.\n"
 
 
+def test_get_form_fields(docproto_form_parser):
+    docproto_form_fields = docproto_form_parser.pages[0].form_fields
+
+    form_fields = page._get_form_fields(
+        form_fields=docproto_form_fields, text=docproto_form_parser.text
+    )
+
+    assert len(form_fields) == 17
+    assert form_fields[4].field_name == "Occupation:"
+    assert form_fields[4].field_value == "Software Engineer"
+
+
 # Class init Tests
+
+
+def test_FormField():
+    docai_form_field = documentai.Document.Page.FormField()
+    form_field = page.FormField(
+        documentai_formfield=docai_form_field,
+        field_name="Name:",
+        field_value="Sally Walker",
+    )
+    assert form_field.field_name == "Name:"
+    assert form_field.field_value == "Sally Walker"
 
 
 def test_Paragraph():
