@@ -9,5 +9,5 @@
     "packages/google-cloud-vmwareengine": "1.0.0",
     "packages/google-cloud-datacatalog-lineage": "0.2.1",
     "packages/google-maps-mapsplatformdatasets": "0.2.0",
-    "packages/google-cloud-advisorynotifications": "0.0.0"
+    "packages/google-cloud-advisorynotifications": "0.1.0"
 }
