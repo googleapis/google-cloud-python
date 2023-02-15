@@ -1,14 +1,13 @@
-
-**Disclaimer**
-
-The Document AI Toolbox is in an experimental state. This library is a work-in-progress and is likely to have backwards-incompatible changes. Users of the toolbox might need to rewrite their code when upgrading the toolbox version.
-
 Document AI Toolbox
 =================================
 
 |experimental| |versions|
 
-`Document AI Toolbox`_: Document AI Toolbox aims to reduce the friction of managing, manipulating, and extracting information from outputs of Document AI’s BatchProcessDocument (JSON files written to user-managed GCS buckets) and ProcessDocument methods, programmatically.
+`Document AI Toolbox`_: Document AI Toolbox aims to reduce the friction of managing, manipulating, and extracting information from outputs of Document AI ``BatchProcessDocuments()`` (JSON files written to user-managed GCS buckets) and ``ProcessDocument()`` methods, programmatically.
+
+**Disclaimer**
+
+The Document AI Toolbox is in an experimental state. This library is a work-in-progress and is likely to have backwards-incompatible changes. Users of the toolbox might need to rewrite their code when upgrading the toolbox version.
 
 .. |experimental| image:: https://img.shields.io/badge/support-experimental-red.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
@@ -21,19 +20,22 @@ Quick Start
 
 In order to use this library, you first need to go through the following steps:
 
-Enabling Document AI may not be technically required to use this library, unless ProcessDocument is inteded to be used.
-But you must enable the Storage API to access GCS buckets that contains the output of BatchProcessDocument. 
+Enabling Document AI may not be technically required to use this library, unless ``ProcessDocument()`` is intended to be used.
+But you must enable the Storage API to access GCS buckets that contains the output of ``BatchProcessDocument()``. 
+You will need to enable the BigQuery API if you intend to use the BigQuery features.
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
 3. `Enable the Storage API.`_
 4. `Enable the Document AI API.`_
-5. `Setup Authentication.`_
+5. `Enable the BigQuery API.`_
+6. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Storage API.:  https://cloud.google.com/storage/docs
 .. _Enable the Document AI API.:  https://cloud.google.com/document-ai/docs
+.. _Enable the BigQuery API.:  https://cloud.google.com/bigquery/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -99,7 +101,7 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Document AI Product documentation`_ to learn
+-  Read the `Document AI product documentation`_ to learn
    more about the product and see How-to Guides.
 -  Read the `Client Library Documentation`_ for Document AI Toolbox
    to see other available methods on the client.
@@ -108,5 +110,5 @@ Next Steps
 
 .. _`Client Library Documentation`: https://cloud.google.com/python/docs/reference/documentai-toolbox/latest
 .. _`Document AI documentation`:  https://cloud.google.com/document-ai
-.. _`Document AI Product documentation`: https://cloud.google.com/document-ai/docs/overview
+.. _`Document AI product documentation`: https://cloud.google.com/document-ai/docs/overview
 .. _`README`: https://github.com/googleapis/python-documentai-toolbox/blob/main/README.rst
