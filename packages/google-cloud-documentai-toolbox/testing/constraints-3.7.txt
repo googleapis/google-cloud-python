@@ -12,3 +12,4 @@ grpc-google-iam-v1==0.12.4
 google-cloud-documentai==1.2.1
 google-cloud-storage== 1.31.0
 numpy==1.18.1
+pikepdf==6.2.9

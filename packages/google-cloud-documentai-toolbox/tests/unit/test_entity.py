@@ -26,3 +26,22 @@ def test_Entity():
 
     assert wrapper_entity.type_ == "some_entity_type"
     assert wrapper_entity.mention_text == "some_mention_text"
+
+
+def test_Entity_splitter():
+    documentai_entity = documentai.Document.Entity(
+        type_="invoice_statement",
+        page_anchor=documentai.Document.PageAnchor(
+            page_refs=[
+                # page field is empty when its value is 0
+                documentai.Document.PageAnchor.PageRef(),
+                documentai.Document.PageAnchor.PageRef(page=1),
+                documentai.Document.PageAnchor.PageRef(page=2),
+            ]
+        ),
+    )
+    wrapper_entity = entity.Entity(documentai_entity)
+
+    assert wrapper_entity.type_ == "invoice_statement"
+    assert wrapper_entity.start_page == 0
+    assert wrapper_entity.end_page == 2

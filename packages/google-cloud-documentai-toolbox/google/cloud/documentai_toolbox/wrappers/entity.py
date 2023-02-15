@@ -37,7 +37,13 @@ class Entity:
     documentai_entity: documentai.Document.Entity = dataclasses.field(repr=False)
     type_: str = dataclasses.field(init=False)
     mention_text: str = dataclasses.field(init=False, default="")
+    # Only Populated for Splitter/Classifier Output
+    start_page: int = dataclasses.field(init=False)
+    end_page: int = dataclasses.field(init=False)
 
     def __post_init__(self):
         self.type_ = self.documentai_entity.type_
         self.mention_text = self.documentai_entity.mention_text
+        if self.documentai_entity.page_anchor.page_refs:
+            self.start_page = int(self.documentai_entity.page_anchor.page_refs[0].page)
+            self.end_page = int(self.documentai_entity.page_anchor.page_refs[-1].page)

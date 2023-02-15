@@ -8,3 +8,4 @@ proto-plus
 grpc-google-iam-v1
 google-cloud-documentai
 google-cloud-storage
+pikepdf

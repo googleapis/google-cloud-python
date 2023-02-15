@@ -61,6 +61,13 @@ def get_bytes_form_parser_mock():
         yield byte_factory
 
 
+@pytest.fixture
+def get_bytes_splitter_mock():
+    with mock.patch.object(document, "_get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes("tests/unit/resources/splitter")
+        yield byte_factory
+
+
 def test_get_shards_with_gcs_uri_contains_file_type():
     with pytest.raises(ValueError, match="gcs_prefix cannot contain file types"):
         document._get_shards(
@@ -351,3 +358,31 @@ def test_get_form_field_by_name(get_bytes_form_parser_mock):
     assert len(actual) == 1
     assert actual[0].field_name == "Phone #:"
     assert actual[0].field_value == "(906) 917-3486"
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.Pdf")
+def test_split_pdf(mock_Pdf, get_bytes_splitter_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+
+    mock_input_file = mock.Mock()
+    mock_Pdf.open.return_value.__enter__.return_value.name = mock_input_file
+
+    mock_output_file = mock.Mock()
+    mock_Pdf.new.return_value = mock_output_file
+
+    actual = doc.split_pdf(
+        pdf_path="procurement_multi_document.pdf", output_path="splitter/output/"
+    )
+
+    get_bytes_splitter_mock.assert_called_once()
+
+    assert actual == [
+        "procurement_multi_document_pg1_invoice_statement.pdf",
+        "procurement_multi_document_pg2_receipt_statement.pdf",
+        "procurement_multi_document_pg3_other.pdf",
+        "procurement_multi_document_pg4_utility_statement.pdf",
+        "procurement_multi_document_pg5_restaurant_statement.pdf",
+        "procurement_multi_document_pg6-7_other.pdf",
+    ]

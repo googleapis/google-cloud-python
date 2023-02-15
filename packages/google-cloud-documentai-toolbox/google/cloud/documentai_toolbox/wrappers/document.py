@@ -30,6 +30,8 @@ from google.cloud.documentai_toolbox.wrappers.page import Page
 from google.cloud.documentai_toolbox.wrappers.page import FormField
 from google.cloud.documentai_toolbox.wrappers.entity import Entity
 
+from pikepdf import Pdf
+
 
 def _entities_from_shards(
     shards: List[documentai.Document],
@@ -365,3 +367,44 @@ class Document:
 
         """
         return [entity for entity in self.entities if entity.type_ == target_type]
+
+    def split_pdf(self, pdf_path: str, output_path: str) -> List[str]:
+        r"""Splits local PDF file into multiple PDF files based on output from a Splitter/Classifier processor.
+
+        Args:
+            pdf_path (str):
+                Required. The path to the PDF file.
+            output_path (str):
+                Required. The path to the output directory.
+        Returns:
+            List[str]:
+                A list of output pdf files.
+        """
+        output_files: List[str] = []
+        input_filename, input_extension = os.path.splitext(os.path.basename(pdf_path))
+        with Pdf.open(pdf_path) as f:
+            for entity in self.entities:
+                subdoc_type = entity.type_ or "subdoc"
+
+                if entity.start_page == entity.end_page:
+                    page_range = f"pg{entity.start_page + 1}"
+                else:
+                    page_range = f"pg{entity.start_page + 1}-{entity.end_page + 1}"
+
+                output_filename = (
+                    f"{input_filename}_{page_range}_{subdoc_type}{input_extension}"
+                )
+
+                subdoc = Pdf.new()
+                for page_num in range(entity.start_page, entity.end_page + 1):
+                    subdoc.pages.append(f.pages[page_num])
+
+                subdoc.save(
+                    os.path.join(
+                        output_path,
+                        output_filename,
+                    ),
+                    min_version=f.pdf_version,
+                )
+                output_files.append(output_filename)
+        return output_files
