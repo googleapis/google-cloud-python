@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,4 +31,4 @@ def test_quickstart_sample(capsys: pytest.CaptureFixture) -> None:
     out, _ = capsys.readouterr()
 
     assert "Number of Pages: 1" in out
-    assert "Number of Entities: 22" in out
+    assert "Number of Entities: 35" in out

@@ -28,6 +28,20 @@ def test_Entity():
     assert wrapper_entity.mention_text == "some_mention_text"
 
 
+def test_Entity_with_normalized_value():
+    documentai_entity = documentai.Document.Entity(
+        type_="another_entity_type",
+        mention_text="another_mention_text",
+        normalized_value=documentai.Document.Entity.NormalizedValue(
+            text="normalized_text"
+        ),
+    )
+    wrapper_entity = entity.Entity(documentai_entity)
+    assert wrapper_entity.type_ == "another_entity_type"
+    assert wrapper_entity.mention_text == "another_mention_text"
+    assert wrapper_entity.normalized_text == "normalized_text"
+
+
 def test_Entity_splitter():
     documentai_entity = documentai.Document.Entity(
         type_="invoice_statement",
@@ -41,7 +55,6 @@ def test_Entity_splitter():
         ),
     )
     wrapper_entity = entity.Entity(documentai_entity)
-
     assert wrapper_entity.type_ == "invoice_statement"
     assert wrapper_entity.start_page == 0
     assert wrapper_entity.end_page == 2

@@ -21,6 +21,7 @@ import re
 from typing import Dict, List, Optional
 
 from google.api_core import client_info
+from google.cloud import bigquery
 from google.cloud import documentai
 from google.cloud import storage
 from google.cloud import documentai_toolbox
@@ -50,6 +51,8 @@ def _entities_from_shards(
     for shard in shards:
         for entity in shard.entities:
             result.append(Entity(documentai_entity=entity))
+            for prop in entity.properties:
+                result.append(Entity(documentai_entity=prop))
     return result
 
 
@@ -367,6 +370,69 @@ class Document:
 
         """
         return [entity for entity in self.entities if entity.type_ == target_type]
+
+    def entities_to_dict(self) -> Dict:
+        r"""Returns Dictionary of entities in document.
+
+        Returns:
+            Dict:
+                The Dict of the entities indexed by type.
+
+        """
+        entities_dict: Dict = {}
+        for entity in self.entities:
+            entity_type = entity.type_.replace("/", "_")
+
+            existing_entity = entities_dict.get(entity_type)
+            if not existing_entity:
+                entities_dict[entity_type] = entity.mention_text
+                continue
+
+            # For entities that can have multiple (e.g. line_item)
+            # Change Entity Type to a List
+            if not isinstance(existing_entity, list):
+                existing_entity = [existing_entity]
+
+            existing_entity.append(entity.mention_text)
+            entities_dict[entity_type] = existing_entity
+
+        return entities_dict
+
+    def entities_to_bigquery(
+        self, dataset_name: str, table_name: str, project_id: Optional[str] = None
+    ) -> bigquery.job.LoadJob:
+        r"""Adds extracted entities to a BigQuery table.
+
+        Args:
+            dataset_name (str):
+                Required. Name of the BigQuery dataset.
+            table_name (str):
+                Required. Name of the BigQuery table.
+            project_id (Optional[str]):
+                Optional. Project ID containing the BigQuery table. If not passed, falls back to the default inferred from the environment.
+        Returns:
+            bigquery.job.LoadJob:
+                The BigQuery LoadJob for adding the entities.
+
+        """
+        bq_client = bigquery.Client(project=project_id)
+        table_ref = bigquery.DatasetReference(
+            project=project_id, dataset_id=dataset_name
+        ).table(table_name)
+
+        job_config = bigquery.LoadJobConfig(
+            schema_update_options=[
+                bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+                bigquery.SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+            ],
+            source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
+        )
+
+        return bq_client.load_table_from_json(
+            json_rows=[self.entities_to_dict()],
+            destination=table_ref,
+            job_config=job_config,
+        )
 
     def split_pdf(self, pdf_path: str, output_path: str) -> List[str]:
         r"""Splits local PDF file into multiple PDF files based on output from a Splitter/Classifier processor.

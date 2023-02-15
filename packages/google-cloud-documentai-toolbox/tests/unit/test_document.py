@@ -104,6 +104,9 @@ def test_entities_from_shard():
 
     assert actual[0].mention_text == "$140.00"
     assert actual[0].type_ == "vat"
+    assert actual[1].mention_text == "$140.00"
+    assert actual[1].type_ == "vat/tax_amount"
+    assert actual[1].normalized_text == "140 USD"
 
 
 def test_document_from_document_path_with_single_shard():
@@ -114,7 +117,9 @@ def test_document_from_document_path_with_single_shard():
 
 
 def test_document_from_documentai_document_with_single_shard():
-    with open("tests/unit/resources/0/toolbox_invoice_test-0.json", "r") as f:
+    with open(
+        "tests/unit/resources/0/toolbox_invoice_test-0.json", "r", encoding="utf-8"
+    ) as f:
         doc = documentai.Document.from_json(f.read())
 
     actual = document.Document.from_documentai_document(documentai_document=doc)
@@ -360,12 +365,48 @@ def test_get_form_field_by_name(get_bytes_form_parser_mock):
     assert actual[0].field_value == "(906) 917-3486"
 
 
+def test_entities_to_dict(get_bytes_single_file_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+    actual = doc.entities_to_dict()
+
+    get_bytes_single_file_mock.assert_called_once()
+
+    assert len(actual) == 25
+    assert actual.get("vat") == "$140.00"
+    assert actual.get("vat_tax_amount") == "$140.00"
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.bigquery")
+def test_entities_to_bigquery(mock_bigquery, get_bytes_single_file_mock):
+    client = mock_bigquery.Client.return_value
+
+    mock_table = mock.Mock()
+    client.dataset.table.return_value = mock_table
+
+    mock_load_job = mock.Mock()
+    client.load_table_from_json.return_value = mock_load_job
+
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+
+    actual = doc.entities_to_bigquery(
+        dataset_name="test_dataset", table_name="test_table", project_id="test_project"
+    )
+
+    get_bytes_single_file_mock.assert_called_once()
+    mock_bigquery.Client.assert_called_once()
+
+    assert actual
+
+
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.Pdf")
 def test_split_pdf(mock_Pdf, get_bytes_splitter_mock):
     doc = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
     )
-
     mock_input_file = mock.Mock()
     mock_Pdf.open.return_value.__enter__.return_value.name = mock_input_file
 

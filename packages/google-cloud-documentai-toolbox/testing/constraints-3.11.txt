@@ -6,6 +6,8 @@ libcst
 pandas
 proto-plus
 grpc-google-iam-v1
+google-cloud-bigquery
 google-cloud-documentai
 google-cloud-storage
+numpy
 pikepdf
