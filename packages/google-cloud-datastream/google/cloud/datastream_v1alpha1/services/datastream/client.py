@@ -58,6 +58,7 @@ from google.cloud.datastream_v1alpha1.types import datastream, datastream_resour
 from .transports.base import DEFAULT_CLIENT_INFO, DatastreamTransport
 from .transports.grpc import DatastreamGrpcTransport
 from .transports.grpc_asyncio import DatastreamGrpcAsyncIOTransport
+from .transports.rest import DatastreamRestTransport
 
 
 class DatastreamClientMeta(type):
@@ -71,6 +72,7 @@ class DatastreamClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[DatastreamTransport]]
     _transport_registry["grpc"] = DatastreamGrpcTransport
     _transport_registry["grpc_asyncio"] = DatastreamGrpcAsyncIOTransport
+    _transport_registry["rest"] = DatastreamRestTransport
 
     def get_transport_class(
         cls,

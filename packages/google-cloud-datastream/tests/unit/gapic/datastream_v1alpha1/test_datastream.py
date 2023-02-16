@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -44,12 +46,15 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.datastream_v1alpha1.services.datastream import (
     DatastreamAsyncClient,
@@ -106,6 +111,7 @@ def test__get_default_mtls_endpoint():
     [
         (DatastreamClient, "grpc"),
         (DatastreamAsyncClient, "grpc_asyncio"),
+        (DatastreamClient, "rest"),
     ],
 )
 def test_datastream_client_from_service_account_info(client_class, transport_name):
@@ -119,7 +125,11 @@ def test_datastream_client_from_service_account_info(client_class, transport_nam
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("datastream.googleapis.com:443")
+        assert client.transport._host == (
+            "datastream.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://datastream.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -127,6 +137,7 @@ def test_datastream_client_from_service_account_info(client_class, transport_nam
     [
         (transports.DatastreamGrpcTransport, "grpc"),
         (transports.DatastreamGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.DatastreamRestTransport, "rest"),
     ],
 )
 def test_datastream_client_service_account_always_use_jwt(
@@ -152,6 +163,7 @@ def test_datastream_client_service_account_always_use_jwt(
     [
         (DatastreamClient, "grpc"),
         (DatastreamAsyncClient, "grpc_asyncio"),
+        (DatastreamClient, "rest"),
     ],
 )
 def test_datastream_client_from_service_account_file(client_class, transport_name):
@@ -172,13 +184,18 @@ def test_datastream_client_from_service_account_file(client_class, transport_nam
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("datastream.googleapis.com:443")
+        assert client.transport._host == (
+            "datastream.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://datastream.googleapis.com"
+        )
 
 
 def test_datastream_client_get_transport_class():
     transport = DatastreamClient.get_transport_class()
     available_transports = [
         transports.DatastreamGrpcTransport,
+        transports.DatastreamRestTransport,
     ]
     assert transport in available_transports
 
@@ -195,6 +212,7 @@ def test_datastream_client_get_transport_class():
             transports.DatastreamGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DatastreamClient, transports.DatastreamRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -338,6 +356,8 @@ def test_datastream_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (DatastreamClient, transports.DatastreamRestTransport, "rest", "true"),
+        (DatastreamClient, transports.DatastreamRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -531,6 +551,7 @@ def test_datastream_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.DatastreamGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DatastreamClient, transports.DatastreamRestTransport, "rest"),
     ],
 )
 def test_datastream_client_client_options_scopes(
@@ -566,6 +587,7 @@ def test_datastream_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (DatastreamClient, transports.DatastreamRestTransport, "rest", None),
     ],
 )
 def test_datastream_client_client_options_credentials_file(
@@ -6610,6 +6632,6648 @@ async def test_delete_route_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListConnectionProfilesRequest,
+        dict,
+    ],
+)
+def test_list_connection_profiles_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListConnectionProfilesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_connection_profiles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListConnectionProfilesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_connection_profiles_rest_required_fields(
+    request_type=datastream.ListConnectionProfilesRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_connection_profiles._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_connection_profiles._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream.ListConnectionProfilesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_connection_profiles(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_connection_profiles_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_connection_profiles._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_connection_profiles_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_list_connection_profiles"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_list_connection_profiles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.ListConnectionProfilesRequest.pb(
+            datastream.ListConnectionProfilesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream.ListConnectionProfilesResponse.to_json(
+            datastream.ListConnectionProfilesResponse()
+        )
+
+        request = datastream.ListConnectionProfilesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream.ListConnectionProfilesResponse()
+
+        client.list_connection_profiles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_connection_profiles_rest_bad_request(
+    transport: str = "rest", request_type=datastream.ListConnectionProfilesRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_connection_profiles(request)
+
+
+def test_list_connection_profiles_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListConnectionProfilesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_connection_profiles(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*}/connectionProfiles"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_connection_profiles_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_connection_profiles(
+            datastream.ListConnectionProfilesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_connection_profiles_rest_pager(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datastream.ListConnectionProfilesResponse(
+                connection_profiles=[
+                    datastream_resources.ConnectionProfile(),
+                    datastream_resources.ConnectionProfile(),
+                    datastream_resources.ConnectionProfile(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListConnectionProfilesResponse(
+                connection_profiles=[],
+                next_page_token="def",
+            ),
+            datastream.ListConnectionProfilesResponse(
+                connection_profiles=[
+                    datastream_resources.ConnectionProfile(),
+                ],
+                next_page_token="ghi",
+            ),
+            datastream.ListConnectionProfilesResponse(
+                connection_profiles=[
+                    datastream_resources.ConnectionProfile(),
+                    datastream_resources.ConnectionProfile(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            datastream.ListConnectionProfilesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_connection_profiles(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, datastream_resources.ConnectionProfile) for i in results
+        )
+
+        pages = list(client.list_connection_profiles(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetConnectionProfileRequest,
+        dict,
+    ],
+)
+def test_get_connection_profile_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.ConnectionProfile(
+            name="name_value",
+            display_name="display_name_value",
+            oracle_profile=datastream_resources.OracleProfile(
+                hostname="hostname_value"
+            ),
+            no_connectivity=None,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.ConnectionProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_connection_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream_resources.ConnectionProfile)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_connection_profile_rest_required_fields(
+    request_type=datastream.GetConnectionProfileRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_connection_profile._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_connection_profile._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream_resources.ConnectionProfile()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream_resources.ConnectionProfile.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_connection_profile(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_connection_profile_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_connection_profile._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_connection_profile_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_get_connection_profile"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_get_connection_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.GetConnectionProfileRequest.pb(
+            datastream.GetConnectionProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream_resources.ConnectionProfile.to_json(
+            datastream_resources.ConnectionProfile()
+        )
+
+        request = datastream.GetConnectionProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream_resources.ConnectionProfile()
+
+        client.get_connection_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_connection_profile_rest_bad_request(
+    transport: str = "rest", request_type=datastream.GetConnectionProfileRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_connection_profile(request)
+
+
+def test_get_connection_profile_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.ConnectionProfile()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.ConnectionProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_connection_profile(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/connectionProfiles/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_connection_profile_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_connection_profile(
+            datastream.GetConnectionProfileRequest(),
+            name="name_value",
+        )
+
+
+def test_get_connection_profile_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreateConnectionProfileRequest,
+        dict,
+    ],
+)
+def test_create_connection_profile_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["connection_profile"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "oracle_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "database_service": "database_service_value",
+            "connection_attributes": {},
+        },
+        "gcs_profile": {
+            "bucket_name": "bucket_name_value",
+            "root_path": "root_path_value",
+        },
+        "mysql_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "ssl_config": {
+                "client_key": "client_key_value",
+                "client_key_set": True,
+                "client_certificate": "client_certificate_value",
+                "client_certificate_set": True,
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+            },
+        },
+        "no_connectivity": {},
+        "static_service_ip_connectivity": {},
+        "forward_ssh_connectivity": {
+            "hostname": "hostname_value",
+            "username": "username_value",
+            "port": 453,
+            "password": "password_value",
+            "private_key": "private_key_value",
+        },
+        "private_connectivity": {
+            "private_connection_name": "private_connection_name_value"
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_connection_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_connection_profile_rest_required_fields(
+    request_type=datastream.CreateConnectionProfileRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["connection_profile_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "connectionProfileId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_connection_profile._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "connectionProfileId" in jsonified_request
+    assert (
+        jsonified_request["connectionProfileId"]
+        == request_init["connection_profile_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["connectionProfileId"] = "connection_profile_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_connection_profile._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "connection_profile_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "connectionProfileId" in jsonified_request
+    assert jsonified_request["connectionProfileId"] == "connection_profile_id_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_connection_profile(request)
+
+            expected_params = [
+                (
+                    "connectionProfileId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_connection_profile_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_connection_profile._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "connectionProfileId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "connectionProfileId",
+                "connectionProfile",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_connection_profile_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_create_connection_profile"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_create_connection_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.CreateConnectionProfileRequest.pb(
+            datastream.CreateConnectionProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.CreateConnectionProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_connection_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_connection_profile_rest_bad_request(
+    transport: str = "rest", request_type=datastream.CreateConnectionProfileRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["connection_profile"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "oracle_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "database_service": "database_service_value",
+            "connection_attributes": {},
+        },
+        "gcs_profile": {
+            "bucket_name": "bucket_name_value",
+            "root_path": "root_path_value",
+        },
+        "mysql_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "ssl_config": {
+                "client_key": "client_key_value",
+                "client_key_set": True,
+                "client_certificate": "client_certificate_value",
+                "client_certificate_set": True,
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+            },
+        },
+        "no_connectivity": {},
+        "static_service_ip_connectivity": {},
+        "forward_ssh_connectivity": {
+            "hostname": "hostname_value",
+            "username": "username_value",
+            "port": 453,
+            "password": "password_value",
+            "private_key": "private_key_value",
+        },
+        "private_connectivity": {
+            "private_connection_name": "private_connection_name_value"
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_connection_profile(request)
+
+
+def test_create_connection_profile_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            connection_profile=datastream_resources.ConnectionProfile(
+                name="name_value"
+            ),
+            connection_profile_id="connection_profile_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_connection_profile(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*}/connectionProfiles"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_connection_profile_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_connection_profile(
+            datastream.CreateConnectionProfileRequest(),
+            parent="parent_value",
+            connection_profile=datastream_resources.ConnectionProfile(
+                name="name_value"
+            ),
+            connection_profile_id="connection_profile_id_value",
+        )
+
+
+def test_create_connection_profile_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.UpdateConnectionProfileRequest,
+        dict,
+    ],
+)
+def test_update_connection_profile_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "connection_profile": {
+            "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+        }
+    }
+    request_init["connection_profile"] = {
+        "name": "projects/sample1/locations/sample2/connectionProfiles/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "oracle_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "database_service": "database_service_value",
+            "connection_attributes": {},
+        },
+        "gcs_profile": {
+            "bucket_name": "bucket_name_value",
+            "root_path": "root_path_value",
+        },
+        "mysql_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "ssl_config": {
+                "client_key": "client_key_value",
+                "client_key_set": True,
+                "client_certificate": "client_certificate_value",
+                "client_certificate_set": True,
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+            },
+        },
+        "no_connectivity": {},
+        "static_service_ip_connectivity": {},
+        "forward_ssh_connectivity": {
+            "hostname": "hostname_value",
+            "username": "username_value",
+            "port": 453,
+            "password": "password_value",
+            "private_key": "private_key_value",
+        },
+        "private_connectivity": {
+            "private_connection_name": "private_connection_name_value"
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_connection_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_connection_profile_rest_required_fields(
+    request_type=datastream.UpdateConnectionProfileRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_connection_profile._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_connection_profile._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_connection_profile(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_connection_profile_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_connection_profile._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(("connectionProfile",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_connection_profile_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_update_connection_profile"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_update_connection_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.UpdateConnectionProfileRequest.pb(
+            datastream.UpdateConnectionProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.UpdateConnectionProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_connection_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_connection_profile_rest_bad_request(
+    transport: str = "rest", request_type=datastream.UpdateConnectionProfileRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "connection_profile": {
+            "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+        }
+    }
+    request_init["connection_profile"] = {
+        "name": "projects/sample1/locations/sample2/connectionProfiles/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "oracle_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "database_service": "database_service_value",
+            "connection_attributes": {},
+        },
+        "gcs_profile": {
+            "bucket_name": "bucket_name_value",
+            "root_path": "root_path_value",
+        },
+        "mysql_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "ssl_config": {
+                "client_key": "client_key_value",
+                "client_key_set": True,
+                "client_certificate": "client_certificate_value",
+                "client_certificate_set": True,
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+            },
+        },
+        "no_connectivity": {},
+        "static_service_ip_connectivity": {},
+        "forward_ssh_connectivity": {
+            "hostname": "hostname_value",
+            "username": "username_value",
+            "port": 453,
+            "password": "password_value",
+            "private_key": "private_key_value",
+        },
+        "private_connectivity": {
+            "private_connection_name": "private_connection_name_value"
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_connection_profile(request)
+
+
+def test_update_connection_profile_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "connection_profile": {
+                "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            connection_profile=datastream_resources.ConnectionProfile(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_connection_profile(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{connection_profile.name=projects/*/locations/*/connectionProfiles/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_connection_profile_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_connection_profile(
+            datastream.UpdateConnectionProfileRequest(),
+            connection_profile=datastream_resources.ConnectionProfile(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_connection_profile_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeleteConnectionProfileRequest,
+        dict,
+    ],
+)
+def test_delete_connection_profile_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_connection_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_connection_profile_rest_required_fields(
+    request_type=datastream.DeleteConnectionProfileRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_connection_profile._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_connection_profile._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_connection_profile(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_connection_profile_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_connection_profile._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_connection_profile_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_delete_connection_profile"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_delete_connection_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.DeleteConnectionProfileRequest.pb(
+            datastream.DeleteConnectionProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.DeleteConnectionProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_connection_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_connection_profile_rest_bad_request(
+    transport: str = "rest", request_type=datastream.DeleteConnectionProfileRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_connection_profile(request)
+
+
+def test_delete_connection_profile_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_connection_profile(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/connectionProfiles/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_connection_profile_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_connection_profile(
+            datastream.DeleteConnectionProfileRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_connection_profile_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DiscoverConnectionProfileRequest,
+        dict,
+    ],
+)
+def test_discover_connection_profile_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.DiscoverConnectionProfileResponse(
+            oracle_rdbms=datastream_resources.OracleRdbms(
+                oracle_schemas=[
+                    datastream_resources.OracleSchema(schema_name="schema_name_value")
+                ]
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.DiscoverConnectionProfileResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.discover_connection_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream.DiscoverConnectionProfileResponse)
+
+
+def test_discover_connection_profile_rest_required_fields(
+    request_type=datastream.DiscoverConnectionProfileRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).discover_connection_profile._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).discover_connection_profile._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream.DiscoverConnectionProfileResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream.DiscoverConnectionProfileResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.discover_connection_profile(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_discover_connection_profile_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.discover_connection_profile._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_discover_connection_profile_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_discover_connection_profile"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_discover_connection_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.DiscoverConnectionProfileRequest.pb(
+            datastream.DiscoverConnectionProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            datastream.DiscoverConnectionProfileResponse.to_json(
+                datastream.DiscoverConnectionProfileResponse()
+            )
+        )
+
+        request = datastream.DiscoverConnectionProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream.DiscoverConnectionProfileResponse()
+
+        client.discover_connection_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_discover_connection_profile_rest_bad_request(
+    transport: str = "rest", request_type=datastream.DiscoverConnectionProfileRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.discover_connection_profile(request)
+
+
+def test_discover_connection_profile_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListStreamsRequest,
+        dict,
+    ],
+)
+def test_list_streams_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListStreamsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListStreamsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_streams(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListStreamsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_streams_rest_required_fields(request_type=datastream.ListStreamsRequest):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_streams._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_streams._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream.ListStreamsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream.ListStreamsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_streams(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_streams_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_streams._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_streams_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_list_streams"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_list_streams"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.ListStreamsRequest.pb(datastream.ListStreamsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream.ListStreamsResponse.to_json(
+            datastream.ListStreamsResponse()
+        )
+
+        request = datastream.ListStreamsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream.ListStreamsResponse()
+
+        client.list_streams(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_streams_rest_bad_request(
+    transport: str = "rest", request_type=datastream.ListStreamsRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_streams(request)
+
+
+def test_list_streams_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListStreamsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListStreamsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_streams(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*}/streams"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_streams_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_streams(
+            datastream.ListStreamsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_streams_rest_pager(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datastream.ListStreamsResponse(
+                streams=[
+                    datastream_resources.Stream(),
+                    datastream_resources.Stream(),
+                    datastream_resources.Stream(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListStreamsResponse(
+                streams=[],
+                next_page_token="def",
+            ),
+            datastream.ListStreamsResponse(
+                streams=[
+                    datastream_resources.Stream(),
+                ],
+                next_page_token="ghi",
+            ),
+            datastream.ListStreamsResponse(
+                streams=[
+                    datastream_resources.Stream(),
+                    datastream_resources.Stream(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(datastream.ListStreamsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_streams(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, datastream_resources.Stream) for i in results)
+
+        pages = list(client.list_streams(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetStreamRequest,
+        dict,
+    ],
+)
+def test_get_stream_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.Stream(
+            name="name_value",
+            display_name="display_name_value",
+            state=datastream_resources.Stream.State.CREATED,
+            backfill_all=datastream_resources.Stream.BackfillAllStrategy(
+                oracle_excluded_objects=datastream_resources.OracleRdbms(
+                    oracle_schemas=[
+                        datastream_resources.OracleSchema(
+                            schema_name="schema_name_value"
+                        )
+                    ]
+                )
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.Stream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream_resources.Stream)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == datastream_resources.Stream.State.CREATED
+
+
+def test_get_stream_rest_required_fields(request_type=datastream.GetStreamRequest):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream_resources.Stream()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream_resources.Stream.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_stream(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_stream_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_stream_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_get_stream"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_get_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.GetStreamRequest.pb(datastream.GetStreamRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream_resources.Stream.to_json(
+            datastream_resources.Stream()
+        )
+
+        request = datastream.GetStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream_resources.Stream()
+
+        client.get_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_stream_rest_bad_request(
+    transport: str = "rest", request_type=datastream.GetStreamRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_stream(request)
+
+
+def test_get_stream_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.Stream()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.Stream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/streams/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_stream_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_stream(
+            datastream.GetStreamRequest(),
+            name="name_value",
+        )
+
+
+def test_get_stream_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreateStreamRequest,
+        dict,
+    ],
+)
+def test_create_stream_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["stream"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "source_config": {
+            "source_connection_profile_name": "source_connection_profile_name_value",
+            "oracle_source_config": {
+                "allowlist": {
+                    "oracle_schemas": [
+                        {
+                            "schema_name": "schema_name_value",
+                            "oracle_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "oracle_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "precision": 972,
+                                            "scale": 520,
+                                            "encoding": "encoding_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+            "mysql_source_config": {
+                "allowlist": {
+                    "mysql_databases": [
+                        {
+                            "database_name": "database_name_value",
+                            "mysql_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "mysql_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "collation": "collation_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+        },
+        "destination_config": {
+            "destination_connection_profile_name": "destination_connection_profile_name_value",
+            "gcs_destination_config": {
+                "path": "path_value",
+                "gcs_file_format": 1,
+                "file_rotation_mb": 1693,
+                "file_rotation_interval": {"seconds": 751, "nanos": 543},
+                "avro_file_format": {},
+                "json_file_format": {"schema_file_format": 1, "compression": 1},
+            },
+        },
+        "state": 1,
+        "backfill_all": {"oracle_excluded_objects": {}, "mysql_excluded_objects": {}},
+        "backfill_none": {},
+        "errors": [
+            {
+                "reason": "reason_value",
+                "error_uuid": "error_uuid_value",
+                "message": "message_value",
+                "error_time": {},
+                "details": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_stream_rest_required_fields(
+    request_type=datastream.CreateStreamRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["stream_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "streamId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "streamId" in jsonified_request
+    assert jsonified_request["streamId"] == request_init["stream_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["streamId"] = "stream_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_stream._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "force",
+            "request_id",
+            "stream_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "streamId" in jsonified_request
+    assert jsonified_request["streamId"] == "stream_id_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_stream(request)
+
+            expected_params = [
+                (
+                    "streamId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_stream_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "force",
+                "requestId",
+                "streamId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "streamId",
+                "stream",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_stream_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_create_stream"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_create_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.CreateStreamRequest.pb(datastream.CreateStreamRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.CreateStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_stream_rest_bad_request(
+    transport: str = "rest", request_type=datastream.CreateStreamRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["stream"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "source_config": {
+            "source_connection_profile_name": "source_connection_profile_name_value",
+            "oracle_source_config": {
+                "allowlist": {
+                    "oracle_schemas": [
+                        {
+                            "schema_name": "schema_name_value",
+                            "oracle_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "oracle_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "precision": 972,
+                                            "scale": 520,
+                                            "encoding": "encoding_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+            "mysql_source_config": {
+                "allowlist": {
+                    "mysql_databases": [
+                        {
+                            "database_name": "database_name_value",
+                            "mysql_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "mysql_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "collation": "collation_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+        },
+        "destination_config": {
+            "destination_connection_profile_name": "destination_connection_profile_name_value",
+            "gcs_destination_config": {
+                "path": "path_value",
+                "gcs_file_format": 1,
+                "file_rotation_mb": 1693,
+                "file_rotation_interval": {"seconds": 751, "nanos": 543},
+                "avro_file_format": {},
+                "json_file_format": {"schema_file_format": 1, "compression": 1},
+            },
+        },
+        "state": 1,
+        "backfill_all": {"oracle_excluded_objects": {}, "mysql_excluded_objects": {}},
+        "backfill_none": {},
+        "errors": [
+            {
+                "reason": "reason_value",
+                "error_uuid": "error_uuid_value",
+                "message": "message_value",
+                "error_time": {},
+                "details": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_stream(request)
+
+
+def test_create_stream_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            stream=datastream_resources.Stream(name="name_value"),
+            stream_id="stream_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*}/streams"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_stream_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_stream(
+            datastream.CreateStreamRequest(),
+            parent="parent_value",
+            stream=datastream_resources.Stream(name="name_value"),
+            stream_id="stream_id_value",
+        )
+
+
+def test_create_stream_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.UpdateStreamRequest,
+        dict,
+    ],
+)
+def test_update_stream_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "stream": {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    }
+    request_init["stream"] = {
+        "name": "projects/sample1/locations/sample2/streams/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "source_config": {
+            "source_connection_profile_name": "source_connection_profile_name_value",
+            "oracle_source_config": {
+                "allowlist": {
+                    "oracle_schemas": [
+                        {
+                            "schema_name": "schema_name_value",
+                            "oracle_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "oracle_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "precision": 972,
+                                            "scale": 520,
+                                            "encoding": "encoding_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+            "mysql_source_config": {
+                "allowlist": {
+                    "mysql_databases": [
+                        {
+                            "database_name": "database_name_value",
+                            "mysql_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "mysql_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "collation": "collation_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+        },
+        "destination_config": {
+            "destination_connection_profile_name": "destination_connection_profile_name_value",
+            "gcs_destination_config": {
+                "path": "path_value",
+                "gcs_file_format": 1,
+                "file_rotation_mb": 1693,
+                "file_rotation_interval": {"seconds": 751, "nanos": 543},
+                "avro_file_format": {},
+                "json_file_format": {"schema_file_format": 1, "compression": 1},
+            },
+        },
+        "state": 1,
+        "backfill_all": {"oracle_excluded_objects": {}, "mysql_excluded_objects": {}},
+        "backfill_none": {},
+        "errors": [
+            {
+                "reason": "reason_value",
+                "error_uuid": "error_uuid_value",
+                "message": "message_value",
+                "error_time": {},
+                "details": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_stream_rest_required_fields(
+    request_type=datastream.UpdateStreamRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_stream._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "force",
+            "request_id",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_stream(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_stream_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "force",
+                "requestId",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(("stream",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_stream_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_update_stream"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_update_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.UpdateStreamRequest.pb(datastream.UpdateStreamRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.UpdateStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_stream_rest_bad_request(
+    transport: str = "rest", request_type=datastream.UpdateStreamRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "stream": {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    }
+    request_init["stream"] = {
+        "name": "projects/sample1/locations/sample2/streams/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "source_config": {
+            "source_connection_profile_name": "source_connection_profile_name_value",
+            "oracle_source_config": {
+                "allowlist": {
+                    "oracle_schemas": [
+                        {
+                            "schema_name": "schema_name_value",
+                            "oracle_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "oracle_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "precision": 972,
+                                            "scale": 520,
+                                            "encoding": "encoding_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+            "mysql_source_config": {
+                "allowlist": {
+                    "mysql_databases": [
+                        {
+                            "database_name": "database_name_value",
+                            "mysql_tables": [
+                                {
+                                    "table_name": "table_name_value",
+                                    "mysql_columns": [
+                                        {
+                                            "column_name": "column_name_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "collation": "collation_value",
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "rejectlist": {},
+            },
+        },
+        "destination_config": {
+            "destination_connection_profile_name": "destination_connection_profile_name_value",
+            "gcs_destination_config": {
+                "path": "path_value",
+                "gcs_file_format": 1,
+                "file_rotation_mb": 1693,
+                "file_rotation_interval": {"seconds": 751, "nanos": 543},
+                "avro_file_format": {},
+                "json_file_format": {"schema_file_format": 1, "compression": 1},
+            },
+        },
+        "state": 1,
+        "backfill_all": {"oracle_excluded_objects": {}, "mysql_excluded_objects": {}},
+        "backfill_none": {},
+        "errors": [
+            {
+                "reason": "reason_value",
+                "error_uuid": "error_uuid_value",
+                "message": "message_value",
+                "error_time": {},
+                "details": {},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_stream(request)
+
+
+def test_update_stream_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "stream": {"name": "projects/sample1/locations/sample2/streams/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            stream=datastream_resources.Stream(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{stream.name=projects/*/locations/*/streams/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_stream_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_stream(
+            datastream.UpdateStreamRequest(),
+            stream=datastream_resources.Stream(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_stream_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeleteStreamRequest,
+        dict,
+    ],
+)
+def test_delete_stream_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_stream_rest_required_fields(
+    request_type=datastream.DeleteStreamRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_stream._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_stream(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_stream_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_stream_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_delete_stream"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_delete_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.DeleteStreamRequest.pb(datastream.DeleteStreamRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.DeleteStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_stream_rest_bad_request(
+    transport: str = "rest", request_type=datastream.DeleteStreamRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_stream(request)
+
+
+def test_delete_stream_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/streams/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_stream_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_stream(
+            datastream.DeleteStreamRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_stream_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.FetchErrorsRequest,
+        dict,
+    ],
+)
+def test_fetch_errors_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"stream": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_errors(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_errors_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_fetch_errors"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_fetch_errors"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.FetchErrorsRequest.pb(datastream.FetchErrorsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.FetchErrorsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.fetch_errors(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_errors_rest_bad_request(
+    transport: str = "rest", request_type=datastream.FetchErrorsRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"stream": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_errors(request)
+
+
+def test_fetch_errors_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.FetchStaticIpsRequest,
+        dict,
+    ],
+)
+def test_fetch_static_ips_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.FetchStaticIpsResponse(
+            static_ips=["static_ips_value"],
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.FetchStaticIpsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_static_ips(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchStaticIpsPager)
+    assert response.static_ips == ["static_ips_value"]
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_fetch_static_ips_rest_required_fields(
+    request_type=datastream.FetchStaticIpsRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_static_ips._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_static_ips._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream.FetchStaticIpsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream.FetchStaticIpsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_static_ips(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_static_ips_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_static_ips._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_static_ips_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_fetch_static_ips"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_fetch_static_ips"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.FetchStaticIpsRequest.pb(
+            datastream.FetchStaticIpsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream.FetchStaticIpsResponse.to_json(
+            datastream.FetchStaticIpsResponse()
+        )
+
+        request = datastream.FetchStaticIpsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream.FetchStaticIpsResponse()
+
+        client.fetch_static_ips(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_static_ips_rest_bad_request(
+    transport: str = "rest", request_type=datastream.FetchStaticIpsRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_static_ips(request)
+
+
+def test_fetch_static_ips_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.FetchStaticIpsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.FetchStaticIpsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.fetch_static_ips(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*}:fetchStaticIps"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_fetch_static_ips_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_static_ips(
+            datastream.FetchStaticIpsRequest(),
+            name="name_value",
+        )
+
+
+def test_fetch_static_ips_rest_pager(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datastream.FetchStaticIpsResponse(
+                static_ips=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.FetchStaticIpsResponse(
+                static_ips=[],
+                next_page_token="def",
+            ),
+            datastream.FetchStaticIpsResponse(
+                static_ips=[
+                    str(),
+                ],
+                next_page_token="ghi",
+            ),
+            datastream.FetchStaticIpsResponse(
+                static_ips=[
+                    str(),
+                    str(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(datastream.FetchStaticIpsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"name": "projects/sample1/locations/sample2"}
+
+        pager = client.fetch_static_ips(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, str) for i in results)
+
+        pages = list(client.fetch_static_ips(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreatePrivateConnectionRequest,
+        dict,
+    ],
+)
+def test_create_private_connection_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["private_connection"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "state": 1,
+        "error": {
+            "reason": "reason_value",
+            "error_uuid": "error_uuid_value",
+            "message": "message_value",
+            "error_time": {},
+            "details": {},
+        },
+        "vpc_peering_config": {"vpc_name": "vpc_name_value", "subnet": "subnet_value"},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_private_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_private_connection_rest_required_fields(
+    request_type=datastream.CreatePrivateConnectionRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["private_connection_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "privateConnectionId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_private_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "privateConnectionId" in jsonified_request
+    assert (
+        jsonified_request["privateConnectionId"]
+        == request_init["private_connection_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["privateConnectionId"] = "private_connection_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_private_connection._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "private_connection_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "privateConnectionId" in jsonified_request
+    assert jsonified_request["privateConnectionId"] == "private_connection_id_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_private_connection(request)
+
+            expected_params = [
+                (
+                    "privateConnectionId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_private_connection_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_private_connection._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "privateConnectionId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "privateConnectionId",
+                "privateConnection",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_private_connection_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_create_private_connection"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_create_private_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.CreatePrivateConnectionRequest.pb(
+            datastream.CreatePrivateConnectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.CreatePrivateConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_private_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_private_connection_rest_bad_request(
+    transport: str = "rest", request_type=datastream.CreatePrivateConnectionRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["private_connection"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "state": 1,
+        "error": {
+            "reason": "reason_value",
+            "error_uuid": "error_uuid_value",
+            "message": "message_value",
+            "error_time": {},
+            "details": {},
+        },
+        "vpc_peering_config": {"vpc_name": "vpc_name_value", "subnet": "subnet_value"},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_private_connection(request)
+
+
+def test_create_private_connection_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            private_connection=datastream_resources.PrivateConnection(
+                name="name_value"
+            ),
+            private_connection_id="private_connection_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_private_connection(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*}/privateConnections"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_private_connection_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_private_connection(
+            datastream.CreatePrivateConnectionRequest(),
+            parent="parent_value",
+            private_connection=datastream_resources.PrivateConnection(
+                name="name_value"
+            ),
+            private_connection_id="private_connection_id_value",
+        )
+
+
+def test_create_private_connection_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetPrivateConnectionRequest,
+        dict,
+    ],
+)
+def test_get_private_connection_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.PrivateConnection(
+            name="name_value",
+            display_name="display_name_value",
+            state=datastream_resources.PrivateConnection.State.CREATING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.PrivateConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_private_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream_resources.PrivateConnection)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == datastream_resources.PrivateConnection.State.CREATING
+
+
+def test_get_private_connection_rest_required_fields(
+    request_type=datastream.GetPrivateConnectionRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_private_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_private_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream_resources.PrivateConnection()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream_resources.PrivateConnection.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_private_connection(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_private_connection_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_private_connection._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_private_connection_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_get_private_connection"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_get_private_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.GetPrivateConnectionRequest.pb(
+            datastream.GetPrivateConnectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream_resources.PrivateConnection.to_json(
+            datastream_resources.PrivateConnection()
+        )
+
+        request = datastream.GetPrivateConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream_resources.PrivateConnection()
+
+        client.get_private_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_private_connection_rest_bad_request(
+    transport: str = "rest", request_type=datastream.GetPrivateConnectionRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_private_connection(request)
+
+
+def test_get_private_connection_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.PrivateConnection()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateConnections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.PrivateConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_private_connection(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/privateConnections/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_private_connection_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_private_connection(
+            datastream.GetPrivateConnectionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_private_connection_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListPrivateConnectionsRequest,
+        dict,
+    ],
+)
+def test_list_private_connections_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListPrivateConnectionsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_private_connections(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPrivateConnectionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_private_connections_rest_required_fields(
+    request_type=datastream.ListPrivateConnectionsRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_private_connections._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_private_connections._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream.ListPrivateConnectionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_private_connections(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_private_connections_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_private_connections._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_private_connections_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_list_private_connections"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_list_private_connections"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.ListPrivateConnectionsRequest.pb(
+            datastream.ListPrivateConnectionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream.ListPrivateConnectionsResponse.to_json(
+            datastream.ListPrivateConnectionsResponse()
+        )
+
+        request = datastream.ListPrivateConnectionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream.ListPrivateConnectionsResponse()
+
+        client.list_private_connections(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_private_connections_rest_bad_request(
+    transport: str = "rest", request_type=datastream.ListPrivateConnectionsRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_private_connections(request)
+
+
+def test_list_private_connections_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListPrivateConnectionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_private_connections(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*}/privateConnections"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_private_connections_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_private_connections(
+            datastream.ListPrivateConnectionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_private_connections_rest_pager(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datastream.ListPrivateConnectionsResponse(
+                private_connections=[
+                    datastream_resources.PrivateConnection(),
+                    datastream_resources.PrivateConnection(),
+                    datastream_resources.PrivateConnection(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListPrivateConnectionsResponse(
+                private_connections=[],
+                next_page_token="def",
+            ),
+            datastream.ListPrivateConnectionsResponse(
+                private_connections=[
+                    datastream_resources.PrivateConnection(),
+                ],
+                next_page_token="ghi",
+            ),
+            datastream.ListPrivateConnectionsResponse(
+                private_connections=[
+                    datastream_resources.PrivateConnection(),
+                    datastream_resources.PrivateConnection(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            datastream.ListPrivateConnectionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_private_connections(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, datastream_resources.PrivateConnection) for i in results
+        )
+
+        pages = list(client.list_private_connections(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeletePrivateConnectionRequest,
+        dict,
+    ],
+)
+def test_delete_private_connection_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_private_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_private_connection_rest_required_fields(
+    request_type=datastream.DeletePrivateConnectionRequest,
+):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_private_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_private_connection._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "force",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_private_connection(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_private_connection_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_private_connection._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "force",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_private_connection_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_delete_private_connection"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_delete_private_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.DeletePrivateConnectionRequest.pb(
+            datastream.DeletePrivateConnectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.DeletePrivateConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_private_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_private_connection_rest_bad_request(
+    transport: str = "rest", request_type=datastream.DeletePrivateConnectionRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_private_connection(request)
+
+
+def test_delete_private_connection_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateConnections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_private_connection(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/privateConnections/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_private_connection_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_private_connection(
+            datastream.DeletePrivateConnectionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_private_connection_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreateRouteRequest,
+        dict,
+    ],
+)
+def test_create_route_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request_init["route"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "destination_address": "destination_address_value",
+        "destination_port": 1734,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_route(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_route_rest_required_fields(request_type=datastream.CreateRouteRequest):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["route_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "routeId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_route._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "routeId" in jsonified_request
+    assert jsonified_request["routeId"] == request_init["route_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["routeId"] = "route_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_route._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "route_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "routeId" in jsonified_request
+    assert jsonified_request["routeId"] == "route_id_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_route(request)
+
+            expected_params = [
+                (
+                    "routeId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_route_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_route._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "routeId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "routeId",
+                "route",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_route_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_create_route"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_create_route"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.CreateRouteRequest.pb(datastream.CreateRouteRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.CreateRouteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_route(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_route_rest_bad_request(
+    transport: str = "rest", request_type=datastream.CreateRouteRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request_init["route"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "destination_address": "destination_address_value",
+        "destination_port": 1734,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_route(request)
+
+
+def test_create_route_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            route=datastream_resources.Route(name="name_value"),
+            route_id="route_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_route(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*/privateConnections/*}/routes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_route_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_route(
+            datastream.CreateRouteRequest(),
+            parent="parent_value",
+            route=datastream_resources.Route(name="name_value"),
+            route_id="route_id_value",
+        )
+
+
+def test_create_route_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetRouteRequest,
+        dict,
+    ],
+)
+def test_get_route_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3/routes/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.Route(
+            name="name_value",
+            display_name="display_name_value",
+            destination_address="destination_address_value",
+            destination_port=1734,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.Route.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_route(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream_resources.Route)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.destination_address == "destination_address_value"
+    assert response.destination_port == 1734
+
+
+def test_get_route_rest_required_fields(request_type=datastream.GetRouteRequest):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_route._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_route._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream_resources.Route()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream_resources.Route.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_route(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_route_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_route._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_route_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_get_route"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_get_route"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.GetRouteRequest.pb(datastream.GetRouteRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream_resources.Route.to_json(
+            datastream_resources.Route()
+        )
+
+        request = datastream.GetRouteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream_resources.Route()
+
+        client.get_route(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_route_rest_bad_request(
+    transport: str = "rest", request_type=datastream.GetRouteRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3/routes/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_route(request)
+
+
+def test_get_route_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream_resources.Route()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateConnections/sample3/routes/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream_resources.Route.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_route(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/privateConnections/*/routes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_route_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_route(
+            datastream.GetRouteRequest(),
+            name="name_value",
+        )
+
+
+def test_get_route_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListRoutesRequest,
+        dict,
+    ],
+)
+def test_list_routes_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListRoutesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_routes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRoutesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_routes_rest_required_fields(request_type=datastream.ListRoutesRequest):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_routes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_routes._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datastream.ListRoutesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = datastream.ListRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_routes(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_routes_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_routes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_routes_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_list_routes"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_list_routes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.ListRoutesRequest.pb(datastream.ListRoutesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = datastream.ListRoutesResponse.to_json(
+            datastream.ListRoutesResponse()
+        )
+
+        request = datastream.ListRoutesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastream.ListRoutesResponse()
+
+        client.list_routes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_routes_rest_bad_request(
+    transport: str = "rest", request_type=datastream.ListRoutesRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_routes(request)
+
+
+def test_list_routes_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastream.ListRoutesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = datastream.ListRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_routes(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{parent=projects/*/locations/*/privateConnections/*}/routes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_routes_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_routes(
+            datastream.ListRoutesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_routes_rest_pager(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datastream.ListRoutesResponse(
+                routes=[
+                    datastream_resources.Route(),
+                    datastream_resources.Route(),
+                    datastream_resources.Route(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListRoutesResponse(
+                routes=[],
+                next_page_token="def",
+            ),
+            datastream.ListRoutesResponse(
+                routes=[
+                    datastream_resources.Route(),
+                ],
+                next_page_token="ghi",
+            ),
+            datastream.ListRoutesResponse(
+                routes=[
+                    datastream_resources.Route(),
+                    datastream_resources.Route(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(datastream.ListRoutesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
+        }
+
+        pager = client.list_routes(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, datastream_resources.Route) for i in results)
+
+        pages = list(client.list_routes(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeleteRouteRequest,
+        dict,
+    ],
+)
+def test_delete_route_rest(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3/routes/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_route(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_route_rest_required_fields(request_type=datastream.DeleteRouteRequest):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_route._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_route._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_route(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_route_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_route._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_route_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_delete_route"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_delete_route"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.DeleteRouteRequest.pb(datastream.DeleteRouteRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = datastream.DeleteRouteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_route(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_route_rest_bad_request(
+    transport: str = "rest", request_type=datastream.DeleteRouteRequest
+):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateConnections/sample3/routes/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_route(request)
+
+
+def test_delete_route_rest_flattened():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateConnections/sample3/routes/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_route(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha1/{name=projects/*/locations/*/privateConnections/*/routes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_route_rest_flattened_error(transport: str = "rest"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_route(
+            datastream.DeleteRouteRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_route_rest_error():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DatastreamGrpcTransport(
@@ -6691,6 +13355,7 @@ def test_transport_get_channel():
     [
         transports.DatastreamGrpcTransport,
         transports.DatastreamGrpcAsyncIOTransport,
+        transports.DatastreamRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -6705,6 +13370,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -6859,6 +13525,7 @@ def test_datastream_transport_auth_adc(transport_class):
     [
         transports.DatastreamGrpcTransport,
         transports.DatastreamGrpcAsyncIOTransport,
+        transports.DatastreamRestTransport,
     ],
 )
 def test_datastream_transport_auth_gdch_credentials(transport_class):
@@ -6953,11 +13620,40 @@ def test_datastream_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_datastream_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.DatastreamRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_datastream_rest_lro_client():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_datastream_host_no_port(transport_name):
@@ -6968,7 +13664,11 @@ def test_datastream_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("datastream.googleapis.com:443")
+    assert client.transport._host == (
+        "datastream.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://datastream.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -6976,6 +13676,7 @@ def test_datastream_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_datastream_host_with_port(transport_name):
@@ -6986,7 +13687,93 @@ def test_datastream_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("datastream.googleapis.com:8000")
+    assert client.transport._host == (
+        "datastream.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://datastream.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_datastream_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = DatastreamClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = DatastreamClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_connection_profiles._session
+    session2 = client2.transport.list_connection_profiles._session
+    assert session1 != session2
+    session1 = client1.transport.get_connection_profile._session
+    session2 = client2.transport.get_connection_profile._session
+    assert session1 != session2
+    session1 = client1.transport.create_connection_profile._session
+    session2 = client2.transport.create_connection_profile._session
+    assert session1 != session2
+    session1 = client1.transport.update_connection_profile._session
+    session2 = client2.transport.update_connection_profile._session
+    assert session1 != session2
+    session1 = client1.transport.delete_connection_profile._session
+    session2 = client2.transport.delete_connection_profile._session
+    assert session1 != session2
+    session1 = client1.transport.discover_connection_profile._session
+    session2 = client2.transport.discover_connection_profile._session
+    assert session1 != session2
+    session1 = client1.transport.list_streams._session
+    session2 = client2.transport.list_streams._session
+    assert session1 != session2
+    session1 = client1.transport.get_stream._session
+    session2 = client2.transport.get_stream._session
+    assert session1 != session2
+    session1 = client1.transport.create_stream._session
+    session2 = client2.transport.create_stream._session
+    assert session1 != session2
+    session1 = client1.transport.update_stream._session
+    session2 = client2.transport.update_stream._session
+    assert session1 != session2
+    session1 = client1.transport.delete_stream._session
+    session2 = client2.transport.delete_stream._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_errors._session
+    session2 = client2.transport.fetch_errors._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_static_ips._session
+    session2 = client2.transport.fetch_static_ips._session
+    assert session1 != session2
+    session1 = client1.transport.create_private_connection._session
+    session2 = client2.transport.create_private_connection._session
+    assert session1 != session2
+    session1 = client1.transport.get_private_connection._session
+    session2 = client2.transport.get_private_connection._session
+    assert session1 != session2
+    session1 = client1.transport.list_private_connections._session
+    session2 = client2.transport.list_private_connections._session
+    assert session1 != session2
+    session1 = client1.transport.delete_private_connection._session
+    session2 = client2.transport.delete_private_connection._session
+    assert session1 != session2
+    session1 = client1.transport.create_route._session
+    session2 = client2.transport.create_route._session
+    assert session1 != session2
+    session1 = client1.transport.get_route._session
+    session2 = client2.transport.get_route._session
+    assert session1 != session2
+    session1 = client1.transport.list_routes._session
+    session2 = client2.transport.list_routes._session
+    assert session1 != session2
+    session1 = client1.transport.delete_route._session
+    session2 = client2.transport.delete_route._session
+    assert session1 != session2
 
 
 def test_datastream_grpc_transport_channel():
@@ -7394,6 +14181,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -7411,6 +14199,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
