@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.11.1...v2.12.0) (2023-02-16)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#257](https://github.com/googleapis/python-monitoring-dashboards/issues/257)) ([bab8b4c](https://github.com/googleapis/python-monitoring-dashboards/commit/bab8b4cdfd71d9ee7c9181d054c287f5d051e2a7))
+
 ## [2.11.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.11.0...v2.11.1) (2023-01-20)
 
 
