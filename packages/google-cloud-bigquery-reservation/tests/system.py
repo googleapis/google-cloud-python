@@ -26,8 +26,9 @@ def project_id():
     return os.environ["PROJECT_ID"]
 
 
-def test_list_reservations(project_id):
-    client = bigquery_reservation.ReservationServiceClient()
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_list_reservations(project_id: str, transport: str):
+    client = bigquery_reservation.ReservationServiceClient(transport=transport)
 
     parent = f"projects/{project_id}/locations/US"
     reservations = list(client.list_reservations(parent=parent))

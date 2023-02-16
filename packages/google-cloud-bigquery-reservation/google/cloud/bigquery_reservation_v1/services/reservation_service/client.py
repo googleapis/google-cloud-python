@@ -58,6 +58,7 @@ from google.cloud.bigquery_reservation_v1.types import reservation
 from .transports.base import DEFAULT_CLIENT_INFO, ReservationServiceTransport
 from .transports.grpc import ReservationServiceGrpcTransport
 from .transports.grpc_asyncio import ReservationServiceGrpcAsyncIOTransport
+from .transports.rest import ReservationServiceRestTransport
 
 
 class ReservationServiceClientMeta(type):
@@ -73,6 +74,7 @@ class ReservationServiceClientMeta(type):
     )  # type: Dict[str, Type[ReservationServiceTransport]]
     _transport_registry["grpc"] = ReservationServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ReservationServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ReservationServiceRestTransport
 
     def get_transport_class(
         cls,

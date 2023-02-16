@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,6 +35,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
@@ -40,6 +43,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.bigquery_reservation_v1.services.reservation_service import (
     ReservationServiceAsyncClient,
@@ -101,6 +106,7 @@ def test__get_default_mtls_endpoint():
     [
         (ReservationServiceClient, "grpc"),
         (ReservationServiceAsyncClient, "grpc_asyncio"),
+        (ReservationServiceClient, "rest"),
     ],
 )
 def test_reservation_service_client_from_service_account_info(
@@ -116,7 +122,11 @@ def test_reservation_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("bigqueryreservation.googleapis.com:443")
+        assert client.transport._host == (
+            "bigqueryreservation.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://bigqueryreservation.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -124,6 +134,7 @@ def test_reservation_service_client_from_service_account_info(
     [
         (transports.ReservationServiceGrpcTransport, "grpc"),
         (transports.ReservationServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ReservationServiceRestTransport, "rest"),
     ],
 )
 def test_reservation_service_client_service_account_always_use_jwt(
@@ -149,6 +160,7 @@ def test_reservation_service_client_service_account_always_use_jwt(
     [
         (ReservationServiceClient, "grpc"),
         (ReservationServiceAsyncClient, "grpc_asyncio"),
+        (ReservationServiceClient, "rest"),
     ],
 )
 def test_reservation_service_client_from_service_account_file(
@@ -171,13 +183,18 @@ def test_reservation_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("bigqueryreservation.googleapis.com:443")
+        assert client.transport._host == (
+            "bigqueryreservation.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://bigqueryreservation.googleapis.com"
+        )
 
 
 def test_reservation_service_client_get_transport_class():
     transport = ReservationServiceClient.get_transport_class()
     available_transports = [
         transports.ReservationServiceGrpcTransport,
+        transports.ReservationServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -194,6 +211,7 @@ def test_reservation_service_client_get_transport_class():
             transports.ReservationServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ReservationServiceClient, transports.ReservationServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -347,6 +365,18 @@ def test_reservation_service_client_client_options(
             ReservationServiceAsyncClient,
             transports.ReservationServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ReservationServiceClient,
+            transports.ReservationServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ReservationServiceClient,
+            transports.ReservationServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -548,6 +578,7 @@ def test_reservation_service_client_get_mtls_endpoint_and_cert_source(client_cla
             transports.ReservationServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ReservationServiceClient, transports.ReservationServiceRestTransport, "rest"),
     ],
 )
 def test_reservation_service_client_client_options_scopes(
@@ -587,6 +618,12 @@ def test_reservation_service_client_client_options_scopes(
             transports.ReservationServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ReservationServiceClient,
+            transports.ReservationServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -7069,6 +7106,5910 @@ async def test_update_bi_reservation_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcbr_reservation.CreateReservationRequest,
+        dict,
+    ],
+)
+def test_create_reservation_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["reservation"] = {
+        "name": "name_value",
+        "slot_capacity": 1391,
+        "ignore_idle_slots": True,
+        "concurrency": 1195,
+        "creation_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcbr_reservation.Reservation(
+            name="name_value",
+            slot_capacity=1391,
+            ignore_idle_slots=True,
+            concurrency=1195,
+            multi_region_auxiliary=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_reservation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcbr_reservation.Reservation)
+    assert response.name == "name_value"
+    assert response.slot_capacity == 1391
+    assert response.ignore_idle_slots is True
+    assert response.concurrency == 1195
+    assert response.multi_region_auxiliary is True
+
+
+def test_create_reservation_rest_required_fields(
+    request_type=gcbr_reservation.CreateReservationRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_reservation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_reservation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("reservation_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcbr_reservation.Reservation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcbr_reservation.Reservation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_reservation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_reservation_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_reservation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("reservationId",)) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_reservation_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_create_reservation"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_create_reservation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcbr_reservation.CreateReservationRequest.pb(
+            gcbr_reservation.CreateReservationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcbr_reservation.Reservation.to_json(
+            gcbr_reservation.Reservation()
+        )
+
+        request = gcbr_reservation.CreateReservationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcbr_reservation.Reservation()
+
+        client.create_reservation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_reservation_rest_bad_request(
+    transport: str = "rest", request_type=gcbr_reservation.CreateReservationRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["reservation"] = {
+        "name": "name_value",
+        "slot_capacity": 1391,
+        "ignore_idle_slots": True,
+        "concurrency": 1195,
+        "creation_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_reservation(request)
+
+
+def test_create_reservation_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcbr_reservation.Reservation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            reservation=gcbr_reservation.Reservation(name="name_value"),
+            reservation_id="reservation_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_reservation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/reservations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_reservation_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_reservation(
+            gcbr_reservation.CreateReservationRequest(),
+            parent="parent_value",
+            reservation=gcbr_reservation.Reservation(name="name_value"),
+            reservation_id="reservation_id_value",
+        )
+
+
+def test_create_reservation_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.ListReservationsRequest,
+        dict,
+    ],
+)
+def test_list_reservations_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.ListReservationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.ListReservationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_reservations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReservationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_reservations_rest_required_fields(
+    request_type=reservation.ListReservationsRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_reservations._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_reservations._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.ListReservationsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.ListReservationsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_reservations(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_reservations_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_reservations._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_reservations_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_list_reservations"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_list_reservations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.ListReservationsRequest.pb(
+            reservation.ListReservationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.ListReservationsResponse.to_json(
+            reservation.ListReservationsResponse()
+        )
+
+        request = reservation.ListReservationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.ListReservationsResponse()
+
+        client.list_reservations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_reservations_rest_bad_request(
+    transport: str = "rest", request_type=reservation.ListReservationsRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_reservations(request)
+
+
+def test_list_reservations_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.ListReservationsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.ListReservationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_reservations(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/reservations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_reservations_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_reservations(
+            reservation.ListReservationsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_reservations_rest_pager(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            reservation.ListReservationsResponse(
+                reservations=[
+                    reservation.Reservation(),
+                    reservation.Reservation(),
+                    reservation.Reservation(),
+                ],
+                next_page_token="abc",
+            ),
+            reservation.ListReservationsResponse(
+                reservations=[],
+                next_page_token="def",
+            ),
+            reservation.ListReservationsResponse(
+                reservations=[
+                    reservation.Reservation(),
+                ],
+                next_page_token="ghi",
+            ),
+            reservation.ListReservationsResponse(
+                reservations=[
+                    reservation.Reservation(),
+                    reservation.Reservation(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            reservation.ListReservationsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_reservations(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, reservation.Reservation) for i in results)
+
+        pages = list(client.list_reservations(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.GetReservationRequest,
+        dict,
+    ],
+)
+def test_get_reservation_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/reservations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Reservation(
+            name="name_value",
+            slot_capacity=1391,
+            ignore_idle_slots=True,
+            concurrency=1195,
+            multi_region_auxiliary=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_reservation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.Reservation)
+    assert response.name == "name_value"
+    assert response.slot_capacity == 1391
+    assert response.ignore_idle_slots is True
+    assert response.concurrency == 1195
+    assert response.multi_region_auxiliary is True
+
+
+def test_get_reservation_rest_required_fields(
+    request_type=reservation.GetReservationRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_reservation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_reservation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.Reservation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.Reservation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_reservation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_reservation_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_reservation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_reservation_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_get_reservation"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_get_reservation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.GetReservationRequest.pb(
+            reservation.GetReservationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.Reservation.to_json(
+            reservation.Reservation()
+        )
+
+        request = reservation.GetReservationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.Reservation()
+
+        client.get_reservation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_reservation_rest_bad_request(
+    transport: str = "rest", request_type=reservation.GetReservationRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/reservations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_reservation(request)
+
+
+def test_get_reservation_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Reservation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/reservations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_reservation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/reservations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_reservation_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_reservation(
+            reservation.GetReservationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_reservation_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.DeleteReservationRequest,
+        dict,
+    ],
+)
+def test_delete_reservation_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/reservations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_reservation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_reservation_rest_required_fields(
+    request_type=reservation.DeleteReservationRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_reservation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_reservation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_reservation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_reservation_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_reservation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_reservation_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_delete_reservation"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = reservation.DeleteReservationRequest.pb(
+            reservation.DeleteReservationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = reservation.DeleteReservationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_reservation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_reservation_rest_bad_request(
+    transport: str = "rest", request_type=reservation.DeleteReservationRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/reservations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_reservation(request)
+
+
+def test_delete_reservation_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/reservations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_reservation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/reservations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_reservation_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_reservation(
+            reservation.DeleteReservationRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_reservation_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcbr_reservation.UpdateReservationRequest,
+        dict,
+    ],
+)
+def test_update_reservation_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "reservation": {
+            "name": "projects/sample1/locations/sample2/reservations/sample3"
+        }
+    }
+    request_init["reservation"] = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3",
+        "slot_capacity": 1391,
+        "ignore_idle_slots": True,
+        "concurrency": 1195,
+        "creation_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcbr_reservation.Reservation(
+            name="name_value",
+            slot_capacity=1391,
+            ignore_idle_slots=True,
+            concurrency=1195,
+            multi_region_auxiliary=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_reservation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcbr_reservation.Reservation)
+    assert response.name == "name_value"
+    assert response.slot_capacity == 1391
+    assert response.ignore_idle_slots is True
+    assert response.concurrency == 1195
+    assert response.multi_region_auxiliary is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_reservation_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_update_reservation"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_update_reservation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcbr_reservation.UpdateReservationRequest.pb(
+            gcbr_reservation.UpdateReservationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcbr_reservation.Reservation.to_json(
+            gcbr_reservation.Reservation()
+        )
+
+        request = gcbr_reservation.UpdateReservationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcbr_reservation.Reservation()
+
+        client.update_reservation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_reservation_rest_bad_request(
+    transport: str = "rest", request_type=gcbr_reservation.UpdateReservationRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "reservation": {
+            "name": "projects/sample1/locations/sample2/reservations/sample3"
+        }
+    }
+    request_init["reservation"] = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3",
+        "slot_capacity": 1391,
+        "ignore_idle_slots": True,
+        "concurrency": 1195,
+        "creation_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_reservation(request)
+
+
+def test_update_reservation_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcbr_reservation.Reservation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "reservation": {
+                "name": "projects/sample1/locations/sample2/reservations/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            reservation=gcbr_reservation.Reservation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_reservation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{reservation.name=projects/*/locations/*/reservations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_reservation_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_reservation(
+            gcbr_reservation.UpdateReservationRequest(),
+            reservation=gcbr_reservation.Reservation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_reservation_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.CreateCapacityCommitmentRequest,
+        dict,
+    ],
+)
+def test_create_capacity_commitment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["capacity_commitment"] = {
+        "name": "name_value",
+        "slot_count": 1098,
+        "plan": 3,
+        "state": 1,
+        "commitment_start_time": {"seconds": 751, "nanos": 543},
+        "commitment_end_time": {},
+        "failure_status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "renewal_plan": 3,
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment(
+            name="name_value",
+            slot_count=1098,
+            plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            state=reservation.CapacityCommitment.State.PENDING,
+            renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            multi_region_auxiliary=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_capacity_commitment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.CapacityCommitment)
+    assert response.name == "name_value"
+    assert response.slot_count == 1098
+    assert response.plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.state == reservation.CapacityCommitment.State.PENDING
+    assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.multi_region_auxiliary is True
+
+
+def test_create_capacity_commitment_rest_required_fields(
+    request_type=reservation.CreateCapacityCommitmentRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_capacity_commitment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_capacity_commitment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "capacity_commitment_id",
+            "enforce_single_admin_project_per_org",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.CapacityCommitment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.CapacityCommitment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_capacity_commitment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_capacity_commitment_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_capacity_commitment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "capacityCommitmentId",
+                "enforceSingleAdminProjectPerOrg",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_capacity_commitment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_create_capacity_commitment"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_create_capacity_commitment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.CreateCapacityCommitmentRequest.pb(
+            reservation.CreateCapacityCommitmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.CapacityCommitment.to_json(
+            reservation.CapacityCommitment()
+        )
+
+        request = reservation.CreateCapacityCommitmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.CapacityCommitment()
+
+        client.create_capacity_commitment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_capacity_commitment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.CreateCapacityCommitmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["capacity_commitment"] = {
+        "name": "name_value",
+        "slot_count": 1098,
+        "plan": 3,
+        "state": 1,
+        "commitment_start_time": {"seconds": 751, "nanos": 543},
+        "commitment_end_time": {},
+        "failure_status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "renewal_plan": 3,
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_capacity_commitment(request)
+
+
+def test_create_capacity_commitment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            capacity_commitment=reservation.CapacityCommitment(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_capacity_commitment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/capacityCommitments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_capacity_commitment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_capacity_commitment(
+            reservation.CreateCapacityCommitmentRequest(),
+            parent="parent_value",
+            capacity_commitment=reservation.CapacityCommitment(name="name_value"),
+        )
+
+
+def test_create_capacity_commitment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.ListCapacityCommitmentsRequest,
+        dict,
+    ],
+)
+def test_list_capacity_commitments_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.ListCapacityCommitmentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.ListCapacityCommitmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_capacity_commitments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCapacityCommitmentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_capacity_commitments_rest_required_fields(
+    request_type=reservation.ListCapacityCommitmentsRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_capacity_commitments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_capacity_commitments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.ListCapacityCommitmentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.ListCapacityCommitmentsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_capacity_commitments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_capacity_commitments_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_capacity_commitments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_capacity_commitments_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_list_capacity_commitments"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_list_capacity_commitments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.ListCapacityCommitmentsRequest.pb(
+            reservation.ListCapacityCommitmentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.ListCapacityCommitmentsResponse.to_json(
+            reservation.ListCapacityCommitmentsResponse()
+        )
+
+        request = reservation.ListCapacityCommitmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.ListCapacityCommitmentsResponse()
+
+        client.list_capacity_commitments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_capacity_commitments_rest_bad_request(
+    transport: str = "rest", request_type=reservation.ListCapacityCommitmentsRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_capacity_commitments(request)
+
+
+def test_list_capacity_commitments_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.ListCapacityCommitmentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.ListCapacityCommitmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_capacity_commitments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/capacityCommitments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_capacity_commitments_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_capacity_commitments(
+            reservation.ListCapacityCommitmentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_capacity_commitments_rest_pager(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            reservation.ListCapacityCommitmentsResponse(
+                capacity_commitments=[
+                    reservation.CapacityCommitment(),
+                    reservation.CapacityCommitment(),
+                    reservation.CapacityCommitment(),
+                ],
+                next_page_token="abc",
+            ),
+            reservation.ListCapacityCommitmentsResponse(
+                capacity_commitments=[],
+                next_page_token="def",
+            ),
+            reservation.ListCapacityCommitmentsResponse(
+                capacity_commitments=[
+                    reservation.CapacityCommitment(),
+                ],
+                next_page_token="ghi",
+            ),
+            reservation.ListCapacityCommitmentsResponse(
+                capacity_commitments=[
+                    reservation.CapacityCommitment(),
+                    reservation.CapacityCommitment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            reservation.ListCapacityCommitmentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_capacity_commitments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, reservation.CapacityCommitment) for i in results)
+
+        pages = list(client.list_capacity_commitments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.GetCapacityCommitmentRequest,
+        dict,
+    ],
+)
+def test_get_capacity_commitment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment(
+            name="name_value",
+            slot_count=1098,
+            plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            state=reservation.CapacityCommitment.State.PENDING,
+            renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            multi_region_auxiliary=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_capacity_commitment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.CapacityCommitment)
+    assert response.name == "name_value"
+    assert response.slot_count == 1098
+    assert response.plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.state == reservation.CapacityCommitment.State.PENDING
+    assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.multi_region_auxiliary is True
+
+
+def test_get_capacity_commitment_rest_required_fields(
+    request_type=reservation.GetCapacityCommitmentRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_capacity_commitment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_capacity_commitment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.CapacityCommitment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.CapacityCommitment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_capacity_commitment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_capacity_commitment_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_capacity_commitment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_capacity_commitment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_get_capacity_commitment"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_get_capacity_commitment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.GetCapacityCommitmentRequest.pb(
+            reservation.GetCapacityCommitmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.CapacityCommitment.to_json(
+            reservation.CapacityCommitment()
+        )
+
+        request = reservation.GetCapacityCommitmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.CapacityCommitment()
+
+        client.get_capacity_commitment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_capacity_commitment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.GetCapacityCommitmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_capacity_commitment(request)
+
+
+def test_get_capacity_commitment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_capacity_commitment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/capacityCommitments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_capacity_commitment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_capacity_commitment(
+            reservation.GetCapacityCommitmentRequest(),
+            name="name_value",
+        )
+
+
+def test_get_capacity_commitment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.DeleteCapacityCommitmentRequest,
+        dict,
+    ],
+)
+def test_delete_capacity_commitment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_capacity_commitment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_capacity_commitment_rest_required_fields(
+    request_type=reservation.DeleteCapacityCommitmentRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_capacity_commitment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_capacity_commitment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_capacity_commitment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_capacity_commitment_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_capacity_commitment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_capacity_commitment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_delete_capacity_commitment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = reservation.DeleteCapacityCommitmentRequest.pb(
+            reservation.DeleteCapacityCommitmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = reservation.DeleteCapacityCommitmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_capacity_commitment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_capacity_commitment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.DeleteCapacityCommitmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_capacity_commitment(request)
+
+
+def test_delete_capacity_commitment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_capacity_commitment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/capacityCommitments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_capacity_commitment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_capacity_commitment(
+            reservation.DeleteCapacityCommitmentRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_capacity_commitment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.UpdateCapacityCommitmentRequest,
+        dict,
+    ],
+)
+def test_update_capacity_commitment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "capacity_commitment": {
+            "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+        }
+    }
+    request_init["capacity_commitment"] = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3",
+        "slot_count": 1098,
+        "plan": 3,
+        "state": 1,
+        "commitment_start_time": {"seconds": 751, "nanos": 543},
+        "commitment_end_time": {},
+        "failure_status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "renewal_plan": 3,
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment(
+            name="name_value",
+            slot_count=1098,
+            plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            state=reservation.CapacityCommitment.State.PENDING,
+            renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            multi_region_auxiliary=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_capacity_commitment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.CapacityCommitment)
+    assert response.name == "name_value"
+    assert response.slot_count == 1098
+    assert response.plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.state == reservation.CapacityCommitment.State.PENDING
+    assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.multi_region_auxiliary is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_capacity_commitment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_update_capacity_commitment"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_update_capacity_commitment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.UpdateCapacityCommitmentRequest.pb(
+            reservation.UpdateCapacityCommitmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.CapacityCommitment.to_json(
+            reservation.CapacityCommitment()
+        )
+
+        request = reservation.UpdateCapacityCommitmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.CapacityCommitment()
+
+        client.update_capacity_commitment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_capacity_commitment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.UpdateCapacityCommitmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "capacity_commitment": {
+            "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+        }
+    }
+    request_init["capacity_commitment"] = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3",
+        "slot_count": 1098,
+        "plan": 3,
+        "state": 1,
+        "commitment_start_time": {"seconds": 751, "nanos": 543},
+        "commitment_end_time": {},
+        "failure_status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "renewal_plan": 3,
+        "multi_region_auxiliary": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_capacity_commitment(request)
+
+
+def test_update_capacity_commitment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "capacity_commitment": {
+                "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            capacity_commitment=reservation.CapacityCommitment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_capacity_commitment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{capacity_commitment.name=projects/*/locations/*/capacityCommitments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_capacity_commitment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_capacity_commitment(
+            reservation.UpdateCapacityCommitmentRequest(),
+            capacity_commitment=reservation.CapacityCommitment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_capacity_commitment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.SplitCapacityCommitmentRequest,
+        dict,
+    ],
+)
+def test_split_capacity_commitment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.SplitCapacityCommitmentResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.SplitCapacityCommitmentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.split_capacity_commitment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.SplitCapacityCommitmentResponse)
+
+
+def test_split_capacity_commitment_rest_required_fields(
+    request_type=reservation.SplitCapacityCommitmentRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).split_capacity_commitment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).split_capacity_commitment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.SplitCapacityCommitmentResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.SplitCapacityCommitmentResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.split_capacity_commitment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_split_capacity_commitment_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.split_capacity_commitment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_split_capacity_commitment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_split_capacity_commitment"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_split_capacity_commitment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.SplitCapacityCommitmentRequest.pb(
+            reservation.SplitCapacityCommitmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.SplitCapacityCommitmentResponse.to_json(
+            reservation.SplitCapacityCommitmentResponse()
+        )
+
+        request = reservation.SplitCapacityCommitmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.SplitCapacityCommitmentResponse()
+
+        client.split_capacity_commitment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_split_capacity_commitment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.SplitCapacityCommitmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.split_capacity_commitment(request)
+
+
+def test_split_capacity_commitment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.SplitCapacityCommitmentResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            slot_count=1098,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.SplitCapacityCommitmentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.split_capacity_commitment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/capacityCommitments/*}:split"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_split_capacity_commitment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.split_capacity_commitment(
+            reservation.SplitCapacityCommitmentRequest(),
+            name="name_value",
+            slot_count=1098,
+        )
+
+
+def test_split_capacity_commitment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.MergeCapacityCommitmentsRequest,
+        dict,
+    ],
+)
+def test_merge_capacity_commitments_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment(
+            name="name_value",
+            slot_count=1098,
+            plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            state=reservation.CapacityCommitment.State.PENDING,
+            renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+            multi_region_auxiliary=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.merge_capacity_commitments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.CapacityCommitment)
+    assert response.name == "name_value"
+    assert response.slot_count == 1098
+    assert response.plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.state == reservation.CapacityCommitment.State.PENDING
+    assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
+    assert response.multi_region_auxiliary is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_merge_capacity_commitments_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_merge_capacity_commitments"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_merge_capacity_commitments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.MergeCapacityCommitmentsRequest.pb(
+            reservation.MergeCapacityCommitmentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.CapacityCommitment.to_json(
+            reservation.CapacityCommitment()
+        )
+
+        request = reservation.MergeCapacityCommitmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.CapacityCommitment()
+
+        client.merge_capacity_commitments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_merge_capacity_commitments_rest_bad_request(
+    transport: str = "rest", request_type=reservation.MergeCapacityCommitmentsRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.merge_capacity_commitments(request)
+
+
+def test_merge_capacity_commitments_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.CapacityCommitment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            capacity_commitment_ids=["capacity_commitment_ids_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.merge_capacity_commitments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/capacityCommitments:merge"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_merge_capacity_commitments_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.merge_capacity_commitments(
+            reservation.MergeCapacityCommitmentsRequest(),
+            parent="parent_value",
+            capacity_commitment_ids=["capacity_commitment_ids_value"],
+        )
+
+
+def test_merge_capacity_commitments_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.CreateAssignmentRequest,
+        dict,
+    ],
+)
+def test_create_assignment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/reservations/sample3"}
+    request_init["assignment"] = {
+        "name": "name_value",
+        "assignee": "assignee_value",
+        "job_type": 1,
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Assignment(
+            name="name_value",
+            assignee="assignee_value",
+            job_type=reservation.Assignment.JobType.PIPELINE,
+            state=reservation.Assignment.State.PENDING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_assignment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.Assignment)
+    assert response.name == "name_value"
+    assert response.assignee == "assignee_value"
+    assert response.job_type == reservation.Assignment.JobType.PIPELINE
+    assert response.state == reservation.Assignment.State.PENDING
+
+
+def test_create_assignment_rest_required_fields(
+    request_type=reservation.CreateAssignmentRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_assignment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("assignment_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.Assignment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.Assignment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_assignment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_assignment_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_assignment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("assignmentId",)) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_assignment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_create_assignment"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_create_assignment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.CreateAssignmentRequest.pb(
+            reservation.CreateAssignmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.Assignment.to_json(
+            reservation.Assignment()
+        )
+
+        request = reservation.CreateAssignmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.Assignment()
+
+        client.create_assignment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_assignment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.CreateAssignmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/reservations/sample3"}
+    request_init["assignment"] = {
+        "name": "name_value",
+        "assignee": "assignee_value",
+        "job_type": 1,
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_assignment(request)
+
+
+def test_create_assignment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Assignment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/reservations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            assignment=reservation.Assignment(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/reservations/*}/assignments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_assignment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_assignment(
+            reservation.CreateAssignmentRequest(),
+            parent="parent_value",
+            assignment=reservation.Assignment(name="name_value"),
+        )
+
+
+def test_create_assignment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.ListAssignmentsRequest,
+        dict,
+    ],
+)
+def test_list_assignments_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/reservations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.ListAssignmentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.ListAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_assignments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAssignmentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_assignments_rest_required_fields(
+    request_type=reservation.ListAssignmentsRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_assignments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_assignments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.ListAssignmentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.ListAssignmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_assignments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_assignments_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_assignments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_assignments_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_list_assignments"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_list_assignments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.ListAssignmentsRequest.pb(
+            reservation.ListAssignmentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.ListAssignmentsResponse.to_json(
+            reservation.ListAssignmentsResponse()
+        )
+
+        request = reservation.ListAssignmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.ListAssignmentsResponse()
+
+        client.list_assignments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_assignments_rest_bad_request(
+    transport: str = "rest", request_type=reservation.ListAssignmentsRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/reservations/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_assignments(request)
+
+
+def test_list_assignments_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.ListAssignmentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/reservations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.ListAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_assignments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/reservations/*}/assignments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_assignments_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_assignments(
+            reservation.ListAssignmentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_assignments_rest_pager(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            reservation.ListAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                ],
+                next_page_token="abc",
+            ),
+            reservation.ListAssignmentsResponse(
+                assignments=[],
+                next_page_token="def",
+            ),
+            reservation.ListAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                ],
+                next_page_token="ghi",
+            ),
+            reservation.ListAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            reservation.ListAssignmentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/reservations/sample3"
+        }
+
+        pager = client.list_assignments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, reservation.Assignment) for i in results)
+
+        pages = list(client.list_assignments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.DeleteAssignmentRequest,
+        dict,
+    ],
+)
+def test_delete_assignment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_assignment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_assignment_rest_required_fields(
+    request_type=reservation.DeleteAssignmentRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_assignment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_assignment_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_assignment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_assignment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_delete_assignment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = reservation.DeleteAssignmentRequest.pb(
+            reservation.DeleteAssignmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = reservation.DeleteAssignmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_assignment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_assignment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.DeleteAssignmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_assignment(request)
+
+
+def test_delete_assignment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/reservations/*/assignments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_assignment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_assignment(
+            reservation.DeleteAssignmentRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_assignment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.SearchAssignmentsRequest,
+        dict,
+    ],
+)
+def test_search_assignments_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.SearchAssignmentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.SearchAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_assignments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchAssignmentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_search_assignments_rest_required_fields(
+    request_type=reservation.SearchAssignmentsRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_assignments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_assignments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+            "query",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.SearchAssignmentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.SearchAssignmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_assignments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_assignments_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_assignments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+                "query",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_assignments_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_search_assignments"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_search_assignments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.SearchAssignmentsRequest.pb(
+            reservation.SearchAssignmentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.SearchAssignmentsResponse.to_json(
+            reservation.SearchAssignmentsResponse()
+        )
+
+        request = reservation.SearchAssignmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.SearchAssignmentsResponse()
+
+        client.search_assignments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_assignments_rest_bad_request(
+    transport: str = "rest", request_type=reservation.SearchAssignmentsRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_assignments(request)
+
+
+def test_search_assignments_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.SearchAssignmentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            query="query_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.SearchAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.search_assignments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}:searchAssignments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_search_assignments_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search_assignments(
+            reservation.SearchAssignmentsRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+def test_search_assignments_rest_pager(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            reservation.SearchAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                ],
+                next_page_token="abc",
+            ),
+            reservation.SearchAssignmentsResponse(
+                assignments=[],
+                next_page_token="def",
+            ),
+            reservation.SearchAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                ],
+                next_page_token="ghi",
+            ),
+            reservation.SearchAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            reservation.SearchAssignmentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.search_assignments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, reservation.Assignment) for i in results)
+
+        pages = list(client.search_assignments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.SearchAllAssignmentsRequest,
+        dict,
+    ],
+)
+def test_search_all_assignments_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.SearchAllAssignmentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_all_assignments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchAllAssignmentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_search_all_assignments_rest_required_fields(
+    request_type=reservation.SearchAllAssignmentsRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_all_assignments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_all_assignments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+            "query",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.SearchAllAssignmentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_all_assignments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_all_assignments_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_all_assignments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+                "query",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_all_assignments_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_search_all_assignments"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_search_all_assignments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.SearchAllAssignmentsRequest.pb(
+            reservation.SearchAllAssignmentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.SearchAllAssignmentsResponse.to_json(
+            reservation.SearchAllAssignmentsResponse()
+        )
+
+        request = reservation.SearchAllAssignmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.SearchAllAssignmentsResponse()
+
+        client.search_all_assignments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_all_assignments_rest_bad_request(
+    transport: str = "rest", request_type=reservation.SearchAllAssignmentsRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_all_assignments(request)
+
+
+def test_search_all_assignments_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.SearchAllAssignmentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            query="query_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.search_all_assignments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}:searchAllAssignments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_search_all_assignments_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search_all_assignments(
+            reservation.SearchAllAssignmentsRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+def test_search_all_assignments_rest_pager(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            reservation.SearchAllAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                ],
+                next_page_token="abc",
+            ),
+            reservation.SearchAllAssignmentsResponse(
+                assignments=[],
+                next_page_token="def",
+            ),
+            reservation.SearchAllAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                ],
+                next_page_token="ghi",
+            ),
+            reservation.SearchAllAssignmentsResponse(
+                assignments=[
+                    reservation.Assignment(),
+                    reservation.Assignment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            reservation.SearchAllAssignmentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.search_all_assignments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, reservation.Assignment) for i in results)
+
+        pages = list(client.search_all_assignments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.MoveAssignmentRequest,
+        dict,
+    ],
+)
+def test_move_assignment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Assignment(
+            name="name_value",
+            assignee="assignee_value",
+            job_type=reservation.Assignment.JobType.PIPELINE,
+            state=reservation.Assignment.State.PENDING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.move_assignment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.Assignment)
+    assert response.name == "name_value"
+    assert response.assignee == "assignee_value"
+    assert response.job_type == reservation.Assignment.JobType.PIPELINE
+    assert response.state == reservation.Assignment.State.PENDING
+
+
+def test_move_assignment_rest_required_fields(
+    request_type=reservation.MoveAssignmentRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.Assignment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.Assignment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.move_assignment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_move_assignment_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.move_assignment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_move_assignment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_move_assignment"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_move_assignment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.MoveAssignmentRequest.pb(
+            reservation.MoveAssignmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.Assignment.to_json(
+            reservation.Assignment()
+        )
+
+        request = reservation.MoveAssignmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.Assignment()
+
+        client.move_assignment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_move_assignment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.MoveAssignmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.move_assignment(request)
+
+
+def test_move_assignment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Assignment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            destination_id="destination_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.move_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/reservations/*/assignments/*}:move"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_move_assignment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.move_assignment(
+            reservation.MoveAssignmentRequest(),
+            name="name_value",
+            destination_id="destination_id_value",
+        )
+
+
+def test_move_assignment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.UpdateAssignmentRequest,
+        dict,
+    ],
+)
+def test_update_assignment_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "assignment": {
+            "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+        }
+    }
+    request_init["assignment"] = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4",
+        "assignee": "assignee_value",
+        "job_type": 1,
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Assignment(
+            name="name_value",
+            assignee="assignee_value",
+            job_type=reservation.Assignment.JobType.PIPELINE,
+            state=reservation.Assignment.State.PENDING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_assignment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.Assignment)
+    assert response.name == "name_value"
+    assert response.assignee == "assignee_value"
+    assert response.job_type == reservation.Assignment.JobType.PIPELINE
+    assert response.state == reservation.Assignment.State.PENDING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_assignment_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_update_assignment"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_update_assignment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.UpdateAssignmentRequest.pb(
+            reservation.UpdateAssignmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.Assignment.to_json(
+            reservation.Assignment()
+        )
+
+        request = reservation.UpdateAssignmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.Assignment()
+
+        client.update_assignment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_assignment_rest_bad_request(
+    transport: str = "rest", request_type=reservation.UpdateAssignmentRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "assignment": {
+            "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+        }
+    }
+    request_init["assignment"] = {
+        "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4",
+        "assignee": "assignee_value",
+        "job_type": 1,
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_assignment(request)
+
+
+def test_update_assignment_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.Assignment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "assignment": {
+                "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            assignment=reservation.Assignment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{assignment.name=projects/*/locations/*/reservations/*/assignments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_assignment_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_assignment(
+            reservation.UpdateAssignmentRequest(),
+            assignment=reservation.Assignment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_assignment_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.GetBiReservationRequest,
+        dict,
+    ],
+)
+def test_get_bi_reservation_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/biReservation"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.BiReservation(
+            name="name_value",
+            size=443,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_bi_reservation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.BiReservation)
+    assert response.name == "name_value"
+    assert response.size == 443
+
+
+def test_get_bi_reservation_rest_required_fields(
+    request_type=reservation.GetBiReservationRequest,
+):
+    transport_class = transports.ReservationServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_bi_reservation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_bi_reservation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reservation.BiReservation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = reservation.BiReservation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_bi_reservation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_bi_reservation_rest_unset_required_fields():
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_bi_reservation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_bi_reservation_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_get_bi_reservation"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_get_bi_reservation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.GetBiReservationRequest.pb(
+            reservation.GetBiReservationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.BiReservation.to_json(
+            reservation.BiReservation()
+        )
+
+        request = reservation.GetBiReservationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.BiReservation()
+
+        client.get_bi_reservation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_bi_reservation_rest_bad_request(
+    transport: str = "rest", request_type=reservation.GetBiReservationRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/biReservation"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_bi_reservation(request)
+
+
+def test_get_bi_reservation_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.BiReservation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/biReservation"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_bi_reservation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/biReservation}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_bi_reservation_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_bi_reservation(
+            reservation.GetBiReservationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_bi_reservation_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.UpdateBiReservationRequest,
+        dict,
+    ],
+)
+def test_update_bi_reservation_rest(request_type):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "bi_reservation": {"name": "projects/sample1/locations/sample2/biReservation"}
+    }
+    request_init["bi_reservation"] = {
+        "name": "projects/sample1/locations/sample2/biReservation",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "size": 443,
+        "preferred_tables": [
+            {
+                "project_id": "project_id_value",
+                "dataset_id": "dataset_id_value",
+                "table_id": "table_id_value",
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.BiReservation(
+            name="name_value",
+            size=443,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_bi_reservation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reservation.BiReservation)
+    assert response.name == "name_value"
+    assert response.size == 443
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_bi_reservation_rest_interceptors(null_interceptor):
+    transport = transports.ReservationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReservationServiceRestInterceptor(),
+    )
+    client = ReservationServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "post_update_bi_reservation"
+    ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor, "pre_update_bi_reservation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = reservation.UpdateBiReservationRequest.pb(
+            reservation.UpdateBiReservationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = reservation.BiReservation.to_json(
+            reservation.BiReservation()
+        )
+
+        request = reservation.UpdateBiReservationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reservation.BiReservation()
+
+        client.update_bi_reservation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_bi_reservation_rest_bad_request(
+    transport: str = "rest", request_type=reservation.UpdateBiReservationRequest
+):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "bi_reservation": {"name": "projects/sample1/locations/sample2/biReservation"}
+    }
+    request_init["bi_reservation"] = {
+        "name": "projects/sample1/locations/sample2/biReservation",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "size": 443,
+        "preferred_tables": [
+            {
+                "project_id": "project_id_value",
+                "dataset_id": "dataset_id_value",
+                "table_id": "table_id_value",
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_bi_reservation(request)
+
+
+def test_update_bi_reservation_rest_flattened():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reservation.BiReservation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "bi_reservation": {
+                "name": "projects/sample1/locations/sample2/biReservation"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            bi_reservation=reservation.BiReservation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_bi_reservation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{bi_reservation.name=projects/*/locations/*/biReservation}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_bi_reservation_rest_flattened_error(transport: str = "rest"):
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_bi_reservation(
+            reservation.UpdateBiReservationRequest(),
+            bi_reservation=reservation.BiReservation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_bi_reservation_rest_error():
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ReservationServiceGrpcTransport(
@@ -7150,6 +13091,7 @@ def test_transport_get_channel():
     [
         transports.ReservationServiceGrpcTransport,
         transports.ReservationServiceGrpcAsyncIOTransport,
+        transports.ReservationServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -7164,6 +13106,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -7322,6 +13265,7 @@ def test_reservation_service_transport_auth_adc(transport_class):
     [
         transports.ReservationServiceGrpcTransport,
         transports.ReservationServiceGrpcAsyncIOTransport,
+        transports.ReservationServiceRestTransport,
     ],
 )
 def test_reservation_service_transport_auth_gdch_credentials(transport_class):
@@ -7424,11 +13368,23 @@ def test_reservation_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_reservation_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ReservationServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_reservation_service_host_no_port(transport_name):
@@ -7439,7 +13395,11 @@ def test_reservation_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("bigqueryreservation.googleapis.com:443")
+    assert client.transport._host == (
+        "bigqueryreservation.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://bigqueryreservation.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -7447,6 +13407,7 @@ def test_reservation_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_reservation_service_host_with_port(transport_name):
@@ -7457,7 +13418,93 @@ def test_reservation_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("bigqueryreservation.googleapis.com:8000")
+    assert client.transport._host == (
+        "bigqueryreservation.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://bigqueryreservation.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_reservation_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ReservationServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ReservationServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_reservation._session
+    session2 = client2.transport.create_reservation._session
+    assert session1 != session2
+    session1 = client1.transport.list_reservations._session
+    session2 = client2.transport.list_reservations._session
+    assert session1 != session2
+    session1 = client1.transport.get_reservation._session
+    session2 = client2.transport.get_reservation._session
+    assert session1 != session2
+    session1 = client1.transport.delete_reservation._session
+    session2 = client2.transport.delete_reservation._session
+    assert session1 != session2
+    session1 = client1.transport.update_reservation._session
+    session2 = client2.transport.update_reservation._session
+    assert session1 != session2
+    session1 = client1.transport.create_capacity_commitment._session
+    session2 = client2.transport.create_capacity_commitment._session
+    assert session1 != session2
+    session1 = client1.transport.list_capacity_commitments._session
+    session2 = client2.transport.list_capacity_commitments._session
+    assert session1 != session2
+    session1 = client1.transport.get_capacity_commitment._session
+    session2 = client2.transport.get_capacity_commitment._session
+    assert session1 != session2
+    session1 = client1.transport.delete_capacity_commitment._session
+    session2 = client2.transport.delete_capacity_commitment._session
+    assert session1 != session2
+    session1 = client1.transport.update_capacity_commitment._session
+    session2 = client2.transport.update_capacity_commitment._session
+    assert session1 != session2
+    session1 = client1.transport.split_capacity_commitment._session
+    session2 = client2.transport.split_capacity_commitment._session
+    assert session1 != session2
+    session1 = client1.transport.merge_capacity_commitments._session
+    session2 = client2.transport.merge_capacity_commitments._session
+    assert session1 != session2
+    session1 = client1.transport.create_assignment._session
+    session2 = client2.transport.create_assignment._session
+    assert session1 != session2
+    session1 = client1.transport.list_assignments._session
+    session2 = client2.transport.list_assignments._session
+    assert session1 != session2
+    session1 = client1.transport.delete_assignment._session
+    session2 = client2.transport.delete_assignment._session
+    assert session1 != session2
+    session1 = client1.transport.search_assignments._session
+    session2 = client2.transport.search_assignments._session
+    assert session1 != session2
+    session1 = client1.transport.search_all_assignments._session
+    session2 = client2.transport.search_all_assignments._session
+    assert session1 != session2
+    session1 = client1.transport.move_assignment._session
+    session2 = client2.transport.move_assignment._session
+    assert session1 != session2
+    session1 = client1.transport.update_assignment._session
+    session2 = client2.transport.update_assignment._session
+    assert session1 != session2
+    session1 = client1.transport.get_bi_reservation._session
+    session2 = client2.transport.get_bi_reservation._session
+    assert session1 != session2
+    session1 = client1.transport.update_bi_reservation._session
+    session2 = client2.transport.update_bi_reservation._session
+    assert session1 != session2
 
 
 def test_reservation_service_grpc_transport_channel():
@@ -7838,6 +13885,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -7855,6 +13903,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
