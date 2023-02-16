@@ -52,6 +52,7 @@ from google.cloud.resourcesettings_v1.types import resource_settings
 from .transports.base import DEFAULT_CLIENT_INFO, ResourceSettingsServiceTransport
 from .transports.grpc import ResourceSettingsServiceGrpcTransport
 from .transports.grpc_asyncio import ResourceSettingsServiceGrpcAsyncIOTransport
+from .transports.rest import ResourceSettingsServiceRestTransport
 
 
 class ResourceSettingsServiceClientMeta(type):
@@ -67,6 +68,7 @@ class ResourceSettingsServiceClientMeta(type):
     )  # type: Dict[str, Type[ResourceSettingsServiceTransport]]
     _transport_registry["grpc"] = ResourceSettingsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ResourceSettingsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ResourceSettingsServiceRestTransport
 
     def get_transport_class(
         cls,
