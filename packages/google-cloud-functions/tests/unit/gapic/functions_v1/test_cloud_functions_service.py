@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -47,6 +49,7 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import grpc
@@ -54,6 +57,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.functions_v1.services.cloud_functions_service import (
     CloudFunctionsServiceAsyncClient,
@@ -114,6 +119,7 @@ def test__get_default_mtls_endpoint():
     [
         (CloudFunctionsServiceClient, "grpc"),
         (CloudFunctionsServiceAsyncClient, "grpc_asyncio"),
+        (CloudFunctionsServiceClient, "rest"),
     ],
 )
 def test_cloud_functions_service_client_from_service_account_info(
@@ -129,7 +135,11 @@ def test_cloud_functions_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("cloudfunctions.googleapis.com:443")
+        assert client.transport._host == (
+            "cloudfunctions.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://cloudfunctions.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -137,6 +147,7 @@ def test_cloud_functions_service_client_from_service_account_info(
     [
         (transports.CloudFunctionsServiceGrpcTransport, "grpc"),
         (transports.CloudFunctionsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CloudFunctionsServiceRestTransport, "rest"),
     ],
 )
 def test_cloud_functions_service_client_service_account_always_use_jwt(
@@ -162,6 +173,7 @@ def test_cloud_functions_service_client_service_account_always_use_jwt(
     [
         (CloudFunctionsServiceClient, "grpc"),
         (CloudFunctionsServiceAsyncClient, "grpc_asyncio"),
+        (CloudFunctionsServiceClient, "rest"),
     ],
 )
 def test_cloud_functions_service_client_from_service_account_file(
@@ -184,13 +196,18 @@ def test_cloud_functions_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("cloudfunctions.googleapis.com:443")
+        assert client.transport._host == (
+            "cloudfunctions.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://cloudfunctions.googleapis.com"
+        )
 
 
 def test_cloud_functions_service_client_get_transport_class():
     transport = CloudFunctionsServiceClient.get_transport_class()
     available_transports = [
         transports.CloudFunctionsServiceGrpcTransport,
+        transports.CloudFunctionsServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -210,6 +227,11 @@ def test_cloud_functions_service_client_get_transport_class():
             CloudFunctionsServiceAsyncClient,
             transports.CloudFunctionsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            CloudFunctionsServiceClient,
+            transports.CloudFunctionsServiceRestTransport,
+            "rest",
         ),
     ],
 )
@@ -364,6 +386,18 @@ def test_cloud_functions_service_client_client_options(
             CloudFunctionsServiceAsyncClient,
             transports.CloudFunctionsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            CloudFunctionsServiceClient,
+            transports.CloudFunctionsServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            CloudFunctionsServiceClient,
+            transports.CloudFunctionsServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -569,6 +603,11 @@ def test_cloud_functions_service_client_get_mtls_endpoint_and_cert_source(client
             transports.CloudFunctionsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            CloudFunctionsServiceClient,
+            transports.CloudFunctionsServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_cloud_functions_service_client_client_options_scopes(
@@ -608,6 +647,12 @@ def test_cloud_functions_service_client_client_options_scopes(
             transports.CloudFunctionsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            CloudFunctionsServiceClient,
+            transports.CloudFunctionsServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -3170,6 +3215,2714 @@ def test_test_iam_permissions_from_dict_foreign():
         call.assert_called()
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.ListFunctionsRequest,
+        dict,
+    ],
+)
+def test_list_functions_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = functions.ListFunctionsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = functions.ListFunctionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_functions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFunctionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_functions_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_list_functions"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_list_functions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.ListFunctionsRequest.pb(functions.ListFunctionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = functions.ListFunctionsResponse.to_json(
+            functions.ListFunctionsResponse()
+        )
+
+        request = functions.ListFunctionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = functions.ListFunctionsResponse()
+
+        client.list_functions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_functions_rest_bad_request(
+    transport: str = "rest", request_type=functions.ListFunctionsRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_functions(request)
+
+
+def test_list_functions_rest_pager(transport: str = "rest"):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            functions.ListFunctionsResponse(
+                functions=[
+                    functions.CloudFunction(),
+                    functions.CloudFunction(),
+                    functions.CloudFunction(),
+                ],
+                next_page_token="abc",
+            ),
+            functions.ListFunctionsResponse(
+                functions=[],
+                next_page_token="def",
+            ),
+            functions.ListFunctionsResponse(
+                functions=[
+                    functions.CloudFunction(),
+                ],
+                next_page_token="ghi",
+            ),
+            functions.ListFunctionsResponse(
+                functions=[
+                    functions.CloudFunction(),
+                    functions.CloudFunction(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(functions.ListFunctionsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_functions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, functions.CloudFunction) for i in results)
+
+        pages = list(client.list_functions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.GetFunctionRequest,
+        dict,
+    ],
+)
+def test_get_function_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = functions.CloudFunction(
+            name="name_value",
+            description="description_value",
+            status=functions.CloudFunctionStatus.ACTIVE,
+            entry_point="entry_point_value",
+            runtime="runtime_value",
+            available_memory_mb=1991,
+            service_account_email="service_account_email_value",
+            version_id=1074,
+            network="network_value",
+            max_instances=1389,
+            min_instances=1387,
+            vpc_connector="vpc_connector_value",
+            vpc_connector_egress_settings=functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY,
+            ingress_settings=functions.CloudFunction.IngressSettings.ALLOW_ALL,
+            kms_key_name="kms_key_name_value",
+            build_worker_pool="build_worker_pool_value",
+            build_id="build_id_value",
+            build_name="build_name_value",
+            source_token="source_token_value",
+            docker_repository="docker_repository_value",
+            docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
+            source_archive_url="source_archive_url_value",
+            https_trigger=functions.HttpsTrigger(url="url_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = functions.CloudFunction.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_function(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, functions.CloudFunction)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.status == functions.CloudFunctionStatus.ACTIVE
+    assert response.entry_point == "entry_point_value"
+    assert response.runtime == "runtime_value"
+    assert response.available_memory_mb == 1991
+    assert response.service_account_email == "service_account_email_value"
+    assert response.version_id == 1074
+    assert response.network == "network_value"
+    assert response.max_instances == 1389
+    assert response.min_instances == 1387
+    assert response.vpc_connector == "vpc_connector_value"
+    assert (
+        response.vpc_connector_egress_settings
+        == functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY
+    )
+    assert (
+        response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
+    )
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.build_worker_pool == "build_worker_pool_value"
+    assert response.build_id == "build_id_value"
+    assert response.build_name == "build_name_value"
+    assert response.source_token == "source_token_value"
+    assert response.docker_repository == "docker_repository_value"
+    assert (
+        response.docker_registry
+        == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
+    )
+
+
+def test_get_function_rest_required_fields(request_type=functions.GetFunctionRequest):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = functions.CloudFunction()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = functions.CloudFunction.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_function(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_function_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_function._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_function_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_get_function"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_get_function"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.GetFunctionRequest.pb(functions.GetFunctionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = functions.CloudFunction.to_json(
+            functions.CloudFunction()
+        )
+
+        request = functions.GetFunctionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = functions.CloudFunction()
+
+        client.get_function(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_function_rest_bad_request(
+    transport: str = "rest", request_type=functions.GetFunctionRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_function(request)
+
+
+def test_get_function_rest_flattened():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = functions.CloudFunction()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/functions/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = functions.CloudFunction.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_function(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/functions/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_function_rest_flattened_error(transport: str = "rest"):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_function(
+            functions.GetFunctionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_function_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.CreateFunctionRequest,
+        dict,
+    ],
+)
+def test_create_function_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request_init["function"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "source_archive_url": "source_archive_url_value",
+        "source_repository": {"url": "url_value", "deployed_url": "deployed_url_value"},
+        "source_upload_url": "source_upload_url_value",
+        "https_trigger": {"url": "url_value", "security_level": 1},
+        "event_trigger": {
+            "event_type": "event_type_value",
+            "resource": "resource_value",
+            "service": "service_value",
+            "failure_policy": {"retry": {}},
+        },
+        "status": 1,
+        "entry_point": "entry_point_value",
+        "runtime": "runtime_value",
+        "timeout": {"seconds": 751, "nanos": 543},
+        "available_memory_mb": 1991,
+        "service_account_email": "service_account_email_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "version_id": 1074,
+        "labels": {},
+        "environment_variables": {},
+        "build_environment_variables": {},
+        "network": "network_value",
+        "max_instances": 1389,
+        "min_instances": 1387,
+        "vpc_connector": "vpc_connector_value",
+        "vpc_connector_egress_settings": 1,
+        "ingress_settings": 1,
+        "kms_key_name": "kms_key_name_value",
+        "build_worker_pool": "build_worker_pool_value",
+        "build_id": "build_id_value",
+        "build_name": "build_name_value",
+        "secret_environment_variables": [
+            {
+                "key": "key_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "version": "version_value",
+            }
+        ],
+        "secret_volumes": [
+            {
+                "mount_path": "mount_path_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "versions": [{"version": "version_value", "path": "path_value"}],
+            }
+        ],
+        "source_token": "source_token_value",
+        "docker_repository": "docker_repository_value",
+        "docker_registry": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_function(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_function_rest_required_fields(
+    request_type=functions.CreateFunctionRequest,
+):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request_init["location"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["location"] = "location_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "location" in jsonified_request
+    assert jsonified_request["location"] == "location_value"
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_function(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_function_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_function._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "location",
+                "function",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_function_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_create_function"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_create_function"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.CreateFunctionRequest.pb(
+            functions.CreateFunctionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = functions.CreateFunctionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_function(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_function_rest_bad_request(
+    transport: str = "rest", request_type=functions.CreateFunctionRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request_init["function"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "source_archive_url": "source_archive_url_value",
+        "source_repository": {"url": "url_value", "deployed_url": "deployed_url_value"},
+        "source_upload_url": "source_upload_url_value",
+        "https_trigger": {"url": "url_value", "security_level": 1},
+        "event_trigger": {
+            "event_type": "event_type_value",
+            "resource": "resource_value",
+            "service": "service_value",
+            "failure_policy": {"retry": {}},
+        },
+        "status": 1,
+        "entry_point": "entry_point_value",
+        "runtime": "runtime_value",
+        "timeout": {"seconds": 751, "nanos": 543},
+        "available_memory_mb": 1991,
+        "service_account_email": "service_account_email_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "version_id": 1074,
+        "labels": {},
+        "environment_variables": {},
+        "build_environment_variables": {},
+        "network": "network_value",
+        "max_instances": 1389,
+        "min_instances": 1387,
+        "vpc_connector": "vpc_connector_value",
+        "vpc_connector_egress_settings": 1,
+        "ingress_settings": 1,
+        "kms_key_name": "kms_key_name_value",
+        "build_worker_pool": "build_worker_pool_value",
+        "build_id": "build_id_value",
+        "build_name": "build_name_value",
+        "secret_environment_variables": [
+            {
+                "key": "key_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "version": "version_value",
+            }
+        ],
+        "secret_volumes": [
+            {
+                "mount_path": "mount_path_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "versions": [{"version": "version_value", "path": "path_value"}],
+            }
+        ],
+        "source_token": "source_token_value",
+        "docker_repository": "docker_repository_value",
+        "docker_registry": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_function(request)
+
+
+def test_create_function_rest_flattened():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"location": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            location="location_value",
+            function=functions.CloudFunction(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_function(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{location=projects/*/locations/*}/functions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_function_rest_flattened_error(transport: str = "rest"):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_function(
+            functions.CreateFunctionRequest(),
+            location="location_value",
+            function=functions.CloudFunction(name="name_value"),
+        )
+
+
+def test_create_function_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.UpdateFunctionRequest,
+        dict,
+    ],
+)
+def test_update_function_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "function": {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    }
+    request_init["function"] = {
+        "name": "projects/sample1/locations/sample2/functions/sample3",
+        "description": "description_value",
+        "source_archive_url": "source_archive_url_value",
+        "source_repository": {"url": "url_value", "deployed_url": "deployed_url_value"},
+        "source_upload_url": "source_upload_url_value",
+        "https_trigger": {"url": "url_value", "security_level": 1},
+        "event_trigger": {
+            "event_type": "event_type_value",
+            "resource": "resource_value",
+            "service": "service_value",
+            "failure_policy": {"retry": {}},
+        },
+        "status": 1,
+        "entry_point": "entry_point_value",
+        "runtime": "runtime_value",
+        "timeout": {"seconds": 751, "nanos": 543},
+        "available_memory_mb": 1991,
+        "service_account_email": "service_account_email_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "version_id": 1074,
+        "labels": {},
+        "environment_variables": {},
+        "build_environment_variables": {},
+        "network": "network_value",
+        "max_instances": 1389,
+        "min_instances": 1387,
+        "vpc_connector": "vpc_connector_value",
+        "vpc_connector_egress_settings": 1,
+        "ingress_settings": 1,
+        "kms_key_name": "kms_key_name_value",
+        "build_worker_pool": "build_worker_pool_value",
+        "build_id": "build_id_value",
+        "build_name": "build_name_value",
+        "secret_environment_variables": [
+            {
+                "key": "key_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "version": "version_value",
+            }
+        ],
+        "secret_volumes": [
+            {
+                "mount_path": "mount_path_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "versions": [{"version": "version_value", "path": "path_value"}],
+            }
+        ],
+        "source_token": "source_token_value",
+        "docker_repository": "docker_repository_value",
+        "docker_registry": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_function(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_function_rest_required_fields(
+    request_type=functions.UpdateFunctionRequest,
+):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_function._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_function(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_function_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_function._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("function",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_function_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_update_function"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_update_function"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.UpdateFunctionRequest.pb(
+            functions.UpdateFunctionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = functions.UpdateFunctionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_function(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_function_rest_bad_request(
+    transport: str = "rest", request_type=functions.UpdateFunctionRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "function": {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    }
+    request_init["function"] = {
+        "name": "projects/sample1/locations/sample2/functions/sample3",
+        "description": "description_value",
+        "source_archive_url": "source_archive_url_value",
+        "source_repository": {"url": "url_value", "deployed_url": "deployed_url_value"},
+        "source_upload_url": "source_upload_url_value",
+        "https_trigger": {"url": "url_value", "security_level": 1},
+        "event_trigger": {
+            "event_type": "event_type_value",
+            "resource": "resource_value",
+            "service": "service_value",
+            "failure_policy": {"retry": {}},
+        },
+        "status": 1,
+        "entry_point": "entry_point_value",
+        "runtime": "runtime_value",
+        "timeout": {"seconds": 751, "nanos": 543},
+        "available_memory_mb": 1991,
+        "service_account_email": "service_account_email_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "version_id": 1074,
+        "labels": {},
+        "environment_variables": {},
+        "build_environment_variables": {},
+        "network": "network_value",
+        "max_instances": 1389,
+        "min_instances": 1387,
+        "vpc_connector": "vpc_connector_value",
+        "vpc_connector_egress_settings": 1,
+        "ingress_settings": 1,
+        "kms_key_name": "kms_key_name_value",
+        "build_worker_pool": "build_worker_pool_value",
+        "build_id": "build_id_value",
+        "build_name": "build_name_value",
+        "secret_environment_variables": [
+            {
+                "key": "key_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "version": "version_value",
+            }
+        ],
+        "secret_volumes": [
+            {
+                "mount_path": "mount_path_value",
+                "project_id": "project_id_value",
+                "secret": "secret_value",
+                "versions": [{"version": "version_value", "path": "path_value"}],
+            }
+        ],
+        "source_token": "source_token_value",
+        "docker_repository": "docker_repository_value",
+        "docker_registry": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_function(request)
+
+
+def test_update_function_rest_flattened():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "function": {"name": "projects/sample1/locations/sample2/functions/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            function=functions.CloudFunction(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_function(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{function.name=projects/*/locations/*/functions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_function_rest_flattened_error(transport: str = "rest"):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_function(
+            functions.UpdateFunctionRequest(),
+            function=functions.CloudFunction(name="name_value"),
+        )
+
+
+def test_update_function_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.DeleteFunctionRequest,
+        dict,
+    ],
+)
+def test_delete_function_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_function(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_function_rest_required_fields(
+    request_type=functions.DeleteFunctionRequest,
+):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_function(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_function_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_function._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_function_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_delete_function"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_delete_function"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.DeleteFunctionRequest.pb(
+            functions.DeleteFunctionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = functions.DeleteFunctionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_function(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_function_rest_bad_request(
+    transport: str = "rest", request_type=functions.DeleteFunctionRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_function(request)
+
+
+def test_delete_function_rest_flattened():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/functions/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_function(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/functions/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_function_rest_flattened_error(transport: str = "rest"):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_function(
+            functions.DeleteFunctionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_function_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.CallFunctionRequest,
+        dict,
+    ],
+)
+def test_call_function_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = functions.CallFunctionResponse(
+            execution_id="execution_id_value",
+            result="result_value",
+            error="error_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = functions.CallFunctionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.call_function(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, functions.CallFunctionResponse)
+    assert response.execution_id == "execution_id_value"
+    assert response.result == "result_value"
+    assert response.error == "error_value"
+
+
+def test_call_function_rest_required_fields(request_type=functions.CallFunctionRequest):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["data"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).call_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["data"] = "data_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).call_function._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "data" in jsonified_request
+    assert jsonified_request["data"] == "data_value"
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = functions.CallFunctionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = functions.CallFunctionResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.call_function(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_call_function_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.call_function._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "data",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_call_function_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_call_function"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_call_function"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.CallFunctionRequest.pb(functions.CallFunctionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = functions.CallFunctionResponse.to_json(
+            functions.CallFunctionResponse()
+        )
+
+        request = functions.CallFunctionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = functions.CallFunctionResponse()
+
+        client.call_function(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_call_function_rest_bad_request(
+    transport: str = "rest", request_type=functions.CallFunctionRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.call_function(request)
+
+
+def test_call_function_rest_flattened():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = functions.CallFunctionResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/functions/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            data="data_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = functions.CallFunctionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.call_function(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/functions/*}:call"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_call_function_rest_flattened_error(transport: str = "rest"):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.call_function(
+            functions.CallFunctionRequest(),
+            name="name_value",
+            data="data_value",
+        )
+
+
+def test_call_function_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.GenerateUploadUrlRequest,
+        dict,
+    ],
+)
+def test_generate_upload_url_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = functions.GenerateUploadUrlResponse(
+            upload_url="upload_url_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = functions.GenerateUploadUrlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_upload_url(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, functions.GenerateUploadUrlResponse)
+    assert response.upload_url == "upload_url_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_upload_url_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_generate_upload_url"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_generate_upload_url"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.GenerateUploadUrlRequest.pb(
+            functions.GenerateUploadUrlRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = functions.GenerateUploadUrlResponse.to_json(
+            functions.GenerateUploadUrlResponse()
+        )
+
+        request = functions.GenerateUploadUrlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = functions.GenerateUploadUrlResponse()
+
+        client.generate_upload_url(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_upload_url_rest_bad_request(
+    transport: str = "rest", request_type=functions.GenerateUploadUrlRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_upload_url(request)
+
+
+def test_generate_upload_url_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.GenerateDownloadUrlRequest,
+        dict,
+    ],
+)
+def test_generate_download_url_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = functions.GenerateDownloadUrlResponse(
+            download_url="download_url_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = functions.GenerateDownloadUrlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_download_url(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, functions.GenerateDownloadUrlResponse)
+    assert response.download_url == "download_url_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_download_url_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_generate_download_url"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_generate_download_url"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = functions.GenerateDownloadUrlRequest.pb(
+            functions.GenerateDownloadUrlRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = functions.GenerateDownloadUrlResponse.to_json(
+            functions.GenerateDownloadUrlResponse()
+        )
+
+        request = functions.GenerateDownloadUrlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = functions.GenerateDownloadUrlResponse()
+
+        client.generate_download_url(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_download_url_rest_bad_request(
+    transport: str = "rest", request_type=functions.GenerateDownloadUrlRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_download_url(request)
+
+
+def test_generate_download_url_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+def test_set_iam_policy_rest_required_fields(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = policy_pb2.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_iam_policy_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "resource",
+                "policy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.SetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
+
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+def test_set_iam_policy_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+def test_get_iam_policy_rest_required_fields(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("options",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = policy_pb2.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_iam_policy_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("options",)) & set(("resource",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.GetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
+
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+def test_get_iam_policy_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_rest_required_fields(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    transport_class = transports.CloudFunctionsServiceRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request_init["permissions"] = ""
+    request = request_type(**request_init)
+    pb_request = request
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["permissions"] = "permissions_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+    assert "permissions" in jsonified_request
+    assert jsonified_request["permissions"] == "permissions_value"
+
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = iam_policy_pb2.TestIamPermissionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.test_iam_permissions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_test_iam_permissions_rest_unset_required_fields():
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "resource",
+                "permissions",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.CloudFunctionsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFunctionsServiceRestInterceptor(),
+    )
+    client = CloudFunctionsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.CloudFunctionsServiceRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/locations/sample2/functions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+def test_test_iam_permissions_rest_error():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudFunctionsServiceGrpcTransport(
@@ -3251,6 +6004,7 @@ def test_transport_get_channel():
     [
         transports.CloudFunctionsServiceGrpcTransport,
         transports.CloudFunctionsServiceGrpcAsyncIOTransport,
+        transports.CloudFunctionsServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3265,6 +6019,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3409,6 +6164,7 @@ def test_cloud_functions_service_transport_auth_adc(transport_class):
     [
         transports.CloudFunctionsServiceGrpcTransport,
         transports.CloudFunctionsServiceGrpcAsyncIOTransport,
+        transports.CloudFunctionsServiceRestTransport,
     ],
 )
 def test_cloud_functions_service_transport_auth_gdch_credentials(transport_class):
@@ -3510,11 +6266,40 @@ def test_cloud_functions_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_cloud_functions_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CloudFunctionsServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_cloud_functions_service_rest_lro_client():
+    client = CloudFunctionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_functions_service_host_no_port(transport_name):
@@ -3525,7 +6310,11 @@ def test_cloud_functions_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("cloudfunctions.googleapis.com:443")
+    assert client.transport._host == (
+        "cloudfunctions.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://cloudfunctions.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3533,6 +6322,7 @@ def test_cloud_functions_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_functions_service_host_with_port(transport_name):
@@ -3543,7 +6333,63 @@ def test_cloud_functions_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("cloudfunctions.googleapis.com:8000")
+    assert client.transport._host == (
+        "cloudfunctions.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://cloudfunctions.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_cloud_functions_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CloudFunctionsServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CloudFunctionsServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_functions._session
+    session2 = client2.transport.list_functions._session
+    assert session1 != session2
+    session1 = client1.transport.get_function._session
+    session2 = client2.transport.get_function._session
+    assert session1 != session2
+    session1 = client1.transport.create_function._session
+    session2 = client2.transport.create_function._session
+    assert session1 != session2
+    session1 = client1.transport.update_function._session
+    session2 = client2.transport.update_function._session
+    assert session1 != session2
+    session1 = client1.transport.delete_function._session
+    session2 = client2.transport.delete_function._session
+    assert session1 != session2
+    session1 = client1.transport.call_function._session
+    session2 = client2.transport.call_function._session
+    assert session1 != session2
+    session1 = client1.transport.generate_upload_url._session
+    session2 = client2.transport.generate_upload_url._session
+    assert session1 != session2
+    session1 = client1.transport.generate_download_url._session
+    session2 = client2.transport.generate_download_url._session
+    assert session1 != session2
+    session1 = client1.transport.set_iam_policy._session
+    session2 = client2.transport.set_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.get_iam_policy._session
+    session2 = client2.transport.get_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.test_iam_permissions._session
+    session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
 
 
 def test_cloud_functions_service_grpc_transport_channel():
@@ -3935,6 +6781,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3952,6 +6799,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

@@ -60,6 +60,7 @@ from google.cloud.functions_v1.types import functions, operations
 from .transports.base import DEFAULT_CLIENT_INFO, CloudFunctionsServiceTransport
 from .transports.grpc import CloudFunctionsServiceGrpcTransport
 from .transports.grpc_asyncio import CloudFunctionsServiceGrpcAsyncIOTransport
+from .transports.rest import CloudFunctionsServiceRestTransport
 
 
 class CloudFunctionsServiceClientMeta(type):
@@ -75,6 +76,7 @@ class CloudFunctionsServiceClientMeta(type):
     )  # type: Dict[str, Type[CloudFunctionsServiceTransport]]
     _transport_registry["grpc"] = CloudFunctionsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudFunctionsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudFunctionsServiceRestTransport
 
     def get_transport_class(
         cls,

@@ -96,6 +96,51 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "FunctionServiceClient",
+          "rpcs": {
+            "CreateFunction": {
+              "methods": [
+                "create_function"
+              ]
+            },
+            "DeleteFunction": {
+              "methods": [
+                "delete_function"
+              ]
+            },
+            "GenerateDownloadUrl": {
+              "methods": [
+                "generate_download_url"
+              ]
+            },
+            "GenerateUploadUrl": {
+              "methods": [
+                "generate_upload_url"
+              ]
+            },
+            "GetFunction": {
+              "methods": [
+                "get_function"
+              ]
+            },
+            "ListFunctions": {
+              "methods": [
+                "list_functions"
+              ]
+            },
+            "ListRuntimes": {
+              "methods": [
+                "list_runtimes"
+              ]
+            },
+            "UpdateFunction": {
+              "methods": [
+                "update_function"
+              ]
+            }
+          }
         }
       }
     }
