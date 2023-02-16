@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-memcache/compare/v1.6.1...v1.7.0) (2023-02-16)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#245](https://github.com/googleapis/python-memcache/issues/245)) ([f702f7a](https://github.com/googleapis/python-memcache/commit/f702f7a08d7a31689e400969d23e4a1d8637dd41))
+
 ## [1.6.1](https://github.com/googleapis/python-memcache/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
