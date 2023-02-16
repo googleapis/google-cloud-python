@@ -66,6 +66,36 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "DashboardsServiceClient",
+          "rpcs": {
+            "CreateDashboard": {
+              "methods": [
+                "create_dashboard"
+              ]
+            },
+            "DeleteDashboard": {
+              "methods": [
+                "delete_dashboard"
+              ]
+            },
+            "GetDashboard": {
+              "methods": [
+                "get_dashboard"
+              ]
+            },
+            "ListDashboards": {
+              "methods": [
+                "list_dashboards"
+              ]
+            },
+            "UpdateDashboard": {
+              "methods": [
+                "update_dashboard"
+              ]
+            }
+          }
         }
       }
     }

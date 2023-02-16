@@ -54,6 +54,7 @@ from google.cloud.monitoring_dashboard_v1.types import layouts
 from .transports.base import DashboardsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DashboardsServiceGrpcTransport
 from .transports.grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
+from .transports.rest import DashboardsServiceRestTransport
 
 
 class DashboardsServiceClientMeta(type):
@@ -69,6 +70,7 @@ class DashboardsServiceClientMeta(type):
     )  # type: Dict[str, Type[DashboardsServiceTransport]]
     _transport_registry["grpc"] = DashboardsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DashboardsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DashboardsServiceRestTransport
 
     def get_transport_class(
         cls,
