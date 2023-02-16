@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -48,12 +50,15 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.deploy_v1.services.cloud_deploy import (
     CloudDeployAsyncClient,
@@ -110,6 +115,7 @@ def test__get_default_mtls_endpoint():
     [
         (CloudDeployClient, "grpc"),
         (CloudDeployAsyncClient, "grpc_asyncio"),
+        (CloudDeployClient, "rest"),
     ],
 )
 def test_cloud_deploy_client_from_service_account_info(client_class, transport_name):
@@ -123,7 +129,11 @@ def test_cloud_deploy_client_from_service_account_info(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouddeploy.googleapis.com:443")
+        assert client.transport._host == (
+            "clouddeploy.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouddeploy.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -131,6 +141,7 @@ def test_cloud_deploy_client_from_service_account_info(client_class, transport_n
     [
         (transports.CloudDeployGrpcTransport, "grpc"),
         (transports.CloudDeployGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CloudDeployRestTransport, "rest"),
     ],
 )
 def test_cloud_deploy_client_service_account_always_use_jwt(
@@ -156,6 +167,7 @@ def test_cloud_deploy_client_service_account_always_use_jwt(
     [
         (CloudDeployClient, "grpc"),
         (CloudDeployAsyncClient, "grpc_asyncio"),
+        (CloudDeployClient, "rest"),
     ],
 )
 def test_cloud_deploy_client_from_service_account_file(client_class, transport_name):
@@ -176,13 +188,18 @@ def test_cloud_deploy_client_from_service_account_file(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouddeploy.googleapis.com:443")
+        assert client.transport._host == (
+            "clouddeploy.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouddeploy.googleapis.com"
+        )
 
 
 def test_cloud_deploy_client_get_transport_class():
     transport = CloudDeployClient.get_transport_class()
     available_transports = [
         transports.CloudDeployGrpcTransport,
+        transports.CloudDeployRestTransport,
     ]
     assert transport in available_transports
 
@@ -199,6 +216,7 @@ def test_cloud_deploy_client_get_transport_class():
             transports.CloudDeployGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CloudDeployClient, transports.CloudDeployRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -342,6 +360,8 @@ def test_cloud_deploy_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (CloudDeployClient, transports.CloudDeployRestTransport, "rest", "true"),
+        (CloudDeployClient, transports.CloudDeployRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -535,6 +555,7 @@ def test_cloud_deploy_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.CloudDeployGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CloudDeployClient, transports.CloudDeployRestTransport, "rest"),
     ],
 )
 def test_cloud_deploy_client_client_options_scopes(
@@ -570,6 +591,7 @@ def test_cloud_deploy_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (CloudDeployClient, transports.CloudDeployRestTransport, "rest", None),
     ],
 )
 def test_cloud_deploy_client_client_options_credentials_file(
@@ -7003,6 +7025,7156 @@ async def test_get_config_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListDeliveryPipelinesRequest,
+        dict,
+    ],
+)
+def test_list_delivery_pipelines_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListDeliveryPipelinesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_delivery_pipelines(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDeliveryPipelinesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_delivery_pipelines_rest_required_fields(
+    request_type=cloud_deploy.ListDeliveryPipelinesRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_delivery_pipelines._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_delivery_pipelines._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListDeliveryPipelinesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_delivery_pipelines(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_delivery_pipelines_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_delivery_pipelines._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_delivery_pipelines_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_delivery_pipelines"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_delivery_pipelines"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListDeliveryPipelinesRequest.pb(
+            cloud_deploy.ListDeliveryPipelinesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListDeliveryPipelinesResponse.to_json(
+            cloud_deploy.ListDeliveryPipelinesResponse()
+        )
+
+        request = cloud_deploy.ListDeliveryPipelinesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListDeliveryPipelinesResponse()
+
+        client.list_delivery_pipelines(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_delivery_pipelines_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListDeliveryPipelinesRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_delivery_pipelines(request)
+
+
+def test_list_delivery_pipelines_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListDeliveryPipelinesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_delivery_pipelines(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/deliveryPipelines"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_delivery_pipelines_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_delivery_pipelines(
+            cloud_deploy.ListDeliveryPipelinesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_delivery_pipelines_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListDeliveryPipelinesResponse(
+                delivery_pipelines=[
+                    cloud_deploy.DeliveryPipeline(),
+                    cloud_deploy.DeliveryPipeline(),
+                    cloud_deploy.DeliveryPipeline(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListDeliveryPipelinesResponse(
+                delivery_pipelines=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListDeliveryPipelinesResponse(
+                delivery_pipelines=[
+                    cloud_deploy.DeliveryPipeline(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListDeliveryPipelinesResponse(
+                delivery_pipelines=[
+                    cloud_deploy.DeliveryPipeline(),
+                    cloud_deploy.DeliveryPipeline(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_deploy.ListDeliveryPipelinesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_delivery_pipelines(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.DeliveryPipeline) for i in results)
+
+        pages = list(client.list_delivery_pipelines(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetDeliveryPipelineRequest,
+        dict,
+    ],
+)
+def test_get_delivery_pipeline_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.DeliveryPipeline(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            etag="etag_value",
+            suspended=True,
+            serial_pipeline=cloud_deploy.SerialPipeline(
+                stages=[cloud_deploy.Stage(target_id="target_id_value")]
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_delivery_pipeline(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.DeliveryPipeline)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+    assert response.suspended is True
+
+
+def test_get_delivery_pipeline_rest_required_fields(
+    request_type=cloud_deploy.GetDeliveryPipelineRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.DeliveryPipeline()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_delivery_pipeline(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_delivery_pipeline_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_delivery_pipeline._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_delivery_pipeline_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_delivery_pipeline"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_delivery_pipeline"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetDeliveryPipelineRequest.pb(
+            cloud_deploy.GetDeliveryPipelineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.DeliveryPipeline.to_json(
+            cloud_deploy.DeliveryPipeline()
+        )
+
+        request = cloud_deploy.GetDeliveryPipelineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.DeliveryPipeline()
+
+        client.get_delivery_pipeline(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_delivery_pipeline_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetDeliveryPipelineRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_delivery_pipeline(request)
+
+
+def test_get_delivery_pipeline_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.DeliveryPipeline()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_delivery_pipeline(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_delivery_pipeline_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_delivery_pipeline(
+            cloud_deploy.GetDeliveryPipelineRequest(),
+            name="name_value",
+        )
+
+
+def test_get_delivery_pipeline_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateDeliveryPipelineRequest,
+        dict,
+    ],
+)
+def test_create_delivery_pipeline_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["delivery_pipeline"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "serial_pipeline": {
+            "stages": [
+                {
+                    "target_id": "target_id_value",
+                    "profiles": ["profiles_value1", "profiles_value2"],
+                    "strategy": {"standard": {"verify": True}},
+                }
+            ]
+        },
+        "condition": {
+            "pipeline_ready_condition": {"status": True, "update_time": {}},
+            "targets_present_condition": {
+                "status": True,
+                "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
+                "update_time": {},
+            },
+        },
+        "etag": "etag_value",
+        "suspended": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_delivery_pipeline(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_delivery_pipeline_rest_required_fields(
+    request_type=cloud_deploy.CreateDeliveryPipelineRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["delivery_pipeline_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "deliveryPipelineId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "deliveryPipelineId" in jsonified_request
+    assert (
+        jsonified_request["deliveryPipelineId"] == request_init["delivery_pipeline_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["deliveryPipelineId"] = "delivery_pipeline_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "delivery_pipeline_id",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "deliveryPipelineId" in jsonified_request
+    assert jsonified_request["deliveryPipelineId"] == "delivery_pipeline_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_delivery_pipeline(request)
+
+            expected_params = [
+                (
+                    "deliveryPipelineId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_delivery_pipeline_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_delivery_pipeline._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "deliveryPipelineId",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "deliveryPipelineId",
+                "deliveryPipeline",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_delivery_pipeline_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_create_delivery_pipeline"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_create_delivery_pipeline"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CreateDeliveryPipelineRequest.pb(
+            cloud_deploy.CreateDeliveryPipelineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.CreateDeliveryPipelineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_delivery_pipeline(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_delivery_pipeline_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CreateDeliveryPipelineRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["delivery_pipeline"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "serial_pipeline": {
+            "stages": [
+                {
+                    "target_id": "target_id_value",
+                    "profiles": ["profiles_value1", "profiles_value2"],
+                    "strategy": {"standard": {"verify": True}},
+                }
+            ]
+        },
+        "condition": {
+            "pipeline_ready_condition": {"status": True, "update_time": {}},
+            "targets_present_condition": {
+                "status": True,
+                "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
+                "update_time": {},
+            },
+        },
+        "etag": "etag_value",
+        "suspended": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_delivery_pipeline(request)
+
+
+def test_create_delivery_pipeline_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            delivery_pipeline=cloud_deploy.DeliveryPipeline(name="name_value"),
+            delivery_pipeline_id="delivery_pipeline_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_delivery_pipeline(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/deliveryPipelines"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_delivery_pipeline_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_delivery_pipeline(
+            cloud_deploy.CreateDeliveryPipelineRequest(),
+            parent="parent_value",
+            delivery_pipeline=cloud_deploy.DeliveryPipeline(name="name_value"),
+            delivery_pipeline_id="delivery_pipeline_id_value",
+        )
+
+
+def test_create_delivery_pipeline_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateDeliveryPipelineRequest,
+        dict,
+    ],
+)
+def test_update_delivery_pipeline_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "delivery_pipeline": {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+    }
+    request_init["delivery_pipeline"] = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "serial_pipeline": {
+            "stages": [
+                {
+                    "target_id": "target_id_value",
+                    "profiles": ["profiles_value1", "profiles_value2"],
+                    "strategy": {"standard": {"verify": True}},
+                }
+            ]
+        },
+        "condition": {
+            "pipeline_ready_condition": {"status": True, "update_time": {}},
+            "targets_present_condition": {
+                "status": True,
+                "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
+                "update_time": {},
+            },
+        },
+        "etag": "etag_value",
+        "suspended": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_delivery_pipeline(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_delivery_pipeline_rest_required_fields(
+    request_type=cloud_deploy.UpdateDeliveryPipelineRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "request_id",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_delivery_pipeline(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_delivery_pipeline_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_delivery_pipeline._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "requestId",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "deliveryPipeline",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_delivery_pipeline_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_update_delivery_pipeline"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_update_delivery_pipeline"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.UpdateDeliveryPipelineRequest.pb(
+            cloud_deploy.UpdateDeliveryPipelineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.UpdateDeliveryPipelineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_delivery_pipeline(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_delivery_pipeline_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.UpdateDeliveryPipelineRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "delivery_pipeline": {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+    }
+    request_init["delivery_pipeline"] = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "serial_pipeline": {
+            "stages": [
+                {
+                    "target_id": "target_id_value",
+                    "profiles": ["profiles_value1", "profiles_value2"],
+                    "strategy": {"standard": {"verify": True}},
+                }
+            ]
+        },
+        "condition": {
+            "pipeline_ready_condition": {"status": True, "update_time": {}},
+            "targets_present_condition": {
+                "status": True,
+                "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
+                "update_time": {},
+            },
+        },
+        "etag": "etag_value",
+        "suspended": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_delivery_pipeline(request)
+
+
+def test_update_delivery_pipeline_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "delivery_pipeline": {
+                "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            delivery_pipeline=cloud_deploy.DeliveryPipeline(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_delivery_pipeline(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{delivery_pipeline.name=projects/*/locations/*/deliveryPipelines/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_delivery_pipeline_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_delivery_pipeline(
+            cloud_deploy.UpdateDeliveryPipelineRequest(),
+            delivery_pipeline=cloud_deploy.DeliveryPipeline(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_delivery_pipeline_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteDeliveryPipelineRequest,
+        dict,
+    ],
+)
+def test_delete_delivery_pipeline_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_delivery_pipeline(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_delivery_pipeline_rest_required_fields(
+    request_type=cloud_deploy.DeleteDeliveryPipelineRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_delivery_pipeline._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "force",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_delivery_pipeline(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_delivery_pipeline_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_delivery_pipeline._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "force",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_delivery_pipeline_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_delete_delivery_pipeline"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_delete_delivery_pipeline"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.DeleteDeliveryPipelineRequest.pb(
+            cloud_deploy.DeleteDeliveryPipelineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.DeleteDeliveryPipelineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_delivery_pipeline(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_delivery_pipeline_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.DeleteDeliveryPipelineRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_delivery_pipeline(request)
+
+
+def test_delete_delivery_pipeline_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_delivery_pipeline(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_delivery_pipeline_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_delivery_pipeline(
+            cloud_deploy.DeleteDeliveryPipelineRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_delivery_pipeline_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListTargetsRequest,
+        dict,
+    ],
+)
+def test_list_targets_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListTargetsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_targets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTargetsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_targets_rest_required_fields(
+    request_type=cloud_deploy.ListTargetsRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_targets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_targets._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListTargetsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_targets(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_targets_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_targets._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_targets_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_targets"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_targets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListTargetsRequest.pb(
+            cloud_deploy.ListTargetsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListTargetsResponse.to_json(
+            cloud_deploy.ListTargetsResponse()
+        )
+
+        request = cloud_deploy.ListTargetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListTargetsResponse()
+
+        client.list_targets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_targets_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListTargetsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_targets(request)
+
+
+def test_list_targets_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListTargetsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_targets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/targets" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_targets_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_targets(
+            cloud_deploy.ListTargetsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_targets_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListTargetsResponse(
+                targets=[
+                    cloud_deploy.Target(),
+                    cloud_deploy.Target(),
+                    cloud_deploy.Target(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListTargetsResponse(
+                targets=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListTargetsResponse(
+                targets=[
+                    cloud_deploy.Target(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListTargetsResponse(
+                targets=[
+                    cloud_deploy.Target(),
+                    cloud_deploy.Target(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(cloud_deploy.ListTargetsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_targets(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.Target) for i in results)
+
+        pages = list(client.list_targets(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetTargetRequest,
+        dict,
+    ],
+)
+def test_get_target_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Target(
+            name="name_value",
+            target_id="target_id_value",
+            uid="uid_value",
+            description="description_value",
+            require_approval=True,
+            etag="etag_value",
+            gke=cloud_deploy.GkeCluster(cluster="cluster_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Target.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_target(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.Target)
+    assert response.name == "name_value"
+    assert response.target_id == "target_id_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.require_approval is True
+    assert response.etag == "etag_value"
+
+
+def test_get_target_rest_required_fields(request_type=cloud_deploy.GetTargetRequest):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.Target()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.Target.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_target(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_target_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_target._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_target_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_target"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_target"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetTargetRequest.pb(cloud_deploy.GetTargetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.Target.to_json(cloud_deploy.Target())
+
+        request = cloud_deploy.GetTargetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.Target()
+
+        client.get_target(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_target_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetTargetRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_target(request)
+
+
+def test_get_target_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Target()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/targets/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Target.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_target(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/targets/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_target_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_target(
+            cloud_deploy.GetTargetRequest(),
+            name="name_value",
+        )
+
+
+def test_get_target_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateTargetRequest,
+        dict,
+    ],
+)
+def test_create_target_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["target"] = {
+        "name": "name_value",
+        "target_id": "target_id_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "require_approval": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "gke": {"cluster": "cluster_value", "internal_ip": True},
+        "anthos_cluster": {"membership": "membership_value"},
+        "run": {"location": "location_value"},
+        "etag": "etag_value",
+        "execution_configs": [
+            {
+                "usages": [1],
+                "default_pool": {
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "private_pool": {
+                    "worker_pool": "worker_pool_value",
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "worker_pool": "worker_pool_value",
+                "service_account": "service_account_value",
+                "artifact_storage": "artifact_storage_value",
+                "execution_timeout": {"seconds": 751, "nanos": 543},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_target(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_target_rest_required_fields(
+    request_type=cloud_deploy.CreateTargetRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["target_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "targetId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "targetId" in jsonified_request
+    assert jsonified_request["targetId"] == request_init["target_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["targetId"] = "target_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_target._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "target_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "targetId" in jsonified_request
+    assert jsonified_request["targetId"] == "target_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_target(request)
+
+            expected_params = [
+                (
+                    "targetId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_target_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_target._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "targetId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "targetId",
+                "target",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_target_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_create_target"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_create_target"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CreateTargetRequest.pb(
+            cloud_deploy.CreateTargetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.CreateTargetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_target(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_target_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CreateTargetRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["target"] = {
+        "name": "name_value",
+        "target_id": "target_id_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "require_approval": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "gke": {"cluster": "cluster_value", "internal_ip": True},
+        "anthos_cluster": {"membership": "membership_value"},
+        "run": {"location": "location_value"},
+        "etag": "etag_value",
+        "execution_configs": [
+            {
+                "usages": [1],
+                "default_pool": {
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "private_pool": {
+                    "worker_pool": "worker_pool_value",
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "worker_pool": "worker_pool_value",
+                "service_account": "service_account_value",
+                "artifact_storage": "artifact_storage_value",
+                "execution_timeout": {"seconds": 751, "nanos": 543},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_target(request)
+
+
+def test_create_target_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            target=cloud_deploy.Target(name="name_value"),
+            target_id="target_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_target(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/targets" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_target_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_target(
+            cloud_deploy.CreateTargetRequest(),
+            parent="parent_value",
+            target=cloud_deploy.Target(name="name_value"),
+            target_id="target_id_value",
+        )
+
+
+def test_create_target_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateTargetRequest,
+        dict,
+    ],
+)
+def test_update_target_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "target": {"name": "projects/sample1/locations/sample2/targets/sample3"}
+    }
+    request_init["target"] = {
+        "name": "projects/sample1/locations/sample2/targets/sample3",
+        "target_id": "target_id_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "require_approval": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "gke": {"cluster": "cluster_value", "internal_ip": True},
+        "anthos_cluster": {"membership": "membership_value"},
+        "run": {"location": "location_value"},
+        "etag": "etag_value",
+        "execution_configs": [
+            {
+                "usages": [1],
+                "default_pool": {
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "private_pool": {
+                    "worker_pool": "worker_pool_value",
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "worker_pool": "worker_pool_value",
+                "service_account": "service_account_value",
+                "artifact_storage": "artifact_storage_value",
+                "execution_timeout": {"seconds": 751, "nanos": 543},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_target(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_target_rest_required_fields(
+    request_type=cloud_deploy.UpdateTargetRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_target._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "request_id",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_target(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_target_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_target._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "requestId",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "target",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_target_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_update_target"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_update_target"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.UpdateTargetRequest.pb(
+            cloud_deploy.UpdateTargetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.UpdateTargetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_target(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_target_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.UpdateTargetRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "target": {"name": "projects/sample1/locations/sample2/targets/sample3"}
+    }
+    request_init["target"] = {
+        "name": "projects/sample1/locations/sample2/targets/sample3",
+        "target_id": "target_id_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "require_approval": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "gke": {"cluster": "cluster_value", "internal_ip": True},
+        "anthos_cluster": {"membership": "membership_value"},
+        "run": {"location": "location_value"},
+        "etag": "etag_value",
+        "execution_configs": [
+            {
+                "usages": [1],
+                "default_pool": {
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "private_pool": {
+                    "worker_pool": "worker_pool_value",
+                    "service_account": "service_account_value",
+                    "artifact_storage": "artifact_storage_value",
+                },
+                "worker_pool": "worker_pool_value",
+                "service_account": "service_account_value",
+                "artifact_storage": "artifact_storage_value",
+                "execution_timeout": {"seconds": 751, "nanos": 543},
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_target(request)
+
+
+def test_update_target_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "target": {"name": "projects/sample1/locations/sample2/targets/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            target=cloud_deploy.Target(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_target(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{target.name=projects/*/locations/*/targets/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_target_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_target(
+            cloud_deploy.UpdateTargetRequest(),
+            target=cloud_deploy.Target(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_target_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteTargetRequest,
+        dict,
+    ],
+)
+def test_delete_target_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_target(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_target_rest_required_fields(
+    request_type=cloud_deploy.DeleteTargetRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_target._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_target(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_target_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_target._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_target_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_delete_target"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_delete_target"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.DeleteTargetRequest.pb(
+            cloud_deploy.DeleteTargetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.DeleteTargetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_target(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_target_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.DeleteTargetRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/targets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_target(request)
+
+
+def test_delete_target_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/targets/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_target(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/targets/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_target_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_target(
+            cloud_deploy.DeleteTargetRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_target_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListReleasesRequest,
+        dict,
+    ],
+)
+def test_list_releases_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListReleasesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_releases(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReleasesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_releases_rest_required_fields(
+    request_type=cloud_deploy.ListReleasesRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_releases._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_releases._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListReleasesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_releases(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_releases_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_releases._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_releases_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_releases"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_releases"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListReleasesRequest.pb(
+            cloud_deploy.ListReleasesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListReleasesResponse.to_json(
+            cloud_deploy.ListReleasesResponse()
+        )
+
+        request = cloud_deploy.ListReleasesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListReleasesResponse()
+
+        client.list_releases(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_releases_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListReleasesRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_releases(request)
+
+
+def test_list_releases_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListReleasesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_releases(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/releases"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_releases_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_releases(
+            cloud_deploy.ListReleasesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_releases_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListReleasesResponse(
+                releases=[
+                    cloud_deploy.Release(),
+                    cloud_deploy.Release(),
+                    cloud_deploy.Release(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListReleasesResponse(
+                releases=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListReleasesResponse(
+                releases=[
+                    cloud_deploy.Release(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListReleasesResponse(
+                releases=[
+                    cloud_deploy.Release(),
+                    cloud_deploy.Release(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(cloud_deploy.ListReleasesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        pager = client.list_releases(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.Release) for i in results)
+
+        pages = list(client.list_releases(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetReleaseRequest,
+        dict,
+    ],
+)
+def test_get_release_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Release(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            abandoned=True,
+            skaffold_config_uri="skaffold_config_uri_value",
+            skaffold_config_path="skaffold_config_path_value",
+            render_state=cloud_deploy.Release.RenderState.SUCCEEDED,
+            etag="etag_value",
+            skaffold_version="skaffold_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Release.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_release(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.Release)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.abandoned is True
+    assert response.skaffold_config_uri == "skaffold_config_uri_value"
+    assert response.skaffold_config_path == "skaffold_config_path_value"
+    assert response.render_state == cloud_deploy.Release.RenderState.SUCCEEDED
+    assert response.etag == "etag_value"
+    assert response.skaffold_version == "skaffold_version_value"
+
+
+def test_get_release_rest_required_fields(request_type=cloud_deploy.GetReleaseRequest):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_release._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_release._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.Release()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.Release.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_release(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_release_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_release._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_release_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_release"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_release"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetReleaseRequest.pb(cloud_deploy.GetReleaseRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.Release.to_json(cloud_deploy.Release())
+
+        request = cloud_deploy.GetReleaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.Release()
+
+        client.get_release(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_release_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetReleaseRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_release(request)
+
+
+def test_get_release_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Release()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Release.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_release(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_release_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_release(
+            cloud_deploy.GetReleaseRequest(),
+            name="name_value",
+        )
+
+
+def test_get_release_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateReleaseRequest,
+        dict,
+    ],
+)
+def test_create_release_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request_init["release"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "abandoned": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "render_start_time": {},
+        "render_end_time": {},
+        "skaffold_config_uri": "skaffold_config_uri_value",
+        "skaffold_config_path": "skaffold_config_path_value",
+        "build_artifacts": [{"image": "image_value", "tag": "tag_value"}],
+        "delivery_pipeline_snapshot": {
+            "name": "name_value",
+            "uid": "uid_value",
+            "description": "description_value",
+            "annotations": {},
+            "labels": {},
+            "create_time": {},
+            "update_time": {},
+            "serial_pipeline": {
+                "stages": [
+                    {
+                        "target_id": "target_id_value",
+                        "profiles": ["profiles_value1", "profiles_value2"],
+                        "strategy": {"standard": {"verify": True}},
+                    }
+                ]
+            },
+            "condition": {
+                "pipeline_ready_condition": {"status": True, "update_time": {}},
+                "targets_present_condition": {
+                    "status": True,
+                    "missing_targets": [
+                        "missing_targets_value1",
+                        "missing_targets_value2",
+                    ],
+                    "update_time": {},
+                },
+            },
+            "etag": "etag_value",
+            "suspended": True,
+        },
+        "target_snapshots": [
+            {
+                "name": "name_value",
+                "target_id": "target_id_value",
+                "uid": "uid_value",
+                "description": "description_value",
+                "annotations": {},
+                "labels": {},
+                "require_approval": True,
+                "create_time": {},
+                "update_time": {},
+                "gke": {"cluster": "cluster_value", "internal_ip": True},
+                "anthos_cluster": {"membership": "membership_value"},
+                "run": {"location": "location_value"},
+                "etag": "etag_value",
+                "execution_configs": [
+                    {
+                        "usages": [1],
+                        "default_pool": {
+                            "service_account": "service_account_value",
+                            "artifact_storage": "artifact_storage_value",
+                        },
+                        "private_pool": {
+                            "worker_pool": "worker_pool_value",
+                            "service_account": "service_account_value",
+                            "artifact_storage": "artifact_storage_value",
+                        },
+                        "worker_pool": "worker_pool_value",
+                        "service_account": "service_account_value",
+                        "artifact_storage": "artifact_storage_value",
+                        "execution_timeout": {"seconds": 751, "nanos": 543},
+                    }
+                ],
+            }
+        ],
+        "render_state": 1,
+        "etag": "etag_value",
+        "skaffold_version": "skaffold_version_value",
+        "target_artifacts": {},
+        "target_renders": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_release(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_release_rest_required_fields(
+    request_type=cloud_deploy.CreateReleaseRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["release_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "releaseId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_release._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "releaseId" in jsonified_request
+    assert jsonified_request["releaseId"] == request_init["release_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["releaseId"] = "release_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_release._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "release_id",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "releaseId" in jsonified_request
+    assert jsonified_request["releaseId"] == "release_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_release(request)
+
+            expected_params = [
+                (
+                    "releaseId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_release_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_release._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "releaseId",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "releaseId",
+                "release",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_release_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_create_release"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_create_release"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CreateReleaseRequest.pb(
+            cloud_deploy.CreateReleaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.CreateReleaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_release(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_release_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CreateReleaseRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request_init["release"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "abandoned": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "render_start_time": {},
+        "render_end_time": {},
+        "skaffold_config_uri": "skaffold_config_uri_value",
+        "skaffold_config_path": "skaffold_config_path_value",
+        "build_artifacts": [{"image": "image_value", "tag": "tag_value"}],
+        "delivery_pipeline_snapshot": {
+            "name": "name_value",
+            "uid": "uid_value",
+            "description": "description_value",
+            "annotations": {},
+            "labels": {},
+            "create_time": {},
+            "update_time": {},
+            "serial_pipeline": {
+                "stages": [
+                    {
+                        "target_id": "target_id_value",
+                        "profiles": ["profiles_value1", "profiles_value2"],
+                        "strategy": {"standard": {"verify": True}},
+                    }
+                ]
+            },
+            "condition": {
+                "pipeline_ready_condition": {"status": True, "update_time": {}},
+                "targets_present_condition": {
+                    "status": True,
+                    "missing_targets": [
+                        "missing_targets_value1",
+                        "missing_targets_value2",
+                    ],
+                    "update_time": {},
+                },
+            },
+            "etag": "etag_value",
+            "suspended": True,
+        },
+        "target_snapshots": [
+            {
+                "name": "name_value",
+                "target_id": "target_id_value",
+                "uid": "uid_value",
+                "description": "description_value",
+                "annotations": {},
+                "labels": {},
+                "require_approval": True,
+                "create_time": {},
+                "update_time": {},
+                "gke": {"cluster": "cluster_value", "internal_ip": True},
+                "anthos_cluster": {"membership": "membership_value"},
+                "run": {"location": "location_value"},
+                "etag": "etag_value",
+                "execution_configs": [
+                    {
+                        "usages": [1],
+                        "default_pool": {
+                            "service_account": "service_account_value",
+                            "artifact_storage": "artifact_storage_value",
+                        },
+                        "private_pool": {
+                            "worker_pool": "worker_pool_value",
+                            "service_account": "service_account_value",
+                            "artifact_storage": "artifact_storage_value",
+                        },
+                        "worker_pool": "worker_pool_value",
+                        "service_account": "service_account_value",
+                        "artifact_storage": "artifact_storage_value",
+                        "execution_timeout": {"seconds": 751, "nanos": 543},
+                    }
+                ],
+            }
+        ],
+        "render_state": 1,
+        "etag": "etag_value",
+        "skaffold_version": "skaffold_version_value",
+        "target_artifacts": {},
+        "target_renders": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_release(request)
+
+
+def test_create_release_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            release=cloud_deploy.Release(name="name_value"),
+            release_id="release_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_release(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/releases"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_release_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_release(
+            cloud_deploy.CreateReleaseRequest(),
+            parent="parent_value",
+            release=cloud_deploy.Release(name="name_value"),
+            release_id="release_id_value",
+        )
+
+
+def test_create_release_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.AbandonReleaseRequest,
+        dict,
+    ],
+)
+def test_abandon_release_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.AbandonReleaseResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.abandon_release(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.AbandonReleaseResponse)
+
+
+def test_abandon_release_rest_required_fields(
+    request_type=cloud_deploy.AbandonReleaseRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).abandon_release._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).abandon_release._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.AbandonReleaseResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.abandon_release(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_abandon_release_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.abandon_release._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_abandon_release_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_abandon_release"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_abandon_release"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.AbandonReleaseRequest.pb(
+            cloud_deploy.AbandonReleaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.AbandonReleaseResponse.to_json(
+            cloud_deploy.AbandonReleaseResponse()
+        )
+
+        request = cloud_deploy.AbandonReleaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.AbandonReleaseResponse()
+
+        client.abandon_release(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_abandon_release_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.AbandonReleaseRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.abandon_release(request)
+
+
+def test_abandon_release_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.AbandonReleaseResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.abandon_release(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*}:abandon"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_abandon_release_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.abandon_release(
+            cloud_deploy.AbandonReleaseRequest(),
+            name="name_value",
+        )
+
+
+def test_abandon_release_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ApproveRolloutRequest,
+        dict,
+    ],
+)
+def test_approve_rollout_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ApproveRolloutResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.approve_rollout(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.ApproveRolloutResponse)
+
+
+def test_approve_rollout_rest_required_fields(
+    request_type=cloud_deploy.ApproveRolloutRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["approved"] = False
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).approve_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["approved"] = True
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).approve_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "approved" in jsonified_request
+    assert jsonified_request["approved"] == True
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ApproveRolloutResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.approve_rollout(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_approve_rollout_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.approve_rollout._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "approved",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_approve_rollout_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_approve_rollout"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_approve_rollout"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ApproveRolloutRequest.pb(
+            cloud_deploy.ApproveRolloutRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ApproveRolloutResponse.to_json(
+            cloud_deploy.ApproveRolloutResponse()
+        )
+
+        request = cloud_deploy.ApproveRolloutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ApproveRolloutResponse()
+
+        client.approve_rollout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_approve_rollout_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ApproveRolloutRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.approve_rollout(request)
+
+
+def test_approve_rollout_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ApproveRolloutResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.approve_rollout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:approve"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_approve_rollout_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.approve_rollout(
+            cloud_deploy.ApproveRolloutRequest(),
+            name="name_value",
+        )
+
+
+def test_approve_rollout_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListRolloutsRequest,
+        dict,
+    ],
+)
+def test_list_rollouts_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListRolloutsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_rollouts(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRolloutsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_rollouts_rest_required_fields(
+    request_type=cloud_deploy.ListRolloutsRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_rollouts._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_rollouts._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListRolloutsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_rollouts(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_rollouts_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_rollouts._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rollouts_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_rollouts"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_rollouts"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListRolloutsRequest.pb(
+            cloud_deploy.ListRolloutsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListRolloutsResponse.to_json(
+            cloud_deploy.ListRolloutsResponse()
+        )
+
+        request = cloud_deploy.ListRolloutsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListRolloutsResponse()
+
+        client.list_rollouts(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_rollouts_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListRolloutsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_rollouts(request)
+
+
+def test_list_rollouts_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListRolloutsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_rollouts(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*/releases/*}/rollouts"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_rollouts_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_rollouts(
+            cloud_deploy.ListRolloutsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_rollouts_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListRolloutsResponse(
+                rollouts=[
+                    cloud_deploy.Rollout(),
+                    cloud_deploy.Rollout(),
+                    cloud_deploy.Rollout(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListRolloutsResponse(
+                rollouts=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListRolloutsResponse(
+                rollouts=[
+                    cloud_deploy.Rollout(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListRolloutsResponse(
+                rollouts=[
+                    cloud_deploy.Rollout(),
+                    cloud_deploy.Rollout(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(cloud_deploy.ListRolloutsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+        }
+
+        pager = client.list_rollouts(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.Rollout) for i in results)
+
+        pages = list(client.list_rollouts(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetRolloutRequest,
+        dict,
+    ],
+)
+def test_get_rollout_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Rollout(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            target_id="target_id_value",
+            approval_state=cloud_deploy.Rollout.ApprovalState.NEEDS_APPROVAL,
+            state=cloud_deploy.Rollout.State.SUCCEEDED,
+            failure_reason="failure_reason_value",
+            deploying_build="deploying_build_value",
+            etag="etag_value",
+            deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Rollout.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_rollout(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.Rollout)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.target_id == "target_id_value"
+    assert response.approval_state == cloud_deploy.Rollout.ApprovalState.NEEDS_APPROVAL
+    assert response.state == cloud_deploy.Rollout.State.SUCCEEDED
+    assert response.failure_reason == "failure_reason_value"
+    assert response.deploying_build == "deploying_build_value"
+    assert response.etag == "etag_value"
+    assert (
+        response.deploy_failure_cause
+        == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
+    )
+
+
+def test_get_rollout_rest_required_fields(request_type=cloud_deploy.GetRolloutRequest):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.Rollout()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.Rollout.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_rollout(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_rollout_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_rollout._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rollout_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_rollout"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_rollout"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetRolloutRequest.pb(cloud_deploy.GetRolloutRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.Rollout.to_json(cloud_deploy.Rollout())
+
+        request = cloud_deploy.GetRolloutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.Rollout()
+
+        client.get_rollout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_rollout_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetRolloutRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_rollout(request)
+
+
+def test_get_rollout_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Rollout()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Rollout.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_rollout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_rollout_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_rollout(
+            cloud_deploy.GetRolloutRequest(),
+            name="name_value",
+        )
+
+
+def test_get_rollout_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateRolloutRequest,
+        dict,
+    ],
+)
+def test_create_rollout_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request_init["rollout"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "approve_time": {},
+        "enqueue_time": {},
+        "deploy_start_time": {},
+        "deploy_end_time": {},
+        "target_id": "target_id_value",
+        "approval_state": 1,
+        "state": 1,
+        "failure_reason": "failure_reason_value",
+        "deploying_build": "deploying_build_value",
+        "etag": "etag_value",
+        "deploy_failure_cause": 1,
+        "phases": [
+            {
+                "id": "id_value",
+                "state": 1,
+                "deployment_jobs": {
+                    "deploy_job": {
+                        "id": "id_value",
+                        "state": 1,
+                        "job_run": "job_run_value",
+                        "deploy_job": {},
+                        "verify_job": {},
+                    },
+                    "verify_job": {},
+                },
+            }
+        ],
+        "metadata": {
+            "cloud_run": {
+                "service": "service_value",
+                "service_urls": ["service_urls_value1", "service_urls_value2"],
+                "revision": "revision_value",
+            }
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_rollout(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_rollout_rest_required_fields(
+    request_type=cloud_deploy.CreateRolloutRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["rollout_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "rolloutId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "rolloutId" in jsonified_request
+    assert jsonified_request["rolloutId"] == request_init["rollout_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["rolloutId"] = "rollout_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_rollout._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "rollout_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "rolloutId" in jsonified_request
+    assert jsonified_request["rolloutId"] == "rollout_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_rollout(request)
+
+            expected_params = [
+                (
+                    "rolloutId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_rollout_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_rollout._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "rolloutId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "rolloutId",
+                "rollout",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_rollout_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_create_rollout"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_create_rollout"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CreateRolloutRequest.pb(
+            cloud_deploy.CreateRolloutRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.CreateRolloutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_rollout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_rollout_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CreateRolloutRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+    }
+    request_init["rollout"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "approve_time": {},
+        "enqueue_time": {},
+        "deploy_start_time": {},
+        "deploy_end_time": {},
+        "target_id": "target_id_value",
+        "approval_state": 1,
+        "state": 1,
+        "failure_reason": "failure_reason_value",
+        "deploying_build": "deploying_build_value",
+        "etag": "etag_value",
+        "deploy_failure_cause": 1,
+        "phases": [
+            {
+                "id": "id_value",
+                "state": 1,
+                "deployment_jobs": {
+                    "deploy_job": {
+                        "id": "id_value",
+                        "state": 1,
+                        "job_run": "job_run_value",
+                        "deploy_job": {},
+                        "verify_job": {},
+                    },
+                    "verify_job": {},
+                },
+            }
+        ],
+        "metadata": {
+            "cloud_run": {
+                "service": "service_value",
+                "service_urls": ["service_urls_value1", "service_urls_value2"],
+                "revision": "revision_value",
+            }
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_rollout(request)
+
+
+def test_create_rollout_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            rollout=cloud_deploy.Rollout(name="name_value"),
+            rollout_id="rollout_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_rollout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*/releases/*}/rollouts"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_rollout_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_rollout(
+            cloud_deploy.CreateRolloutRequest(),
+            parent="parent_value",
+            rollout=cloud_deploy.Rollout(name="name_value"),
+            rollout_id="rollout_id_value",
+        )
+
+
+def test_create_rollout_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.RetryJobRequest,
+        dict,
+    ],
+)
+def test_retry_job_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "rollout": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.RetryJobResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.RetryJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.retry_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.RetryJobResponse)
+
+
+def test_retry_job_rest_required_fields(request_type=cloud_deploy.RetryJobRequest):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["rollout"] = ""
+    request_init["phase_id"] = ""
+    request_init["job_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).retry_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["rollout"] = "rollout_value"
+    jsonified_request["phaseId"] = "phase_id_value"
+    jsonified_request["jobId"] = "job_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).retry_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "rollout" in jsonified_request
+    assert jsonified_request["rollout"] == "rollout_value"
+    assert "phaseId" in jsonified_request
+    assert jsonified_request["phaseId"] == "phase_id_value"
+    assert "jobId" in jsonified_request
+    assert jsonified_request["jobId"] == "job_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.RetryJobResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.RetryJobResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.retry_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_retry_job_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.retry_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "rollout",
+                "phaseId",
+                "jobId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_retry_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_retry_job"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_retry_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.RetryJobRequest.pb(cloud_deploy.RetryJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.RetryJobResponse.to_json(
+            cloud_deploy.RetryJobResponse()
+        )
+
+        request = cloud_deploy.RetryJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.RetryJobResponse()
+
+        client.retry_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_retry_job_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.RetryJobRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "rollout": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.retry_job(request)
+
+
+def test_retry_job_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.RetryJobResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "rollout": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.RetryJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.retry_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{rollout=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:retryJob"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_retry_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.retry_job(
+            cloud_deploy.RetryJobRequest(),
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+        )
+
+
+def test_retry_job_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListJobRunsRequest,
+        dict,
+    ],
+)
+def test_list_job_runs_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListJobRunsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_job_runs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobRunsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_job_runs_rest_required_fields(
+    request_type=cloud_deploy.ListJobRunsRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_job_runs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_job_runs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListJobRunsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_job_runs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_job_runs_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_job_runs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_job_runs_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_job_runs"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_job_runs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListJobRunsRequest.pb(
+            cloud_deploy.ListJobRunsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListJobRunsResponse.to_json(
+            cloud_deploy.ListJobRunsResponse()
+        )
+
+        request = cloud_deploy.ListJobRunsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListJobRunsResponse()
+
+        client.list_job_runs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_job_runs_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListJobRunsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_job_runs(request)
+
+
+def test_list_job_runs_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListJobRunsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_job_runs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}/jobRuns"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_job_runs_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_job_runs(
+            cloud_deploy.ListJobRunsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_job_runs_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListJobRunsResponse(
+                job_runs=[
+                    cloud_deploy.JobRun(),
+                    cloud_deploy.JobRun(),
+                    cloud_deploy.JobRun(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListJobRunsResponse(
+                job_runs=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListJobRunsResponse(
+                job_runs=[
+                    cloud_deploy.JobRun(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListJobRunsResponse(
+                job_runs=[
+                    cloud_deploy.JobRun(),
+                    cloud_deploy.JobRun(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(cloud_deploy.ListJobRunsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        pager = client.list_job_runs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.JobRun) for i in results)
+
+        pages = list(client.list_job_runs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetJobRunRequest,
+        dict,
+    ],
+)
+def test_get_job_run_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5/jobRuns/sample6"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.JobRun(
+            name="name_value",
+            uid="uid_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+            state=cloud_deploy.JobRun.State.IN_PROGRESS,
+            etag="etag_value",
+            deploy_job_run=cloud_deploy.DeployJobRun(build="build_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.JobRun.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job_run(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.JobRun)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.phase_id == "phase_id_value"
+    assert response.job_id == "job_id_value"
+    assert response.state == cloud_deploy.JobRun.State.IN_PROGRESS
+    assert response.etag == "etag_value"
+
+
+def test_get_job_run_rest_required_fields(request_type=cloud_deploy.GetJobRunRequest):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.JobRun()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.JobRun.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_job_run(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_job_run_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_job_run._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_run_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_job_run"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_job_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetJobRunRequest.pb(cloud_deploy.GetJobRunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.JobRun.to_json(cloud_deploy.JobRun())
+
+        request = cloud_deploy.GetJobRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.JobRun()
+
+        client.get_job_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_run_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetJobRunRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5/jobRuns/sample6"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job_run(request)
+
+
+def test_get_job_run_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.JobRun()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5/jobRuns/sample6"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.JobRun.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_job_run(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*/jobRuns/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_job_run_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_job_run(
+            cloud_deploy.GetJobRunRequest(),
+            name="name_value",
+        )
+
+
+def test_get_job_run_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetConfigRequest,
+        dict,
+    ],
+)
+def test_get_config_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/config"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Config(
+            name="name_value",
+            default_skaffold_version="default_skaffold_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Config.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.Config)
+    assert response.name == "name_value"
+    assert response.default_skaffold_version == "default_skaffold_version_value"
+
+
+def test_get_config_rest_required_fields(request_type=cloud_deploy.GetConfigRequest):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.Config()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.Config.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_config_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_config_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_config"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetConfigRequest.pb(cloud_deploy.GetConfigRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.Config.to_json(cloud_deploy.Config())
+
+        request = cloud_deploy.GetConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.Config()
+
+        client.get_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_config_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetConfigRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/config"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_config(request)
+
+
+def test_get_config_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Config()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/config"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.Config.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/config}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_config_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_config(
+            cloud_deploy.GetConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_config_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudDeployGrpcTransport(
@@ -7084,6 +14256,7 @@ def test_transport_get_channel():
     [
         transports.CloudDeployGrpcTransport,
         transports.CloudDeployGrpcAsyncIOTransport,
+        transports.CloudDeployRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -7098,6 +14271,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -7262,6 +14436,7 @@ def test_cloud_deploy_transport_auth_adc(transport_class):
     [
         transports.CloudDeployGrpcTransport,
         transports.CloudDeployGrpcAsyncIOTransport,
+        transports.CloudDeployRestTransport,
     ],
 )
 def test_cloud_deploy_transport_auth_gdch_credentials(transport_class):
@@ -7356,11 +14531,40 @@ def test_cloud_deploy_grpc_transport_client_cert_source_for_mtls(transport_class
             )
 
 
+def test_cloud_deploy_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CloudDeployRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_cloud_deploy_rest_lro_client():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_deploy_host_no_port(transport_name):
@@ -7371,7 +14575,11 @@ def test_cloud_deploy_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouddeploy.googleapis.com:443")
+    assert client.transport._host == (
+        "clouddeploy.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouddeploy.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -7379,6 +14587,7 @@ def test_cloud_deploy_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_deploy_host_with_port(transport_name):
@@ -7389,7 +14598,96 @@ def test_cloud_deploy_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouddeploy.googleapis.com:8000")
+    assert client.transport._host == (
+        "clouddeploy.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouddeploy.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_cloud_deploy_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CloudDeployClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CloudDeployClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_delivery_pipelines._session
+    session2 = client2.transport.list_delivery_pipelines._session
+    assert session1 != session2
+    session1 = client1.transport.get_delivery_pipeline._session
+    session2 = client2.transport.get_delivery_pipeline._session
+    assert session1 != session2
+    session1 = client1.transport.create_delivery_pipeline._session
+    session2 = client2.transport.create_delivery_pipeline._session
+    assert session1 != session2
+    session1 = client1.transport.update_delivery_pipeline._session
+    session2 = client2.transport.update_delivery_pipeline._session
+    assert session1 != session2
+    session1 = client1.transport.delete_delivery_pipeline._session
+    session2 = client2.transport.delete_delivery_pipeline._session
+    assert session1 != session2
+    session1 = client1.transport.list_targets._session
+    session2 = client2.transport.list_targets._session
+    assert session1 != session2
+    session1 = client1.transport.get_target._session
+    session2 = client2.transport.get_target._session
+    assert session1 != session2
+    session1 = client1.transport.create_target._session
+    session2 = client2.transport.create_target._session
+    assert session1 != session2
+    session1 = client1.transport.update_target._session
+    session2 = client2.transport.update_target._session
+    assert session1 != session2
+    session1 = client1.transport.delete_target._session
+    session2 = client2.transport.delete_target._session
+    assert session1 != session2
+    session1 = client1.transport.list_releases._session
+    session2 = client2.transport.list_releases._session
+    assert session1 != session2
+    session1 = client1.transport.get_release._session
+    session2 = client2.transport.get_release._session
+    assert session1 != session2
+    session1 = client1.transport.create_release._session
+    session2 = client2.transport.create_release._session
+    assert session1 != session2
+    session1 = client1.transport.abandon_release._session
+    session2 = client2.transport.abandon_release._session
+    assert session1 != session2
+    session1 = client1.transport.approve_rollout._session
+    session2 = client2.transport.approve_rollout._session
+    assert session1 != session2
+    session1 = client1.transport.list_rollouts._session
+    session2 = client2.transport.list_rollouts._session
+    assert session1 != session2
+    session1 = client1.transport.get_rollout._session
+    session2 = client2.transport.get_rollout._session
+    assert session1 != session2
+    session1 = client1.transport.create_rollout._session
+    session2 = client2.transport.create_rollout._session
+    assert session1 != session2
+    session1 = client1.transport.retry_job._session
+    session2 = client2.transport.retry_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_job_runs._session
+    session2 = client2.transport.list_job_runs._session
+    assert session1 != session2
+    session1 = client1.transport.get_job_run._session
+    session2 = client2.transport.get_job_run._session
+    assert session1 != session2
+    session1 = client1.transport.get_config._session
+    session2 = client2.transport.get_config._session
+    assert session1 != session2
 
 
 def test_cloud_deploy_grpc_transport_channel():
@@ -7969,6 +15267,535 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/deliveryPipelines/sample3"},
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/deliveryPipelines/sample3"},
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/deliveryPipelines/sample3"},
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_delete_operation(transport: str = "grpc"):
@@ -9335,6 +17162,7 @@ async def test_test_iam_permissions_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -9352,6 +17180,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

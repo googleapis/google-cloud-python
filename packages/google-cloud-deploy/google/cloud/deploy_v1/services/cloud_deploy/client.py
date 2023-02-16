@@ -62,6 +62,7 @@ from google.cloud.deploy_v1.types import cloud_deploy
 from .transports.base import DEFAULT_CLIENT_INFO, CloudDeployTransport
 from .transports.grpc import CloudDeployGrpcTransport
 from .transports.grpc_asyncio import CloudDeployGrpcAsyncIOTransport
+from .transports.rest import CloudDeployRestTransport
 
 
 class CloudDeployClientMeta(type):
@@ -75,6 +76,7 @@ class CloudDeployClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudDeployTransport]]
     _transport_registry["grpc"] = CloudDeployGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudDeployGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudDeployRestTransport
 
     def get_transport_class(
         cls,
