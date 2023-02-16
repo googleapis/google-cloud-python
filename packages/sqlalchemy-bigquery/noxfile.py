@@ -302,9 +302,7 @@ def compliance(session):
     session.install("--pre", "--no-deps", "--upgrade", "sqlalchemy<2.0.0")
     session.install(
         "mock",
-        # TODO: Allow latest version of pytest once SQLAlchemy 1.4.28+ is supported.
-        # See: https://github.com/googleapis/python-bigquery-sqlalchemy/issues/413
-        "pytest<=7.0.0dev",
+        "pytest",
         "pytest-rerunfailures",
         "google-cloud-testutils",
         "-c",
@@ -317,6 +315,8 @@ def compliance(session):
     else:
         extras = "[tests]"
     session.install("-e", f".{extras}", "-c", constraints_path)
+
+    session.run("python", "-m", "pip", "freeze")
 
     session.run(
         "py.test",
