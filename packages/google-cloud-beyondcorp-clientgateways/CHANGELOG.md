@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.3.1...v0.4.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#46](https://github.com/googleapis/python-beyondcorp-clientgateways/issues/46)) ([7aa95be](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/7aa95bec1669017ce7a4936e10f724fe5c0c0431))
+
 ## [0.3.1](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.3.0...v0.3.1) (2023-01-20)
 
 
