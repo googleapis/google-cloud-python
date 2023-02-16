@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.2.0-alpha...v0.2.1-alpha) (2023-02-15)
+
+
+### Documentation
+
+* Update to README ([#58](https://github.com/googleapis/python-documentai-toolbox/issues/58)) ([4e691fa](https://github.com/googleapis/python-documentai-toolbox/commit/4e691fa8f46a24dbb2bf451f8e0d305c5c9ef607))
+
 ## [0.2.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.1.1-alpha...v0.2.0-alpha) (2023-02-15)
 
 
