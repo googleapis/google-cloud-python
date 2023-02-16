@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-assured-workloads/compare/v1.9.1...v1.10.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#233](https://github.com/googleapis/python-assured-workloads/issues/233)) ([5acc49a](https://github.com/googleapis/python-assured-workloads/commit/5acc49ae8e8e4cd7d56036b64966e2fa6ca268cc))
+
 ## [1.9.1](https://github.com/googleapis/python-assured-workloads/compare/v1.9.0...v1.9.1) (2023-01-20)
 
 
