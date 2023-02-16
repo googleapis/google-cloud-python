@@ -26,8 +26,9 @@ def project_id():
     return os.environ["PROJECT_ID"]
 
 
-def test_list_connections(project_id):
-    client = bigquery_connection.ConnectionServiceClient()
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_list_connections(project_id: str, transport: str):
+    client = bigquery_connection.ConnectionServiceClient(transport=transport)
 
     parent = f"projects/{project_id}/locations/US"
     connections = list(client.list_connections(parent=parent))

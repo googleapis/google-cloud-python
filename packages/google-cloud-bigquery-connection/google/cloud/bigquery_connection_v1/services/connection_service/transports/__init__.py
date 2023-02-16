@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import ConnectionServiceTransport
 from .grpc import ConnectionServiceGrpcTransport
 from .grpc_asyncio import ConnectionServiceGrpcAsyncIOTransport
+from .rest import ConnectionServiceRestInterceptor, ConnectionServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ConnectionServiceTransport]]
 _transport_registry["grpc"] = ConnectionServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ConnectionServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = ConnectionServiceRestTransport
 
 __all__ = (
     "ConnectionServiceTransport",
     "ConnectionServiceGrpcTransport",
     "ConnectionServiceGrpcAsyncIOTransport",
+    "ConnectionServiceRestTransport",
+    "ConnectionServiceRestInterceptor",
 )

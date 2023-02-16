@@ -57,6 +57,7 @@ from google.cloud.bigquery_connection_v1.types import connection
 from .transports.base import DEFAULT_CLIENT_INFO, ConnectionServiceTransport
 from .transports.grpc import ConnectionServiceGrpcTransport
 from .transports.grpc_asyncio import ConnectionServiceGrpcAsyncIOTransport
+from .transports.rest import ConnectionServiceRestTransport
 
 
 class ConnectionServiceClientMeta(type):
@@ -72,6 +73,7 @@ class ConnectionServiceClientMeta(type):
     )  # type: Dict[str, Type[ConnectionServiceTransport]]
     _transport_registry["grpc"] = ConnectionServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ConnectionServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ConnectionServiceRestTransport
 
     def get_transport_class(
         cls,
