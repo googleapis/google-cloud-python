@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import CloudMemcacheTransport
 from .grpc import CloudMemcacheGrpcTransport
 from .grpc_asyncio import CloudMemcacheGrpcAsyncIOTransport
+from .rest import CloudMemcacheRestInterceptor, CloudMemcacheRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudMemcacheTransport]]
 _transport_registry["grpc"] = CloudMemcacheGrpcTransport
 _transport_registry["grpc_asyncio"] = CloudMemcacheGrpcAsyncIOTransport
+_transport_registry["rest"] = CloudMemcacheRestTransport
 
 __all__ = (
     "CloudMemcacheTransport",
     "CloudMemcacheGrpcTransport",
     "CloudMemcacheGrpcAsyncIOTransport",
+    "CloudMemcacheRestTransport",
+    "CloudMemcacheRestInterceptor",
 )

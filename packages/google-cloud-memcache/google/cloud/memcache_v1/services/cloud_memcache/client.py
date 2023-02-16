@@ -60,6 +60,7 @@ from google.cloud.memcache_v1.types import cloud_memcache
 from .transports.base import DEFAULT_CLIENT_INFO, CloudMemcacheTransport
 from .transports.grpc import CloudMemcacheGrpcTransport
 from .transports.grpc_asyncio import CloudMemcacheGrpcAsyncIOTransport
+from .transports.rest import CloudMemcacheRestTransport
 
 
 class CloudMemcacheClientMeta(type):
@@ -73,6 +74,7 @@ class CloudMemcacheClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudMemcacheTransport]]
     _transport_registry["grpc"] = CloudMemcacheGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudMemcacheGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudMemcacheRestTransport
 
     def get_transport_class(
         cls,
