@@ -76,6 +76,41 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "LanguageServiceClient",
+          "rpcs": {
+            "AnalyzeEntities": {
+              "methods": [
+                "analyze_entities"
+              ]
+            },
+            "AnalyzeEntitySentiment": {
+              "methods": [
+                "analyze_entity_sentiment"
+              ]
+            },
+            "AnalyzeSentiment": {
+              "methods": [
+                "analyze_sentiment"
+              ]
+            },
+            "AnalyzeSyntax": {
+              "methods": [
+                "analyze_syntax"
+              ]
+            },
+            "AnnotateText": {
+              "methods": [
+                "annotate_text"
+              ]
+            },
+            "ClassifyText": {
+              "methods": [
+                "classify_text"
+              ]
+            }
+          }
         }
       }
     }

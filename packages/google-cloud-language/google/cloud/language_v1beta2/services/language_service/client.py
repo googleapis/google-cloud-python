@@ -51,6 +51,7 @@ from google.cloud.language_v1beta2.types import language_service
 from .transports.base import DEFAULT_CLIENT_INFO, LanguageServiceTransport
 from .transports.grpc import LanguageServiceGrpcTransport
 from .transports.grpc_asyncio import LanguageServiceGrpcAsyncIOTransport
+from .transports.rest import LanguageServiceRestTransport
 
 
 class LanguageServiceClientMeta(type):
@@ -66,6 +67,7 @@ class LanguageServiceClientMeta(type):
     )  # type: Dict[str, Type[LanguageServiceTransport]]
     _transport_registry["grpc"] = LanguageServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = LanguageServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = LanguageServiceRestTransport
 
     def get_transport_class(
         cls,
