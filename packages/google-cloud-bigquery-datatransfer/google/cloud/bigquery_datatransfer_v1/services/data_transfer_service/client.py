@@ -60,6 +60,7 @@ from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
 from .transports.base import DEFAULT_CLIENT_INFO, DataTransferServiceTransport
 from .transports.grpc import DataTransferServiceGrpcTransport
 from .transports.grpc_asyncio import DataTransferServiceGrpcAsyncIOTransport
+from .transports.rest import DataTransferServiceRestTransport
 
 
 class DataTransferServiceClientMeta(type):
@@ -75,6 +76,7 @@ class DataTransferServiceClientMeta(type):
     )  # type: Dict[str, Type[DataTransferServiceTransport]]
     _transport_registry["grpc"] = DataTransferServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataTransferServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataTransferServiceRestTransport
 
     def get_transport_class(
         cls,

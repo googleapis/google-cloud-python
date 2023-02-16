@@ -26,8 +26,9 @@ def project_id():
     return os.environ["PROJECT_ID"]
 
 
-def test_list_data_sources(project_id):
-    client = bigquery_datatransfer.DataTransferServiceClient()
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_list_data_sources(project_id: str, transport: str):
+    client = bigquery_datatransfer.DataTransferServiceClient(transport=transport)
 
     parent = client.common_project_path(project_id)
     data_sources = list(client.list_data_sources(parent=parent))
