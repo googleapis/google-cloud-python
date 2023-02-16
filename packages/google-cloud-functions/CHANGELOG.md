@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-functions/compare/v1.10.1...v1.11.0) (2023-02-16)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#248](https://github.com/googleapis/python-functions/issues/248)) ([be19686](https://github.com/googleapis/python-functions/commit/be1968686b0e566d1c661369fad84664b65336d2))
+
 ## [1.10.1](https://github.com/googleapis/python-functions/compare/v1.10.0...v1.10.1) (2023-01-20)
 
 
