@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-filestore/compare/v1.4.1...v1.5.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#131](https://github.com/googleapis/python-filestore/issues/131)) ([3e2f28c](https://github.com/googleapis/python-filestore/commit/3e2f28ce47961692045700d902800cbba31e544c))
+
 ## [1.4.1](https://github.com/googleapis/python-filestore/compare/v1.4.0...v1.4.1) (2023-01-20)
 
 
