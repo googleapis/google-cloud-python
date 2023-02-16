@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.9.0](https://github.com/googleapis/python-language/compare/v2.8.1...v2.9.0) (2023-02-16)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#423](https://github.com/googleapis/python-language/issues/423)) ([21c09b8](https://github.com/googleapis/python-language/commit/21c09b8e009a560c77d96f8fa92c5e91cfdad29f))
+
 ## [2.8.1](https://github.com/googleapis/python-language/compare/v2.8.0...v2.8.1) (2023-01-20)
 
 
