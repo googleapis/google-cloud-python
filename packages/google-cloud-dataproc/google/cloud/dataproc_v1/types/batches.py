@@ -94,7 +94,9 @@ class GetBatchRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the batch to retrieve.
+            Required. The fully qualified name of the batch to retrieve
+            in the format
+            "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID".
     """
 
     name: str = proto.Field(
@@ -119,6 +121,33 @@ class ListBatchesRequest(proto.Message):
             Optional. A page token received from a previous
             ``ListBatches`` call. Provide this token to retrieve the
             subsequent page.
+        filter (str):
+            Optional. A filter for the batches to return in the
+            response.
+
+            A filter is a logical expression constraining the values of
+            various fields in each batch resource. Filters are case
+            sensitive, and may contain multiple clauses combined with
+            logical operators (AND/OR). Supported fields are
+            ``batch_id``, ``batch_uuid``, ``state``, and
+            ``create_time``.
+
+            e.g.
+            ``state = RUNNING and create_time < "2023-01-01T00:00:00Z"``
+            filters for batches in state RUNNING that were created
+            before 2023-01-01
+
+            See https://google.aip.dev/assets/misc/ebnf-filtering.txt
+            for a detailed description of the filter syntax and a list
+            of supported comparisons.
+        order_by (str):
+            Optional. Field(s) on which to sort the list of batches.
+
+            Currently the only supported sort orders are unspecified
+            (empty) and ``create_time desc`` to sort by most recently
+            created batches first.
+
+            See https://google.aip.dev/132#ordering for more details.
     """
 
     parent: str = proto.Field(
@@ -132,6 +161,14 @@ class ListBatchesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -167,8 +204,9 @@ class DeleteBatchRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the batch resource to
-            delete.
+            Required. The fully qualified name of the batch to retrieve
+            in the format
+            "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID".
     """
 
     name: str = proto.Field(
@@ -452,7 +490,7 @@ class PySparkBatch(proto.Message):
 
 class SparkBatch(proto.Message):
     r"""A configuration for running an `Apache
-    Spark <http://spark.apache.org/>`__ batch workload.
+    Spark <https://spark.apache.org/>`__ batch workload.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -561,7 +599,7 @@ class SparkRBatch(proto.Message):
 
 class SparkSqlBatch(proto.Message):
     r"""A configuration for running `Apache Spark
-    SQL <http://spark.apache.org/sql/>`__ queries as a batch workload.
+    SQL <https://spark.apache.org/sql/>`__ queries as a batch workload.
 
     Attributes:
         query_file_uri (str):

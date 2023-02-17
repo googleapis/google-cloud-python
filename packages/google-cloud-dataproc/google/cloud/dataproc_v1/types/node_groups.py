@@ -113,7 +113,7 @@ class ResizeNodeGroupRequest(proto.Message):
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
         graceful_decommission_timeout (google.protobuf.duration_pb2.Duration):
-            Optional. Timeout for graceful YARN decommissioning.
+            Optional. Timeout for graceful YARN decomissioning.
             [Graceful decommissioning]
             (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/scaling-clusters#graceful_decommissioning)
             allows the removal of nodes from the Compute Engine node

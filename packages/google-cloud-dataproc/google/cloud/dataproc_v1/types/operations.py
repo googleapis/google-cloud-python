@@ -183,6 +183,8 @@ class ClusterOperationMetadata(proto.Message):
         warnings (MutableSequence[str]):
             Output only. Errors encountered during
             operation execution.
+        child_operation_ids (MutableSequence[str]):
+            Output only. Child operation ids
     """
 
     cluster_name: str = proto.Field(
@@ -219,6 +221,10 @@ class ClusterOperationMetadata(proto.Message):
     warnings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
+    )
+    child_operation_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=15,
     )
 
 

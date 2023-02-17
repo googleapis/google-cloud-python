@@ -112,6 +112,7 @@ from .types.jobs import SparkJob
 from .types.jobs import SparkRJob
 from .types.jobs import SparkSqlJob
 from .types.jobs import SubmitJobRequest
+from .types.jobs import TrinoJob
 from .types.jobs import UpdateJobRequest
 from .types.jobs import YarnApplication
 from .types.node_groups import CreateNodeGroupRequest
@@ -132,6 +133,8 @@ from .types.shared import PeripheralsConfig
 from .types.shared import RuntimeConfig
 from .types.shared import RuntimeInfo
 from .types.shared import SparkHistoryServerConfig
+from .types.shared import UsageMetrics
+from .types.shared import UsageSnapshot
 from .types.shared import Component
 from .types.shared import FailureAction
 from .types.workflow_templates import ClusterOperation
@@ -280,10 +283,13 @@ __all__ = (
     "StopClusterRequest",
     "SubmitJobRequest",
     "TemplateParameter",
+    "TrinoJob",
     "UpdateAutoscalingPolicyRequest",
     "UpdateClusterRequest",
     "UpdateJobRequest",
     "UpdateWorkflowTemplateRequest",
+    "UsageMetrics",
+    "UsageSnapshot",
     "ValueValidation",
     "VirtualClusterConfig",
     "WorkflowGraph",

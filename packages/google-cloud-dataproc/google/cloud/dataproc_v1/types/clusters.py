@@ -51,8 +51,8 @@ __protobuf__ = proto.module(
         "SoftwareConfig",
         "LifecycleConfig",
         "MetastoreConfig",
-        "DataprocMetricConfig",
         "ClusterMetrics",
+        "DataprocMetricConfig",
         "CreateClusterRequest",
         "UpdateClusterRequest",
         "StopClusterRequest",
@@ -88,12 +88,15 @@ class Cluster(proto.Message):
             Compute Engine Instances. Note that Dataproc may
             set default values, and values may change when
             clusters are updated.
+
+            Exactly one of ClusterConfig or
+            VirtualClusterConfig must be specified.
         virtual_cluster_config (google.cloud.dataproc_v1.types.VirtualClusterConfig):
             Optional. The virtual cluster config is used when creating a
             Dataproc cluster that does not directly control the
             underlying compute resources, for example, when creating a
             `Dataproc-on-GKE
-            cluster <https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke>`__.
+            cluster <https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke-overview>`__.
             Dataproc may set default values, and values may change when
             clusters are updated. Exactly one of
             [config][google.cloud.dataproc.v1.Cluster.config] or
@@ -335,7 +338,7 @@ class ClusterConfig(proto.Message):
 class VirtualClusterConfig(proto.Message):
     r"""The Dataproc cluster config for a cluster that does not directly
     control the underlying compute resources, such as a `Dataproc-on-GKE
-    cluster <https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke>`__.
+    cluster <https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke-overview>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -471,19 +474,21 @@ class GceClusterConfig(proto.Message):
     r"""Common config settings for resources of Compute Engine
     cluster instances, applicable to all instances in the cluster.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         zone_uri (str):
-            Optional. The zone where the Compute Engine cluster will be
-            located. On a create request, it is required in the "global"
-            region. If omitted in a non-global Dataproc region, the
-            service will pick a zone in the corresponding Compute Engine
-            region. On a get request, zone will always be present.
+            Optional. The Compute Engine zone where the Dataproc cluster
+            will be located. If omitted, the service will pick a zone in
+            the cluster's Compute Engine region. On a get request, zone
+            will always be present.
 
             A full URL, partial URI, or short name are valid. Examples:
 
             -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]``
             -  ``projects/[project_id]/zones/[zone]``
-            -  ``us-central1-f``
+            -  ``[zone]``
         network_uri (str):
             Optional. The Compute Engine network to be used for machine
             communications. Cannot be specified with subnetwork_uri. If
@@ -495,8 +500,8 @@ class GceClusterConfig(proto.Message):
 
             A full URL, partial URI, or short name are valid. Examples:
 
-            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default``
-            -  ``projects/[project_id]/regions/global/default``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/global/networks/default``
+            -  ``projects/[project_id]/global/networks/default``
             -  ``default``
         subnetwork_uri (str):
             Optional. The Compute Engine subnetwork to be used for
@@ -505,8 +510,8 @@ class GceClusterConfig(proto.Message):
 
             A full URL, partial URI, or short name are valid. Examples:
 
-            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/regions/us-east1/subnetworks/sub0``
-            -  ``projects/[project_id]/regions/us-east1/subnetworks/sub0``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/regions/[region]/subnetworks/sub0``
+            -  ``projects/[project_id]/regions/[region]/subnetworks/sub0``
             -  ``sub0``
         internal_ip_only (bool):
             Optional. If true, all instances in the cluster will only
@@ -517,6 +522,8 @@ class GceClusterConfig(proto.Message):
             subnetwork enabled networks, and all off-cluster
             dependencies must be configured to be accessible without
             external IP addresses.
+
+            This field is a member of `oneof`_ ``_internal_ip_only``.
         private_ipv6_google_access (google.cloud.dataproc_v1.types.GceClusterConfig.PrivateIpv6GoogleAccess):
             Optional. The type of IPv6 access for a
             cluster.
@@ -616,6 +623,7 @@ class GceClusterConfig(proto.Message):
     internal_ip_only: bool = proto.Field(
         proto.BOOL,
         number=7,
+        optional=True,
     )
     private_ipv6_google_access: PrivateIpv6GoogleAccess = proto.Field(
         proto.ENUM,
@@ -675,8 +683,8 @@ class NodeGroupAffinity(proto.Message):
             A full URL, partial URI, or node group name are valid.
             Examples:
 
-            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1``
-            -  ``projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/nodeGroups/node-group-1``
+            -  ``projects/[project_id]/zones/[zone]/nodeGroups/node-group-1``
             -  ``node-group-1``
     """
 
@@ -690,29 +698,41 @@ class ShieldedInstanceConfig(proto.Message):
     r"""Shielded Instance Config for clusters using `Compute Engine Shielded
     VMs <https://cloud.google.com/security/shielded-cloud/shielded-vm>`__.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable_secure_boot (bool):
             Optional. Defines whether instances have
             Secure Boot enabled.
+
+            This field is a member of `oneof`_ ``_enable_secure_boot``.
         enable_vtpm (bool):
             Optional. Defines whether instances have the
             vTPM enabled.
+
+            This field is a member of `oneof`_ ``_enable_vtpm``.
         enable_integrity_monitoring (bool):
             Optional. Defines whether instances have
             integrity monitoring enabled.
+
+            This field is a member of `oneof`_ ``_enable_integrity_monitoring``.
     """
 
     enable_secure_boot: bool = proto.Field(
         proto.BOOL,
         number=1,
+        optional=True,
     )
     enable_vtpm: bool = proto.Field(
         proto.BOOL,
         number=2,
+        optional=True,
     )
     enable_integrity_monitoring: bool = proto.Field(
         proto.BOOL,
         number=3,
+        optional=True,
     )
 
 
@@ -757,14 +777,14 @@ class InstanceGroupConfig(proto.Message):
 
             Image examples:
 
-            -  ``https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]``
             -  ``projects/[project_id]/global/images/[image-id]``
             -  ``image-id``
 
             Image family examples. Dataproc will use the most recent
             image from the family:
 
-            -  ``https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]``
             -  ``projects/[project_id]/global/images/family/[custom-image-family-name]``
 
             If the URI is unspecified, it will be inferred from
@@ -775,8 +795,8 @@ class InstanceGroupConfig(proto.Message):
 
             A full URL, partial URI, or short name are valid. Examples:
 
-            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2``
-            -  ``projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2``
+            -  ``projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2``
             -  ``n1-standard-2``
 
             **Auto Zone Exception**: If you are using the Dataproc `Auto
@@ -925,12 +945,12 @@ class AcceleratorConfig(proto.Message):
         accelerator_type_uri (str):
             Full URL, partial URI, or short name of the accelerator type
             resource to expose to this instance. See `Compute Engine
-            AcceleratorTypes <https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes>`__.
+            AcceleratorTypes <https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes>`__.
 
             Examples:
 
-            -  ``https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80``
-            -  ``projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-k80``
+            -  ``projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-k80``
             -  ``nvidia-tesla-k80``
 
             **Auto Zone Exception**: If you are using the Dataproc `Auto
@@ -976,6 +996,9 @@ class DiskConfig(proto.Message):
             data. If one or more SSDs are attached, this runtime bulk
             data is spread across them, and the boot disk contains only
             basic config and installed binaries.
+
+            Note: Local SSD options may vary by machine type and number
+            of vCPUs selected.
         local_ssd_interface (str):
             Optional. Interface type of local SSDs (default is "scsi").
             Valid values: "scsi" (Small Computer System Interface),
@@ -1541,6 +1564,31 @@ class MetastoreConfig(proto.Message):
     )
 
 
+class ClusterMetrics(proto.Message):
+    r"""Contains cluster daemon metrics, such as HDFS and YARN stats.
+
+    **Beta Feature**: This report is available for testing purposes
+    only. It may be changed before final release.
+
+    Attributes:
+        hdfs_metrics (MutableMapping[str, int]):
+            The HDFS metrics.
+        yarn_metrics (MutableMapping[str, int]):
+            YARN metrics.
+    """
+
+    hdfs_metrics: MutableMapping[str, int] = proto.MapField(
+        proto.STRING,
+        proto.INT64,
+        number=1,
+    )
+    yarn_metrics: MutableMapping[str, int] = proto.MapField(
+        proto.STRING,
+        proto.INT64,
+        number=2,
+    )
+
+
 class DataprocMetricConfig(proto.Message):
     r"""Dataproc metric config.
 
@@ -1572,6 +1620,8 @@ class DataprocMetricConfig(proto.Message):
                 Spark History Server metric source.
             HIVESERVER2 (6):
                 Hiveserver2 metric source.
+            HIVEMETASTORE (7):
+                hivemetastore metric source
         """
         METRIC_SOURCE_UNSPECIFIED = 0
         MONITORING_AGENT_DEFAULTS = 1
@@ -1580,6 +1630,7 @@ class DataprocMetricConfig(proto.Message):
         YARN = 4
         SPARK_HISTORY_SERVER = 5
         HIVESERVER2 = 6
+        HIVEMETASTORE = 7
 
     class Metric(proto.Message):
         r"""A Dataproc OSS metric.
@@ -1639,31 +1690,6 @@ class DataprocMetricConfig(proto.Message):
         proto.MESSAGE,
         number=1,
         message=Metric,
-    )
-
-
-class ClusterMetrics(proto.Message):
-    r"""Contains cluster daemon metrics, such as HDFS and YARN stats.
-
-    **Beta Feature**: This report is available for testing purposes
-    only. It may be changed before final release.
-
-    Attributes:
-        hdfs_metrics (MutableMapping[str, int]):
-            The HDFS metrics.
-        yarn_metrics (MutableMapping[str, int]):
-            The YARN metrics.
-    """
-
-    hdfs_metrics: MutableMapping[str, int] = proto.MapField(
-        proto.STRING,
-        proto.INT64,
-        number=1,
-    )
-    yarn_metrics: MutableMapping[str, int] = proto.MapField(
-        proto.STRING,
-        proto.INT64,
-        number=2,
     )
 
 
@@ -1738,14 +1764,14 @@ class UpdateClusterRequest(proto.Message):
         cluster (google.cloud.dataproc_v1.types.Cluster):
             Required. The changes to the cluster.
         graceful_decommission_timeout (google.protobuf.duration_pb2.Duration):
-            Optional. Timeout for graceful YARN decomissioning. Graceful
-            decommissioning allows removing nodes from the cluster
-            without interrupting jobs in progress. Timeout specifies how
-            long to wait for jobs in progress to finish before
-            forcefully removing nodes (and potentially interrupting
-            jobs). Default timeout is 0 (for forceful decommission), and
-            the maximum allowed timeout is 1 day. (see JSON
-            representation of
+            Optional. Timeout for graceful YARN decommissioning.
+            Graceful decommissioning allows removing nodes from the
+            cluster without interrupting jobs in progress. Timeout
+            specifies how long to wait for jobs in progress to finish
+            before forcefully removing nodes (and potentially
+            interrupting jobs). Default timeout is 0 (for forceful
+            decommission), and the maximum allowed timeout is 1 day.
+            (see JSON representation of
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
 
             Only supported on Dataproc image versions 1.2 and higher.

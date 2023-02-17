@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "PigJob",
         "SparkRJob",
         "PrestoJob",
+        "TrinoJob",
         "JobPlacement",
         "JobStatus",
         "JobReference",
@@ -768,6 +769,86 @@ class PrestoJob(proto.Message):
     )
 
 
+class TrinoJob(proto.Message):
+    r"""A Dataproc job for running `Trino <https://trino.io/>`__ queries.
+    **IMPORTANT**: The `Dataproc Trino Optional
+    Component <https://cloud.google.com/dataproc/docs/concepts/components/trino>`__
+    must be enabled when the cluster is created to submit a Trino job to
+    the cluster.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        query_file_uri (str):
+            The HCFS URI of the script that contains SQL
+            queries.
+
+            This field is a member of `oneof`_ ``queries``.
+        query_list (google.cloud.dataproc_v1.types.QueryList):
+            A list of queries.
+
+            This field is a member of `oneof`_ ``queries``.
+        continue_on_failure (bool):
+            Optional. Whether to continue executing queries if a query
+            fails. The default value is ``false``. Setting to ``true``
+            can be useful when executing independent parallel queries.
+        output_format (str):
+            Optional. The format in which query output
+            will be displayed. See the Trino documentation
+            for supported output formats
+        client_tags (MutableSequence[str]):
+            Optional. Trino client tags to attach to this
+            query
+        properties (MutableMapping[str, str]):
+            Optional. A mapping of property names to values. Used to set
+            Trino `session
+            properties <https://trino.io/docs/current/sql/set-session.html>`__
+            Equivalent to using the --session flag in the Trino CLI
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
+            Optional. The runtime log config for job
+            execution.
+    """
+
+    query_file_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="queries",
+    )
+    query_list: "QueryList" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="queries",
+        message="QueryList",
+    )
+    continue_on_failure: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    output_format: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    client_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    properties: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    logging_config: "LoggingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="LoggingConfig",
+    )
+
+
 class JobPlacement(proto.Message):
     r"""Dataproc job config.
 
@@ -1072,6 +1153,10 @@ class Job(proto.Message):
             Optional. Job is a Presto job.
 
             This field is a member of `oneof`_ ``type_job``.
+        trino_job (google.cloud.dataproc_v1.types.TrinoJob):
+            Optional. Job is a Trino job.
+
+            This field is a member of `oneof`_ ``type_job``.
         status (google.cloud.dataproc_v1.types.JobStatus):
             Output only. The job status. Additional application-specific
             status information may be contained in the type_job and
@@ -1172,6 +1257,12 @@ class Job(proto.Message):
         number=23,
         oneof="type_job",
         message="PrestoJob",
+    )
+    trino_job: "TrinoJob" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        oneof="type_job",
+        message="TrinoJob",
     )
     status: "JobStatus" = proto.Field(
         proto.MESSAGE,

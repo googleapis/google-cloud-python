@@ -17,6 +17,9 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.dataproc.v1",
@@ -29,6 +32,8 @@ __protobuf__ = proto.module(
         "SparkHistoryServerConfig",
         "PeripheralsConfig",
         "RuntimeInfo",
+        "UsageMetrics",
+        "UsageSnapshot",
         "GkeClusterConfig",
         "KubernetesClusterConfig",
         "KubernetesSoftwareConfig",
@@ -63,10 +68,14 @@ class Component(proto.Enum):
         HIVE_WEBHCAT (3):
             The Hive Web HCatalog (the REST service for
             accessing HCatalog).
+        HUDI (18):
+            Hudi.
         JUPYTER (1):
             The Jupyter Notebook.
         PRESTO (6):
             The Presto query engine.
+        TRINO (17):
+            The Trino query engine.
         RANGER (12):
             The Ranger service.
         SOLR (10):
@@ -83,8 +92,10 @@ class Component(proto.Enum):
     FLINK = 14
     HBASE = 11
     HIVE_WEBHCAT = 3
+    HUDI = 18
     JUPYTER = 1
     PRESTO = 6
+    TRINO = 17
     RANGER = 12
     SOLR = 10
     ZEPPELIN = 4
@@ -194,6 +205,28 @@ class ExecutionConfig(proto.Message):
         kms_key (str):
             Optional. The Cloud KMS key to use for
             encryption.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Optional. The duration after which the workload will be
+            terminated. When the workload passes this ttl, it will be
+            unconditionally killed without waiting for ongoing work to
+            finish. Minimum value is 10 minutes; maximum value is 14
+            days (see JSON representation of
+            `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+            If both ttl and idle_ttl are specified, the conditions are
+            treated as and OR: the workload will be terminated when it
+            has been idle for idle_ttl or when the ttl has passed,
+            whichever comes first. If ttl is not specified for a
+            session, it defaults to 24h.
+        staging_bucket (str):
+            Optional. A Cloud Storage bucket used to stage workload
+            dependencies, config files, and store workload output and
+            other ephemeral data, such as Spark history files. If you do
+            not specify a staging bucket, Cloud Dataproc will determine
+            a Cloud Storage location according to the region where your
+            workload is running, and then create and manage
+            project-level, per-location staging and temporary buckets.
+            **This field requires a Cloud Storage bucket name, not a
+            ``gs://...`` URI to a Cloud Storage bucket.**
     """
 
     service_account: str = proto.Field(
@@ -217,6 +250,15 @@ class ExecutionConfig(proto.Message):
     kms_key: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=duration_pb2.Duration,
+    )
+    staging_bucket: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
@@ -279,6 +321,13 @@ class RuntimeInfo(proto.Message):
         diagnostic_output_uri (str):
             Output only. A URI pointing to the location
             of the diagnostics tarball.
+        approximate_usage (google.cloud.dataproc_v1.types.UsageMetrics):
+            Output only. Approximate workload resource usage calculated
+            after workload finishes (see [Dataproc Serverless pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing)).
+        current_usage (google.cloud.dataproc_v1.types.UsageSnapshot):
+            Output only. Snapshot of current workload
+            resource usage.
     """
 
     endpoints: MutableMapping[str, str] = proto.MapField(
@@ -294,6 +343,75 @@ class RuntimeInfo(proto.Message):
         proto.STRING,
         number=3,
     )
+    approximate_usage: "UsageMetrics" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="UsageMetrics",
+    )
+    current_usage: "UsageSnapshot" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="UsageSnapshot",
+    )
+
+
+class UsageMetrics(proto.Message):
+    r"""Usage metrics represent approximate total resources consumed
+    by a workload.
+
+    Attributes:
+        milli_dcu_seconds (int):
+            Optional. DCU (Dataproc Compute Units) usage in
+            (``milliDCU`` x ``seconds``) (see [Dataproc Serverless
+            pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing)).
+        shuffle_storage_gb_seconds (int):
+            Optional. Shuffle storage usage in (``GB`` x ``seconds``)
+            (see [Dataproc Serverless pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing)).
+    """
+
+    milli_dcu_seconds: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    shuffle_storage_gb_seconds: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+
+
+class UsageSnapshot(proto.Message):
+    r"""The usage snaphot represents the resources consumed by a
+    workload at a specified time.
+
+    Attributes:
+        milli_dcu (int):
+            Optional. Milli (one-thousandth) Dataproc Compute Units
+            (DCUs) (see [Dataproc Serverless pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing)).
+        shuffle_storage_gb (int):
+            Optional. Shuffle Storage in gigabytes (GB). (see [Dataproc
+            Serverless pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing))
+        snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The timestamp of the usage
+            snapshot.
+    """
+
+    milli_dcu: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    shuffle_storage_gb: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    snapshot_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class GkeClusterConfig(proto.Message):
@@ -306,13 +424,13 @@ class GkeClusterConfig(proto.Message):
             cluster can be zonal or regional). Format:
             'projects/{project}/locations/{location}/clusters/{cluster_id}'
         node_pool_target (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget]):
-            Optional. GKE NodePools where workloads will
-            be scheduled. At least one node pool must be
-            assigned the 'default' role. Each role can be
-            given to only a single NodePoolTarget. All
-            NodePools must have the same location settings.
-            If a nodePoolTarget is not specified, Dataproc
-            constructs a default nodePoolTarget.
+            Optional. GKE node pools where workloads will be scheduled.
+            At least one node pool must be assigned the ``DEFAULT``
+            [GkeNodePoolTarget.Role][google.cloud.dataproc.v1.GkeNodePoolTarget.Role].
+            If a ``GkeNodePoolTarget`` is not specified, Dataproc
+            constructs a ``DEFAULT`` ``GkeNodePoolTarget``. Each role
+            can be given to only one ``GkeNodePoolTarget``. All node
+            pools must have the same location settings.
     """
 
     gke_cluster_target: str = proto.Field(
@@ -406,48 +524,60 @@ class KubernetesSoftwareConfig(proto.Message):
 
 
 class GkeNodePoolTarget(proto.Message):
-    r"""GKE NodePools that Dataproc workloads run on.
+    r"""GKE node pools that Dataproc workloads run on.
 
     Attributes:
         node_pool (str):
-            Required. The target GKE NodePool. Format:
+            Required. The target GKE node pool. Format:
             'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
         roles (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget.Role]):
-            Required. The types of role for a GKE
-            NodePool
+            Required. The roles associated with the GKE
+            node pool.
         node_pool_config (google.cloud.dataproc_v1.types.GkeNodePoolConfig):
-            Optional. The configuration for the GKE
-            NodePool.
-            If specified, Dataproc attempts to create a
-            NodePool with the specified shape. If one with
-            the same name already exists, it is verified
-            against all specified fields. If a field
-            differs, the virtual cluster creation will fail.
+            Input only. The configuration for the GKE
+            node pool.
+            If specified, Dataproc attempts to create a node
+            pool with the specified shape. If one with the
+            same name already exists, it is verified against
+            all specified fields. If a field differs, the
+            virtual cluster creation will fail.
 
-            If omitted, any NodePool with the specified name
-            is used. If a NodePool with the specified name
-            does not exist, Dataproc create a NodePool with
-            default values.
+            If omitted, any node pool with the specified
+            name is used. If a node pool with the specified
+            name does not exist, Dataproc create a node pool
+            with default values.
+
+            This is an input only field. It will not be
+            returned by the API.
     """
 
     class Role(proto.Enum):
-        r"""``Role`` specifies whose tasks will run on the NodePool. The roles
-        can be specific to workloads. Exactly one GkeNodePoolTarget within
-        the VirtualCluster must have 'default' role, which is used to run
-        all workloads that are not associated with a NodePool.
+        r"""``Role`` specifies the tasks that will run on the node pool. Roles
+        can be specific to workloads. Exactly one
+        [GkeNodePoolTarget][google.cloud.dataproc.v1.GkeNodePoolTarget]
+        within the virtual cluster must have the ``DEFAULT`` role, which is
+        used to run all workloads that are not associated with a node pool.
 
         Values:
             ROLE_UNSPECIFIED (0):
                 Role is unspecified.
             DEFAULT (1):
-                Any roles that are not directly assigned to a NodePool run
-                on the ``default`` role's NodePool.
+                At least one node pool must have the ``DEFAULT`` role. Work
+                assigned to a role that is not associated with a node pool
+                is assigned to the node pool with the ``DEFAULT`` role. For
+                example, work assigned to the ``CONTROLLER`` role will be
+                assigned to the node pool with the ``DEFAULT`` role if no
+                node pool has the ``CONTROLLER`` role.
             CONTROLLER (2):
-                Run controllers and webhooks.
+                Run work associated with the Dataproc control
+                plane (for example, controllers and webhooks).
+                Very low resource requirements.
             SPARK_DRIVER (3):
-                Run spark driver.
+                Run work associated with a Spark driver of a
+                job.
             SPARK_EXECUTOR (4):
-                Run spark executors.
+                Run work associated with a Spark executor of
+                a job.
         """
         ROLE_UNSPECIFIED = 0
         DEFAULT = 1
@@ -472,7 +602,7 @@ class GkeNodePoolTarget(proto.Message):
 
 
 class GkeNodePoolConfig(proto.Message):
-    r"""The configuration of a GKE NodePool used by a `Dataproc-on-GKE
+    r"""The configuration of a GKE node pool used by a `Dataproc-on-GKE
     cluster <https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>`__.
 
     Attributes:
@@ -481,15 +611,19 @@ class GkeNodePoolConfig(proto.Message):
         locations (MutableSequence[str]):
             Optional. The list of Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
-            where NodePool's nodes will be located.
+            where node pool nodes associated with a Dataproc on GKE
+            virtual cluster will be located.
 
-            **Note:** Currently, only one zone may be specified.
+            **Note:** All node pools associated with a virtual cluster
+            must be located in the same region as the virtual cluster,
+            and they must be located in the same zone within that
+            region.
 
-            If a location is not specified during NodePool creation,
-            Dataproc will choose a location.
+            If a location is not specified during node pool creation,
+            Dataproc on GKE will choose the zone.
         autoscaling (google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig):
             Optional. The autoscaler configuration for
-            this NodePool. The autoscaler is enabled only
+            this node pool. The autoscaler is enabled only
             when a valid configuration is present.
     """
 
@@ -500,14 +634,24 @@ class GkeNodePoolConfig(proto.Message):
             machine_type (str):
                 Optional. The name of a Compute Engine `machine
                 type <https://cloud.google.com/compute/docs/machine-types>`__.
-            preemptible (bool):
-                Optional. Whether the nodes are created as `preemptible VM
-                instances <https://cloud.google.com/compute/docs/instances/preemptible>`__.
             local_ssd_count (int):
                 Optional. The number of local SSD disks to attach to the
                 node, which is limited by the maximum number of disks
                 allowable per zone (see `Adding Local
                 SSDs <https://cloud.google.com/compute/docs/disks/local-ssd>`__).
+            preemptible (bool):
+                Optional. Whether the nodes are created as legacy
+                [preemptible VM instances]
+                (https://cloud.google.com/compute/docs/instances/preemptible).
+                Also see
+                [Spot][google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig.spot]
+                VMs, preemptible VM instances without a maximum lifetime.
+                Legacy and Spot preemptible nodes cannot be used in a node
+                pool with the ``CONTROLLER`` [role]
+                (/dataproc/docs/reference/rest/v1/projects.regions.clusters#role)
+                or in the DEFAULT node pool if the CONTROLLER role is not
+                assigned (the DEFAULT node pool will assume the CONTROLLER
+                role).
             accelerators (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig]):
                 Optional. A list of `hardware
                 accelerators <https://cloud.google.com/compute/docs/gpus>`__
@@ -519,19 +663,38 @@ class GkeNodePoolConfig(proto.Message):
                 on the specified or a newer CPU platform. Specify the
                 friendly names of CPU platforms, such as "Intel Haswell"\`
                 or Intel Sandy Bridge".
+            boot_disk_kms_key (str):
+                Optional. The [Customer Managed Encryption Key (CMEK)]
+                (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek)
+                used to encrypt the boot disk attached to each node in the
+                node pool. Specify the key using the following format:
+                projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME.
+            spot (bool):
+                Optional. Whether the nodes are created as [Spot VM
+                instances]
+                (https://cloud.google.com/compute/docs/instances/spot). Spot
+                VMs are the latest update to legacy [preemptible
+                VMs][google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig.preemptible].
+                Spot VMs do not have a maximum lifetime. Legacy and Spot
+                preemptible nodes cannot be used in a node pool with the
+                ``CONTROLLER``
+                `role </dataproc/docs/reference/rest/v1/projects.regions.clusters#role>`__
+                or in the DEFAULT node pool if the CONTROLLER role is not
+                assigned (the DEFAULT node pool will assume the CONTROLLER
+                role).
         """
 
         machine_type: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        preemptible: bool = proto.Field(
-            proto.BOOL,
-            number=10,
-        )
         local_ssd_count: int = proto.Field(
             proto.INT32,
             number=7,
+        )
+        preemptible: bool = proto.Field(
+            proto.BOOL,
+            number=10,
         )
         accelerators: MutableSequence[
             "GkeNodePoolConfig.GkeNodePoolAcceleratorConfig"
@@ -544,10 +707,18 @@ class GkeNodePoolConfig(proto.Message):
             proto.STRING,
             number=13,
         )
+        boot_disk_kms_key: str = proto.Field(
+            proto.STRING,
+            number=23,
+        )
+        spot: bool = proto.Field(
+            proto.BOOL,
+            number=32,
+        )
 
     class GkeNodePoolAcceleratorConfig(proto.Message):
         r"""A GkeNodeConfigAcceleratorConfig represents a Hardware
-        Accelerator request for a NodePool.
+        Accelerator request for a node pool.
 
         Attributes:
             accelerator_count (int):
@@ -556,6 +727,10 @@ class GkeNodePoolConfig(proto.Message):
             accelerator_type (str):
                 The accelerator type resource namename (see
                 GPUs on Compute Engine).
+            gpu_partition_size (str):
+                Size of partitions to create on the GPU. Valid values are
+                described in the NVIDIA `mig user
+                guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning>`__.
         """
 
         accelerator_count: int = proto.Field(
@@ -566,6 +741,10 @@ class GkeNodePoolConfig(proto.Message):
             proto.STRING,
             number=2,
         )
+        gpu_partition_size: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class GkeNodePoolAutoscalingConfig(proto.Message):
         r"""GkeNodePoolAutoscaling contains information the cluster
@@ -574,12 +753,12 @@ class GkeNodePoolConfig(proto.Message):
 
         Attributes:
             min_node_count (int):
-                The minimum number of nodes in the NodePool. Must be >= 0
+                The minimum number of nodes in the node pool. Must be >= 0
                 and <= max_node_count.
             max_node_count (int):
-                The maximum number of nodes in the NodePool. Must be >=
-                min_node_count. **Note:** Quota must be sufficient to scale
-                up the cluster.
+                The maximum number of nodes in the node pool. Must be >=
+                min_node_count, and must be > 0. **Note:** Quota must be
+                sufficient to scale up the cluster.
         """
 
         min_node_count: int = proto.Field(

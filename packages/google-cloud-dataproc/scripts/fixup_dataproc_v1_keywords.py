@@ -60,7 +60,7 @@ class dataprocCallTransformer(cst.CSTTransformer):
         'instantiate_inline_workflow_template': ('parent', 'template', 'request_id', ),
         'instantiate_workflow_template': ('name', 'version', 'request_id', 'parameters', ),
         'list_autoscaling_policies': ('parent', 'page_size', 'page_token', ),
-        'list_batches': ('parent', 'page_size', 'page_token', ),
+        'list_batches': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_clusters': ('project_id', 'region', 'filter', 'page_size', 'page_token', ),
         'list_jobs': ('project_id', 'region', 'page_size', 'page_token', 'cluster_name', 'job_state_matcher', 'filter', ),
         'list_workflow_templates': ('parent', 'page_size', 'page_token', ),
