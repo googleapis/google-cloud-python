@@ -43,8 +43,8 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
     syncing, and querying data for your mobile, web, and IoT apps at
     global scale. Its client libraries provide live synchronization
     and offline support, while its security features and
-    integrations with Firebase and Google Cloud Platform (GCP)
-    accelerate building truly serverless apps.
+    integrations with Firebase and Google Cloud Platform accelerate
+    building truly serverless apps.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -571,7 +571,8 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
         r"""Return a callable for the write method over gRPC.
 
         Streams batches of document updates and deletes, in
-        order.
+        order. This method is only available via the gRPC API
+        (not REST).
 
         Returns:
             Callable[[~.WriteRequest],
@@ -597,7 +598,8 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
     ) -> Callable[[firestore.ListenRequest], Awaitable[firestore.ListenResponse]]:
         r"""Return a callable for the listen method over gRPC.
 
-        Listens to changes.
+        Listens to changes. This method is only available via
+        the gRPC API (not REST).
 
         Returns:
             Callable[[~.ListenRequest],

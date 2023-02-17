@@ -136,6 +136,71 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "FirestoreAdminClient",
+          "rpcs": {
+            "CreateIndex": {
+              "methods": [
+                "create_index"
+              ]
+            },
+            "DeleteIndex": {
+              "methods": [
+                "delete_index"
+              ]
+            },
+            "ExportDocuments": {
+              "methods": [
+                "export_documents"
+              ]
+            },
+            "GetDatabase": {
+              "methods": [
+                "get_database"
+              ]
+            },
+            "GetField": {
+              "methods": [
+                "get_field"
+              ]
+            },
+            "GetIndex": {
+              "methods": [
+                "get_index"
+              ]
+            },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
+              ]
+            },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
+            "ListFields": {
+              "methods": [
+                "list_fields"
+              ]
+            },
+            "ListIndexes": {
+              "methods": [
+                "list_indexes"
+              ]
+            },
+            "UpdateDatabase": {
+              "methods": [
+                "update_database"
+              ]
+            },
+            "UpdateField": {
+              "methods": [
+                "update_field"
+              ]
+            }
+          }
         }
       }
     }

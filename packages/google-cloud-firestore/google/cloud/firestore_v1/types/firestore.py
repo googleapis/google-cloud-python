@@ -135,43 +135,67 @@ class ListDocumentsRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/documents``
             or
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
+
             For example:
             ``projects/my-project/databases/my-database/documents`` or
             ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
         collection_id (str):
-            Required. The collection ID, relative to ``parent``, to
-            list. For example: ``chatrooms`` or ``messages``.
+            Optional. The collection ID, relative to ``parent``, to
+            list.
+
+            For example: ``chatrooms`` or ``messages``.
+
+            This is optional, and when not provided, Firestore will list
+            documents from all collections under the provided
+            ``parent``.
         page_size (int):
-            The maximum number of documents to return.
+            Optional. The maximum number of documents to
+            return in a single response.
+            Firestore may return fewer than this value.
         page_token (str):
-            The ``next_page_token`` value returned from a previous List
-            request, if any.
+            Optional. A page token, received from a previous
+            ``ListDocuments`` response.
+
+            Provide this to retrieve the subsequent page. When
+            paginating, all other parameters (with the exception of
+            ``page_size``) must match the values set in the request that
+            generated the page token.
         order_by (str):
-            The order to sort results by. For example:
-            ``priority desc, name``.
+            Optional. The optional ordering of the documents to return.
+
+            For example: ``priority desc, __name__ desc``.
+
+            This mirrors the
+            [``ORDER BY``][google.firestore.v1.StructuredQuery.order_by]
+            used in Firestore queries but in a string representation.
+            When absent, documents are ordered based on
+            ``__name__ ASC``.
         mask (google.cloud.firestore_v1.types.DocumentMask):
-            The fields to return. If not set, returns all
-            fields.
+            Optional. The fields to return. If not set,
+            returns all fields.
             If a document has a field that is not present in
             this mask, that field will not be returned in
             the response.
         transaction (bytes):
-            Reads documents in a transaction.
+            Perform the read as part of an already active
+            transaction.
 
             This field is a member of `oneof`_ ``consistency_selector``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
-            Reads documents as they were at the given
-            time. This may not be older than 270 seconds.
+            Perform the read at the provided time.
+            This may not be older than 270 seconds.
 
             This field is a member of `oneof`_ ``consistency_selector``.
         show_missing (bool):
-            If the list should show missing documents. A missing
-            document is a document that does not exist but has
-            sub-documents. These documents will be returned with a key
-            but will not have fields,
-            [Document.create_time][google.firestore.v1.Document.create_time],
+            If the list should show missing documents.
+
+            A document is missing if it does not exist, but there are
+            sub-documents nested underneath it. When true, such missing
+            documents will be returned with a key but will not have
+            fields,
+            [``create_time``][google.firestore.v1.Document.create_time],
             or
-            [Document.update_time][google.firestore.v1.Document.update_time]
+            [``update_time``][google.firestore.v1.Document.update_time]
             set.
 
             Requests with ``show_missing`` may not specify ``where`` or
@@ -228,7 +252,10 @@ class ListDocumentsResponse(proto.Message):
         documents (MutableSequence[google.cloud.firestore_v1.types.Document]):
             The Documents found.
         next_page_token (str):
-            The next page token.
+            A token to retrieve the next page of
+            documents.
+            If this field is omitted, there are no
+            subsequent pages.
     """
 
     @property

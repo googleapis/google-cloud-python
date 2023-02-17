@@ -64,6 +64,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import FirestoreAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import FirestoreAdminGrpcTransport
 from .transports.grpc_asyncio import FirestoreAdminGrpcAsyncIOTransport
+from .transports.rest import FirestoreAdminRestTransport
 
 
 class FirestoreAdminClientMeta(type):
@@ -79,6 +80,7 @@ class FirestoreAdminClientMeta(type):
     )  # type: Dict[str, Type[FirestoreAdminTransport]]
     _transport_registry["grpc"] = FirestoreAdminGrpcTransport
     _transport_registry["grpc_asyncio"] = FirestoreAdminGrpcAsyncIOTransport
+    _transport_registry["rest"] = FirestoreAdminRestTransport
 
     def get_transport_class(
         cls,

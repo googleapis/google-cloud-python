@@ -244,9 +244,13 @@ class StructuredQuery(proto.Message):
                 AND (1):
                     Documents are required to satisfy all of the
                     combined filters.
+                OR (2):
+                    Documents are required to satisfy at least
+                    one of the combined filters.
             """
             OPERATOR_UNSPECIFIED = 0
             AND = 1
+            OR = 2
 
         op: "StructuredQuery.CompositeFilter.Operator" = proto.Field(
             proto.ENUM,

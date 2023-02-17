@@ -63,6 +63,7 @@ from google.rpc import status_pb2  # type: ignore
 from .transports.base import FirestoreTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import FirestoreGrpcTransport
 from .transports.grpc_asyncio import FirestoreGrpcAsyncIOTransport
+from .transports.rest import FirestoreRestTransport
 
 
 class FirestoreClientMeta(type):
@@ -76,6 +77,7 @@ class FirestoreClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[FirestoreTransport]]
     _transport_registry["grpc"] = FirestoreGrpcTransport
     _transport_registry["grpc_asyncio"] = FirestoreGrpcAsyncIOTransport
+    _transport_registry["rest"] = FirestoreRestTransport
 
     def get_transport_class(
         cls,
@@ -106,8 +108,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     syncing, and querying data for your mobile, web, and IoT apps at
     global scale. Its client libraries provide live synchronization
     and offline support, while its security features and
-    integrations with Firebase and Google Cloud Platform (GCP)
-    accelerate building truly serverless apps.
+    integrations with Firebase and Google Cloud Platform accelerate
+    building truly serverless apps.
     """
 
     @staticmethod
@@ -547,7 +549,6 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 request = firestore_v1.ListDocumentsRequest(
                     transaction=b'transaction_blob',
                     parent="parent_value",
-                    collection_id="collection_id_value",
                 )
 
                 # Make the request
@@ -570,7 +571,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.services.firestore.pagers.ListDocumentsPager:
                 The response for
-                [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
+                   [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -884,7 +885,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             Iterable[google.cloud.firestore_v1.types.BatchGetDocumentsResponse]:
                 The streamed response for
-                [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
+                   [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
 
         """
         # Create or coerce a protobuf request object.
@@ -973,7 +974,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.types.BeginTransactionResponse:
                 The response for
-                [Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction].
+                   [Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction].
 
         """
         # Create or coerce a protobuf request object.
@@ -1283,7 +1284,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             Iterable[google.cloud.firestore_v1.types.RunQueryResponse]:
                 The response for
-                [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
+                   [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
 
         """
         # Create or coerce a protobuf request object.
@@ -1380,7 +1381,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             Iterable[google.cloud.firestore_v1.types.RunAggregationQueryResponse]:
                 The response for
-                [Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery].
+                   [Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery].
 
         """
         # Create or coerce a protobuf request object.
@@ -1466,7 +1467,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.services.firestore.pagers.PartitionQueryPager:
                 The response for
-                [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
+                   [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1519,7 +1520,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.WriteResponse]:
         r"""Streams batches of document updates and deletes, in
-        order.
+        order. This method is only available via the gRPC API
+        (not REST).
 
         .. code-block:: python
 
@@ -1612,7 +1614,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.ListenResponse]:
-        r"""Listens to changes.
+        r"""Listens to changes. This method is only available via
+        the gRPC API (not REST).
 
         .. code-block:: python
 
@@ -1751,7 +1754,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.services.firestore.pagers.ListCollectionIdsPager:
                 The response from
-                [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
+                   [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1867,7 +1870,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.types.BatchWriteResponse:
                 The response from
-                [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
+                   [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
 
         """
         # Create or coerce a protobuf request object.

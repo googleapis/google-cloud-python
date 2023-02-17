@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import FirestoreAdminTransport
 from .grpc import FirestoreAdminGrpcTransport
 from .grpc_asyncio import FirestoreAdminGrpcAsyncIOTransport
+from .rest import FirestoreAdminRestTransport
+from .rest import FirestoreAdminRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[FirestoreAdminTransport]]
 _transport_registry["grpc"] = FirestoreAdminGrpcTransport
 _transport_registry["grpc_asyncio"] = FirestoreAdminGrpcAsyncIOTransport
+_transport_registry["rest"] = FirestoreAdminRestTransport
 
 __all__ = (
     "FirestoreAdminTransport",
     "FirestoreAdminGrpcTransport",
     "FirestoreAdminGrpcAsyncIOTransport",
+    "FirestoreAdminRestTransport",
+    "FirestoreAdminRestInterceptor",
 )
