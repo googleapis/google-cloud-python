@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api import httpbody_pb2  # type: ignore
 from google.api_core import client_options
@@ -105,6 +112,7 @@ def test__get_default_mtls_endpoint():
     [
         (CloudBuildClient, "grpc"),
         (CloudBuildAsyncClient, "grpc_asyncio"),
+        (CloudBuildClient, "rest"),
     ],
 )
 def test_cloud_build_client_from_service_account_info(client_class, transport_name):
@@ -118,7 +126,11 @@ def test_cloud_build_client_from_service_account_info(client_class, transport_na
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("cloudbuild.googleapis.com:443")
+        assert client.transport._host == (
+            "cloudbuild.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://cloudbuild.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -126,6 +138,7 @@ def test_cloud_build_client_from_service_account_info(client_class, transport_na
     [
         (transports.CloudBuildGrpcTransport, "grpc"),
         (transports.CloudBuildGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CloudBuildRestTransport, "rest"),
     ],
 )
 def test_cloud_build_client_service_account_always_use_jwt(
@@ -151,6 +164,7 @@ def test_cloud_build_client_service_account_always_use_jwt(
     [
         (CloudBuildClient, "grpc"),
         (CloudBuildAsyncClient, "grpc_asyncio"),
+        (CloudBuildClient, "rest"),
     ],
 )
 def test_cloud_build_client_from_service_account_file(client_class, transport_name):
@@ -171,13 +185,18 @@ def test_cloud_build_client_from_service_account_file(client_class, transport_na
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("cloudbuild.googleapis.com:443")
+        assert client.transport._host == (
+            "cloudbuild.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://cloudbuild.googleapis.com"
+        )
 
 
 def test_cloud_build_client_get_transport_class():
     transport = CloudBuildClient.get_transport_class()
     available_transports = [
         transports.CloudBuildGrpcTransport,
+        transports.CloudBuildRestTransport,
     ]
     assert transport in available_transports
 
@@ -194,6 +213,7 @@ def test_cloud_build_client_get_transport_class():
             transports.CloudBuildGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CloudBuildClient, transports.CloudBuildRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -337,6 +357,8 @@ def test_cloud_build_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (CloudBuildClient, transports.CloudBuildRestTransport, "rest", "true"),
+        (CloudBuildClient, transports.CloudBuildRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -530,6 +552,7 @@ def test_cloud_build_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.CloudBuildGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CloudBuildClient, transports.CloudBuildRestTransport, "rest"),
     ],
 )
 def test_cloud_build_client_client_options_scopes(
@@ -565,6 +588,7 @@ def test_cloud_build_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (CloudBuildClient, transports.CloudBuildRestTransport, "rest", None),
     ],
 )
 def test_cloud_build_client_client_options_credentials_file(
@@ -5823,6 +5847,6388 @@ async def test_list_worker_pools_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.CreateBuildRequest,
+        dict,
+    ],
+)
+def test_create_build_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request_init["build"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "project_id": "project_id_value",
+        "status": 10,
+        "status_detail": "status_detail_value",
+        "source": {
+            "storage_source": {
+                "bucket": "bucket_value",
+                "object_": "object__value",
+                "generation": 1068,
+            },
+            "repo_source": {
+                "project_id": "project_id_value",
+                "repo_name": "repo_name_value",
+                "branch_name": "branch_name_value",
+                "tag_name": "tag_name_value",
+                "commit_sha": "commit_sha_value",
+                "dir_": "dir__value",
+                "invert_regex": True,
+                "substitutions": {},
+            },
+            "storage_source_manifest": {
+                "bucket": "bucket_value",
+                "object_": "object__value",
+                "generation": 1068,
+            },
+        },
+        "steps": [
+            {
+                "name": "name_value",
+                "env": ["env_value1", "env_value2"],
+                "args": ["args_value1", "args_value2"],
+                "dir_": "dir__value",
+                "id": "id_value",
+                "wait_for": ["wait_for_value1", "wait_for_value2"],
+                "entrypoint": "entrypoint_value",
+                "secret_env": ["secret_env_value1", "secret_env_value2"],
+                "volumes": [{"name": "name_value", "path": "path_value"}],
+                "timing": {
+                    "start_time": {"seconds": 751, "nanos": 543},
+                    "end_time": {},
+                },
+                "pull_timing": {},
+                "timeout": {"seconds": 751, "nanos": 543},
+                "status": 10,
+                "allow_failure": True,
+                "exit_code": 948,
+                "allow_exit_codes": [1702, 1703],
+                "script": "script_value",
+            }
+        ],
+        "results": {
+            "images": [
+                {"name": "name_value", "digest": "digest_value", "push_timing": {}}
+            ],
+            "build_step_images": [
+                "build_step_images_value1",
+                "build_step_images_value2",
+            ],
+            "artifact_manifest": "artifact_manifest_value",
+            "num_artifacts": 1392,
+            "build_step_outputs": [
+                b"build_step_outputs_blob1",
+                b"build_step_outputs_blob2",
+            ],
+            "artifact_timing": {},
+            "python_packages": [
+                {
+                    "uri": "uri_value",
+                    "file_hashes": {
+                        "file_hash": [{"type_": 1, "value": b"value_blob"}]
+                    },
+                    "push_timing": {},
+                }
+            ],
+            "maven_artifacts": [
+                {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+            ],
+        },
+        "create_time": {},
+        "start_time": {},
+        "finish_time": {},
+        "timeout": {},
+        "images": ["images_value1", "images_value2"],
+        "queue_ttl": {},
+        "artifacts": {
+            "images": ["images_value1", "images_value2"],
+            "objects": {
+                "location": "location_value",
+                "paths": ["paths_value1", "paths_value2"],
+                "timing": {},
+            },
+            "maven_artifacts": [
+                {
+                    "repository": "repository_value",
+                    "path": "path_value",
+                    "artifact_id": "artifact_id_value",
+                    "group_id": "group_id_value",
+                    "version": "version_value",
+                }
+            ],
+            "python_packages": [
+                {
+                    "repository": "repository_value",
+                    "paths": ["paths_value1", "paths_value2"],
+                }
+            ],
+        },
+        "logs_bucket": "logs_bucket_value",
+        "source_provenance": {
+            "resolved_storage_source": {},
+            "resolved_repo_source": {},
+            "resolved_storage_source_manifest": {},
+            "file_hashes": {},
+        },
+        "build_trigger_id": "build_trigger_id_value",
+        "options": {
+            "source_provenance_hash": [1],
+            "requested_verify_option": 1,
+            "machine_type": 1,
+            "disk_size_gb": 1261,
+            "substitution_option": 1,
+            "dynamic_substitutions": True,
+            "log_streaming_option": 1,
+            "worker_pool": "worker_pool_value",
+            "pool": {"name": "name_value"},
+            "logging": 1,
+            "env": ["env_value1", "env_value2"],
+            "secret_env": ["secret_env_value1", "secret_env_value2"],
+            "volumes": {},
+        },
+        "log_url": "log_url_value",
+        "substitutions": {},
+        "tags": ["tags_value1", "tags_value2"],
+        "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
+        "timing": {},
+        "approval": {
+            "state": 1,
+            "config": {"approval_required": True},
+            "result": {
+                "approver_account": "approver_account_value",
+                "approval_time": {},
+                "decision": 1,
+                "comment": "comment_value",
+                "url": "url_value",
+            },
+        },
+        "service_account": "service_account_value",
+        "available_secrets": {
+            "secret_manager": [
+                {"version_name": "version_name_value", "env": "env_value"}
+            ],
+            "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
+        },
+        "warnings": [{"text": "text_value", "priority": 1}],
+        "failure_info": {"type_": 1, "detail": "detail_value"},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_build(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_build_rest_required_fields(request_type=cloudbuild.CreateBuildRequest):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_build._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("parent",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_build(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_build_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_build._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("parent",))
+        & set(
+            (
+                "projectId",
+                "build",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_build_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_create_build"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_create_build"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.CreateBuildRequest.pb(cloudbuild.CreateBuildRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloudbuild.CreateBuildRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_build(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_build_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.CreateBuildRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request_init["build"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "project_id": "project_id_value",
+        "status": 10,
+        "status_detail": "status_detail_value",
+        "source": {
+            "storage_source": {
+                "bucket": "bucket_value",
+                "object_": "object__value",
+                "generation": 1068,
+            },
+            "repo_source": {
+                "project_id": "project_id_value",
+                "repo_name": "repo_name_value",
+                "branch_name": "branch_name_value",
+                "tag_name": "tag_name_value",
+                "commit_sha": "commit_sha_value",
+                "dir_": "dir__value",
+                "invert_regex": True,
+                "substitutions": {},
+            },
+            "storage_source_manifest": {
+                "bucket": "bucket_value",
+                "object_": "object__value",
+                "generation": 1068,
+            },
+        },
+        "steps": [
+            {
+                "name": "name_value",
+                "env": ["env_value1", "env_value2"],
+                "args": ["args_value1", "args_value2"],
+                "dir_": "dir__value",
+                "id": "id_value",
+                "wait_for": ["wait_for_value1", "wait_for_value2"],
+                "entrypoint": "entrypoint_value",
+                "secret_env": ["secret_env_value1", "secret_env_value2"],
+                "volumes": [{"name": "name_value", "path": "path_value"}],
+                "timing": {
+                    "start_time": {"seconds": 751, "nanos": 543},
+                    "end_time": {},
+                },
+                "pull_timing": {},
+                "timeout": {"seconds": 751, "nanos": 543},
+                "status": 10,
+                "allow_failure": True,
+                "exit_code": 948,
+                "allow_exit_codes": [1702, 1703],
+                "script": "script_value",
+            }
+        ],
+        "results": {
+            "images": [
+                {"name": "name_value", "digest": "digest_value", "push_timing": {}}
+            ],
+            "build_step_images": [
+                "build_step_images_value1",
+                "build_step_images_value2",
+            ],
+            "artifact_manifest": "artifact_manifest_value",
+            "num_artifacts": 1392,
+            "build_step_outputs": [
+                b"build_step_outputs_blob1",
+                b"build_step_outputs_blob2",
+            ],
+            "artifact_timing": {},
+            "python_packages": [
+                {
+                    "uri": "uri_value",
+                    "file_hashes": {
+                        "file_hash": [{"type_": 1, "value": b"value_blob"}]
+                    },
+                    "push_timing": {},
+                }
+            ],
+            "maven_artifacts": [
+                {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+            ],
+        },
+        "create_time": {},
+        "start_time": {},
+        "finish_time": {},
+        "timeout": {},
+        "images": ["images_value1", "images_value2"],
+        "queue_ttl": {},
+        "artifacts": {
+            "images": ["images_value1", "images_value2"],
+            "objects": {
+                "location": "location_value",
+                "paths": ["paths_value1", "paths_value2"],
+                "timing": {},
+            },
+            "maven_artifacts": [
+                {
+                    "repository": "repository_value",
+                    "path": "path_value",
+                    "artifact_id": "artifact_id_value",
+                    "group_id": "group_id_value",
+                    "version": "version_value",
+                }
+            ],
+            "python_packages": [
+                {
+                    "repository": "repository_value",
+                    "paths": ["paths_value1", "paths_value2"],
+                }
+            ],
+        },
+        "logs_bucket": "logs_bucket_value",
+        "source_provenance": {
+            "resolved_storage_source": {},
+            "resolved_repo_source": {},
+            "resolved_storage_source_manifest": {},
+            "file_hashes": {},
+        },
+        "build_trigger_id": "build_trigger_id_value",
+        "options": {
+            "source_provenance_hash": [1],
+            "requested_verify_option": 1,
+            "machine_type": 1,
+            "disk_size_gb": 1261,
+            "substitution_option": 1,
+            "dynamic_substitutions": True,
+            "log_streaming_option": 1,
+            "worker_pool": "worker_pool_value",
+            "pool": {"name": "name_value"},
+            "logging": 1,
+            "env": ["env_value1", "env_value2"],
+            "secret_env": ["secret_env_value1", "secret_env_value2"],
+            "volumes": {},
+        },
+        "log_url": "log_url_value",
+        "substitutions": {},
+        "tags": ["tags_value1", "tags_value2"],
+        "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
+        "timing": {},
+        "approval": {
+            "state": 1,
+            "config": {"approval_required": True},
+            "result": {
+                "approver_account": "approver_account_value",
+                "approval_time": {},
+                "decision": 1,
+                "comment": "comment_value",
+                "url": "url_value",
+            },
+        },
+        "service_account": "service_account_value",
+        "available_secrets": {
+            "secret_manager": [
+                {"version_name": "version_name_value", "env": "env_value"}
+            ],
+            "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
+        },
+        "warnings": [{"text": "text_value", "priority": 1}],
+        "failure_info": {"type_": 1, "detail": "detail_value"},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_build(request)
+
+
+def test_create_build_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            build=cloudbuild.Build(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_build(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/builds" % client.transport._host, args[1]
+        )
+
+
+def test_create_build_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_build(
+            cloudbuild.CreateBuildRequest(),
+            project_id="project_id_value",
+            build=cloudbuild.Build(name="name_value"),
+        )
+
+
+def test_create_build_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.GetBuildRequest,
+        dict,
+    ],
+)
+def test_get_build_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.Build(
+            name="name_value",
+            id="id_value",
+            project_id="project_id_value",
+            status=cloudbuild.Build.Status.PENDING,
+            status_detail="status_detail_value",
+            images=["images_value"],
+            logs_bucket="logs_bucket_value",
+            build_trigger_id="build_trigger_id_value",
+            log_url="log_url_value",
+            tags=["tags_value"],
+            service_account="service_account_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_build(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudbuild.Build)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.status == cloudbuild.Build.Status.PENDING
+    assert response.status_detail == "status_detail_value"
+    assert response.images == ["images_value"]
+    assert response.logs_bucket == "logs_bucket_value"
+    assert response.build_trigger_id == "build_trigger_id_value"
+    assert response.log_url == "log_url_value"
+    assert response.tags == ["tags_value"]
+    assert response.service_account == "service_account_value"
+
+
+def test_get_build_rest_required_fields(request_type=cloudbuild.GetBuildRequest):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request_init["id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+    jsonified_request["id"] = "id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_build._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("name",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+    assert "id" in jsonified_request
+    assert jsonified_request["id"] == "id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.Build()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.Build.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_build(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_build_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_build._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("name",))
+        & set(
+            (
+                "projectId",
+                "id",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_build_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_get_build"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_get_build"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.GetBuildRequest.pb(cloudbuild.GetBuildRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.Build.to_json(cloudbuild.Build())
+
+        request = cloudbuild.GetBuildRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.Build()
+
+        client.get_build(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_build_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.GetBuildRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_build(request)
+
+
+def test_get_build_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.Build()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1", "id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            id="id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_build(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/builds/{id}" % client.transport._host, args[1]
+        )
+
+
+def test_get_build_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_build(
+            cloudbuild.GetBuildRequest(),
+            project_id="project_id_value",
+            id="id_value",
+        )
+
+
+def test_get_build_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.ListBuildsRequest,
+        dict,
+    ],
+)
+def test_list_builds_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.ListBuildsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.ListBuildsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_builds(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBuildsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_builds_rest_required_fields(request_type=cloudbuild.ListBuildsRequest):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_builds._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_builds._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+            "parent",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.ListBuildsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.ListBuildsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_builds(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_builds_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_builds._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+                "parent",
+            )
+        )
+        & set(("projectId",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_builds_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_list_builds"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_list_builds"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.ListBuildsRequest.pb(cloudbuild.ListBuildsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.ListBuildsResponse.to_json(
+            cloudbuild.ListBuildsResponse()
+        )
+
+        request = cloudbuild.ListBuildsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.ListBuildsResponse()
+
+        client.list_builds(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_builds_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.ListBuildsRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_builds(request)
+
+
+def test_list_builds_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.ListBuildsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            filter="filter_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.ListBuildsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_builds(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/builds" % client.transport._host, args[1]
+        )
+
+
+def test_list_builds_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_builds(
+            cloudbuild.ListBuildsRequest(),
+            project_id="project_id_value",
+            filter="filter_value",
+        )
+
+
+def test_list_builds_rest_pager(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloudbuild.ListBuildsResponse(
+                builds=[
+                    cloudbuild.Build(),
+                    cloudbuild.Build(),
+                    cloudbuild.Build(),
+                ],
+                next_page_token="abc",
+            ),
+            cloudbuild.ListBuildsResponse(
+                builds=[],
+                next_page_token="def",
+            ),
+            cloudbuild.ListBuildsResponse(
+                builds=[
+                    cloudbuild.Build(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudbuild.ListBuildsResponse(
+                builds=[
+                    cloudbuild.Build(),
+                    cloudbuild.Build(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(cloudbuild.ListBuildsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project_id": "sample1"}
+
+        pager = client.list_builds(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloudbuild.Build) for i in results)
+
+        pages = list(client.list_builds(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.CancelBuildRequest,
+        dict,
+    ],
+)
+def test_cancel_build_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.Build(
+            name="name_value",
+            id="id_value",
+            project_id="project_id_value",
+            status=cloudbuild.Build.Status.PENDING,
+            status_detail="status_detail_value",
+            images=["images_value"],
+            logs_bucket="logs_bucket_value",
+            build_trigger_id="build_trigger_id_value",
+            log_url="log_url_value",
+            tags=["tags_value"],
+            service_account="service_account_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_build(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudbuild.Build)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.status == cloudbuild.Build.Status.PENDING
+    assert response.status_detail == "status_detail_value"
+    assert response.images == ["images_value"]
+    assert response.logs_bucket == "logs_bucket_value"
+    assert response.build_trigger_id == "build_trigger_id_value"
+    assert response.log_url == "log_url_value"
+    assert response.tags == ["tags_value"]
+    assert response.service_account == "service_account_value"
+
+
+def test_cancel_build_rest_required_fields(request_type=cloudbuild.CancelBuildRequest):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request_init["id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+    jsonified_request["id"] = "id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+    assert "id" in jsonified_request
+    assert jsonified_request["id"] == "id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.Build()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.Build.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.cancel_build(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_cancel_build_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.cancel_build._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "projectId",
+                "id",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_build_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_cancel_build"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_cancel_build"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.CancelBuildRequest.pb(cloudbuild.CancelBuildRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.Build.to_json(cloudbuild.Build())
+
+        request = cloudbuild.CancelBuildRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.Build()
+
+        client.cancel_build(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_build_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.CancelBuildRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_build(request)
+
+
+def test_cancel_build_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.Build()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1", "id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            id="id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.cancel_build(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/builds/{id}:cancel" % client.transport._host,
+            args[1],
+        )
+
+
+def test_cancel_build_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.cancel_build(
+            cloudbuild.CancelBuildRequest(),
+            project_id="project_id_value",
+            id="id_value",
+        )
+
+
+def test_cancel_build_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.RetryBuildRequest,
+        dict,
+    ],
+)
+def test_retry_build_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.retry_build(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_retry_build_rest_required_fields(request_type=cloudbuild.RetryBuildRequest):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request_init["id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).retry_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+    jsonified_request["id"] = "id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).retry_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+    assert "id" in jsonified_request
+    assert jsonified_request["id"] == "id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.retry_build(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_retry_build_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.retry_build._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "projectId",
+                "id",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_retry_build_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_retry_build"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_retry_build"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.RetryBuildRequest.pb(cloudbuild.RetryBuildRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloudbuild.RetryBuildRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.retry_build(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_retry_build_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.RetryBuildRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.retry_build(request)
+
+
+def test_retry_build_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1", "id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            id="id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.retry_build(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/builds/{id}:retry" % client.transport._host,
+            args[1],
+        )
+
+
+def test_retry_build_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.retry_build(
+            cloudbuild.RetryBuildRequest(),
+            project_id="project_id_value",
+            id="id_value",
+        )
+
+
+def test_retry_build_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.ApproveBuildRequest,
+        dict,
+    ],
+)
+def test_approve_build_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/builds/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.approve_build(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_approve_build_rest_required_fields(
+    request_type=cloudbuild.ApproveBuildRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).approve_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).approve_build._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.approve_build(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_approve_build_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.approve_build._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_approve_build_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_approve_build"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_approve_build"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.ApproveBuildRequest.pb(cloudbuild.ApproveBuildRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloudbuild.ApproveBuildRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.approve_build(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_approve_build_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.ApproveBuildRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/builds/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.approve_build(request)
+
+
+def test_approve_build_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/builds/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            approval_result=cloudbuild.ApprovalResult(
+                approver_account="approver_account_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.approve_build(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/builds/*}:approve" % client.transport._host, args[1]
+        )
+
+
+def test_approve_build_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.approve_build(
+            cloudbuild.ApproveBuildRequest(),
+            name="name_value",
+            approval_result=cloudbuild.ApprovalResult(
+                approver_account="approver_account_value"
+            ),
+        )
+
+
+def test_approve_build_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.CreateBuildTriggerRequest,
+        dict,
+    ],
+)
+def test_create_build_trigger_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request_init["trigger"] = {
+        "resource_name": "resource_name_value",
+        "id": "id_value",
+        "description": "description_value",
+        "name": "name_value",
+        "tags": ["tags_value1", "tags_value2"],
+        "trigger_template": {
+            "project_id": "project_id_value",
+            "repo_name": "repo_name_value",
+            "branch_name": "branch_name_value",
+            "tag_name": "tag_name_value",
+            "commit_sha": "commit_sha_value",
+            "dir_": "dir__value",
+            "invert_regex": True,
+            "substitutions": {},
+        },
+        "github": {
+            "installation_id": 1598,
+            "owner": "owner_value",
+            "name": "name_value",
+            "pull_request": {
+                "branch": "branch_value",
+                "comment_control": 1,
+                "invert_regex": True,
+            },
+            "push": {
+                "branch": "branch_value",
+                "tag": "tag_value",
+                "invert_regex": True,
+            },
+        },
+        "pubsub_config": {
+            "subscription": "subscription_value",
+            "topic": "topic_value",
+            "service_account_email": "service_account_email_value",
+            "state": 1,
+        },
+        "webhook_config": {"secret": "secret_value", "state": 1},
+        "autodetect": True,
+        "build": {
+            "name": "name_value",
+            "id": "id_value",
+            "project_id": "project_id_value",
+            "status": 10,
+            "status_detail": "status_detail_value",
+            "source": {
+                "storage_source": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+                "repo_source": {},
+                "storage_source_manifest": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+            },
+            "steps": [
+                {
+                    "name": "name_value",
+                    "env": ["env_value1", "env_value2"],
+                    "args": ["args_value1", "args_value2"],
+                    "dir_": "dir__value",
+                    "id": "id_value",
+                    "wait_for": ["wait_for_value1", "wait_for_value2"],
+                    "entrypoint": "entrypoint_value",
+                    "secret_env": ["secret_env_value1", "secret_env_value2"],
+                    "volumes": [{"name": "name_value", "path": "path_value"}],
+                    "timing": {
+                        "start_time": {"seconds": 751, "nanos": 543},
+                        "end_time": {},
+                    },
+                    "pull_timing": {},
+                    "timeout": {"seconds": 751, "nanos": 543},
+                    "status": 10,
+                    "allow_failure": True,
+                    "exit_code": 948,
+                    "allow_exit_codes": [1702, 1703],
+                    "script": "script_value",
+                }
+            ],
+            "results": {
+                "images": [
+                    {"name": "name_value", "digest": "digest_value", "push_timing": {}}
+                ],
+                "build_step_images": [
+                    "build_step_images_value1",
+                    "build_step_images_value2",
+                ],
+                "artifact_manifest": "artifact_manifest_value",
+                "num_artifacts": 1392,
+                "build_step_outputs": [
+                    b"build_step_outputs_blob1",
+                    b"build_step_outputs_blob2",
+                ],
+                "artifact_timing": {},
+                "python_packages": [
+                    {
+                        "uri": "uri_value",
+                        "file_hashes": {
+                            "file_hash": [{"type_": 1, "value": b"value_blob"}]
+                        },
+                        "push_timing": {},
+                    }
+                ],
+                "maven_artifacts": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
+            },
+            "create_time": {},
+            "start_time": {},
+            "finish_time": {},
+            "timeout": {},
+            "images": ["images_value1", "images_value2"],
+            "queue_ttl": {},
+            "artifacts": {
+                "images": ["images_value1", "images_value2"],
+                "objects": {
+                    "location": "location_value",
+                    "paths": ["paths_value1", "paths_value2"],
+                    "timing": {},
+                },
+                "maven_artifacts": [
+                    {
+                        "repository": "repository_value",
+                        "path": "path_value",
+                        "artifact_id": "artifact_id_value",
+                        "group_id": "group_id_value",
+                        "version": "version_value",
+                    }
+                ],
+                "python_packages": [
+                    {
+                        "repository": "repository_value",
+                        "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+            },
+            "logs_bucket": "logs_bucket_value",
+            "source_provenance": {
+                "resolved_storage_source": {},
+                "resolved_repo_source": {},
+                "resolved_storage_source_manifest": {},
+                "file_hashes": {},
+            },
+            "build_trigger_id": "build_trigger_id_value",
+            "options": {
+                "source_provenance_hash": [1],
+                "requested_verify_option": 1,
+                "machine_type": 1,
+                "disk_size_gb": 1261,
+                "substitution_option": 1,
+                "dynamic_substitutions": True,
+                "log_streaming_option": 1,
+                "worker_pool": "worker_pool_value",
+                "pool": {"name": "name_value"},
+                "logging": 1,
+                "env": ["env_value1", "env_value2"],
+                "secret_env": ["secret_env_value1", "secret_env_value2"],
+                "volumes": {},
+            },
+            "log_url": "log_url_value",
+            "substitutions": {},
+            "tags": ["tags_value1", "tags_value2"],
+            "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
+            "timing": {},
+            "approval": {
+                "state": 1,
+                "config": {"approval_required": True},
+                "result": {
+                    "approver_account": "approver_account_value",
+                    "approval_time": {},
+                    "decision": 1,
+                    "comment": "comment_value",
+                    "url": "url_value",
+                },
+            },
+            "service_account": "service_account_value",
+            "available_secrets": {
+                "secret_manager": [
+                    {"version_name": "version_name_value", "env": "env_value"}
+                ],
+                "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
+            },
+            "warnings": [{"text": "text_value", "priority": 1}],
+            "failure_info": {"type_": 1, "detail": "detail_value"},
+        },
+        "filename": "filename_value",
+        "create_time": {},
+        "disabled": True,
+        "substitutions": {},
+        "ignored_files": ["ignored_files_value1", "ignored_files_value2"],
+        "included_files": ["included_files_value1", "included_files_value2"],
+        "filter": "filter_value",
+        "service_account": "service_account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.BuildTrigger(
+            resource_name="resource_name_value",
+            id="id_value",
+            description="description_value",
+            name="name_value",
+            tags=["tags_value"],
+            disabled=True,
+            ignored_files=["ignored_files_value"],
+            included_files=["included_files_value"],
+            filter="filter_value",
+            service_account="service_account_value",
+            autodetect=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_build_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudbuild.BuildTrigger)
+    assert response.resource_name == "resource_name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.name == "name_value"
+    assert response.tags == ["tags_value"]
+    assert response.disabled is True
+    assert response.ignored_files == ["ignored_files_value"]
+    assert response.included_files == ["included_files_value"]
+    assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
+
+
+def test_create_build_trigger_rest_required_fields(
+    request_type=cloudbuild.CreateBuildTriggerRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_build_trigger._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_build_trigger._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("parent",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.BuildTrigger()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_build_trigger(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_build_trigger_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_build_trigger._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("parent",))
+        & set(
+            (
+                "projectId",
+                "trigger",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_build_trigger_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_create_build_trigger"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_create_build_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.CreateBuildTriggerRequest.pb(
+            cloudbuild.CreateBuildTriggerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.BuildTrigger.to_json(
+            cloudbuild.BuildTrigger()
+        )
+
+        request = cloudbuild.CreateBuildTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.BuildTrigger()
+
+        client.create_build_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_build_trigger_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.CreateBuildTriggerRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request_init["trigger"] = {
+        "resource_name": "resource_name_value",
+        "id": "id_value",
+        "description": "description_value",
+        "name": "name_value",
+        "tags": ["tags_value1", "tags_value2"],
+        "trigger_template": {
+            "project_id": "project_id_value",
+            "repo_name": "repo_name_value",
+            "branch_name": "branch_name_value",
+            "tag_name": "tag_name_value",
+            "commit_sha": "commit_sha_value",
+            "dir_": "dir__value",
+            "invert_regex": True,
+            "substitutions": {},
+        },
+        "github": {
+            "installation_id": 1598,
+            "owner": "owner_value",
+            "name": "name_value",
+            "pull_request": {
+                "branch": "branch_value",
+                "comment_control": 1,
+                "invert_regex": True,
+            },
+            "push": {
+                "branch": "branch_value",
+                "tag": "tag_value",
+                "invert_regex": True,
+            },
+        },
+        "pubsub_config": {
+            "subscription": "subscription_value",
+            "topic": "topic_value",
+            "service_account_email": "service_account_email_value",
+            "state": 1,
+        },
+        "webhook_config": {"secret": "secret_value", "state": 1},
+        "autodetect": True,
+        "build": {
+            "name": "name_value",
+            "id": "id_value",
+            "project_id": "project_id_value",
+            "status": 10,
+            "status_detail": "status_detail_value",
+            "source": {
+                "storage_source": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+                "repo_source": {},
+                "storage_source_manifest": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+            },
+            "steps": [
+                {
+                    "name": "name_value",
+                    "env": ["env_value1", "env_value2"],
+                    "args": ["args_value1", "args_value2"],
+                    "dir_": "dir__value",
+                    "id": "id_value",
+                    "wait_for": ["wait_for_value1", "wait_for_value2"],
+                    "entrypoint": "entrypoint_value",
+                    "secret_env": ["secret_env_value1", "secret_env_value2"],
+                    "volumes": [{"name": "name_value", "path": "path_value"}],
+                    "timing": {
+                        "start_time": {"seconds": 751, "nanos": 543},
+                        "end_time": {},
+                    },
+                    "pull_timing": {},
+                    "timeout": {"seconds": 751, "nanos": 543},
+                    "status": 10,
+                    "allow_failure": True,
+                    "exit_code": 948,
+                    "allow_exit_codes": [1702, 1703],
+                    "script": "script_value",
+                }
+            ],
+            "results": {
+                "images": [
+                    {"name": "name_value", "digest": "digest_value", "push_timing": {}}
+                ],
+                "build_step_images": [
+                    "build_step_images_value1",
+                    "build_step_images_value2",
+                ],
+                "artifact_manifest": "artifact_manifest_value",
+                "num_artifacts": 1392,
+                "build_step_outputs": [
+                    b"build_step_outputs_blob1",
+                    b"build_step_outputs_blob2",
+                ],
+                "artifact_timing": {},
+                "python_packages": [
+                    {
+                        "uri": "uri_value",
+                        "file_hashes": {
+                            "file_hash": [{"type_": 1, "value": b"value_blob"}]
+                        },
+                        "push_timing": {},
+                    }
+                ],
+                "maven_artifacts": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
+            },
+            "create_time": {},
+            "start_time": {},
+            "finish_time": {},
+            "timeout": {},
+            "images": ["images_value1", "images_value2"],
+            "queue_ttl": {},
+            "artifacts": {
+                "images": ["images_value1", "images_value2"],
+                "objects": {
+                    "location": "location_value",
+                    "paths": ["paths_value1", "paths_value2"],
+                    "timing": {},
+                },
+                "maven_artifacts": [
+                    {
+                        "repository": "repository_value",
+                        "path": "path_value",
+                        "artifact_id": "artifact_id_value",
+                        "group_id": "group_id_value",
+                        "version": "version_value",
+                    }
+                ],
+                "python_packages": [
+                    {
+                        "repository": "repository_value",
+                        "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+            },
+            "logs_bucket": "logs_bucket_value",
+            "source_provenance": {
+                "resolved_storage_source": {},
+                "resolved_repo_source": {},
+                "resolved_storage_source_manifest": {},
+                "file_hashes": {},
+            },
+            "build_trigger_id": "build_trigger_id_value",
+            "options": {
+                "source_provenance_hash": [1],
+                "requested_verify_option": 1,
+                "machine_type": 1,
+                "disk_size_gb": 1261,
+                "substitution_option": 1,
+                "dynamic_substitutions": True,
+                "log_streaming_option": 1,
+                "worker_pool": "worker_pool_value",
+                "pool": {"name": "name_value"},
+                "logging": 1,
+                "env": ["env_value1", "env_value2"],
+                "secret_env": ["secret_env_value1", "secret_env_value2"],
+                "volumes": {},
+            },
+            "log_url": "log_url_value",
+            "substitutions": {},
+            "tags": ["tags_value1", "tags_value2"],
+            "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
+            "timing": {},
+            "approval": {
+                "state": 1,
+                "config": {"approval_required": True},
+                "result": {
+                    "approver_account": "approver_account_value",
+                    "approval_time": {},
+                    "decision": 1,
+                    "comment": "comment_value",
+                    "url": "url_value",
+                },
+            },
+            "service_account": "service_account_value",
+            "available_secrets": {
+                "secret_manager": [
+                    {"version_name": "version_name_value", "env": "env_value"}
+                ],
+                "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
+            },
+            "warnings": [{"text": "text_value", "priority": 1}],
+            "failure_info": {"type_": 1, "detail": "detail_value"},
+        },
+        "filename": "filename_value",
+        "create_time": {},
+        "disabled": True,
+        "substitutions": {},
+        "ignored_files": ["ignored_files_value1", "ignored_files_value2"],
+        "included_files": ["included_files_value1", "included_files_value2"],
+        "filter": "filter_value",
+        "service_account": "service_account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_build_trigger(request)
+
+
+def test_create_build_trigger_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.BuildTrigger()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            trigger=cloudbuild.BuildTrigger(resource_name="resource_name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_build_trigger(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/triggers" % client.transport._host, args[1]
+        )
+
+
+def test_create_build_trigger_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_build_trigger(
+            cloudbuild.CreateBuildTriggerRequest(),
+            project_id="project_id_value",
+            trigger=cloudbuild.BuildTrigger(resource_name="resource_name_value"),
+        )
+
+
+def test_create_build_trigger_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.GetBuildTriggerRequest,
+        dict,
+    ],
+)
+def test_get_build_trigger_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.BuildTrigger(
+            resource_name="resource_name_value",
+            id="id_value",
+            description="description_value",
+            name="name_value",
+            tags=["tags_value"],
+            disabled=True,
+            ignored_files=["ignored_files_value"],
+            included_files=["included_files_value"],
+            filter="filter_value",
+            service_account="service_account_value",
+            autodetect=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_build_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudbuild.BuildTrigger)
+    assert response.resource_name == "resource_name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.name == "name_value"
+    assert response.tags == ["tags_value"]
+    assert response.disabled is True
+    assert response.ignored_files == ["ignored_files_value"]
+    assert response.included_files == ["included_files_value"]
+    assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
+
+
+def test_get_build_trigger_rest_required_fields(
+    request_type=cloudbuild.GetBuildTriggerRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request_init["trigger_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_build_trigger._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+    jsonified_request["triggerId"] = "trigger_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_build_trigger._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("name",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+    assert "triggerId" in jsonified_request
+    assert jsonified_request["triggerId"] == "trigger_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.BuildTrigger()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_build_trigger(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_build_trigger_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_build_trigger._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("name",))
+        & set(
+            (
+                "projectId",
+                "triggerId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_build_trigger_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_get_build_trigger"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_get_build_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.GetBuildTriggerRequest.pb(
+            cloudbuild.GetBuildTriggerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.BuildTrigger.to_json(
+            cloudbuild.BuildTrigger()
+        )
+
+        request = cloudbuild.GetBuildTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.BuildTrigger()
+
+        client.get_build_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_build_trigger_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.GetBuildTriggerRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_build_trigger(request)
+
+
+def test_get_build_trigger_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.BuildTrigger()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1", "trigger_id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_build_trigger(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/triggers/{trigger_id}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_build_trigger_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_build_trigger(
+            cloudbuild.GetBuildTriggerRequest(),
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+        )
+
+
+def test_get_build_trigger_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.ListBuildTriggersRequest,
+        dict,
+    ],
+)
+def test_list_build_triggers_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.ListBuildTriggersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_build_triggers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBuildTriggersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_build_triggers_rest_required_fields(
+    request_type=cloudbuild.ListBuildTriggersRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_build_triggers._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_build_triggers._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+            "parent",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.ListBuildTriggersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_build_triggers(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_build_triggers_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_build_triggers._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+                "parent",
+            )
+        )
+        & set(("projectId",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_build_triggers_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_list_build_triggers"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_list_build_triggers"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.ListBuildTriggersRequest.pb(
+            cloudbuild.ListBuildTriggersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.ListBuildTriggersResponse.to_json(
+            cloudbuild.ListBuildTriggersResponse()
+        )
+
+        request = cloudbuild.ListBuildTriggersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.ListBuildTriggersResponse()
+
+        client.list_build_triggers(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_build_triggers_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.ListBuildTriggersRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_build_triggers(request)
+
+
+def test_list_build_triggers_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.ListBuildTriggersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_build_triggers(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/triggers" % client.transport._host, args[1]
+        )
+
+
+def test_list_build_triggers_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_build_triggers(
+            cloudbuild.ListBuildTriggersRequest(),
+            project_id="project_id_value",
+        )
+
+
+def test_list_build_triggers_rest_pager(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloudbuild.ListBuildTriggersResponse(
+                triggers=[
+                    cloudbuild.BuildTrigger(),
+                    cloudbuild.BuildTrigger(),
+                    cloudbuild.BuildTrigger(),
+                ],
+                next_page_token="abc",
+            ),
+            cloudbuild.ListBuildTriggersResponse(
+                triggers=[],
+                next_page_token="def",
+            ),
+            cloudbuild.ListBuildTriggersResponse(
+                triggers=[
+                    cloudbuild.BuildTrigger(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudbuild.ListBuildTriggersResponse(
+                triggers=[
+                    cloudbuild.BuildTrigger(),
+                    cloudbuild.BuildTrigger(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloudbuild.ListBuildTriggersResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project_id": "sample1"}
+
+        pager = client.list_build_triggers(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloudbuild.BuildTrigger) for i in results)
+
+        pages = list(client.list_build_triggers(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.DeleteBuildTriggerRequest,
+        dict,
+    ],
+)
+def test_delete_build_trigger_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_build_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_build_trigger_rest_required_fields(
+    request_type=cloudbuild.DeleteBuildTriggerRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request_init["trigger_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_build_trigger._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+    jsonified_request["triggerId"] = "trigger_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_build_trigger._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("name",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+    assert "triggerId" in jsonified_request
+    assert jsonified_request["triggerId"] == "trigger_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_build_trigger(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_build_trigger_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_build_trigger._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("name",))
+        & set(
+            (
+                "projectId",
+                "triggerId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_build_trigger_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_delete_build_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = cloudbuild.DeleteBuildTriggerRequest.pb(
+            cloudbuild.DeleteBuildTriggerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = cloudbuild.DeleteBuildTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_build_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_build_trigger_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.DeleteBuildTriggerRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_build_trigger(request)
+
+
+def test_delete_build_trigger_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1", "trigger_id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_build_trigger(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/triggers/{trigger_id}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_build_trigger_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_build_trigger(
+            cloudbuild.DeleteBuildTriggerRequest(),
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+        )
+
+
+def test_delete_build_trigger_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.UpdateBuildTriggerRequest,
+        dict,
+    ],
+)
+def test_update_build_trigger_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request_init["trigger"] = {
+        "resource_name": "resource_name_value",
+        "id": "id_value",
+        "description": "description_value",
+        "name": "name_value",
+        "tags": ["tags_value1", "tags_value2"],
+        "trigger_template": {
+            "project_id": "project_id_value",
+            "repo_name": "repo_name_value",
+            "branch_name": "branch_name_value",
+            "tag_name": "tag_name_value",
+            "commit_sha": "commit_sha_value",
+            "dir_": "dir__value",
+            "invert_regex": True,
+            "substitutions": {},
+        },
+        "github": {
+            "installation_id": 1598,
+            "owner": "owner_value",
+            "name": "name_value",
+            "pull_request": {
+                "branch": "branch_value",
+                "comment_control": 1,
+                "invert_regex": True,
+            },
+            "push": {
+                "branch": "branch_value",
+                "tag": "tag_value",
+                "invert_regex": True,
+            },
+        },
+        "pubsub_config": {
+            "subscription": "subscription_value",
+            "topic": "topic_value",
+            "service_account_email": "service_account_email_value",
+            "state": 1,
+        },
+        "webhook_config": {"secret": "secret_value", "state": 1},
+        "autodetect": True,
+        "build": {
+            "name": "name_value",
+            "id": "id_value",
+            "project_id": "project_id_value",
+            "status": 10,
+            "status_detail": "status_detail_value",
+            "source": {
+                "storage_source": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+                "repo_source": {},
+                "storage_source_manifest": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+            },
+            "steps": [
+                {
+                    "name": "name_value",
+                    "env": ["env_value1", "env_value2"],
+                    "args": ["args_value1", "args_value2"],
+                    "dir_": "dir__value",
+                    "id": "id_value",
+                    "wait_for": ["wait_for_value1", "wait_for_value2"],
+                    "entrypoint": "entrypoint_value",
+                    "secret_env": ["secret_env_value1", "secret_env_value2"],
+                    "volumes": [{"name": "name_value", "path": "path_value"}],
+                    "timing": {
+                        "start_time": {"seconds": 751, "nanos": 543},
+                        "end_time": {},
+                    },
+                    "pull_timing": {},
+                    "timeout": {"seconds": 751, "nanos": 543},
+                    "status": 10,
+                    "allow_failure": True,
+                    "exit_code": 948,
+                    "allow_exit_codes": [1702, 1703],
+                    "script": "script_value",
+                }
+            ],
+            "results": {
+                "images": [
+                    {"name": "name_value", "digest": "digest_value", "push_timing": {}}
+                ],
+                "build_step_images": [
+                    "build_step_images_value1",
+                    "build_step_images_value2",
+                ],
+                "artifact_manifest": "artifact_manifest_value",
+                "num_artifacts": 1392,
+                "build_step_outputs": [
+                    b"build_step_outputs_blob1",
+                    b"build_step_outputs_blob2",
+                ],
+                "artifact_timing": {},
+                "python_packages": [
+                    {
+                        "uri": "uri_value",
+                        "file_hashes": {
+                            "file_hash": [{"type_": 1, "value": b"value_blob"}]
+                        },
+                        "push_timing": {},
+                    }
+                ],
+                "maven_artifacts": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
+            },
+            "create_time": {},
+            "start_time": {},
+            "finish_time": {},
+            "timeout": {},
+            "images": ["images_value1", "images_value2"],
+            "queue_ttl": {},
+            "artifacts": {
+                "images": ["images_value1", "images_value2"],
+                "objects": {
+                    "location": "location_value",
+                    "paths": ["paths_value1", "paths_value2"],
+                    "timing": {},
+                },
+                "maven_artifacts": [
+                    {
+                        "repository": "repository_value",
+                        "path": "path_value",
+                        "artifact_id": "artifact_id_value",
+                        "group_id": "group_id_value",
+                        "version": "version_value",
+                    }
+                ],
+                "python_packages": [
+                    {
+                        "repository": "repository_value",
+                        "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+            },
+            "logs_bucket": "logs_bucket_value",
+            "source_provenance": {
+                "resolved_storage_source": {},
+                "resolved_repo_source": {},
+                "resolved_storage_source_manifest": {},
+                "file_hashes": {},
+            },
+            "build_trigger_id": "build_trigger_id_value",
+            "options": {
+                "source_provenance_hash": [1],
+                "requested_verify_option": 1,
+                "machine_type": 1,
+                "disk_size_gb": 1261,
+                "substitution_option": 1,
+                "dynamic_substitutions": True,
+                "log_streaming_option": 1,
+                "worker_pool": "worker_pool_value",
+                "pool": {"name": "name_value"},
+                "logging": 1,
+                "env": ["env_value1", "env_value2"],
+                "secret_env": ["secret_env_value1", "secret_env_value2"],
+                "volumes": {},
+            },
+            "log_url": "log_url_value",
+            "substitutions": {},
+            "tags": ["tags_value1", "tags_value2"],
+            "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
+            "timing": {},
+            "approval": {
+                "state": 1,
+                "config": {"approval_required": True},
+                "result": {
+                    "approver_account": "approver_account_value",
+                    "approval_time": {},
+                    "decision": 1,
+                    "comment": "comment_value",
+                    "url": "url_value",
+                },
+            },
+            "service_account": "service_account_value",
+            "available_secrets": {
+                "secret_manager": [
+                    {"version_name": "version_name_value", "env": "env_value"}
+                ],
+                "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
+            },
+            "warnings": [{"text": "text_value", "priority": 1}],
+            "failure_info": {"type_": 1, "detail": "detail_value"},
+        },
+        "filename": "filename_value",
+        "create_time": {},
+        "disabled": True,
+        "substitutions": {},
+        "ignored_files": ["ignored_files_value1", "ignored_files_value2"],
+        "included_files": ["included_files_value1", "included_files_value2"],
+        "filter": "filter_value",
+        "service_account": "service_account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.BuildTrigger(
+            resource_name="resource_name_value",
+            id="id_value",
+            description="description_value",
+            name="name_value",
+            tags=["tags_value"],
+            disabled=True,
+            ignored_files=["ignored_files_value"],
+            included_files=["included_files_value"],
+            filter="filter_value",
+            service_account="service_account_value",
+            autodetect=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_build_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudbuild.BuildTrigger)
+    assert response.resource_name == "resource_name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.name == "name_value"
+    assert response.tags == ["tags_value"]
+    assert response.disabled is True
+    assert response.ignored_files == ["ignored_files_value"]
+    assert response.included_files == ["included_files_value"]
+    assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
+
+
+def test_update_build_trigger_rest_required_fields(
+    request_type=cloudbuild.UpdateBuildTriggerRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request_init["trigger_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_build_trigger._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+    jsonified_request["triggerId"] = "trigger_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_build_trigger._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+    assert "triggerId" in jsonified_request
+    assert jsonified_request["triggerId"] == "trigger_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.BuildTrigger()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_build_trigger(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_build_trigger_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_build_trigger._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "projectId",
+                "triggerId",
+                "trigger",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_build_trigger_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_update_build_trigger"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_update_build_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.UpdateBuildTriggerRequest.pb(
+            cloudbuild.UpdateBuildTriggerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.BuildTrigger.to_json(
+            cloudbuild.BuildTrigger()
+        )
+
+        request = cloudbuild.UpdateBuildTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.BuildTrigger()
+
+        client.update_build_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_build_trigger_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.UpdateBuildTriggerRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request_init["trigger"] = {
+        "resource_name": "resource_name_value",
+        "id": "id_value",
+        "description": "description_value",
+        "name": "name_value",
+        "tags": ["tags_value1", "tags_value2"],
+        "trigger_template": {
+            "project_id": "project_id_value",
+            "repo_name": "repo_name_value",
+            "branch_name": "branch_name_value",
+            "tag_name": "tag_name_value",
+            "commit_sha": "commit_sha_value",
+            "dir_": "dir__value",
+            "invert_regex": True,
+            "substitutions": {},
+        },
+        "github": {
+            "installation_id": 1598,
+            "owner": "owner_value",
+            "name": "name_value",
+            "pull_request": {
+                "branch": "branch_value",
+                "comment_control": 1,
+                "invert_regex": True,
+            },
+            "push": {
+                "branch": "branch_value",
+                "tag": "tag_value",
+                "invert_regex": True,
+            },
+        },
+        "pubsub_config": {
+            "subscription": "subscription_value",
+            "topic": "topic_value",
+            "service_account_email": "service_account_email_value",
+            "state": 1,
+        },
+        "webhook_config": {"secret": "secret_value", "state": 1},
+        "autodetect": True,
+        "build": {
+            "name": "name_value",
+            "id": "id_value",
+            "project_id": "project_id_value",
+            "status": 10,
+            "status_detail": "status_detail_value",
+            "source": {
+                "storage_source": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+                "repo_source": {},
+                "storage_source_manifest": {
+                    "bucket": "bucket_value",
+                    "object_": "object__value",
+                    "generation": 1068,
+                },
+            },
+            "steps": [
+                {
+                    "name": "name_value",
+                    "env": ["env_value1", "env_value2"],
+                    "args": ["args_value1", "args_value2"],
+                    "dir_": "dir__value",
+                    "id": "id_value",
+                    "wait_for": ["wait_for_value1", "wait_for_value2"],
+                    "entrypoint": "entrypoint_value",
+                    "secret_env": ["secret_env_value1", "secret_env_value2"],
+                    "volumes": [{"name": "name_value", "path": "path_value"}],
+                    "timing": {
+                        "start_time": {"seconds": 751, "nanos": 543},
+                        "end_time": {},
+                    },
+                    "pull_timing": {},
+                    "timeout": {"seconds": 751, "nanos": 543},
+                    "status": 10,
+                    "allow_failure": True,
+                    "exit_code": 948,
+                    "allow_exit_codes": [1702, 1703],
+                    "script": "script_value",
+                }
+            ],
+            "results": {
+                "images": [
+                    {"name": "name_value", "digest": "digest_value", "push_timing": {}}
+                ],
+                "build_step_images": [
+                    "build_step_images_value1",
+                    "build_step_images_value2",
+                ],
+                "artifact_manifest": "artifact_manifest_value",
+                "num_artifacts": 1392,
+                "build_step_outputs": [
+                    b"build_step_outputs_blob1",
+                    b"build_step_outputs_blob2",
+                ],
+                "artifact_timing": {},
+                "python_packages": [
+                    {
+                        "uri": "uri_value",
+                        "file_hashes": {
+                            "file_hash": [{"type_": 1, "value": b"value_blob"}]
+                        },
+                        "push_timing": {},
+                    }
+                ],
+                "maven_artifacts": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
+            },
+            "create_time": {},
+            "start_time": {},
+            "finish_time": {},
+            "timeout": {},
+            "images": ["images_value1", "images_value2"],
+            "queue_ttl": {},
+            "artifacts": {
+                "images": ["images_value1", "images_value2"],
+                "objects": {
+                    "location": "location_value",
+                    "paths": ["paths_value1", "paths_value2"],
+                    "timing": {},
+                },
+                "maven_artifacts": [
+                    {
+                        "repository": "repository_value",
+                        "path": "path_value",
+                        "artifact_id": "artifact_id_value",
+                        "group_id": "group_id_value",
+                        "version": "version_value",
+                    }
+                ],
+                "python_packages": [
+                    {
+                        "repository": "repository_value",
+                        "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+            },
+            "logs_bucket": "logs_bucket_value",
+            "source_provenance": {
+                "resolved_storage_source": {},
+                "resolved_repo_source": {},
+                "resolved_storage_source_manifest": {},
+                "file_hashes": {},
+            },
+            "build_trigger_id": "build_trigger_id_value",
+            "options": {
+                "source_provenance_hash": [1],
+                "requested_verify_option": 1,
+                "machine_type": 1,
+                "disk_size_gb": 1261,
+                "substitution_option": 1,
+                "dynamic_substitutions": True,
+                "log_streaming_option": 1,
+                "worker_pool": "worker_pool_value",
+                "pool": {"name": "name_value"},
+                "logging": 1,
+                "env": ["env_value1", "env_value2"],
+                "secret_env": ["secret_env_value1", "secret_env_value2"],
+                "volumes": {},
+            },
+            "log_url": "log_url_value",
+            "substitutions": {},
+            "tags": ["tags_value1", "tags_value2"],
+            "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
+            "timing": {},
+            "approval": {
+                "state": 1,
+                "config": {"approval_required": True},
+                "result": {
+                    "approver_account": "approver_account_value",
+                    "approval_time": {},
+                    "decision": 1,
+                    "comment": "comment_value",
+                    "url": "url_value",
+                },
+            },
+            "service_account": "service_account_value",
+            "available_secrets": {
+                "secret_manager": [
+                    {"version_name": "version_name_value", "env": "env_value"}
+                ],
+                "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
+            },
+            "warnings": [{"text": "text_value", "priority": 1}],
+            "failure_info": {"type_": 1, "detail": "detail_value"},
+        },
+        "filename": "filename_value",
+        "create_time": {},
+        "disabled": True,
+        "substitutions": {},
+        "ignored_files": ["ignored_files_value1", "ignored_files_value2"],
+        "included_files": ["included_files_value1", "included_files_value2"],
+        "filter": "filter_value",
+        "service_account": "service_account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_build_trigger(request)
+
+
+def test_update_build_trigger_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.BuildTrigger()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1", "trigger_id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+            trigger=cloudbuild.BuildTrigger(resource_name="resource_name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_build_trigger(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/triggers/{trigger_id}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_build_trigger_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_build_trigger(
+            cloudbuild.UpdateBuildTriggerRequest(),
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+            trigger=cloudbuild.BuildTrigger(resource_name="resource_name_value"),
+        )
+
+
+def test_update_build_trigger_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.RunBuildTriggerRequest,
+        dict,
+    ],
+)
+def test_run_build_trigger_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request_init["source"] = {
+        "project_id": "project_id_value",
+        "repo_name": "repo_name_value",
+        "branch_name": "branch_name_value",
+        "tag_name": "tag_name_value",
+        "commit_sha": "commit_sha_value",
+        "dir_": "dir__value",
+        "invert_regex": True,
+        "substitutions": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_build_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_run_build_trigger_rest_required_fields(
+    request_type=cloudbuild.RunBuildTriggerRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["project_id"] = ""
+    request_init["trigger_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_build_trigger._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectId"] = "project_id_value"
+    jsonified_request["triggerId"] = "trigger_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_build_trigger._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("name",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectId" in jsonified_request
+    assert jsonified_request["projectId"] == "project_id_value"
+    assert "triggerId" in jsonified_request
+    assert jsonified_request["triggerId"] == "trigger_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.run_build_trigger(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_run_build_trigger_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.run_build_trigger._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("name",))
+        & set(
+            (
+                "projectId",
+                "triggerId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_build_trigger_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_run_build_trigger"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_run_build_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.RunBuildTriggerRequest.pb(
+            cloudbuild.RunBuildTriggerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloudbuild.RunBuildTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.run_build_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_build_trigger_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.RunBuildTriggerRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger_id": "sample2"}
+    request_init["source"] = {
+        "project_id": "project_id_value",
+        "repo_name": "repo_name_value",
+        "branch_name": "branch_name_value",
+        "tag_name": "tag_name_value",
+        "commit_sha": "commit_sha_value",
+        "dir_": "dir__value",
+        "invert_regex": True,
+        "substitutions": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.run_build_trigger(request)
+
+
+def test_run_build_trigger_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_id": "sample1", "trigger_id": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+            source=cloudbuild.RepoSource(project_id="project_id_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.run_build_trigger(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/projects/{project_id}/triggers/{trigger_id}:run"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_run_build_trigger_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.run_build_trigger(
+            cloudbuild.RunBuildTriggerRequest(),
+            project_id="project_id_value",
+            trigger_id="trigger_id_value",
+            source=cloudbuild.RepoSource(project_id="project_id_value"),
+        )
+
+
+def test_run_build_trigger_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.ReceiveTriggerWebhookRequest,
+        dict,
+    ],
+)
+def test_receive_trigger_webhook_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger": "sample2"}
+    request_init["body"] = {
+        "content_type": "content_type_value",
+        "data": b"data_blob",
+        "extensions": [
+            {
+                "type_url": "type.googleapis.com/google.protobuf.Duration",
+                "value": b"\x08\x0c\x10\xdb\x07",
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.ReceiveTriggerWebhookResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.ReceiveTriggerWebhookResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.receive_trigger_webhook(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudbuild.ReceiveTriggerWebhookResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_receive_trigger_webhook_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_receive_trigger_webhook"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_receive_trigger_webhook"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.ReceiveTriggerWebhookRequest.pb(
+            cloudbuild.ReceiveTriggerWebhookRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.ReceiveTriggerWebhookResponse.to_json(
+            cloudbuild.ReceiveTriggerWebhookResponse()
+        )
+
+        request = cloudbuild.ReceiveTriggerWebhookRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.ReceiveTriggerWebhookResponse()
+
+        client.receive_trigger_webhook(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_receive_trigger_webhook_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.ReceiveTriggerWebhookRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "trigger": "sample2"}
+    request_init["body"] = {
+        "content_type": "content_type_value",
+        "data": b"data_blob",
+        "extensions": [
+            {
+                "type_url": "type.googleapis.com/google.protobuf.Duration",
+                "value": b"\x08\x0c\x10\xdb\x07",
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.receive_trigger_webhook(request)
+
+
+def test_receive_trigger_webhook_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.CreateWorkerPoolRequest,
+        dict,
+    ],
+)
+def test_create_worker_pool_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["worker_pool"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "annotations": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "state": 1,
+        "private_pool_v1_config": {
+            "worker_config": {
+                "machine_type": "machine_type_value",
+                "disk_size_gb": 1261,
+            },
+            "network_config": {
+                "peered_network": "peered_network_value",
+                "egress_option": 1,
+            },
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_worker_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_worker_pool_rest_required_fields(
+    request_type=cloudbuild.CreateWorkerPoolRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["worker_pool_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "workerPoolId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_worker_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "workerPoolId" in jsonified_request
+    assert jsonified_request["workerPoolId"] == request_init["worker_pool_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["workerPoolId"] = "worker_pool_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_worker_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "validate_only",
+            "worker_pool_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "workerPoolId" in jsonified_request
+    assert jsonified_request["workerPoolId"] == "worker_pool_id_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_worker_pool(request)
+
+            expected_params = [
+                (
+                    "workerPoolId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_worker_pool_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_worker_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "validateOnly",
+                "workerPoolId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "workerPool",
+                "workerPoolId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_create_worker_pool"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_create_worker_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.CreateWorkerPoolRequest.pb(
+            cloudbuild.CreateWorkerPoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloudbuild.CreateWorkerPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_worker_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_worker_pool_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.CreateWorkerPoolRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["worker_pool"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "annotations": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "state": 1,
+        "private_pool_v1_config": {
+            "worker_config": {
+                "machine_type": "machine_type_value",
+                "disk_size_gb": 1261,
+            },
+            "network_config": {
+                "peered_network": "peered_network_value",
+                "egress_option": 1,
+            },
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_worker_pool(request)
+
+
+def test_create_worker_pool_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            worker_pool=cloudbuild.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_worker_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/workerPools"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_worker_pool(
+            cloudbuild.CreateWorkerPoolRequest(),
+            parent="parent_value",
+            worker_pool=cloudbuild.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
+        )
+
+
+def test_create_worker_pool_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.GetWorkerPoolRequest,
+        dict,
+    ],
+)
+def test_get_worker_pool_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.WorkerPool(
+            name="name_value",
+            display_name="display_name_value",
+            uid="uid_value",
+            state=cloudbuild.WorkerPool.State.CREATING,
+            etag="etag_value",
+            private_pool_v1_config=cloudbuild.PrivatePoolV1Config(
+                worker_config=cloudbuild.PrivatePoolV1Config.WorkerConfig(
+                    machine_type="machine_type_value"
+                )
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.WorkerPool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_worker_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudbuild.WorkerPool)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.uid == "uid_value"
+    assert response.state == cloudbuild.WorkerPool.State.CREATING
+    assert response.etag == "etag_value"
+
+
+def test_get_worker_pool_rest_required_fields(
+    request_type=cloudbuild.GetWorkerPoolRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_worker_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_worker_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.WorkerPool()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.WorkerPool.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_worker_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_worker_pool_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_worker_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_get_worker_pool"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_get_worker_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.GetWorkerPoolRequest.pb(
+            cloudbuild.GetWorkerPoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.WorkerPool.to_json(
+            cloudbuild.WorkerPool()
+        )
+
+        request = cloudbuild.GetWorkerPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.WorkerPool()
+
+        client.get_worker_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_worker_pool_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.GetWorkerPoolRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_worker_pool(request)
+
+
+def test_get_worker_pool_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.WorkerPool()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.WorkerPool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_worker_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/workerPools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_worker_pool(
+            cloudbuild.GetWorkerPoolRequest(),
+            name="name_value",
+        )
+
+
+def test_get_worker_pool_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.DeleteWorkerPoolRequest,
+        dict,
+    ],
+)
+def test_delete_worker_pool_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_worker_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_worker_pool_rest_required_fields(
+    request_type=cloudbuild.DeleteWorkerPoolRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_worker_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_worker_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_worker_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_worker_pool_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_worker_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_delete_worker_pool"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_delete_worker_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.DeleteWorkerPoolRequest.pb(
+            cloudbuild.DeleteWorkerPoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloudbuild.DeleteWorkerPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_worker_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_worker_pool_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.DeleteWorkerPoolRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_worker_pool(request)
+
+
+def test_delete_worker_pool_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_worker_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/workerPools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_worker_pool(
+            cloudbuild.DeleteWorkerPoolRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_worker_pool_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.UpdateWorkerPoolRequest,
+        dict,
+    ],
+)
+def test_update_worker_pool_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "worker_pool": {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
+    }
+    request_init["worker_pool"] = {
+        "name": "projects/sample1/locations/sample2/workerPools/sample3",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "annotations": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "state": 1,
+        "private_pool_v1_config": {
+            "worker_config": {
+                "machine_type": "machine_type_value",
+                "disk_size_gb": 1261,
+            },
+            "network_config": {
+                "peered_network": "peered_network_value",
+                "egress_option": 1,
+            },
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_worker_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_worker_pool_rest_required_fields(
+    request_type=cloudbuild.UpdateWorkerPoolRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_worker_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_worker_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_worker_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_worker_pool_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_worker_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(("workerPool",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_update_worker_pool"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_update_worker_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.UpdateWorkerPoolRequest.pb(
+            cloudbuild.UpdateWorkerPoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloudbuild.UpdateWorkerPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_worker_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_worker_pool_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.UpdateWorkerPoolRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "worker_pool": {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
+    }
+    request_init["worker_pool"] = {
+        "name": "projects/sample1/locations/sample2/workerPools/sample3",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "annotations": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "state": 1,
+        "private_pool_v1_config": {
+            "worker_config": {
+                "machine_type": "machine_type_value",
+                "disk_size_gb": 1261,
+            },
+            "network_config": {
+                "peered_network": "peered_network_value",
+                "egress_option": 1,
+            },
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_worker_pool(request)
+
+
+def test_update_worker_pool_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "worker_pool": {
+                "name": "projects/sample1/locations/sample2/workerPools/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            worker_pool=cloudbuild.WorkerPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_worker_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{worker_pool.name=projects/*/locations/*/workerPools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_worker_pool(
+            cloudbuild.UpdateWorkerPoolRequest(),
+            worker_pool=cloudbuild.WorkerPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_worker_pool_rest_error():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudbuild.ListWorkerPoolsRequest,
+        dict,
+    ],
+)
+def test_list_worker_pools_rest(request_type):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.ListWorkerPoolsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_worker_pools(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkerPoolsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_worker_pools_rest_required_fields(
+    request_type=cloudbuild.ListWorkerPoolsRequest,
+):
+    transport_class = transports.CloudBuildRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_worker_pools._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_worker_pools._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudbuild.ListWorkerPoolsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_worker_pools(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_worker_pools_rest_unset_required_fields():
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_worker_pools._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_worker_pools_rest_interceptors(null_interceptor):
+    transport = transports.CloudBuildRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBuildRestInterceptor(),
+    )
+    client = CloudBuildClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_list_worker_pools"
+    ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "pre_list_worker_pools"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudbuild.ListWorkerPoolsRequest.pb(
+            cloudbuild.ListWorkerPoolsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudbuild.ListWorkerPoolsResponse.to_json(
+            cloudbuild.ListWorkerPoolsResponse()
+        )
+
+        request = cloudbuild.ListWorkerPoolsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudbuild.ListWorkerPoolsResponse()
+
+        client.list_worker_pools(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_worker_pools_rest_bad_request(
+    transport: str = "rest", request_type=cloudbuild.ListWorkerPoolsRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_worker_pools(request)
+
+
+def test_list_worker_pools_rest_flattened():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudbuild.ListWorkerPoolsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_worker_pools(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/workerPools"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_worker_pools_rest_flattened_error(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_worker_pools(
+            cloudbuild.ListWorkerPoolsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_worker_pools_rest_pager(transport: str = "rest"):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloudbuild.ListWorkerPoolsResponse(
+                worker_pools=[
+                    cloudbuild.WorkerPool(),
+                    cloudbuild.WorkerPool(),
+                    cloudbuild.WorkerPool(),
+                ],
+                next_page_token="abc",
+            ),
+            cloudbuild.ListWorkerPoolsResponse(
+                worker_pools=[],
+                next_page_token="def",
+            ),
+            cloudbuild.ListWorkerPoolsResponse(
+                worker_pools=[
+                    cloudbuild.WorkerPool(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudbuild.ListWorkerPoolsResponse(
+                worker_pools=[
+                    cloudbuild.WorkerPool(),
+                    cloudbuild.WorkerPool(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloudbuild.ListWorkerPoolsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_worker_pools(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloudbuild.WorkerPool) for i in results)
+
+        pages = list(client.list_worker_pools(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudBuildGrpcTransport(
@@ -5904,6 +12310,7 @@ def test_transport_get_channel():
     [
         transports.CloudBuildGrpcTransport,
         transports.CloudBuildGrpcAsyncIOTransport,
+        transports.CloudBuildRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -5918,6 +12325,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -6069,6 +12477,7 @@ def test_cloud_build_transport_auth_adc(transport_class):
     [
         transports.CloudBuildGrpcTransport,
         transports.CloudBuildGrpcAsyncIOTransport,
+        transports.CloudBuildRestTransport,
     ],
 )
 def test_cloud_build_transport_auth_gdch_credentials(transport_class):
@@ -6163,11 +12572,40 @@ def test_cloud_build_grpc_transport_client_cert_source_for_mtls(transport_class)
             )
 
 
+def test_cloud_build_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CloudBuildRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_cloud_build_rest_lro_client():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_build_host_no_port(transport_name):
@@ -6178,7 +12616,11 @@ def test_cloud_build_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("cloudbuild.googleapis.com:443")
+    assert client.transport._host == (
+        "cloudbuild.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://cloudbuild.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -6186,6 +12628,7 @@ def test_cloud_build_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_build_host_with_port(transport_name):
@@ -6196,7 +12639,84 @@ def test_cloud_build_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("cloudbuild.googleapis.com:8000")
+    assert client.transport._host == (
+        "cloudbuild.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://cloudbuild.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_cloud_build_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CloudBuildClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CloudBuildClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_build._session
+    session2 = client2.transport.create_build._session
+    assert session1 != session2
+    session1 = client1.transport.get_build._session
+    session2 = client2.transport.get_build._session
+    assert session1 != session2
+    session1 = client1.transport.list_builds._session
+    session2 = client2.transport.list_builds._session
+    assert session1 != session2
+    session1 = client1.transport.cancel_build._session
+    session2 = client2.transport.cancel_build._session
+    assert session1 != session2
+    session1 = client1.transport.retry_build._session
+    session2 = client2.transport.retry_build._session
+    assert session1 != session2
+    session1 = client1.transport.approve_build._session
+    session2 = client2.transport.approve_build._session
+    assert session1 != session2
+    session1 = client1.transport.create_build_trigger._session
+    session2 = client2.transport.create_build_trigger._session
+    assert session1 != session2
+    session1 = client1.transport.get_build_trigger._session
+    session2 = client2.transport.get_build_trigger._session
+    assert session1 != session2
+    session1 = client1.transport.list_build_triggers._session
+    session2 = client2.transport.list_build_triggers._session
+    assert session1 != session2
+    session1 = client1.transport.delete_build_trigger._session
+    session2 = client2.transport.delete_build_trigger._session
+    assert session1 != session2
+    session1 = client1.transport.update_build_trigger._session
+    session2 = client2.transport.update_build_trigger._session
+    assert session1 != session2
+    session1 = client1.transport.run_build_trigger._session
+    session2 = client2.transport.run_build_trigger._session
+    assert session1 != session2
+    session1 = client1.transport.receive_trigger_webhook._session
+    session2 = client2.transport.receive_trigger_webhook._session
+    assert session1 != session2
+    session1 = client1.transport.create_worker_pool._session
+    session2 = client2.transport.create_worker_pool._session
+    assert session1 != session2
+    session1 = client1.transport.get_worker_pool._session
+    session2 = client2.transport.get_worker_pool._session
+    assert session1 != session2
+    session1 = client1.transport.delete_worker_pool._session
+    session2 = client2.transport.delete_worker_pool._session
+    assert session1 != session2
+    session1 = client1.transport.update_worker_pool._session
+    session2 = client2.transport.update_worker_pool._session
+    assert session1 != session2
+    session1 = client1.transport.list_worker_pools._session
+    session2 = client2.transport.list_worker_pools._session
+    assert session1 != session2
 
 
 def test_cloud_build_grpc_transport_channel():
@@ -6714,6 +13234,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -6731,6 +13252,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

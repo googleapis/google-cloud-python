@@ -18,8 +18,6 @@ from google.cloud.devtools.cloudbuild_v2 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.cloud_build import CloudBuildClient
-from .services.cloud_build import CloudBuildAsyncClient
 from .services.repository_manager import RepositoryManagerClient
 from .services.repository_manager import RepositoryManagerAsyncClient
 
@@ -53,11 +51,9 @@ from .types.repositories import ServiceDirectoryConfig
 from .types.repositories import UpdateConnectionRequest
 
 __all__ = (
-    "CloudBuildAsyncClient",
     "RepositoryManagerAsyncClient",
     "BatchCreateRepositoriesRequest",
     "BatchCreateRepositoriesResponse",
-    "CloudBuildClient",
     "Connection",
     "CreateConnectionRequest",
     "CreateRepositoryRequest",

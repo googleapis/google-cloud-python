@@ -57,6 +57,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import CloudBuildTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CloudBuildGrpcTransport
 from .transports.grpc_asyncio import CloudBuildGrpcAsyncIOTransport
+from .transports.rest import CloudBuildRestTransport
 
 
 class CloudBuildClientMeta(type):
@@ -70,6 +71,7 @@ class CloudBuildClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudBuildTransport]]
     _transport_registry["grpc"] = CloudBuildGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudBuildGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudBuildRestTransport
 
     def get_transport_class(
         cls,

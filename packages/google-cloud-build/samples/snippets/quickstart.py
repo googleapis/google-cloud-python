@@ -18,13 +18,19 @@ import google.auth
 from google.cloud.devtools import cloudbuild_v1
 
 
-def quickstart():
-    """Create and execute a simple Google Cloud Build configuration,
-    print the in-progress status and print the completed status."""
+def quickstart(transport: str = None):
+    """
+    Create and execute a simple Google Cloud Build configuration,
+    print the in-progress status and print the completed status.
+
+    Args:
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
 
     # Authorize the client with Google defaults
     credentials, project_id = google.auth.default()
-    client = cloudbuild_v1.services.cloud_build.CloudBuildClient()
+    client = cloudbuild_v1.services.cloud_build.CloudBuildClient(transport=transport)
 
     # If you're using Private Pools or a non-global default pool, add a regional
     # `api_endpoint` to `CloudBuildClient()`

@@ -5,19 +5,6 @@
   "protoPackage": "google.devtools.cloudbuild.v2",
   "schema": "1.0",
   "services": {
-    "CloudBuild": {
-      "clients": {
-        "grpc": {
-          "libraryClient": "CloudBuildClient"
-        },
-        "grpc-async": {
-          "libraryClient": "CloudBuildAsyncClient"
-        },
-        "rest": {
-          "libraryClient": "CloudBuildClient"
-        }
-      }
-    },
     "RepositoryManager": {
       "clients": {
         "grpc": {

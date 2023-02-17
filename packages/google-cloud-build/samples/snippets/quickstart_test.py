@@ -13,11 +13,14 @@
 # limitations under the License.
 
 
+import pytest
+
 import quickstart
 
 
-def test_quickstart(capsys):
-    quickstart.quickstart()
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_quickstart(capsys, transport: str):
+    quickstart.quickstart(transport=transport)
     out, _ = capsys.readouterr()
     # Prints in-progress message
     assert "hello world" in out
