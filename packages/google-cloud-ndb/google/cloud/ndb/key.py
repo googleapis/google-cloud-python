@@ -101,7 +101,7 @@ _APP_ID_ENVIRONMENT = "APPLICATION_ID"
 _APP_ID_DEFAULT = "_"
 _WRONG_TYPE = "Cannot construct Key reference on non-Key class; received {!r}"
 _REFERENCE_APP_MISMATCH = (
-    "Key reference constructed uses a different app {!r} than " "the one specified {!r}"
+    "Key reference constructed uses a different app {!r} than the one specified {!r}"
 )
 _REFERENCE_NAMESPACE_MISMATCH = (
     "Key reference constructed uses a different namespace {!r} than "
