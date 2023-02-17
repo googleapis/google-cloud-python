@@ -40,9 +40,11 @@ class bigtableCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'check_and_mutate_row': ('table_name', 'row_key', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
+        'generate_initial_change_stream_partitions': ('table_name', 'app_profile_id', ),
         'mutate_row': ('table_name', 'row_key', 'mutations', 'app_profile_id', ),
         'mutate_rows': ('table_name', 'entries', 'app_profile_id', ),
         'ping_and_warm': ('name', 'app_profile_id', ),
+        'read_change_stream': ('table_name', 'app_profile_id', 'partition', 'start_time', 'continuation_tokens', 'end_time', 'heartbeat_duration', ),
         'read_modify_write_row': ('table_name', 'row_key', 'rules', 'app_profile_id', ),
         'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', ),
         'sample_row_keys': ('table_name', 'app_profile_id', ),

@@ -23,12 +23,16 @@ from .services.bigtable import BigtableAsyncClient
 
 from .types.bigtable import CheckAndMutateRowRequest
 from .types.bigtable import CheckAndMutateRowResponse
+from .types.bigtable import GenerateInitialChangeStreamPartitionsRequest
+from .types.bigtable import GenerateInitialChangeStreamPartitionsResponse
 from .types.bigtable import MutateRowRequest
 from .types.bigtable import MutateRowResponse
 from .types.bigtable import MutateRowsRequest
 from .types.bigtable import MutateRowsResponse
 from .types.bigtable import PingAndWarmRequest
 from .types.bigtable import PingAndWarmResponse
+from .types.bigtable import ReadChangeStreamRequest
+from .types.bigtable import ReadChangeStreamResponse
 from .types.bigtable import ReadModifyWriteRowRequest
 from .types.bigtable import ReadModifyWriteRowResponse
 from .types.bigtable import ReadRowsRequest
@@ -45,6 +49,9 @@ from .types.data import Row
 from .types.data import RowFilter
 from .types.data import RowRange
 from .types.data import RowSet
+from .types.data import StreamContinuationToken
+from .types.data import StreamContinuationTokens
+from .types.data import StreamPartition
 from .types.data import TimestampRange
 from .types.data import ValueRange
 from .types.request_stats import FullReadStatsView
@@ -63,6 +70,8 @@ __all__ = (
     "ColumnRange",
     "Family",
     "FullReadStatsView",
+    "GenerateInitialChangeStreamPartitionsRequest",
+    "GenerateInitialChangeStreamPartitionsResponse",
     "MutateRowRequest",
     "MutateRowResponse",
     "MutateRowsRequest",
@@ -70,6 +79,8 @@ __all__ = (
     "Mutation",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
+    "ReadChangeStreamRequest",
+    "ReadChangeStreamResponse",
     "ReadIterationStats",
     "ReadModifyWriteRowRequest",
     "ReadModifyWriteRowResponse",
@@ -85,6 +96,9 @@ __all__ = (
     "RowSet",
     "SampleRowKeysRequest",
     "SampleRowKeysResponse",
+    "StreamContinuationToken",
+    "StreamContinuationTokens",
+    "StreamPartition",
     "TimestampRange",
     "ValueRange",
 )

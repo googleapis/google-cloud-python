@@ -59,6 +59,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import BigtableTableAdminGrpcTransport
 from .transports.grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
+from .transports.rest import BigtableTableAdminRestTransport
 
 
 class BigtableTableAdminClientMeta(type):
@@ -74,6 +75,7 @@ class BigtableTableAdminClientMeta(type):
     )  # type: Dict[str, Type[BigtableTableAdminTransport]]
     _transport_registry["grpc"] = BigtableTableAdminGrpcTransport
     _transport_registry["grpc_asyncio"] = BigtableTableAdminGrpcAsyncIOTransport
+    _transport_registry["rest"] = BigtableTableAdminRestTransport
 
     def get_transport_class(
         cls,

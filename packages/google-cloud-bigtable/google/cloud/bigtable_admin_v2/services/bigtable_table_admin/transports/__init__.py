@@ -19,6 +19,8 @@ from typing import Dict, Type
 from .base import BigtableTableAdminTransport
 from .grpc import BigtableTableAdminGrpcTransport
 from .grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
+from .rest import BigtableTableAdminRestTransport
+from .rest import BigtableTableAdminRestInterceptor
 
 
 # Compile a registry of transports.
@@ -27,9 +29,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[BigtableTableAdminTransport]]
 _transport_registry["grpc"] = BigtableTableAdminGrpcTransport
 _transport_registry["grpc_asyncio"] = BigtableTableAdminGrpcAsyncIOTransport
+_transport_registry["rest"] = BigtableTableAdminRestTransport
 
 __all__ = (
     "BigtableTableAdminTransport",
     "BigtableTableAdminGrpcTransport",
     "BigtableTableAdminGrpcAsyncIOTransport",
+    "BigtableTableAdminRestTransport",
+    "BigtableTableAdminRestInterceptor",
 )

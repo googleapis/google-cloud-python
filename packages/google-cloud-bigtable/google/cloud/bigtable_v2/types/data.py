@@ -33,6 +33,9 @@ __protobuf__ = proto.module(
         "RowFilter",
         "Mutation",
         "ReadModifyWriteRule",
+        "StreamPartition",
+        "StreamContinuationTokens",
+        "StreamContinuationToken",
     },
 )
 
@@ -1031,6 +1034,64 @@ class ReadModifyWriteRule(proto.Message):
         proto.INT64,
         number=4,
         oneof="rule",
+    )
+
+
+class StreamPartition(proto.Message):
+    r"""NOTE: This API is intended to be used by Apache Beam
+    BigtableIO. A partition of a change stream.
+
+    Attributes:
+        row_range (google.cloud.bigtable_v2.types.RowRange):
+            The row range covered by this partition and is specified by
+            [``start_key_closed``, ``end_key_open``).
+    """
+
+    row_range: "RowRange" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RowRange",
+    )
+
+
+class StreamContinuationTokens(proto.Message):
+    r"""NOTE: This API is intended to be used by Apache Beam BigtableIO. The
+    information required to continue reading the data from multiple
+    ``StreamPartitions`` from where a previous read left off.
+
+    Attributes:
+        tokens (MutableSequence[google.cloud.bigtable_v2.types.StreamContinuationToken]):
+            List of continuation tokens.
+    """
+
+    tokens: MutableSequence["StreamContinuationToken"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="StreamContinuationToken",
+    )
+
+
+class StreamContinuationToken(proto.Message):
+    r"""NOTE: This API is intended to be used by Apache Beam BigtableIO. The
+    information required to continue reading the data from a
+    ``StreamPartition`` from where a previous read left off.
+
+    Attributes:
+        partition (google.cloud.bigtable_v2.types.StreamPartition):
+            The partition that this token applies to.
+        token (str):
+            An encoded position in the stream to restart
+            reading from.
+    """
+
+    partition: "StreamPartition" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="StreamPartition",
+    )
+    token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

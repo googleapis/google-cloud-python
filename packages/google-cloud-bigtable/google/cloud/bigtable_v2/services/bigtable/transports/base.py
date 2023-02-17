@@ -175,6 +175,16 @@ class BigtableTransport(abc.ABC):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
+            self.generate_initial_change_stream_partitions: gapic_v1.method.wrap_method(
+                self.generate_initial_change_stream_partitions,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.read_change_stream: gapic_v1.method.wrap_method(
+                self.read_change_stream,
+                default_timeout=43200.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -253,6 +263,30 @@ class BigtableTransport(abc.ABC):
         Union[
             bigtable.ReadModifyWriteRowResponse,
             Awaitable[bigtable.ReadModifyWriteRowResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_initial_change_stream_partitions(
+        self,
+    ) -> Callable[
+        [bigtable.GenerateInitialChangeStreamPartitionsRequest],
+        Union[
+            bigtable.GenerateInitialChangeStreamPartitionsResponse,
+            Awaitable[bigtable.GenerateInitialChangeStreamPartitionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def read_change_stream(
+        self,
+    ) -> Callable[
+        [bigtable.ReadChangeStreamRequest],
+        Union[
+            bigtable.ReadChangeStreamResponse,
+            Awaitable[bigtable.ReadChangeStreamResponse],
         ],
     ]:
         raise NotImplementedError()

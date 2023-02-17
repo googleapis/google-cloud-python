@@ -53,6 +53,7 @@ from google.cloud.bigtable_v2.types import request_stats
 from .transports.base import BigtableTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import BigtableGrpcTransport
 from .transports.grpc_asyncio import BigtableGrpcAsyncIOTransport
+from .transports.rest import BigtableRestTransport
 
 
 class BigtableClientMeta(type):
@@ -66,6 +67,7 @@ class BigtableClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[BigtableTransport]]
     _transport_registry["grpc"] = BigtableGrpcTransport
     _transport_registry["grpc_asyncio"] = BigtableGrpcAsyncIOTransport
+    _transport_registry["rest"] = BigtableRestTransport
 
     def get_transport_class(
         cls,
@@ -1294,6 +1296,209 @@ class BigtableClient(metaclass=BigtableClientMeta):
             metadata = tuple(metadata) + (
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def generate_initial_change_stream_partitions(
+        self,
+        request: Optional[
+            Union[bigtable.GenerateInitialChangeStreamPartitionsRequest, dict]
+        ] = None,
+        *,
+        table_name: Optional[str] = None,
+        app_profile_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> Iterable[bigtable.GenerateInitialChangeStreamPartitionsResponse]:
+        r"""NOTE: This API is intended to be used by Apache Beam BigtableIO.
+        Returns the current list of partitions that make up the table's
+        change stream. The union of partitions will cover the entire
+        keyspace. Partitions can be read with ``ReadChangeStream``.
+
+        Args:
+            request (Union[google.cloud.bigtable_v2.types.GenerateInitialChangeStreamPartitionsRequest, dict]):
+                The request object. NOTE: This API is intended to be
+                used by Apache Beam BigtableIO. Request message for
+                Bigtable.GenerateInitialChangeStreamPartitions.
+            table_name (str):
+                Required. The unique name of the table from which to get
+                change stream partitions. Values are of the form
+                ``projects/<project>/instances/<instance>/tables/<table>``.
+                Change streaming must be enabled on the table.
+
+                This corresponds to the ``table_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            app_profile_id (str):
+                This value specifies routing for
+                replication. If not specified, the
+                "default" application profile will be
+                used. Single cluster routing must be
+                configured on the profile.
+
+                This corresponds to the ``app_profile_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            Iterable[google.cloud.bigtable_v2.types.GenerateInitialChangeStreamPartitionsResponse]:
+                NOTE: This API is intended to be used
+                by Apache Beam BigtableIO. Response
+                message for
+                Bigtable.GenerateInitialChangeStreamPartitions.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([table_name, app_profile_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a bigtable.GenerateInitialChangeStreamPartitionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, bigtable.GenerateInitialChangeStreamPartitionsRequest
+        ):
+            request = bigtable.GenerateInitialChangeStreamPartitionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if table_name is not None:
+                request.table_name = table_name
+            if app_profile_id is not None:
+                request.app_profile_id = app_profile_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.generate_initial_change_stream_partitions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("table_name", request.table_name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def read_change_stream(
+        self,
+        request: Optional[Union[bigtable.ReadChangeStreamRequest, dict]] = None,
+        *,
+        table_name: Optional[str] = None,
+        app_profile_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> Iterable[bigtable.ReadChangeStreamResponse]:
+        r"""NOTE: This API is intended to be used by Apache Beam
+        BigtableIO. Reads changes from a table's change stream.
+        Changes will reflect both user-initiated mutations and
+        mutations that are caused by garbage collection.
+
+        Args:
+            request (Union[google.cloud.bigtable_v2.types.ReadChangeStreamRequest, dict]):
+                The request object. NOTE: This API is intended to be
+                used by Apache Beam BigtableIO. Request message for
+                Bigtable.ReadChangeStream.
+            table_name (str):
+                Required. The unique name of the table from which to
+                read a change stream. Values are of the form
+                ``projects/<project>/instances/<instance>/tables/<table>``.
+                Change streaming must be enabled on the table.
+
+                This corresponds to the ``table_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            app_profile_id (str):
+                This value specifies routing for
+                replication. If not specified, the
+                "default" application profile will be
+                used. Single cluster routing must be
+                configured on the profile.
+
+                This corresponds to the ``app_profile_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            Iterable[google.cloud.bigtable_v2.types.ReadChangeStreamResponse]:
+                NOTE: This API is intended to be used
+                by Apache Beam BigtableIO. Response
+                message for Bigtable.ReadChangeStream.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([table_name, app_profile_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a bigtable.ReadChangeStreamRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, bigtable.ReadChangeStreamRequest):
+            request = bigtable.ReadChangeStreamRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if table_name is not None:
+                request.table_name = table_name
+            if app_profile_id is not None:
+                request.app_profile_id = app_profile_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.read_change_stream]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("table_name", request.table_name),)
+            ),
+        )
 
         # Send the request.
         response = rpc(

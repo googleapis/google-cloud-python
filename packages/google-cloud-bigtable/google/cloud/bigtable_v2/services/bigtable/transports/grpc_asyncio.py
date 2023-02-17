@@ -446,6 +446,72 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
             )
         return self._stubs["read_modify_write_row"]
 
+    @property
+    def generate_initial_change_stream_partitions(
+        self,
+    ) -> Callable[
+        [bigtable.GenerateInitialChangeStreamPartitionsRequest],
+        Awaitable[bigtable.GenerateInitialChangeStreamPartitionsResponse],
+    ]:
+        r"""Return a callable for the generate initial change stream
+        partitions method over gRPC.
+
+        NOTE: This API is intended to be used by Apache Beam BigtableIO.
+        Returns the current list of partitions that make up the table's
+        change stream. The union of partitions will cover the entire
+        keyspace. Partitions can be read with ``ReadChangeStream``.
+
+        Returns:
+            Callable[[~.GenerateInitialChangeStreamPartitionsRequest],
+                    Awaitable[~.GenerateInitialChangeStreamPartitionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_initial_change_stream_partitions" not in self._stubs:
+            self._stubs[
+                "generate_initial_change_stream_partitions"
+            ] = self.grpc_channel.unary_stream(
+                "/google.bigtable.v2.Bigtable/GenerateInitialChangeStreamPartitions",
+                request_serializer=bigtable.GenerateInitialChangeStreamPartitionsRequest.serialize,
+                response_deserializer=bigtable.GenerateInitialChangeStreamPartitionsResponse.deserialize,
+            )
+        return self._stubs["generate_initial_change_stream_partitions"]
+
+    @property
+    def read_change_stream(
+        self,
+    ) -> Callable[
+        [bigtable.ReadChangeStreamRequest], Awaitable[bigtable.ReadChangeStreamResponse]
+    ]:
+        r"""Return a callable for the read change stream method over gRPC.
+
+        NOTE: This API is intended to be used by Apache Beam
+        BigtableIO. Reads changes from a table's change stream.
+        Changes will reflect both user-initiated mutations and
+        mutations that are caused by garbage collection.
+
+        Returns:
+            Callable[[~.ReadChangeStreamRequest],
+                    Awaitable[~.ReadChangeStreamResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "read_change_stream" not in self._stubs:
+            self._stubs["read_change_stream"] = self.grpc_channel.unary_stream(
+                "/google.bigtable.v2.Bigtable/ReadChangeStream",
+                request_serializer=bigtable.ReadChangeStreamRequest.serialize,
+                response_deserializer=bigtable.ReadChangeStreamResponse.deserialize,
+            )
+        return self._stubs["read_change_stream"]
+
     def close(self):
         return self.grpc_channel.close()
 

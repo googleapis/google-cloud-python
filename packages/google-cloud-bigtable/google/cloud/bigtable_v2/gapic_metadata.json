@@ -15,6 +15,11 @@
                 "check_and_mutate_row"
               ]
             },
+            "GenerateInitialChangeStreamPartitions": {
+              "methods": [
+                "generate_initial_change_stream_partitions"
+              ]
+            },
             "MutateRow": {
               "methods": [
                 "mutate_row"
@@ -28,6 +33,11 @@
             "PingAndWarm": {
               "methods": [
                 "ping_and_warm"
+              ]
+            },
+            "ReadChangeStream": {
+              "methods": [
+                "read_change_stream"
               ]
             },
             "ReadModifyWriteRow": {
@@ -55,6 +65,11 @@
                 "check_and_mutate_row"
               ]
             },
+            "GenerateInitialChangeStreamPartitions": {
+              "methods": [
+                "generate_initial_change_stream_partitions"
+              ]
+            },
             "MutateRow": {
               "methods": [
                 "mutate_row"
@@ -68,6 +83,61 @@
             "PingAndWarm": {
               "methods": [
                 "ping_and_warm"
+              ]
+            },
+            "ReadChangeStream": {
+              "methods": [
+                "read_change_stream"
+              ]
+            },
+            "ReadModifyWriteRow": {
+              "methods": [
+                "read_modify_write_row"
+              ]
+            },
+            "ReadRows": {
+              "methods": [
+                "read_rows"
+              ]
+            },
+            "SampleRowKeys": {
+              "methods": [
+                "sample_row_keys"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BigtableClient",
+          "rpcs": {
+            "CheckAndMutateRow": {
+              "methods": [
+                "check_and_mutate_row"
+              ]
+            },
+            "GenerateInitialChangeStreamPartitions": {
+              "methods": [
+                "generate_initial_change_stream_partitions"
+              ]
+            },
+            "MutateRow": {
+              "methods": [
+                "mutate_row"
+              ]
+            },
+            "MutateRows": {
+              "methods": [
+                "mutate_rows"
+              ]
+            },
+            "PingAndWarm": {
+              "methods": [
+                "ping_and_warm"
+              ]
+            },
+            "ReadChangeStream": {
+              "methods": [
+                "read_change_stream"
               ]
             },
             "ReadModifyWriteRow": {

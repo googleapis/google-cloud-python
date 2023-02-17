@@ -166,7 +166,7 @@ def lint_setup_py\(session\):
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
-    session.install("mypy", "types-setuptools", "types-protobuf", "types-mock")
+    session.install("mypy", "types-setuptools", "types-protobuf", "types-mock", "types-requests")
     session.install("google-cloud-testutils")
     # TODO: also verify types on tests, all of google package
     session.run("mypy", "google/", "tests/")
@@ -175,42 +175,6 @@ def mypy(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
 ''',
-)
-
-# Work around https://github.com/googleapis/gapic-generator-python/issues/689
-bad_clusters_typing = r"""
-        clusters: Sequence\[
-            bigtable_instance_admin\.CreateInstanceRequest\.ClustersEntry
-        \] \= None,"""
-
-good_clusters_typing = """
-        clusters: Dict[str, gba_instance.Cluster] = None,"""
-
-s.replace(
-    "google/cloud/bigtable_admin_v2/services/bigtable_instance_admin/*client.py",
-    bad_clusters_typing,
-    good_clusters_typing,
-)
-
-bad_clusters_docstring_1 = re.escape(r"""
-            clusters (:class:`Sequence[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest.ClustersEntry]`):""")
-
-bad_clusters_docstring_2 = re.escape(r"""
-            clusters (Sequence[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest.ClustersEntry]):""")
-
-good_clusters_docstring = """
-            clusters (Dict[str, gba_instance.Cluster]):"""
-
-s.replace(
-    "google/cloud/bigtable_admin_v2/services/bigtable_instance_admin/*client.py",
-    bad_clusters_docstring_1,
-    good_clusters_docstring,
-)
-
-s.replace(
-    "google/cloud/bigtable_admin_v2/services/bigtable_instance_admin/*client.py",
-    bad_clusters_docstring_2,
-    good_clusters_docstring,
 )
 
 # ----------------------------------------------------------------------------
