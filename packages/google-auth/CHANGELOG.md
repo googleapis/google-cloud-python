@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.16.1](https://github.com/googleapis/google-auth-library-python/compare/v2.16.0...v2.16.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* Add support for python 3.11 ([#1212](https://github.com/googleapis/google-auth-library-python/issues/1212)) ([1fc95e3](https://github.com/googleapis/google-auth-library-python/commit/1fc95e3c3ecfbceb16c1be28725e8bc9eefe8bb0))
+* Remove 3PI config url validation ([#1220](https://github.com/googleapis/google-auth-library-python/issues/1220)) ([8b95515](https://github.com/googleapis/google-auth-library-python/commit/8b95515718d50b028c43ea9d6a7220489ffb5da0))
+* Update the docs generator interpreter to unblock documentation build ([#1218](https://github.com/googleapis/google-auth-library-python/issues/1218)) ([9d36c2f](https://github.com/googleapis/google-auth-library-python/commit/9d36c2f1f9e1eac8fbff4be504986dff5e7d4da2))
+
 ## [2.16.0](https://github.com/googleapis/google-auth-library-python/compare/v2.15.0...v2.16.0) (2023-01-09)
 
 
