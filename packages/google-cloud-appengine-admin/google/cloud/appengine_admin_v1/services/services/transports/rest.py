@@ -304,7 +304,20 @@ class ServicesRestTransport(ServicesTransport):
         """
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
-            http_options: Dict[str, List[Dict[str, str]]] = {}
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=apps/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=apps/*}/operations",
+                    },
+                ],
+            }
 
             rest_transport = operations_v1.OperationsRestTransport(
                 host=self._host,
