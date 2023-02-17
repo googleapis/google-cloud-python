@@ -50,14 +50,14 @@ def project():
     yield default_project
 
 
-@pytest.fixture()
-def publisher():
-    yield pubsub_v1.PublisherClient()
+@pytest.fixture(params=["grpc"])
+def publisher(request):
+    yield pubsub_v1.PublisherClient(transport=request.param)
 
 
-@pytest.fixture()
-def subscriber():
-    yield pubsub_v1.SubscriberClient()
+@pytest.fixture(params=["grpc"])
+def subscriber(request):
+    yield pubsub_v1.SubscriberClient(transport=request.param)
 
 
 @pytest.fixture
@@ -419,8 +419,8 @@ def test_subscriber_not_leaking_open_sockets(
     # Also, since the client will get closed, we need another subscriber client
     # to clean up the subscription. We also need to make sure that auxiliary
     # subscriber releases the sockets, too.
-    subscriber = pubsub_v1.SubscriberClient()
-    subscriber_2 = pubsub_v1.SubscriberClient()
+    subscriber = pubsub_v1.SubscriberClient(transport="grpc")
+    subscriber_2 = pubsub_v1.SubscriberClient(transport="grpc")
     cleanup.append(
         (subscriber_2.delete_subscription, (), {"subscription": subscription_path})
     )
