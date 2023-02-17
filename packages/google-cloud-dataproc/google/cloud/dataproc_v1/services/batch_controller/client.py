@@ -56,6 +56,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import BatchControllerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import BatchControllerGrpcTransport
 from .transports.grpc_asyncio import BatchControllerGrpcAsyncIOTransport
+from .transports.rest import BatchControllerRestTransport
 
 
 class BatchControllerClientMeta(type):
@@ -71,6 +72,7 @@ class BatchControllerClientMeta(type):
     )  # type: Dict[str, Type[BatchControllerTransport]]
     _transport_registry["grpc"] = BatchControllerGrpcTransport
     _transport_registry["grpc_asyncio"] = BatchControllerGrpcAsyncIOTransport
+    _transport_registry["rest"] = BatchControllerRestTransport
 
     def get_transport_class(
         cls,

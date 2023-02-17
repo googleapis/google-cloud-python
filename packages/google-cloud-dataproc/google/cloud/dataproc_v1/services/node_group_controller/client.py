@@ -54,6 +54,7 @@ from google.cloud.dataproc_v1.types import operations
 from .transports.base import NodeGroupControllerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import NodeGroupControllerGrpcTransport
 from .transports.grpc_asyncio import NodeGroupControllerGrpcAsyncIOTransport
+from .transports.rest import NodeGroupControllerRestTransport
 
 
 class NodeGroupControllerClientMeta(type):
@@ -69,6 +70,7 @@ class NodeGroupControllerClientMeta(type):
     )  # type: Dict[str, Type[NodeGroupControllerTransport]]
     _transport_registry["grpc"] = NodeGroupControllerGrpcTransport
     _transport_registry["grpc_asyncio"] = NodeGroupControllerGrpcAsyncIOTransport
+    _transport_registry["rest"] = NodeGroupControllerRestTransport
 
     def get_transport_class(
         cls,

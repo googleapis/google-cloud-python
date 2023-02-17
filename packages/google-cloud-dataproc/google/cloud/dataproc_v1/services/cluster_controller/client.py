@@ -56,6 +56,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import ClusterControllerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ClusterControllerGrpcTransport
 from .transports.grpc_asyncio import ClusterControllerGrpcAsyncIOTransport
+from .transports.rest import ClusterControllerRestTransport
 
 
 class ClusterControllerClientMeta(type):
@@ -71,6 +72,7 @@ class ClusterControllerClientMeta(type):
     )  # type: Dict[str, Type[ClusterControllerTransport]]
     _transport_registry["grpc"] = ClusterControllerGrpcTransport
     _transport_registry["grpc_asyncio"] = ClusterControllerGrpcAsyncIOTransport
+    _transport_registry["rest"] = ClusterControllerRestTransport
 
     def get_transport_class(
         cls,

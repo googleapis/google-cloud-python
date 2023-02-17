@@ -51,6 +51,7 @@ from google.cloud.dataproc_v1.types import autoscaling_policies
 from .transports.base import AutoscalingPolicyServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AutoscalingPolicyServiceGrpcTransport
 from .transports.grpc_asyncio import AutoscalingPolicyServiceGrpcAsyncIOTransport
+from .transports.rest import AutoscalingPolicyServiceRestTransport
 
 
 class AutoscalingPolicyServiceClientMeta(type):
@@ -66,6 +67,7 @@ class AutoscalingPolicyServiceClientMeta(type):
     )  # type: Dict[str, Type[AutoscalingPolicyServiceTransport]]
     _transport_registry["grpc"] = AutoscalingPolicyServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AutoscalingPolicyServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AutoscalingPolicyServiceRestTransport
 
     def get_transport_class(
         cls,

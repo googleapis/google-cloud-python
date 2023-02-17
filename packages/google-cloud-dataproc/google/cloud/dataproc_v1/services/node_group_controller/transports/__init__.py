@@ -19,6 +19,8 @@ from typing import Dict, Type
 from .base import NodeGroupControllerTransport
 from .grpc import NodeGroupControllerGrpcTransport
 from .grpc_asyncio import NodeGroupControllerGrpcAsyncIOTransport
+from .rest import NodeGroupControllerRestTransport
+from .rest import NodeGroupControllerRestInterceptor
 
 
 # Compile a registry of transports.
@@ -27,9 +29,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[NodeGroupControllerTransport]]
 _transport_registry["grpc"] = NodeGroupControllerGrpcTransport
 _transport_registry["grpc_asyncio"] = NodeGroupControllerGrpcAsyncIOTransport
+_transport_registry["rest"] = NodeGroupControllerRestTransport
 
 __all__ = (
     "NodeGroupControllerTransport",
     "NodeGroupControllerGrpcTransport",
     "NodeGroupControllerGrpcAsyncIOTransport",
+    "NodeGroupControllerRestTransport",
+    "NodeGroupControllerRestInterceptor",
 )

@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -101,6 +108,7 @@ def test__get_default_mtls_endpoint():
     [
         (AutoscalingPolicyServiceClient, "grpc"),
         (AutoscalingPolicyServiceAsyncClient, "grpc_asyncio"),
+        (AutoscalingPolicyServiceClient, "rest"),
     ],
 )
 def test_autoscaling_policy_service_client_from_service_account_info(
@@ -116,7 +124,11 @@ def test_autoscaling_policy_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataproc.googleapis.com:443")
+        assert client.transport._host == (
+            "dataproc.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataproc.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -124,6 +136,7 @@ def test_autoscaling_policy_service_client_from_service_account_info(
     [
         (transports.AutoscalingPolicyServiceGrpcTransport, "grpc"),
         (transports.AutoscalingPolicyServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AutoscalingPolicyServiceRestTransport, "rest"),
     ],
 )
 def test_autoscaling_policy_service_client_service_account_always_use_jwt(
@@ -149,6 +162,7 @@ def test_autoscaling_policy_service_client_service_account_always_use_jwt(
     [
         (AutoscalingPolicyServiceClient, "grpc"),
         (AutoscalingPolicyServiceAsyncClient, "grpc_asyncio"),
+        (AutoscalingPolicyServiceClient, "rest"),
     ],
 )
 def test_autoscaling_policy_service_client_from_service_account_file(
@@ -171,13 +185,18 @@ def test_autoscaling_policy_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataproc.googleapis.com:443")
+        assert client.transport._host == (
+            "dataproc.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataproc.googleapis.com"
+        )
 
 
 def test_autoscaling_policy_service_client_get_transport_class():
     transport = AutoscalingPolicyServiceClient.get_transport_class()
     available_transports = [
         transports.AutoscalingPolicyServiceGrpcTransport,
+        transports.AutoscalingPolicyServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -197,6 +216,11 @@ def test_autoscaling_policy_service_client_get_transport_class():
             AutoscalingPolicyServiceAsyncClient,
             transports.AutoscalingPolicyServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            AutoscalingPolicyServiceClient,
+            transports.AutoscalingPolicyServiceRestTransport,
+            "rest",
         ),
     ],
 )
@@ -355,6 +379,18 @@ def test_autoscaling_policy_service_client_client_options(
             AutoscalingPolicyServiceAsyncClient,
             transports.AutoscalingPolicyServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            AutoscalingPolicyServiceClient,
+            transports.AutoscalingPolicyServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            AutoscalingPolicyServiceClient,
+            transports.AutoscalingPolicyServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -563,6 +599,11 @@ def test_autoscaling_policy_service_client_get_mtls_endpoint_and_cert_source(
             transports.AutoscalingPolicyServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            AutoscalingPolicyServiceClient,
+            transports.AutoscalingPolicyServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_autoscaling_policy_service_client_client_options_scopes(
@@ -602,6 +643,12 @@ def test_autoscaling_policy_service_client_client_options_scopes(
             transports.AutoscalingPolicyServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            AutoscalingPolicyServiceClient,
+            transports.AutoscalingPolicyServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2175,6 +2222,1547 @@ async def test_delete_autoscaling_policy_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autoscaling_policies.CreateAutoscalingPolicyRequest,
+        dict,
+    ],
+)
+def test_create_autoscaling_policy_rest(request_type):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["policy"] = {
+        "id": "id_value",
+        "name": "name_value",
+        "basic_algorithm": {
+            "yarn_config": {
+                "graceful_decommission_timeout": {"seconds": 751, "nanos": 543},
+                "scale_up_factor": 0.1578,
+                "scale_down_factor": 0.1789,
+                "scale_up_min_worker_fraction": 0.2973,
+                "scale_down_min_worker_fraction": 0.3184,
+            },
+            "cooldown_period": {},
+        },
+        "worker_config": {"min_instances": 1387, "max_instances": 1389, "weight": 648},
+        "secondary_worker_config": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.AutoscalingPolicy(
+            id="id_value",
+            name="name_value",
+            basic_algorithm=autoscaling_policies.BasicAutoscalingAlgorithm(
+                yarn_config=autoscaling_policies.BasicYarnAutoscalingConfig(
+                    graceful_decommission_timeout=duration_pb2.Duration(seconds=751)
+                )
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_autoscaling_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
+    assert response.id == "id_value"
+    assert response.name == "name_value"
+
+
+def test_create_autoscaling_policy_rest_required_fields(
+    request_type=autoscaling_policies.CreateAutoscalingPolicyRequest,
+):
+    transport_class = transports.AutoscalingPolicyServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = autoscaling_policies.AutoscalingPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_autoscaling_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_autoscaling_policy_rest_unset_required_fields():
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_autoscaling_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "policy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_autoscaling_policy_rest_interceptors(null_interceptor):
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AutoscalingPolicyServiceRestInterceptor(),
+    )
+    client = AutoscalingPolicyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "post_create_autoscaling_policy",
+    ) as post, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "pre_create_autoscaling_policy",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = autoscaling_policies.CreateAutoscalingPolicyRequest.pb(
+            autoscaling_policies.CreateAutoscalingPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = autoscaling_policies.AutoscalingPolicy.to_json(
+            autoscaling_policies.AutoscalingPolicy()
+        )
+
+        request = autoscaling_policies.CreateAutoscalingPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = autoscaling_policies.AutoscalingPolicy()
+
+        client.create_autoscaling_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_autoscaling_policy_rest_bad_request(
+    transport: str = "rest",
+    request_type=autoscaling_policies.CreateAutoscalingPolicyRequest,
+):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["policy"] = {
+        "id": "id_value",
+        "name": "name_value",
+        "basic_algorithm": {
+            "yarn_config": {
+                "graceful_decommission_timeout": {"seconds": 751, "nanos": 543},
+                "scale_up_factor": 0.1578,
+                "scale_down_factor": 0.1789,
+                "scale_up_min_worker_fraction": 0.2973,
+                "scale_down_min_worker_fraction": 0.3184,
+            },
+            "cooldown_period": {},
+        },
+        "worker_config": {"min_instances": 1387, "max_instances": 1389, "weight": 648},
+        "secondary_worker_config": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_autoscaling_policy(request)
+
+
+def test_create_autoscaling_policy_rest_flattened():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.AutoscalingPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            policy=autoscaling_policies.AutoscalingPolicy(id="id_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_autoscaling_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/autoscalingPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_autoscaling_policy_rest_flattened_error(transport: str = "rest"):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_autoscaling_policy(
+            autoscaling_policies.CreateAutoscalingPolicyRequest(),
+            parent="parent_value",
+            policy=autoscaling_policies.AutoscalingPolicy(id="id_value"),
+        )
+
+
+def test_create_autoscaling_policy_rest_error():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autoscaling_policies.UpdateAutoscalingPolicyRequest,
+        dict,
+    ],
+)
+def test_update_autoscaling_policy_rest(request_type):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "policy": {
+            "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+        }
+    }
+    request_init["policy"] = {
+        "id": "id_value",
+        "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3",
+        "basic_algorithm": {
+            "yarn_config": {
+                "graceful_decommission_timeout": {"seconds": 751, "nanos": 543},
+                "scale_up_factor": 0.1578,
+                "scale_down_factor": 0.1789,
+                "scale_up_min_worker_fraction": 0.2973,
+                "scale_down_min_worker_fraction": 0.3184,
+            },
+            "cooldown_period": {},
+        },
+        "worker_config": {"min_instances": 1387, "max_instances": 1389, "weight": 648},
+        "secondary_worker_config": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.AutoscalingPolicy(
+            id="id_value",
+            name="name_value",
+            basic_algorithm=autoscaling_policies.BasicAutoscalingAlgorithm(
+                yarn_config=autoscaling_policies.BasicYarnAutoscalingConfig(
+                    graceful_decommission_timeout=duration_pb2.Duration(seconds=751)
+                )
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_autoscaling_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
+    assert response.id == "id_value"
+    assert response.name == "name_value"
+
+
+def test_update_autoscaling_policy_rest_required_fields(
+    request_type=autoscaling_policies.UpdateAutoscalingPolicyRequest,
+):
+    transport_class = transports.AutoscalingPolicyServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = autoscaling_policies.AutoscalingPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_autoscaling_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_autoscaling_policy_rest_unset_required_fields():
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_autoscaling_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("policy",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_autoscaling_policy_rest_interceptors(null_interceptor):
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AutoscalingPolicyServiceRestInterceptor(),
+    )
+    client = AutoscalingPolicyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "post_update_autoscaling_policy",
+    ) as post, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "pre_update_autoscaling_policy",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = autoscaling_policies.UpdateAutoscalingPolicyRequest.pb(
+            autoscaling_policies.UpdateAutoscalingPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = autoscaling_policies.AutoscalingPolicy.to_json(
+            autoscaling_policies.AutoscalingPolicy()
+        )
+
+        request = autoscaling_policies.UpdateAutoscalingPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = autoscaling_policies.AutoscalingPolicy()
+
+        client.update_autoscaling_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_autoscaling_policy_rest_bad_request(
+    transport: str = "rest",
+    request_type=autoscaling_policies.UpdateAutoscalingPolicyRequest,
+):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "policy": {
+            "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+        }
+    }
+    request_init["policy"] = {
+        "id": "id_value",
+        "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3",
+        "basic_algorithm": {
+            "yarn_config": {
+                "graceful_decommission_timeout": {"seconds": 751, "nanos": 543},
+                "scale_up_factor": 0.1578,
+                "scale_down_factor": 0.1789,
+                "scale_up_min_worker_fraction": 0.2973,
+                "scale_down_min_worker_fraction": 0.3184,
+            },
+            "cooldown_period": {},
+        },
+        "worker_config": {"min_instances": 1387, "max_instances": 1389, "weight": 648},
+        "secondary_worker_config": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_autoscaling_policy(request)
+
+
+def test_update_autoscaling_policy_rest_flattened():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.AutoscalingPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "policy": {
+                "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            policy=autoscaling_policies.AutoscalingPolicy(id="id_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_autoscaling_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{policy.name=projects/*/locations/*/autoscalingPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_autoscaling_policy_rest_flattened_error(transport: str = "rest"):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_autoscaling_policy(
+            autoscaling_policies.UpdateAutoscalingPolicyRequest(),
+            policy=autoscaling_policies.AutoscalingPolicy(id="id_value"),
+        )
+
+
+def test_update_autoscaling_policy_rest_error():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autoscaling_policies.GetAutoscalingPolicyRequest,
+        dict,
+    ],
+)
+def test_get_autoscaling_policy_rest(request_type):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.AutoscalingPolicy(
+            id="id_value",
+            name="name_value",
+            basic_algorithm=autoscaling_policies.BasicAutoscalingAlgorithm(
+                yarn_config=autoscaling_policies.BasicYarnAutoscalingConfig(
+                    graceful_decommission_timeout=duration_pb2.Duration(seconds=751)
+                )
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_autoscaling_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
+    assert response.id == "id_value"
+    assert response.name == "name_value"
+
+
+def test_get_autoscaling_policy_rest_required_fields(
+    request_type=autoscaling_policies.GetAutoscalingPolicyRequest,
+):
+    transport_class = transports.AutoscalingPolicyServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = autoscaling_policies.AutoscalingPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_autoscaling_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_autoscaling_policy_rest_unset_required_fields():
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_autoscaling_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_autoscaling_policy_rest_interceptors(null_interceptor):
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AutoscalingPolicyServiceRestInterceptor(),
+    )
+    client = AutoscalingPolicyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "post_get_autoscaling_policy",
+    ) as post, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor, "pre_get_autoscaling_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = autoscaling_policies.GetAutoscalingPolicyRequest.pb(
+            autoscaling_policies.GetAutoscalingPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = autoscaling_policies.AutoscalingPolicy.to_json(
+            autoscaling_policies.AutoscalingPolicy()
+        )
+
+        request = autoscaling_policies.GetAutoscalingPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = autoscaling_policies.AutoscalingPolicy()
+
+        client.get_autoscaling_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_autoscaling_policy_rest_bad_request(
+    transport: str = "rest",
+    request_type=autoscaling_policies.GetAutoscalingPolicyRequest,
+):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_autoscaling_policy(request)
+
+
+def test_get_autoscaling_policy_rest_flattened():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.AutoscalingPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.AutoscalingPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_autoscaling_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/autoscalingPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_autoscaling_policy_rest_flattened_error(transport: str = "rest"):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_autoscaling_policy(
+            autoscaling_policies.GetAutoscalingPolicyRequest(),
+            name="name_value",
+        )
+
+
+def test_get_autoscaling_policy_rest_error():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autoscaling_policies.ListAutoscalingPoliciesRequest,
+        dict,
+    ],
+)
+def test_list_autoscaling_policies_rest(request_type):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.ListAutoscalingPoliciesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.ListAutoscalingPoliciesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_autoscaling_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutoscalingPoliciesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_autoscaling_policies_rest_required_fields(
+    request_type=autoscaling_policies.ListAutoscalingPoliciesRequest,
+):
+    transport_class = transports.AutoscalingPolicyServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autoscaling_policies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autoscaling_policies._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = autoscaling_policies.ListAutoscalingPoliciesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = autoscaling_policies.ListAutoscalingPoliciesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_autoscaling_policies(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_autoscaling_policies_rest_unset_required_fields():
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_autoscaling_policies._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_autoscaling_policies_rest_interceptors(null_interceptor):
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AutoscalingPolicyServiceRestInterceptor(),
+    )
+    client = AutoscalingPolicyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "post_list_autoscaling_policies",
+    ) as post, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "pre_list_autoscaling_policies",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = autoscaling_policies.ListAutoscalingPoliciesRequest.pb(
+            autoscaling_policies.ListAutoscalingPoliciesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            autoscaling_policies.ListAutoscalingPoliciesResponse.to_json(
+                autoscaling_policies.ListAutoscalingPoliciesResponse()
+            )
+        )
+
+        request = autoscaling_policies.ListAutoscalingPoliciesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = autoscaling_policies.ListAutoscalingPoliciesResponse()
+
+        client.list_autoscaling_policies(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_autoscaling_policies_rest_bad_request(
+    transport: str = "rest",
+    request_type=autoscaling_policies.ListAutoscalingPoliciesRequest,
+):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_autoscaling_policies(request)
+
+
+def test_list_autoscaling_policies_rest_flattened():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autoscaling_policies.ListAutoscalingPoliciesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = autoscaling_policies.ListAutoscalingPoliciesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_autoscaling_policies(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/autoscalingPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_autoscaling_policies_rest_flattened_error(transport: str = "rest"):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_autoscaling_policies(
+            autoscaling_policies.ListAutoscalingPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_autoscaling_policies_rest_pager(transport: str = "rest"):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            autoscaling_policies.ListAutoscalingPoliciesResponse(
+                policies=[
+                    autoscaling_policies.AutoscalingPolicy(),
+                    autoscaling_policies.AutoscalingPolicy(),
+                    autoscaling_policies.AutoscalingPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            autoscaling_policies.ListAutoscalingPoliciesResponse(
+                policies=[],
+                next_page_token="def",
+            ),
+            autoscaling_policies.ListAutoscalingPoliciesResponse(
+                policies=[
+                    autoscaling_policies.AutoscalingPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            autoscaling_policies.ListAutoscalingPoliciesResponse(
+                policies=[
+                    autoscaling_policies.AutoscalingPolicy(),
+                    autoscaling_policies.AutoscalingPolicy(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            autoscaling_policies.ListAutoscalingPoliciesResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_autoscaling_policies(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, autoscaling_policies.AutoscalingPolicy) for i in results
+        )
+
+        pages = list(client.list_autoscaling_policies(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autoscaling_policies.DeleteAutoscalingPolicyRequest,
+        dict,
+    ],
+)
+def test_delete_autoscaling_policy_rest(request_type):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_autoscaling_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_autoscaling_policy_rest_required_fields(
+    request_type=autoscaling_policies.DeleteAutoscalingPolicyRequest,
+):
+    transport_class = transports.AutoscalingPolicyServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_autoscaling_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_autoscaling_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_autoscaling_policy_rest_unset_required_fields():
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_autoscaling_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_autoscaling_policy_rest_interceptors(null_interceptor):
+    transport = transports.AutoscalingPolicyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AutoscalingPolicyServiceRestInterceptor(),
+    )
+    client = AutoscalingPolicyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoscalingPolicyServiceRestInterceptor,
+        "pre_delete_autoscaling_policy",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = autoscaling_policies.DeleteAutoscalingPolicyRequest.pb(
+            autoscaling_policies.DeleteAutoscalingPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = autoscaling_policies.DeleteAutoscalingPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_autoscaling_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_autoscaling_policy_rest_bad_request(
+    transport: str = "rest",
+    request_type=autoscaling_policies.DeleteAutoscalingPolicyRequest,
+):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_autoscaling_policy(request)
+
+
+def test_delete_autoscaling_policy_rest_flattened():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/autoscalingPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_autoscaling_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/autoscalingPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_autoscaling_policy_rest_flattened_error(transport: str = "rest"):
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_autoscaling_policy(
+            autoscaling_policies.DeleteAutoscalingPolicyRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_autoscaling_policy_rest_error():
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AutoscalingPolicyServiceGrpcTransport(
@@ -2256,6 +3844,7 @@ def test_transport_get_channel():
     [
         transports.AutoscalingPolicyServiceGrpcTransport,
         transports.AutoscalingPolicyServiceGrpcAsyncIOTransport,
+        transports.AutoscalingPolicyServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2270,6 +3859,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2403,6 +3993,7 @@ def test_autoscaling_policy_service_transport_auth_adc(transport_class):
     [
         transports.AutoscalingPolicyServiceGrpcTransport,
         transports.AutoscalingPolicyServiceGrpcAsyncIOTransport,
+        transports.AutoscalingPolicyServiceRestTransport,
     ],
 )
 def test_autoscaling_policy_service_transport_auth_gdch_credentials(transport_class):
@@ -2504,11 +4095,23 @@ def test_autoscaling_policy_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_autoscaling_policy_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.AutoscalingPolicyServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_autoscaling_policy_service_host_no_port(transport_name):
@@ -2519,7 +4122,11 @@ def test_autoscaling_policy_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataproc.googleapis.com:443")
+    assert client.transport._host == (
+        "dataproc.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataproc.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2527,6 +4134,7 @@ def test_autoscaling_policy_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_autoscaling_policy_service_host_with_port(transport_name):
@@ -2537,7 +4145,45 @@ def test_autoscaling_policy_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataproc.googleapis.com:8000")
+    assert client.transport._host == (
+        "dataproc.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataproc.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_autoscaling_policy_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = AutoscalingPolicyServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = AutoscalingPolicyServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_autoscaling_policy._session
+    session2 = client2.transport.create_autoscaling_policy._session
+    assert session1 != session2
+    session1 = client1.transport.update_autoscaling_policy._session
+    session2 = client2.transport.update_autoscaling_policy._session
+    assert session1 != session2
+    session1 = client1.transport.get_autoscaling_policy._session
+    session2 = client2.transport.get_autoscaling_policy._session
+    assert session1 != session2
+    session1 = client1.transport.list_autoscaling_policies._session
+    session2 = client2.transport.list_autoscaling_policies._session
+    assert session1 != session2
+    session1 = client1.transport.delete_autoscaling_policy._session
+    session2 = client2.transport.delete_autoscaling_policy._session
+    assert session1 != session2
 
 
 def test_autoscaling_policy_service_grpc_transport_channel():
@@ -2836,6 +4482,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2853,6 +4500,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

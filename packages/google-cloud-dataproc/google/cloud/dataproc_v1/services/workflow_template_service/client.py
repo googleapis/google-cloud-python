@@ -56,6 +56,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import WorkflowTemplateServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import WorkflowTemplateServiceGrpcTransport
 from .transports.grpc_asyncio import WorkflowTemplateServiceGrpcAsyncIOTransport
+from .transports.rest import WorkflowTemplateServiceRestTransport
 
 
 class WorkflowTemplateServiceClientMeta(type):
@@ -71,6 +72,7 @@ class WorkflowTemplateServiceClientMeta(type):
     )  # type: Dict[str, Type[WorkflowTemplateServiceTransport]]
     _transport_registry["grpc"] = WorkflowTemplateServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = WorkflowTemplateServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = WorkflowTemplateServiceRestTransport
 
     def get_transport_class(
         cls,

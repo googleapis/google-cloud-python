@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import BatchControllerTransport
 from .grpc import BatchControllerGrpcTransport
 from .grpc_asyncio import BatchControllerGrpcAsyncIOTransport
+from .rest import BatchControllerRestTransport
+from .rest import BatchControllerRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BatchControllerTransport]]
 _transport_registry["grpc"] = BatchControllerGrpcTransport
 _transport_registry["grpc_asyncio"] = BatchControllerGrpcAsyncIOTransport
+_transport_registry["rest"] = BatchControllerRestTransport
 
 __all__ = (
     "BatchControllerTransport",
     "BatchControllerGrpcTransport",
     "BatchControllerGrpcAsyncIOTransport",
+    "BatchControllerRestTransport",
+    "BatchControllerRestInterceptor",
 )

@@ -53,6 +53,7 @@ from google.cloud.dataproc_v1.types import jobs
 from .transports.base import JobControllerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import JobControllerGrpcTransport
 from .transports.grpc_asyncio import JobControllerGrpcAsyncIOTransport
+from .transports.rest import JobControllerRestTransport
 
 
 class JobControllerClientMeta(type):
@@ -66,6 +67,7 @@ class JobControllerClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[JobControllerTransport]]
     _transport_registry["grpc"] = JobControllerGrpcTransport
     _transport_registry["grpc_asyncio"] = JobControllerGrpcAsyncIOTransport
+    _transport_registry["rest"] = JobControllerRestTransport
 
     def get_transport_class(
         cls,
