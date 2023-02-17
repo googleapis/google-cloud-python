@@ -30,7 +30,7 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -285,7 +285,7 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
         def __hash__(self):
             return hash("DeleteLog")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -365,7 +365,7 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
         def __hash__(self):
             return hash("ListLogEntries")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -450,7 +450,7 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
         def __hash__(self):
             return hash("ListLogs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -628,7 +628,7 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
         def __hash__(self):
             return hash("WriteLogEntries")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod

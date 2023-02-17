@@ -31,7 +31,7 @@ from google.api_core import operations_v1
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -481,7 +481,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "analysisQuery" : {},        }
 
         @classmethod
@@ -561,7 +561,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeIamPolicyLongrunning")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -650,7 +650,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("BatchGetAssetsHistory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -726,7 +726,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("CreateFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -818,7 +818,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("DeleteFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -882,7 +882,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("ExportAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -968,7 +968,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("GetFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1051,7 +1051,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("ListAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1127,7 +1127,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("ListFeeds")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1203,7 +1203,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("SearchAllIamPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1279,7 +1279,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("SearchAllResources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1355,7 +1355,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("UpdateFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod

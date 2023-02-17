@@ -30,7 +30,7 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -285,7 +285,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __hash__(self):
             return hash("CreateLogMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -381,7 +381,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __hash__(self):
             return hash("DeleteLogMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -445,7 +445,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __hash__(self):
             return hash("GetLogMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -532,7 +532,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __hash__(self):
             return hash("ListLogMetrics")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -608,7 +608,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __hash__(self):
             return hash("UpdateLogMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod

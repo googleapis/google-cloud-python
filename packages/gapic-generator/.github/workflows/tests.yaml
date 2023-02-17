@@ -313,11 +313,11 @@ jobs:
             python -m pip install nox
       - name: Run blacken and lint on the generated output.
         run: |
-          nox -f tests/integration/goldens/asset/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/credentials/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/logging/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/redis/noxfile.py -s blacken lint_setup_py lint
+          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
+          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
+          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
+          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
   style-check:
     runs-on: ubuntu-latest
     steps:

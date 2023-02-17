@@ -6,8 +6,8 @@
 {% if proto.messages|length or proto.all_enums|length %}
 from typing import MutableMapping, MutableSequence
 
-import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 {% endif %}
+import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 
 {% filter sort_lines %}
 {% for import_ in proto.python_modules %}

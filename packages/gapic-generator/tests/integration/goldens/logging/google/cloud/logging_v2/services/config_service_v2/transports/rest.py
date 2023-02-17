@@ -30,7 +30,7 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -669,7 +669,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("CreateBucket")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "bucketId" : "",        }
 
         @classmethod
@@ -774,7 +774,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("CreateExclusion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -890,7 +890,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("CreateSink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1004,7 +1004,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("CreateView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "viewId" : "",        }
 
         @classmethod
@@ -1111,7 +1111,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("DeleteBucket")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1191,7 +1191,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("DeleteExclusion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1271,7 +1271,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("DeleteSink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1351,7 +1351,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("DeleteView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1431,7 +1431,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("GetBucket")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1523,7 +1523,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("GetCmekSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1621,7 +1621,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("GetExclusion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1724,7 +1724,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("GetSink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1825,7 +1825,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("GetView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1919,7 +1919,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("ListBuckets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -2011,7 +2011,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("ListExclusions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -2103,7 +2103,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("ListSinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -2195,7 +2195,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("ListViews")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -2287,7 +2287,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("UndeleteBucket")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -2380,7 +2380,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("UpdateBucket")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "updateMask" : {},        }
 
         @classmethod
@@ -2485,7 +2485,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("UpdateCmekSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -2593,7 +2593,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("UpdateExclusion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "updateMask" : {},        }
 
         @classmethod
@@ -2709,7 +2709,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("UpdateSink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -2843,7 +2843,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __hash__(self):
             return hash("UpdateView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
