@@ -2461,12 +2461,10 @@ class TestKeyProperty:
         with pytest.raises(TypeError):
             model.KeyProperty("a", None, None)
 
-    # Might need a completely different way to test for this, given Python 2.7
-    # limitations for positional and keyword-only arguments.
-    # @staticmethod
-    # def test_constructor_positional_name_twice():
-    #    with pytest.raises(TypeError):
-    #        model.KeyProperty("a", "b")
+    @staticmethod
+    def test_constructor_positional_name_twice():
+        with pytest.raises(TypeError):
+            model.KeyProperty("a", "b")
 
     @staticmethod
     def test_constructor_positional_kind_twice():
@@ -2486,15 +2484,13 @@ class TestKeyProperty:
         with pytest.raises(TypeError):
             model.KeyProperty("a", name="b")
 
-    # Might need a completely different way to test for this, given Python 2.7
-    # limitations for positional and keyword-only arguments.
-    # @staticmethod
-    # def test_constructor_kind_both_ways():
-    #    class Simple(model.Model):
-    #        pass
-    #
-    #    with pytest.raises(TypeError):
-    #        model.KeyProperty(Simple, kind="Simple")
+    @staticmethod
+    def test_constructor_kind_both_ways():
+        class Simple(model.Model):
+            pass
+
+        with pytest.raises(TypeError):
+            model.KeyProperty(Simple, kind="Simple")
 
     @staticmethod
     def test_constructor_bad_kind():
@@ -3151,8 +3147,7 @@ class TestStructuredProperty:
             query_module.FilterNode("baz.bar", "=", "y"),
             query_module.FilterNode("baz.foo", "=", "x"),
         )
-        # Python 2 and 3 order nodes differently, sort them and test each one
-        # is in both lists.
+        # Sort them and test each one is in both lists.
         assert all(  # pragma: NO BRANCH
             [
                 a == b
@@ -3174,8 +3169,7 @@ class TestStructuredProperty:
         prop._name = "bar"
         mine = Mine(foo="x", bar="y")
         conjunction = prop._comparison("=", mine)
-        # Python 2 and 3 order nodes differently, so we sort them before
-        # making any comparisons.
+        # Sort them before making any comparisons.
         conjunction_nodes = sorted(
             conjunction._nodes, key=lambda a: getattr(a, "_name", "z")
         )
