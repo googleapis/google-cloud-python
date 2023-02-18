@@ -38,9 +38,13 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import empty_pb2  # type: ignore
 
+from google.analytics.admin_v1alpha.types import (
+    expanded_data_set as gaa_expanded_data_set,
+)
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
 from .base import AnalyticsAdminServiceTransport
@@ -104,6 +108,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_batch_create_access_bindings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_access_bindings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_batch_create_user_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -112,15 +124,35 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_batch_delete_access_bindings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_batch_delete_user_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_batch_get_access_bindings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_get_access_bindings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_batch_get_user_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_batch_get_user_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_update_access_bindings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_access_bindings(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -137,6 +169,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_cancel_display_video360_advertiser_link_proposal(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_access_binding(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_access_binding(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -196,6 +236,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_expanded_data_set(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_expanded_data_set(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_firebase_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -244,6 +292,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_access_binding(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_account(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -261,6 +313,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def pre_delete_display_video360_advertiser_link_proposal(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_expanded_data_set(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -297,6 +353,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_fetch_automated_ga4_configuration_opt_out(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_access_binding(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_access_binding(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -396,6 +460,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_expanded_data_set(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_expanded_data_set(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_global_site_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -441,6 +513,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_get_user_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_access_bindings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_access_bindings(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -524,6 +604,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_expanded_data_sets(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_expanded_data_sets(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_firebase_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -604,6 +692,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_access_binding(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_access_binding(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_account(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -665,6 +761,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_display_video360_advertiser_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_expanded_data_set(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_expanded_data_set(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -835,6 +939,31 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_batch_create_access_bindings(
+        self,
+        request: analytics_admin.BatchCreateAccessBindingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.BatchCreateAccessBindingsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for batch_create_access_bindings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_batch_create_access_bindings(
+        self, response: analytics_admin.BatchCreateAccessBindingsResponse
+    ) -> analytics_admin.BatchCreateAccessBindingsResponse:
+        """Post-rpc interceptor for batch_create_access_bindings
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_batch_create_user_links(
         self,
         request: analytics_admin.BatchCreateUserLinksRequest,
@@ -858,6 +987,20 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_batch_delete_access_bindings(
+        self,
+        request: analytics_admin.BatchDeleteAccessBindingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.BatchDeleteAccessBindingsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for batch_delete_access_bindings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
     def pre_batch_delete_user_links(
         self,
         request: analytics_admin.BatchDeleteUserLinksRequest,
@@ -869,6 +1012,31 @@ class AnalyticsAdminServiceRestInterceptor:
         before they are sent to the AnalyticsAdminService server.
         """
         return request, metadata
+
+    def pre_batch_get_access_bindings(
+        self,
+        request: analytics_admin.BatchGetAccessBindingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.BatchGetAccessBindingsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for batch_get_access_bindings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_batch_get_access_bindings(
+        self, response: analytics_admin.BatchGetAccessBindingsResponse
+    ) -> analytics_admin.BatchGetAccessBindingsResponse:
+        """Post-rpc interceptor for batch_get_access_bindings
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_batch_get_user_links(
         self,
@@ -886,6 +1054,31 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.BatchGetUserLinksResponse
     ) -> analytics_admin.BatchGetUserLinksResponse:
         """Post-rpc interceptor for batch_get_user_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_batch_update_access_bindings(
+        self,
+        request: analytics_admin.BatchUpdateAccessBindingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.BatchUpdateAccessBindingsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for batch_update_access_bindings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_batch_update_access_bindings(
+        self, response: analytics_admin.BatchUpdateAccessBindingsResponse
+    ) -> analytics_admin.BatchUpdateAccessBindingsResponse:
+        """Post-rpc interceptor for batch_update_access_bindings
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -935,6 +1128,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.DisplayVideo360AdvertiserLinkProposal
     ) -> resources.DisplayVideo360AdvertiserLinkProposal:
         """Post-rpc interceptor for cancel_display_video360_advertiser_link_proposal
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_access_binding(
+        self,
+        request: analytics_admin.CreateAccessBindingRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.CreateAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_access_binding
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_access_binding(
+        self, response: resources.AccessBinding
+    ) -> resources.AccessBinding:
+        """Post-rpc interceptor for create_access_binding
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1109,6 +1325,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_expanded_data_set(
+        self,
+        request: analytics_admin.CreateExpandedDataSetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.CreateExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_expanded_data_set
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_expanded_data_set(
+        self, response: gaa_expanded_data_set.ExpandedDataSet
+    ) -> gaa_expanded_data_set.ExpandedDataSet:
+        """Post-rpc interceptor for create_expanded_data_set
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_firebase_link(
         self,
         request: analytics_admin.CreateFirebaseLinkRequest,
@@ -1248,6 +1487,18 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_delete_access_binding(
+        self,
+        request: analytics_admin.DeleteAccessBindingRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.DeleteAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_access_binding
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
     def pre_delete_account(
         self,
         request: analytics_admin.DeleteAccountRequest,
@@ -1308,6 +1559,18 @@ class AnalyticsAdminServiceRestInterceptor:
         Sequence[Tuple[str, str]],
     ]:
         """Pre-rpc interceptor for delete_display_video360_advertiser_link_proposal
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def pre_delete_expanded_data_set(
+        self,
+        request: analytics_admin.DeleteExpandedDataSetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.DeleteExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_expanded_data_set
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AnalyticsAdminService server.
@@ -1419,6 +1682,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse
     ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
         """Post-rpc interceptor for fetch_automated_ga4_configuration_opt_out
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_access_binding(
+        self,
+        request: analytics_admin.GetAccessBindingRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_access_binding
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_access_binding(
+        self, response: resources.AccessBinding
+    ) -> resources.AccessBinding:
+        """Post-rpc interceptor for get_access_binding
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1710,6 +1996,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_get_expanded_data_set(
+        self,
+        request: analytics_admin.GetExpandedDataSetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_expanded_data_set
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_expanded_data_set(
+        self, response: expanded_data_set.ExpandedDataSet
+    ) -> expanded_data_set.ExpandedDataSet:
+        """Post-rpc interceptor for get_expanded_data_set
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_global_site_tag(
         self,
         request: analytics_admin.GetGlobalSiteTagRequest,
@@ -1841,6 +2150,29 @@ class AnalyticsAdminServiceRestInterceptor:
 
     def post_get_user_link(self, response: resources.UserLink) -> resources.UserLink:
         """Post-rpc interceptor for get_user_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_access_bindings(
+        self,
+        request: analytics_admin.ListAccessBindingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListAccessBindingsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_access_bindings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_access_bindings(
+        self, response: analytics_admin.ListAccessBindingsResponse
+    ) -> analytics_admin.ListAccessBindingsResponse:
+        """Post-rpc interceptor for list_access_bindings
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2078,6 +2410,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListDisplayVideo360AdvertiserLinksResponse
     ) -> analytics_admin.ListDisplayVideo360AdvertiserLinksResponse:
         """Post-rpc interceptor for list_display_video360_advertiser_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_expanded_data_sets(
+        self,
+        request: analytics_admin.ListExpandedDataSetsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListExpandedDataSetsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_expanded_data_sets
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_expanded_data_sets(
+        self, response: analytics_admin.ListExpandedDataSetsResponse
+    ) -> analytics_admin.ListExpandedDataSetsResponse:
+        """Post-rpc interceptor for list_expanded_data_sets
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2324,6 +2679,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_update_access_binding(
+        self,
+        request: analytics_admin.UpdateAccessBindingRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.UpdateAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_access_binding
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_access_binding(
+        self, response: resources.AccessBinding
+    ) -> resources.AccessBinding:
+        """Post-rpc interceptor for update_access_binding
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_account(
         self,
         request: analytics_admin.UpdateAccountRequest,
@@ -2506,6 +2884,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.DisplayVideo360AdvertiserLink
     ) -> resources.DisplayVideo360AdvertiserLink:
         """Post-rpc interceptor for update_display_video360_advertiser_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_expanded_data_set(
+        self,
+        request: analytics_admin.UpdateExpandedDataSetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.UpdateExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_expanded_data_set
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_expanded_data_set(
+        self, response: gaa_expanded_data_set.ExpandedDataSet
+    ) -> gaa_expanded_data_set.ExpandedDataSet:
+        """Post-rpc interceptor for update_expanded_data_set
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -3341,6 +3742,113 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_audit_user_links(resp)
             return resp
 
+    class _BatchCreateAccessBindings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("BatchCreateAccessBindings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.BatchCreateAccessBindingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.BatchCreateAccessBindingsResponse:
+            r"""Call the batch create access
+            bindings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.BatchCreateAccessBindingsRequest):
+                        The request object. Request message for
+                    BatchCreateAccessBindings RPC.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_admin.BatchCreateAccessBindingsResponse:
+                        Response message for
+                    BatchCreateAccessBindings RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchCreate",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchCreate",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_batch_create_access_bindings(
+                request, metadata
+            )
+            pb_request = analytics_admin.BatchCreateAccessBindingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.BatchCreateAccessBindingsResponse()
+            pb_resp = analytics_admin.BatchCreateAccessBindingsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_batch_create_access_bindings(resp)
+            return resp
+
     class _BatchCreateUserLinks(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("BatchCreateUserLinks")
@@ -3447,6 +3955,99 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_batch_create_user_links(resp)
             return resp
 
+    class _BatchDeleteAccessBindings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("BatchDeleteAccessBindings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.BatchDeleteAccessBindingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the batch delete access
+            bindings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.BatchDeleteAccessBindingsRequest):
+                        The request object. Request message for
+                    BatchDeleteAccessBindings RPC.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchDelete",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchDelete",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_batch_delete_access_bindings(
+                request, metadata
+            )
+            pb_request = analytics_admin.BatchDeleteAccessBindingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _BatchDeleteUserLinks(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("BatchDeleteUserLinks")
@@ -3538,6 +4139,104 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _BatchGetAccessBindings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("BatchGetAccessBindings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "names": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.BatchGetAccessBindingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.BatchGetAccessBindingsResponse:
+            r"""Call the batch get access bindings method over HTTP.
+
+            Args:
+                request (~.analytics_admin.BatchGetAccessBindingsRequest):
+                    The request object. Request message for
+                BatchGetAccessBindings RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.BatchGetAccessBindingsResponse:
+                    Response message for
+                BatchGetAccessBindings RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchGet",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchGet",
+                },
+            ]
+            request, metadata = self._interceptor.pre_batch_get_access_bindings(
+                request, metadata
+            )
+            pb_request = analytics_admin.BatchGetAccessBindingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.BatchGetAccessBindingsResponse()
+            pb_resp = analytics_admin.BatchGetAccessBindingsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_batch_get_access_bindings(resp)
+            return resp
 
     class _BatchGetUserLinks(AnalyticsAdminServiceRestStub):
         def __hash__(self):
@@ -3635,6 +4334,113 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_get_user_links(resp)
+            return resp
+
+    class _BatchUpdateAccessBindings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("BatchUpdateAccessBindings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.BatchUpdateAccessBindingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.BatchUpdateAccessBindingsResponse:
+            r"""Call the batch update access
+            bindings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.BatchUpdateAccessBindingsRequest):
+                        The request object. Request message for
+                    BatchUpdateAccessBindings RPC.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_admin.BatchUpdateAccessBindingsResponse:
+                        Response message for
+                    BatchUpdateAccessBindings RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchUpdate",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchUpdate",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_batch_update_access_bindings(
+                request, metadata
+            )
+            pb_request = analytics_admin.BatchUpdateAccessBindingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.BatchUpdateAccessBindingsResponse()
+            pb_resp = analytics_admin.BatchUpdateAccessBindingsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_batch_update_access_bindings(resp)
             return resp
 
     class _BatchUpdateUserLinks(AnalyticsAdminServiceRestStub):
@@ -3862,6 +4668,112 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     resp
                 )
             )
+            return resp
+
+    class _CreateAccessBinding(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateAccessBinding")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateAccessBindingRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AccessBinding:
+            r"""Call the create access binding method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateAccessBindingRequest):
+                    The request object. Request message for
+                CreateAccessBinding RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AccessBinding:
+                    A binding of a user to a set of
+                roles.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings",
+                    "body": "access_binding",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/accessBindings",
+                    "body": "access_binding",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_access_binding(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateAccessBindingRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AccessBinding()
+            pb_resp = resources.AccessBinding.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_access_binding(resp)
             return resp
 
     class _CreateAudience(AnalyticsAdminServiceRestStub):
@@ -4591,6 +5503,107 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
+    class _CreateExpandedDataSet(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateExpandedDataSet")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateExpandedDataSetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gaa_expanded_data_set.ExpandedDataSet:
+            r"""Call the create expanded data set method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateExpandedDataSetRequest):
+                    The request object. Request message for
+                CreateExpandedDataSet RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gaa_expanded_data_set.ExpandedDataSet:
+                    A resource message representing a GA4
+                ExpandedDataSet.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/expandedDataSets",
+                    "body": "expanded_data_set",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_expanded_data_set(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateExpandedDataSetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gaa_expanded_data_set.ExpandedDataSet()
+            pb_resp = gaa_expanded_data_set.ExpandedDataSet.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_expanded_data_set(resp)
+            return resp
+
     class _CreateFirebaseLink(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateFirebaseLink")
@@ -5217,6 +6230,88 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_user_link(resp)
             return resp
 
+    class _DeleteAccessBinding(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteAccessBinding")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteAccessBindingRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete access binding method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteAccessBindingRequest):
+                    The request object. Request message for
+                DeleteAccessBinding RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=accounts/*/accessBindings/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/accessBindings/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_access_binding(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteAccessBindingRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteAccount(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("DeleteAccount")
@@ -5588,6 +6683,84 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request
                 )
             )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteExpandedDataSet(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteExpandedDataSet")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteExpandedDataSetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete expanded data set method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteExpandedDataSetRequest):
+                    The request object. Request message for
+                DeleteExpandedDataSet RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/expandedDataSets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_expanded_data_set(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteExpandedDataSetRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -6221,6 +7394,102 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_fetch_automated_ga4_configuration_opt_out(
                 resp
             )
+            return resp
+
+    class _GetAccessBinding(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetAccessBinding")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetAccessBindingRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AccessBinding:
+            r"""Call the get access binding method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetAccessBindingRequest):
+                    The request object. Request message for GetAccessBinding
+                RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AccessBinding:
+                    A binding of a user to a set of
+                roles.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=accounts/*/accessBindings/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/accessBindings/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_access_binding(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetAccessBindingRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AccessBinding()
+            pb_resp = resources.AccessBinding.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_access_binding(resp)
             return resp
 
     class _GetAccount(AnalyticsAdminServiceRestStub):
@@ -7340,6 +8609,98 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
+    class _GetExpandedDataSet(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetExpandedDataSet")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetExpandedDataSetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> expanded_data_set.ExpandedDataSet:
+            r"""Call the get expanded data set method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetExpandedDataSetRequest):
+                    The request object. Request message for
+                GetExpandedDataSet RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.expanded_data_set.ExpandedDataSet:
+                    A resource message representing a GA4
+                ExpandedDataSet.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/expandedDataSets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_expanded_data_set(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetExpandedDataSetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = expanded_data_set.ExpandedDataSet()
+            pb_resp = expanded_data_set.ExpandedDataSet.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_expanded_data_set(resp)
+            return resp
+
     class _GetGlobalSiteTag(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("GetGlobalSiteTag")
@@ -7891,6 +9252,102 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_user_link(resp)
+            return resp
+
+    class _ListAccessBindings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListAccessBindings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListAccessBindingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListAccessBindingsResponse:
+            r"""Call the list access bindings method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListAccessBindingsRequest):
+                    The request object. Request message for
+                ListAccessBindings RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListAccessBindingsResponse:
+                    Response message for
+                ListAccessBindings RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/accessBindings",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_access_bindings(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListAccessBindingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListAccessBindingsResponse()
+            pb_resp = analytics_admin.ListAccessBindingsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_access_bindings(resp)
             return resp
 
     class _ListAccounts(AnalyticsAdminServiceRestStub):
@@ -8807,6 +10264,98 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_display_video360_advertiser_links(resp)
+            return resp
+
+    class _ListExpandedDataSets(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListExpandedDataSets")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListExpandedDataSetsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListExpandedDataSetsResponse:
+            r"""Call the list expanded data sets method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListExpandedDataSetsRequest):
+                    The request object. Request message for
+                ListExpandedDataSets RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListExpandedDataSetsResponse:
+                    Response message for
+                ListExpandedDataSets RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/expandedDataSets",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_expanded_data_sets(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListExpandedDataSetsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListExpandedDataSetsResponse()
+            pb_resp = analytics_admin.ListExpandedDataSetsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_expanded_data_sets(resp)
             return resp
 
     class _ListFirebaseLinks(AnalyticsAdminServiceRestStub):
@@ -9759,6 +11308,112 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_set_automated_ga4_configuration_opt_out(resp)
             return resp
 
+    class _UpdateAccessBinding(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateAccessBinding")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateAccessBindingRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AccessBinding:
+            r"""Call the update access binding method over HTTP.
+
+            Args:
+                request (~.analytics_admin.UpdateAccessBindingRequest):
+                    The request object. Request message for
+                UpdateAccessBinding RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AccessBinding:
+                    A binding of a user to a set of
+                roles.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{access_binding.name=accounts/*/accessBindings/*}",
+                    "body": "access_binding",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{access_binding.name=properties/*/accessBindings/*}",
+                    "body": "access_binding",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_access_binding(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateAccessBindingRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AccessBinding()
+            pb_resp = resources.AccessBinding.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_access_binding(resp)
+            return resp
+
     class _UpdateAccount(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateAccount")
@@ -10584,6 +12239,109 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_display_video360_advertiser_link(resp)
             return resp
 
+    class _UpdateExpandedDataSet(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateExpandedDataSet")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateExpandedDataSetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gaa_expanded_data_set.ExpandedDataSet:
+            r"""Call the update expanded data set method over HTTP.
+
+            Args:
+                request (~.analytics_admin.UpdateExpandedDataSetRequest):
+                    The request object. Request message for
+                UpdateExpandedDataSet RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gaa_expanded_data_set.ExpandedDataSet:
+                    A resource message representing a GA4
+                ExpandedDataSet.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{expanded_data_set.name=properties/*/expandedDataSets/*}",
+                    "body": "expanded_data_set",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_expanded_data_set(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateExpandedDataSetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gaa_expanded_data_set.ExpandedDataSet()
+            pb_resp = gaa_expanded_data_set.ExpandedDataSet.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_expanded_data_set(resp)
+            return resp
+
     class _UpdateGoogleAdsLink(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateGoogleAdsLink")
@@ -11266,6 +13024,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._AuditUserLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def batch_create_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchCreateAccessBindingsRequest],
+        analytics_admin.BatchCreateAccessBindingsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def batch_create_user_links(
         self,
     ) -> Callable[
@@ -11277,12 +13046,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._BatchCreateUserLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def batch_delete_access_bindings(
+        self,
+    ) -> Callable[[analytics_admin.BatchDeleteAccessBindingsRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeleteAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def batch_delete_user_links(
         self,
     ) -> Callable[[analytics_admin.BatchDeleteUserLinksRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteUserLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_get_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchGetAccessBindingsRequest],
+        analytics_admin.BatchGetAccessBindingsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchGetAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def batch_get_user_links(
@@ -11294,6 +13082,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchGetUserLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_update_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchUpdateAccessBindingsRequest],
+        analytics_admin.BatchUpdateAccessBindingsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdateAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def batch_update_user_links(
@@ -11316,6 +13115,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelDisplayVideo360AdvertiserLinkProposal(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateAccessBindingRequest], resources.AccessBinding
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAccessBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_audience(
@@ -11384,6 +13193,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateDisplayVideo360AdvertiserLinkProposal(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateExpandedDataSetRequest],
+        gaa_expanded_data_set.ExpandedDataSet,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateExpandedDataSet(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_firebase_link(
         self,
     ) -> Callable[[analytics_admin.CreateFirebaseLinkRequest], resources.FirebaseLink]:
@@ -11439,6 +13259,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateUserLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_access_binding(
+        self,
+    ) -> Callable[[analytics_admin.DeleteAccessBindingRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAccessBinding(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_account(
         self,
     ) -> Callable[[analytics_admin.DeleteAccountRequest], empty_pb2.Empty]:
@@ -11482,6 +13310,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDisplayVideo360AdvertiserLinkProposal(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_expanded_data_set(
+        self,
+    ) -> Callable[[analytics_admin.DeleteExpandedDataSetRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteExpandedDataSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_firebase_link(
@@ -11543,6 +13379,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_access_binding(
+        self,
+    ) -> Callable[[analytics_admin.GetAccessBindingRequest], resources.AccessBinding]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAccessBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_account(
@@ -11658,6 +13502,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._GetDisplayVideo360AdvertiserLinkProposal(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetExpandedDataSetRequest], expanded_data_set.ExpandedDataSet
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetExpandedDataSet(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_global_site_tag(
         self,
     ) -> Callable[[analytics_admin.GetGlobalSiteTagRequest], resources.GlobalSiteTag]:
@@ -11712,6 +13566,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetUserLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListAccessBindingsRequest],
+        analytics_admin.ListAccessBindingsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_accounts(
@@ -11822,6 +13687,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._ListDisplayVideo360AdvertiserLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_expanded_data_sets(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListExpandedDataSetsRequest],
+        analytics_admin.ListExpandedDataSetsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListExpandedDataSets(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_firebase_links(
         self,
     ) -> Callable[
@@ -11930,6 +13806,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._SetAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateAccessBindingRequest], resources.AccessBinding
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAccessBinding(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_account(
         self,
     ) -> Callable[[analytics_admin.UpdateAccountRequest], resources.Account]:
@@ -12003,6 +13889,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDisplayVideo360AdvertiserLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateExpandedDataSetRequest],
+        gaa_expanded_data_set.ExpandedDataSet,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateExpandedDataSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_google_ads_link(

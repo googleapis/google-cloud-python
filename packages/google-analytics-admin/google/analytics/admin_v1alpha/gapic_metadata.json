@@ -40,9 +40,19 @@
                 "audit_user_links"
               ]
             },
+            "BatchCreateAccessBindings": {
+              "methods": [
+                "batch_create_access_bindings"
+              ]
+            },
             "BatchCreateUserLinks": {
               "methods": [
                 "batch_create_user_links"
+              ]
+            },
+            "BatchDeleteAccessBindings": {
+              "methods": [
+                "batch_delete_access_bindings"
               ]
             },
             "BatchDeleteUserLinks": {
@@ -50,9 +60,19 @@
                 "batch_delete_user_links"
               ]
             },
+            "BatchGetAccessBindings": {
+              "methods": [
+                "batch_get_access_bindings"
+              ]
+            },
             "BatchGetUserLinks": {
               "methods": [
                 "batch_get_user_links"
+              ]
+            },
+            "BatchUpdateAccessBindings": {
+              "methods": [
+                "batch_update_access_bindings"
               ]
             },
             "BatchUpdateUserLinks": {
@@ -63,6 +83,11 @@
             "CancelDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "cancel_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateAccessBinding": {
+              "methods": [
+                "create_access_binding"
               ]
             },
             "CreateAudience": {
@@ -100,6 +125,11 @@
                 "create_display_video360_advertiser_link_proposal"
               ]
             },
+            "CreateExpandedDataSet": {
+              "methods": [
+                "create_expanded_data_set"
+              ]
+            },
             "CreateFirebaseLink": {
               "methods": [
                 "create_firebase_link"
@@ -130,6 +160,11 @@
                 "create_user_link"
               ]
             },
+            "DeleteAccessBinding": {
+              "methods": [
+                "delete_access_binding"
+              ]
+            },
             "DeleteAccount": {
               "methods": [
                 "delete_account"
@@ -153,6 +188,11 @@
             "DeleteDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "delete_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "DeleteExpandedDataSet": {
+              "methods": [
+                "delete_expanded_data_set"
               ]
             },
             "DeleteFirebaseLink": {
@@ -188,6 +228,11 @@
             "FetchAutomatedGa4ConfigurationOptOut": {
               "methods": [
                 "fetch_automated_ga4_configuration_opt_out"
+              ]
+            },
+            "GetAccessBinding": {
+              "methods": [
+                "get_access_binding"
               ]
             },
             "GetAccount": {
@@ -250,6 +295,11 @@
                 "get_display_video360_advertiser_link_proposal"
               ]
             },
+            "GetExpandedDataSet": {
+              "methods": [
+                "get_expanded_data_set"
+              ]
+            },
             "GetGlobalSiteTag": {
               "methods": [
                 "get_global_site_tag"
@@ -278,6 +328,11 @@
             "GetUserLink": {
               "methods": [
                 "get_user_link"
+              ]
+            },
+            "ListAccessBindings": {
+              "methods": [
+                "list_access_bindings"
               ]
             },
             "ListAccountSummaries": {
@@ -330,6 +385,11 @@
                 "list_display_video360_advertiser_links"
               ]
             },
+            "ListExpandedDataSets": {
+              "methods": [
+                "list_expanded_data_sets"
+              ]
+            },
             "ListFirebaseLinks": {
               "methods": [
                 "list_firebase_links"
@@ -380,6 +440,11 @@
                 "set_automated_ga4_configuration_opt_out"
               ]
             },
+            "UpdateAccessBinding": {
+              "methods": [
+                "update_access_binding"
+              ]
+            },
             "UpdateAccount": {
               "methods": [
                 "update_account"
@@ -418,6 +483,11 @@
             "UpdateDisplayVideo360AdvertiserLink": {
               "methods": [
                 "update_display_video360_advertiser_link"
+              ]
+            },
+            "UpdateExpandedDataSet": {
+              "methods": [
+                "update_expanded_data_set"
               ]
             },
             "UpdateGoogleAdsLink": {
@@ -485,9 +555,19 @@
                 "audit_user_links"
               ]
             },
+            "BatchCreateAccessBindings": {
+              "methods": [
+                "batch_create_access_bindings"
+              ]
+            },
             "BatchCreateUserLinks": {
               "methods": [
                 "batch_create_user_links"
+              ]
+            },
+            "BatchDeleteAccessBindings": {
+              "methods": [
+                "batch_delete_access_bindings"
               ]
             },
             "BatchDeleteUserLinks": {
@@ -495,9 +575,19 @@
                 "batch_delete_user_links"
               ]
             },
+            "BatchGetAccessBindings": {
+              "methods": [
+                "batch_get_access_bindings"
+              ]
+            },
             "BatchGetUserLinks": {
               "methods": [
                 "batch_get_user_links"
+              ]
+            },
+            "BatchUpdateAccessBindings": {
+              "methods": [
+                "batch_update_access_bindings"
               ]
             },
             "BatchUpdateUserLinks": {
@@ -508,6 +598,11 @@
             "CancelDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "cancel_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateAccessBinding": {
+              "methods": [
+                "create_access_binding"
               ]
             },
             "CreateAudience": {
@@ -545,6 +640,11 @@
                 "create_display_video360_advertiser_link_proposal"
               ]
             },
+            "CreateExpandedDataSet": {
+              "methods": [
+                "create_expanded_data_set"
+              ]
+            },
             "CreateFirebaseLink": {
               "methods": [
                 "create_firebase_link"
@@ -575,6 +675,11 @@
                 "create_user_link"
               ]
             },
+            "DeleteAccessBinding": {
+              "methods": [
+                "delete_access_binding"
+              ]
+            },
             "DeleteAccount": {
               "methods": [
                 "delete_account"
@@ -598,6 +703,11 @@
             "DeleteDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "delete_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "DeleteExpandedDataSet": {
+              "methods": [
+                "delete_expanded_data_set"
               ]
             },
             "DeleteFirebaseLink": {
@@ -633,6 +743,11 @@
             "FetchAutomatedGa4ConfigurationOptOut": {
               "methods": [
                 "fetch_automated_ga4_configuration_opt_out"
+              ]
+            },
+            "GetAccessBinding": {
+              "methods": [
+                "get_access_binding"
               ]
             },
             "GetAccount": {
@@ -695,6 +810,11 @@
                 "get_display_video360_advertiser_link_proposal"
               ]
             },
+            "GetExpandedDataSet": {
+              "methods": [
+                "get_expanded_data_set"
+              ]
+            },
             "GetGlobalSiteTag": {
               "methods": [
                 "get_global_site_tag"
@@ -723,6 +843,11 @@
             "GetUserLink": {
               "methods": [
                 "get_user_link"
+              ]
+            },
+            "ListAccessBindings": {
+              "methods": [
+                "list_access_bindings"
               ]
             },
             "ListAccountSummaries": {
@@ -775,6 +900,11 @@
                 "list_display_video360_advertiser_links"
               ]
             },
+            "ListExpandedDataSets": {
+              "methods": [
+                "list_expanded_data_sets"
+              ]
+            },
             "ListFirebaseLinks": {
               "methods": [
                 "list_firebase_links"
@@ -825,6 +955,11 @@
                 "set_automated_ga4_configuration_opt_out"
               ]
             },
+            "UpdateAccessBinding": {
+              "methods": [
+                "update_access_binding"
+              ]
+            },
             "UpdateAccount": {
               "methods": [
                 "update_account"
@@ -863,6 +998,11 @@
             "UpdateDisplayVideo360AdvertiserLink": {
               "methods": [
                 "update_display_video360_advertiser_link"
+              ]
+            },
+            "UpdateExpandedDataSet": {
+              "methods": [
+                "update_expanded_data_set"
               ]
             },
             "UpdateGoogleAdsLink": {
@@ -930,9 +1070,19 @@
                 "audit_user_links"
               ]
             },
+            "BatchCreateAccessBindings": {
+              "methods": [
+                "batch_create_access_bindings"
+              ]
+            },
             "BatchCreateUserLinks": {
               "methods": [
                 "batch_create_user_links"
+              ]
+            },
+            "BatchDeleteAccessBindings": {
+              "methods": [
+                "batch_delete_access_bindings"
               ]
             },
             "BatchDeleteUserLinks": {
@@ -940,9 +1090,19 @@
                 "batch_delete_user_links"
               ]
             },
+            "BatchGetAccessBindings": {
+              "methods": [
+                "batch_get_access_bindings"
+              ]
+            },
             "BatchGetUserLinks": {
               "methods": [
                 "batch_get_user_links"
+              ]
+            },
+            "BatchUpdateAccessBindings": {
+              "methods": [
+                "batch_update_access_bindings"
               ]
             },
             "BatchUpdateUserLinks": {
@@ -953,6 +1113,11 @@
             "CancelDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "cancel_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateAccessBinding": {
+              "methods": [
+                "create_access_binding"
               ]
             },
             "CreateAudience": {
@@ -990,6 +1155,11 @@
                 "create_display_video360_advertiser_link_proposal"
               ]
             },
+            "CreateExpandedDataSet": {
+              "methods": [
+                "create_expanded_data_set"
+              ]
+            },
             "CreateFirebaseLink": {
               "methods": [
                 "create_firebase_link"
@@ -1020,6 +1190,11 @@
                 "create_user_link"
               ]
             },
+            "DeleteAccessBinding": {
+              "methods": [
+                "delete_access_binding"
+              ]
+            },
             "DeleteAccount": {
               "methods": [
                 "delete_account"
@@ -1043,6 +1218,11 @@
             "DeleteDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "delete_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "DeleteExpandedDataSet": {
+              "methods": [
+                "delete_expanded_data_set"
               ]
             },
             "DeleteFirebaseLink": {
@@ -1078,6 +1258,11 @@
             "FetchAutomatedGa4ConfigurationOptOut": {
               "methods": [
                 "fetch_automated_ga4_configuration_opt_out"
+              ]
+            },
+            "GetAccessBinding": {
+              "methods": [
+                "get_access_binding"
               ]
             },
             "GetAccount": {
@@ -1140,6 +1325,11 @@
                 "get_display_video360_advertiser_link_proposal"
               ]
             },
+            "GetExpandedDataSet": {
+              "methods": [
+                "get_expanded_data_set"
+              ]
+            },
             "GetGlobalSiteTag": {
               "methods": [
                 "get_global_site_tag"
@@ -1168,6 +1358,11 @@
             "GetUserLink": {
               "methods": [
                 "get_user_link"
+              ]
+            },
+            "ListAccessBindings": {
+              "methods": [
+                "list_access_bindings"
               ]
             },
             "ListAccountSummaries": {
@@ -1220,6 +1415,11 @@
                 "list_display_video360_advertiser_links"
               ]
             },
+            "ListExpandedDataSets": {
+              "methods": [
+                "list_expanded_data_sets"
+              ]
+            },
             "ListFirebaseLinks": {
               "methods": [
                 "list_firebase_links"
@@ -1270,6 +1470,11 @@
                 "set_automated_ga4_configuration_opt_out"
               ]
             },
+            "UpdateAccessBinding": {
+              "methods": [
+                "update_access_binding"
+              ]
+            },
             "UpdateAccount": {
               "methods": [
                 "update_account"
@@ -1308,6 +1513,11 @@
             "UpdateDisplayVideo360AdvertiserLink": {
               "methods": [
                 "update_display_video360_advertiser_link"
+              ]
+            },
+            "UpdateExpandedDataSet": {
+              "methods": [
+                "update_expanded_data_set"
               ]
             },
             "UpdateGoogleAdsLink": {

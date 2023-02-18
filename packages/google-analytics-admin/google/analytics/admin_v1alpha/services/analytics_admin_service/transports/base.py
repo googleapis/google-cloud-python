@@ -26,9 +26,13 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha import gapic_version as package_version
+from google.analytics.admin_v1alpha.types import (
+    expanded_data_set as gaa_expanded_data_set,
+)
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -548,6 +552,76 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.run_access_report: gapic_v1.method.wrap_method(
                 self.run_access_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_access_binding: gapic_v1.method.wrap_method(
+                self.create_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_access_binding: gapic_v1.method.wrap_method(
+                self.get_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_access_binding: gapic_v1.method.wrap_method(
+                self.update_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_access_binding: gapic_v1.method.wrap_method(
+                self.delete_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_access_bindings: gapic_v1.method.wrap_method(
+                self.list_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_access_bindings: gapic_v1.method.wrap_method(
+                self.batch_create_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_get_access_bindings: gapic_v1.method.wrap_method(
+                self.batch_get_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_access_bindings: gapic_v1.method.wrap_method(
+                self.batch_update_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_delete_access_bindings: gapic_v1.method.wrap_method(
+                self.batch_delete_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_expanded_data_set: gapic_v1.method.wrap_method(
+                self.get_expanded_data_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_expanded_data_sets: gapic_v1.method.wrap_method(
+                self.list_expanded_data_sets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_expanded_data_set: gapic_v1.method.wrap_method(
+                self.create_expanded_data_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_expanded_data_set: gapic_v1.method.wrap_method(
+                self.update_expanded_data_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_expanded_data_set: gapic_v1.method.wrap_method(
+                self.delete_expanded_data_set,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1446,6 +1520,156 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             analytics_admin.RunAccessReportResponse,
             Awaitable[analytics_admin.RunAccessReportResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateAccessBindingRequest],
+        Union[resources.AccessBinding, Awaitable[resources.AccessBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetAccessBindingRequest],
+        Union[resources.AccessBinding, Awaitable[resources.AccessBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateAccessBindingRequest],
+        Union[resources.AccessBinding, Awaitable[resources.AccessBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteAccessBindingRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListAccessBindingsRequest],
+        Union[
+            analytics_admin.ListAccessBindingsResponse,
+            Awaitable[analytics_admin.ListAccessBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchCreateAccessBindingsRequest],
+        Union[
+            analytics_admin.BatchCreateAccessBindingsResponse,
+            Awaitable[analytics_admin.BatchCreateAccessBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_get_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchGetAccessBindingsRequest],
+        Union[
+            analytics_admin.BatchGetAccessBindingsResponse,
+            Awaitable[analytics_admin.BatchGetAccessBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchUpdateAccessBindingsRequest],
+        Union[
+            analytics_admin.BatchUpdateAccessBindingsResponse,
+            Awaitable[analytics_admin.BatchUpdateAccessBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_delete_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchDeleteAccessBindingsRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetExpandedDataSetRequest],
+        Union[
+            expanded_data_set.ExpandedDataSet,
+            Awaitable[expanded_data_set.ExpandedDataSet],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_expanded_data_sets(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListExpandedDataSetsRequest],
+        Union[
+            analytics_admin.ListExpandedDataSetsResponse,
+            Awaitable[analytics_admin.ListExpandedDataSetsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateExpandedDataSetRequest],
+        Union[
+            gaa_expanded_data_set.ExpandedDataSet,
+            Awaitable[gaa_expanded_data_set.ExpandedDataSet],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateExpandedDataSetRequest],
+        Union[
+            gaa_expanded_data_set.ExpandedDataSet,
+            Awaitable[gaa_expanded_data_set.ExpandedDataSet],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteExpandedDataSetRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

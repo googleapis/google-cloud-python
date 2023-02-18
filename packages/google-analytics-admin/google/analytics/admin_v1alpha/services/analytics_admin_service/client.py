@@ -51,9 +51,13 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha.services.analytics_admin_service import pagers
+from google.analytics.admin_v1alpha.types import (
+    expanded_data_set as gaa_expanded_data_set,
+)
 from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
 from .transports.base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
@@ -183,6 +187,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def access_binding_path(
+        account: str,
+        access_binding: str,
+    ) -> str:
+        """Returns a fully-qualified access_binding string."""
+        return "accounts/{account}/accessBindings/{access_binding}".format(
+            account=account,
+            access_binding=access_binding,
+        )
+
+    @staticmethod
+    def parse_access_binding_path(path: str) -> Dict[str, str]:
+        """Parses a access_binding path into its component segments."""
+        m = re.match(
+            r"^accounts/(?P<account>.+?)/accessBindings/(?P<access_binding>.+?)$", path
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def account_path(
@@ -1176,10 +1199,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
+                must be in snake case (for example, "field_to_update").
+                Omitted fields will not be updated. To replace the
+                entire entity, use one path with the string "*" to match
+                all fields.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4489,7 +4512,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Acknowledges the terms of user data collection for
         the specified property.
         This acknowledgement must be completed (either in the
-        Google Analytics UI or via this API) before
+        Google Analytics UI or through this API) before
         MeasurementProtocolSecret resources may be created.
 
         .. code-block:: python
@@ -9888,6 +9911,1458 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         # Done; return the response.
         return response
+
+    def create_access_binding(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateAccessBindingRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        access_binding: Optional[resources.AccessBinding] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AccessBinding:
+        r"""Creates an access binding on an account or property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_create_access_binding():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                access_binding = admin_v1alpha.AccessBinding()
+                access_binding.user = "user_value"
+
+                request = admin_v1alpha.CreateAccessBindingRequest(
+                    parent="parent_value",
+                    access_binding=access_binding,
+                )
+
+                # Make the request
+                response = client.create_access_binding(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateAccessBindingRequest, dict]):
+                The request object. Request message for
+                CreateAccessBinding RPC.
+            parent (str):
+                Required. Formats:
+                - accounts/{account}
+                - properties/{property}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            access_binding (google.analytics.admin_v1alpha.types.AccessBinding):
+                Required. The access binding to
+                create.
+
+                This corresponds to the ``access_binding`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AccessBinding:
+                A binding of a user to a set of
+                roles.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, access_binding])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateAccessBindingRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateAccessBindingRequest):
+            request = analytics_admin.CreateAccessBindingRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if access_binding is not None:
+                request.access_binding = access_binding
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_access_binding]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_access_binding(
+        self,
+        request: Optional[Union[analytics_admin.GetAccessBindingRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AccessBinding:
+        r"""Gets information about an access binding.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_get_access_binding():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetAccessBindingRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_access_binding(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetAccessBindingRequest, dict]):
+                The request object. Request message for GetAccessBinding
+                RPC.
+            name (str):
+                Required. The name of the access
+                binding to retrieve. Formats:
+                -
+                accounts/{account}/accessBindings/{accessBinding}
+                -
+                properties/{property}/accessBindings/{accessBinding}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AccessBinding:
+                A binding of a user to a set of
+                roles.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetAccessBindingRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetAccessBindingRequest):
+            request = analytics_admin.GetAccessBindingRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_access_binding]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_access_binding(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateAccessBindingRequest, dict]
+        ] = None,
+        *,
+        access_binding: Optional[resources.AccessBinding] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AccessBinding:
+        r"""Updates an access binding on an account or property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_update_access_binding():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                access_binding = admin_v1alpha.AccessBinding()
+                access_binding.user = "user_value"
+
+                request = admin_v1alpha.UpdateAccessBindingRequest(
+                    access_binding=access_binding,
+                )
+
+                # Make the request
+                response = client.update_access_binding(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateAccessBindingRequest, dict]):
+                The request object. Request message for
+                UpdateAccessBinding RPC.
+            access_binding (google.analytics.admin_v1alpha.types.AccessBinding):
+                Required. The access binding to
+                update.
+
+                This corresponds to the ``access_binding`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AccessBinding:
+                A binding of a user to a set of
+                roles.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([access_binding])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateAccessBindingRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateAccessBindingRequest):
+            request = analytics_admin.UpdateAccessBindingRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if access_binding is not None:
+                request.access_binding = access_binding
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_access_binding]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("access_binding.name", request.access_binding.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_access_binding(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteAccessBindingRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an access binding on an account or property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_access_binding():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteAccessBindingRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_access_binding(request=request)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteAccessBindingRequest, dict]):
+                The request object. Request message for
+                DeleteAccessBinding RPC.
+            name (str):
+                Required. Formats:
+                -
+                accounts/{account}/accessBindings/{accessBinding}
+                -
+                properties/{property}/accessBindings/{accessBinding}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteAccessBindingRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.DeleteAccessBindingRequest):
+            request = analytics_admin.DeleteAccessBindingRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_access_binding]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def list_access_bindings(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListAccessBindingsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAccessBindingsPager:
+        r"""Lists all access bindings on an account or property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_list_access_bindings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListAccessBindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_access_bindings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListAccessBindingsRequest, dict]):
+                The request object. Request message for
+                ListAccessBindings RPC.
+            parent (str):
+                Required. Formats:
+                - accounts/{account}
+                - properties/{property}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAccessBindingsPager:
+                Response message for
+                ListAccessBindings RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListAccessBindingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.ListAccessBindingsRequest):
+            request = analytics_admin.ListAccessBindingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_access_bindings]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAccessBindingsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_create_access_bindings(
+        self,
+        request: Optional[
+            Union[analytics_admin.BatchCreateAccessBindingsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.BatchCreateAccessBindingsResponse:
+        r"""Creates information about multiple access bindings to
+        an account or property.
+
+        This method is transactional. If any AccessBinding
+        cannot be created, none of the AccessBindings will be
+        created.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_create_access_bindings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                requests = admin_v1alpha.CreateAccessBindingRequest()
+                requests.parent = "parent_value"
+                requests.access_binding.user = "user_value"
+
+                request = admin_v1alpha.BatchCreateAccessBindingsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_create_access_bindings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.BatchCreateAccessBindingsRequest, dict]):
+                The request object. Request message for
+                BatchCreateAccessBindings RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.BatchCreateAccessBindingsResponse:
+                Response message for
+                BatchCreateAccessBindings RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.BatchCreateAccessBindingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.BatchCreateAccessBindingsRequest):
+            request = analytics_admin.BatchCreateAccessBindingsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_create_access_bindings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_get_access_bindings(
+        self,
+        request: Optional[
+            Union[analytics_admin.BatchGetAccessBindingsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.BatchGetAccessBindingsResponse:
+        r"""Gets information about multiple access bindings to an
+        account or property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_get_access_bindings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.BatchGetAccessBindingsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_get_access_bindings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.BatchGetAccessBindingsRequest, dict]):
+                The request object. Request message for
+                BatchGetAccessBindings RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.BatchGetAccessBindingsResponse:
+                Response message for
+                BatchGetAccessBindings RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.BatchGetAccessBindingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.BatchGetAccessBindingsRequest):
+            request = analytics_admin.BatchGetAccessBindingsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_get_access_bindings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_update_access_bindings(
+        self,
+        request: Optional[
+            Union[analytics_admin.BatchUpdateAccessBindingsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.BatchUpdateAccessBindingsResponse:
+        r"""Updates information about multiple access bindings to
+        an account or property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_update_access_bindings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                requests = admin_v1alpha.UpdateAccessBindingRequest()
+                requests.access_binding.user = "user_value"
+
+                request = admin_v1alpha.BatchUpdateAccessBindingsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_update_access_bindings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.BatchUpdateAccessBindingsRequest, dict]):
+                The request object. Request message for
+                BatchUpdateAccessBindings RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.BatchUpdateAccessBindingsResponse:
+                Response message for
+                BatchUpdateAccessBindings RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.BatchUpdateAccessBindingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.BatchUpdateAccessBindingsRequest):
+            request = analytics_admin.BatchUpdateAccessBindingsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_update_access_bindings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_delete_access_bindings(
+        self,
+        request: Optional[
+            Union[analytics_admin.BatchDeleteAccessBindingsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes information about multiple users' links to an
+        account or property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_delete_access_bindings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                requests = admin_v1alpha.DeleteAccessBindingRequest()
+                requests.name = "name_value"
+
+                request = admin_v1alpha.BatchDeleteAccessBindingsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                client.batch_delete_access_bindings(request=request)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.BatchDeleteAccessBindingsRequest, dict]):
+                The request object. Request message for
+                BatchDeleteAccessBindings RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.BatchDeleteAccessBindingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.BatchDeleteAccessBindingsRequest):
+            request = analytics_admin.BatchDeleteAccessBindingsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_delete_access_bindings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def get_expanded_data_set(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetExpandedDataSetRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> expanded_data_set.ExpandedDataSet:
+        r"""Lookup for a single ExpandedDataSet.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_get_expanded_data_set():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetExpandedDataSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_expanded_data_set(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetExpandedDataSetRequest, dict]):
+                The request object. Request message for
+                GetExpandedDataSet RPC.
+            name (str):
+                Required. The name of the Audience to
+                get. Example format:
+                properties/1234/expandedDataSets/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ExpandedDataSet:
+                A resource message representing a GA4
+                ExpandedDataSet.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetExpandedDataSetRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetExpandedDataSetRequest):
+            request = analytics_admin.GetExpandedDataSetRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_expanded_data_set]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_expanded_data_sets(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListExpandedDataSetsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListExpandedDataSetsPager:
+        r"""Lists ExpandedDataSets on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_list_expanded_data_sets():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListExpandedDataSetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_expanded_data_sets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListExpandedDataSetsRequest, dict]):
+                The request object. Request message for
+                ListExpandedDataSets RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListExpandedDataSetsPager:
+                Response message for
+                ListExpandedDataSets RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListExpandedDataSetsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.ListExpandedDataSetsRequest):
+            request = analytics_admin.ListExpandedDataSetsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_expanded_data_sets]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListExpandedDataSetsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_expanded_data_set(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateExpandedDataSetRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        expanded_data_set: Optional[gaa_expanded_data_set.ExpandedDataSet] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_expanded_data_set.ExpandedDataSet:
+        r"""Creates a ExpandedDataSet.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_create_expanded_data_set():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                expanded_data_set = admin_v1alpha.ExpandedDataSet()
+                expanded_data_set.display_name = "display_name_value"
+
+                request = admin_v1alpha.CreateExpandedDataSetRequest(
+                    parent="parent_value",
+                    expanded_data_set=expanded_data_set,
+                )
+
+                # Make the request
+                response = client.create_expanded_data_set(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateExpandedDataSetRequest, dict]):
+                The request object. Request message for
+                CreateExpandedDataSet RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            expanded_data_set (google.analytics.admin_v1alpha.types.ExpandedDataSet):
+                Required. The ExpandedDataSet to
+                create.
+
+                This corresponds to the ``expanded_data_set`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ExpandedDataSet:
+                A resource message representing a GA4
+                ExpandedDataSet.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, expanded_data_set])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateExpandedDataSetRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateExpandedDataSetRequest):
+            request = analytics_admin.CreateExpandedDataSetRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if expanded_data_set is not None:
+                request.expanded_data_set = expanded_data_set
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_expanded_data_set]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_expanded_data_set(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateExpandedDataSetRequest, dict]
+        ] = None,
+        *,
+        expanded_data_set: Optional[gaa_expanded_data_set.ExpandedDataSet] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_expanded_data_set.ExpandedDataSet:
+        r"""Updates a ExpandedDataSet on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_update_expanded_data_set():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                expanded_data_set = admin_v1alpha.ExpandedDataSet()
+                expanded_data_set.display_name = "display_name_value"
+
+                request = admin_v1alpha.UpdateExpandedDataSetRequest(
+                    expanded_data_set=expanded_data_set,
+                )
+
+                # Make the request
+                response = client.update_expanded_data_set(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateExpandedDataSetRequest, dict]):
+                The request object. Request message for
+                UpdateExpandedDataSet RPC.
+            expanded_data_set (google.analytics.admin_v1alpha.types.ExpandedDataSet):
+                Required. The ExpandedDataSet to update. The resource's
+                ``name`` field is used to identify the ExpandedDataSet
+                to be updated.
+
+                This corresponds to the ``expanded_data_set`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ExpandedDataSet:
+                A resource message representing a GA4
+                ExpandedDataSet.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([expanded_data_set, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateExpandedDataSetRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateExpandedDataSetRequest):
+            request = analytics_admin.UpdateExpandedDataSetRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if expanded_data_set is not None:
+                request.expanded_data_set = expanded_data_set
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_expanded_data_set]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("expanded_data_set.name", request.expanded_data_set.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_expanded_data_set(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteExpandedDataSetRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a ExpandedDataSet on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_expanded_data_set():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteExpandedDataSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_expanded_data_set(request=request)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteExpandedDataSetRequest, dict]):
+                The request object. Request message for
+                DeleteExpandedDataSet RPC.
+            name (str):
+                Required. Example format:
+                properties/1234/expandedDataSets/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteExpandedDataSetRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.DeleteExpandedDataSetRequest):
+            request = analytics_admin.DeleteExpandedDataSetRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_expanded_data_set]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     def set_automated_ga4_configuration_opt_out(
         self,

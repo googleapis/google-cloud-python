@@ -23,9 +23,13 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
+from google.analytics.admin_v1alpha.types import (
+    expanded_data_set as gaa_expanded_data_set,
+)
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
 from .base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
@@ -1278,7 +1282,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         Acknowledges the terms of user data collection for
         the specified property.
         This acknowledgement must be completed (either in the
-        Google Analytics UI or via this API) before
+        Google Analytics UI or through this API) before
         MeasurementProtocolSecret resources may be created.
 
         Returns:
@@ -2716,6 +2720,405 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=analytics_admin.RunAccessReportResponse.deserialize,
             )
         return self._stubs["run_access_report"]
+
+    @property
+    def create_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateAccessBindingRequest], resources.AccessBinding
+    ]:
+        r"""Return a callable for the create access binding method over gRPC.
+
+        Creates an access binding on an account or property.
+
+        Returns:
+            Callable[[~.CreateAccessBindingRequest],
+                    ~.AccessBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_access_binding" not in self._stubs:
+            self._stubs["create_access_binding"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateAccessBinding",
+                request_serializer=analytics_admin.CreateAccessBindingRequest.serialize,
+                response_deserializer=resources.AccessBinding.deserialize,
+            )
+        return self._stubs["create_access_binding"]
+
+    @property
+    def get_access_binding(
+        self,
+    ) -> Callable[[analytics_admin.GetAccessBindingRequest], resources.AccessBinding]:
+        r"""Return a callable for the get access binding method over gRPC.
+
+        Gets information about an access binding.
+
+        Returns:
+            Callable[[~.GetAccessBindingRequest],
+                    ~.AccessBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_access_binding" not in self._stubs:
+            self._stubs["get_access_binding"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetAccessBinding",
+                request_serializer=analytics_admin.GetAccessBindingRequest.serialize,
+                response_deserializer=resources.AccessBinding.deserialize,
+            )
+        return self._stubs["get_access_binding"]
+
+    @property
+    def update_access_binding(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateAccessBindingRequest], resources.AccessBinding
+    ]:
+        r"""Return a callable for the update access binding method over gRPC.
+
+        Updates an access binding on an account or property.
+
+        Returns:
+            Callable[[~.UpdateAccessBindingRequest],
+                    ~.AccessBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_access_binding" not in self._stubs:
+            self._stubs["update_access_binding"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateAccessBinding",
+                request_serializer=analytics_admin.UpdateAccessBindingRequest.serialize,
+                response_deserializer=resources.AccessBinding.deserialize,
+            )
+        return self._stubs["update_access_binding"]
+
+    @property
+    def delete_access_binding(
+        self,
+    ) -> Callable[[analytics_admin.DeleteAccessBindingRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete access binding method over gRPC.
+
+        Deletes an access binding on an account or property.
+
+        Returns:
+            Callable[[~.DeleteAccessBindingRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_access_binding" not in self._stubs:
+            self._stubs["delete_access_binding"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteAccessBinding",
+                request_serializer=analytics_admin.DeleteAccessBindingRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_access_binding"]
+
+    @property
+    def list_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListAccessBindingsRequest],
+        analytics_admin.ListAccessBindingsResponse,
+    ]:
+        r"""Return a callable for the list access bindings method over gRPC.
+
+        Lists all access bindings on an account or property.
+
+        Returns:
+            Callable[[~.ListAccessBindingsRequest],
+                    ~.ListAccessBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_access_bindings" not in self._stubs:
+            self._stubs["list_access_bindings"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListAccessBindings",
+                request_serializer=analytics_admin.ListAccessBindingsRequest.serialize,
+                response_deserializer=analytics_admin.ListAccessBindingsResponse.deserialize,
+            )
+        return self._stubs["list_access_bindings"]
+
+    @property
+    def batch_create_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchCreateAccessBindingsRequest],
+        analytics_admin.BatchCreateAccessBindingsResponse,
+    ]:
+        r"""Return a callable for the batch create access bindings method over gRPC.
+
+        Creates information about multiple access bindings to
+        an account or property.
+
+        This method is transactional. If any AccessBinding
+        cannot be created, none of the AccessBindings will be
+        created.
+
+        Returns:
+            Callable[[~.BatchCreateAccessBindingsRequest],
+                    ~.BatchCreateAccessBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_create_access_bindings" not in self._stubs:
+            self._stubs["batch_create_access_bindings"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchCreateAccessBindings",
+                request_serializer=analytics_admin.BatchCreateAccessBindingsRequest.serialize,
+                response_deserializer=analytics_admin.BatchCreateAccessBindingsResponse.deserialize,
+            )
+        return self._stubs["batch_create_access_bindings"]
+
+    @property
+    def batch_get_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchGetAccessBindingsRequest],
+        analytics_admin.BatchGetAccessBindingsResponse,
+    ]:
+        r"""Return a callable for the batch get access bindings method over gRPC.
+
+        Gets information about multiple access bindings to an
+        account or property.
+
+        Returns:
+            Callable[[~.BatchGetAccessBindingsRequest],
+                    ~.BatchGetAccessBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_get_access_bindings" not in self._stubs:
+            self._stubs["batch_get_access_bindings"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchGetAccessBindings",
+                request_serializer=analytics_admin.BatchGetAccessBindingsRequest.serialize,
+                response_deserializer=analytics_admin.BatchGetAccessBindingsResponse.deserialize,
+            )
+        return self._stubs["batch_get_access_bindings"]
+
+    @property
+    def batch_update_access_bindings(
+        self,
+    ) -> Callable[
+        [analytics_admin.BatchUpdateAccessBindingsRequest],
+        analytics_admin.BatchUpdateAccessBindingsResponse,
+    ]:
+        r"""Return a callable for the batch update access bindings method over gRPC.
+
+        Updates information about multiple access bindings to
+        an account or property.
+
+        Returns:
+            Callable[[~.BatchUpdateAccessBindingsRequest],
+                    ~.BatchUpdateAccessBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_update_access_bindings" not in self._stubs:
+            self._stubs["batch_update_access_bindings"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchUpdateAccessBindings",
+                request_serializer=analytics_admin.BatchUpdateAccessBindingsRequest.serialize,
+                response_deserializer=analytics_admin.BatchUpdateAccessBindingsResponse.deserialize,
+            )
+        return self._stubs["batch_update_access_bindings"]
+
+    @property
+    def batch_delete_access_bindings(
+        self,
+    ) -> Callable[[analytics_admin.BatchDeleteAccessBindingsRequest], empty_pb2.Empty]:
+        r"""Return a callable for the batch delete access bindings method over gRPC.
+
+        Deletes information about multiple users' links to an
+        account or property.
+
+        Returns:
+            Callable[[~.BatchDeleteAccessBindingsRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_delete_access_bindings" not in self._stubs:
+            self._stubs["batch_delete_access_bindings"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchDeleteAccessBindings",
+                request_serializer=analytics_admin.BatchDeleteAccessBindingsRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["batch_delete_access_bindings"]
+
+    @property
+    def get_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetExpandedDataSetRequest], expanded_data_set.ExpandedDataSet
+    ]:
+        r"""Return a callable for the get expanded data set method over gRPC.
+
+        Lookup for a single ExpandedDataSet.
+
+        Returns:
+            Callable[[~.GetExpandedDataSetRequest],
+                    ~.ExpandedDataSet]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_expanded_data_set" not in self._stubs:
+            self._stubs["get_expanded_data_set"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetExpandedDataSet",
+                request_serializer=analytics_admin.GetExpandedDataSetRequest.serialize,
+                response_deserializer=expanded_data_set.ExpandedDataSet.deserialize,
+            )
+        return self._stubs["get_expanded_data_set"]
+
+    @property
+    def list_expanded_data_sets(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListExpandedDataSetsRequest],
+        analytics_admin.ListExpandedDataSetsResponse,
+    ]:
+        r"""Return a callable for the list expanded data sets method over gRPC.
+
+        Lists ExpandedDataSets on a property.
+
+        Returns:
+            Callable[[~.ListExpandedDataSetsRequest],
+                    ~.ListExpandedDataSetsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_expanded_data_sets" not in self._stubs:
+            self._stubs["list_expanded_data_sets"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListExpandedDataSets",
+                request_serializer=analytics_admin.ListExpandedDataSetsRequest.serialize,
+                response_deserializer=analytics_admin.ListExpandedDataSetsResponse.deserialize,
+            )
+        return self._stubs["list_expanded_data_sets"]
+
+    @property
+    def create_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateExpandedDataSetRequest],
+        gaa_expanded_data_set.ExpandedDataSet,
+    ]:
+        r"""Return a callable for the create expanded data set method over gRPC.
+
+        Creates a ExpandedDataSet.
+
+        Returns:
+            Callable[[~.CreateExpandedDataSetRequest],
+                    ~.ExpandedDataSet]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_expanded_data_set" not in self._stubs:
+            self._stubs["create_expanded_data_set"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateExpandedDataSet",
+                request_serializer=analytics_admin.CreateExpandedDataSetRequest.serialize,
+                response_deserializer=gaa_expanded_data_set.ExpandedDataSet.deserialize,
+            )
+        return self._stubs["create_expanded_data_set"]
+
+    @property
+    def update_expanded_data_set(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateExpandedDataSetRequest],
+        gaa_expanded_data_set.ExpandedDataSet,
+    ]:
+        r"""Return a callable for the update expanded data set method over gRPC.
+
+        Updates a ExpandedDataSet on a property.
+
+        Returns:
+            Callable[[~.UpdateExpandedDataSetRequest],
+                    ~.ExpandedDataSet]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_expanded_data_set" not in self._stubs:
+            self._stubs["update_expanded_data_set"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateExpandedDataSet",
+                request_serializer=analytics_admin.UpdateExpandedDataSetRequest.serialize,
+                response_deserializer=gaa_expanded_data_set.ExpandedDataSet.deserialize,
+            )
+        return self._stubs["update_expanded_data_set"]
+
+    @property
+    def delete_expanded_data_set(
+        self,
+    ) -> Callable[[analytics_admin.DeleteExpandedDataSetRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete expanded data set method over gRPC.
+
+        Deletes a ExpandedDataSet on a property.
+
+        Returns:
+            Callable[[~.DeleteExpandedDataSetRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_expanded_data_set" not in self._stubs:
+            self._stubs["delete_expanded_data_set"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteExpandedDataSet",
+                request_serializer=analytics_admin.DeleteExpandedDataSetRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_expanded_data_set"]
 
     @property
     def set_automated_ga4_configuration_opt_out(

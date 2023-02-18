@@ -935,6 +935,159 @@
           "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
           "shortName": "AnalyticsAdminServiceAsyncClient"
         },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.batch_create_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchCreateAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchCreateAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchCreateAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.BatchCreateAccessBindingsResponse",
+        "shortName": "batch_create_access_bindings"
+      },
+      "description": "Sample for BatchCreateAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_create_access_bindings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchCreateAccessBindings_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_create_access_bindings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.batch_create_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchCreateAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchCreateAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchCreateAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.BatchCreateAccessBindingsResponse",
+        "shortName": "batch_create_access_bindings"
+      },
+      "description": "Sample for BatchCreateAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_create_access_bindings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchCreateAccessBindings_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_create_access_bindings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
         "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.batch_create_user_links",
         "method": {
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchCreateUserLinks",
@@ -1079,6 +1232,153 @@
         }
       ],
       "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_create_user_links_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.batch_delete_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchDeleteAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchDeleteAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchDeleteAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "batch_delete_access_bindings"
+      },
+      "description": "Sample for BatchDeleteAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_delete_access_bindings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchDeleteAccessBindings_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_delete_access_bindings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.batch_delete_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchDeleteAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchDeleteAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchDeleteAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "batch_delete_access_bindings"
+      },
+      "description": "Sample for BatchDeleteAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_delete_access_bindings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchDeleteAccessBindings_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_delete_access_bindings_sync.py"
     },
     {
       "canonical": true,
@@ -1235,6 +1535,159 @@
           "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
           "shortName": "AnalyticsAdminServiceAsyncClient"
         },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.batch_get_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchGetAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchGetAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchGetAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.BatchGetAccessBindingsResponse",
+        "shortName": "batch_get_access_bindings"
+      },
+      "description": "Sample for BatchGetAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_get_access_bindings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchGetAccessBindings_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_get_access_bindings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.batch_get_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchGetAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchGetAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchGetAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.BatchGetAccessBindingsResponse",
+        "shortName": "batch_get_access_bindings"
+      },
+      "description": "Sample for BatchGetAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_get_access_bindings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchGetAccessBindings_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_get_access_bindings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
         "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.batch_get_user_links",
         "method": {
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchGetUserLinks",
@@ -1379,6 +1832,159 @@
         }
       ],
       "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_get_user_links_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.batch_update_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchUpdateAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchUpdateAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchUpdateAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.BatchUpdateAccessBindingsResponse",
+        "shortName": "batch_update_access_bindings"
+      },
+      "description": "Sample for BatchUpdateAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_update_access_bindings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchUpdateAccessBindings_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_update_access_bindings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.batch_update_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.BatchUpdateAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchUpdateAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.BatchUpdateAccessBindingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.BatchUpdateAccessBindingsResponse",
+        "shortName": "batch_update_access_bindings"
+      },
+      "description": "Sample for BatchUpdateAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_update_access_bindings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchUpdateAccessBindings_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_update_access_bindings_sync.py"
     },
     {
       "canonical": true,
@@ -1685,6 +2291,175 @@
         }
       ],
       "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_cancel_display_video360_advertiser_link_proposal_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.create_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.CreateAccessBindingRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "access_binding",
+            "type": "google.analytics.admin_v1alpha.types.AccessBinding"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.AccessBinding",
+        "shortName": "create_access_binding"
+      },
+      "description": "Sample for CreateAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateAccessBinding_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.CreateAccessBindingRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "access_binding",
+            "type": "google.analytics.admin_v1alpha.types.AccessBinding"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.AccessBinding",
+        "shortName": "create_access_binding"
+      },
+      "description": "Sample for CreateAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateAccessBinding_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_access_binding_sync.py"
     },
     {
       "canonical": true,
@@ -2877,6 +3652,175 @@
           "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
           "shortName": "AnalyticsAdminServiceAsyncClient"
         },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.create_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.CreateExpandedDataSetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "expanded_data_set",
+            "type": "google.analytics.admin_v1alpha.types.ExpandedDataSet"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.ExpandedDataSet",
+        "shortName": "create_expanded_data_set"
+      },
+      "description": "Sample for CreateExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_expanded_data_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateExpandedDataSet_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_expanded_data_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.CreateExpandedDataSetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "expanded_data_set",
+            "type": "google.analytics.admin_v1alpha.types.ExpandedDataSet"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.ExpandedDataSet",
+        "shortName": "create_expanded_data_set"
+      },
+      "description": "Sample for CreateExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_expanded_data_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateExpandedDataSet_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_expanded_data_set_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
         "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.create_firebase_link",
         "method": {
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateFirebaseLink",
@@ -3883,6 +4827,161 @@
           "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
           "shortName": "AnalyticsAdminServiceAsyncClient"
         },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.delete_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.DeleteAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.DeleteAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_access_binding"
+      },
+      "description": "Sample for DeleteAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteAccessBinding_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.delete_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.DeleteAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.DeleteAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_access_binding"
+      },
+      "description": "Sample for DeleteAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteAccessBinding_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_access_binding_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
         "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.delete_account",
         "method": {
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.DeleteAccount",
@@ -4649,6 +5748,161 @@
         }
       ],
       "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_display_video360_advertiser_link_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.delete_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.DeleteExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.DeleteExpandedDataSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_expanded_data_set"
+      },
+      "description": "Sample for DeleteExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_expanded_data_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteExpandedDataSet_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_expanded_data_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.delete_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.DeleteExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.DeleteExpandedDataSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_expanded_data_set"
+      },
+      "description": "Sample for DeleteExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_expanded_data_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteExpandedDataSet_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_expanded_data_set_sync.py"
     },
     {
       "canonical": true,
@@ -5738,6 +6992,167 @@
         }
       ],
       "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_fetch_automated_ga4_configuration_opt_out_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.get_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.GetAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.AccessBinding",
+        "shortName": "get_access_binding"
+      },
+      "description": "Sample for GetAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetAccessBinding_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.GetAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.AccessBinding",
+        "shortName": "get_access_binding"
+      },
+      "description": "Sample for GetAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetAccessBinding_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_access_binding_sync.py"
     },
     {
       "canonical": true,
@@ -7679,6 +9094,167 @@
           "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
           "shortName": "AnalyticsAdminServiceAsyncClient"
         },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.get_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.GetExpandedDataSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.ExpandedDataSet",
+        "shortName": "get_expanded_data_set"
+      },
+      "description": "Sample for GetExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_expanded_data_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetExpandedDataSet_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_expanded_data_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.GetExpandedDataSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.ExpandedDataSet",
+        "shortName": "get_expanded_data_set"
+      },
+      "description": "Sample for GetExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_expanded_data_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetExpandedDataSet_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_expanded_data_set_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
         "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.get_global_site_tag",
         "method": {
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetGlobalSiteTag",
@@ -8636,6 +10212,167 @@
         }
       ],
       "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_user_link_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.list_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.ListAccessBindingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAccessBindingsAsyncPager",
+        "shortName": "list_access_bindings"
+      },
+      "description": "Sample for ListAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_access_bindings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccessBindings_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_access_bindings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_access_bindings",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListAccessBindings",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.ListAccessBindingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAccessBindingsPager",
+        "shortName": "list_access_bindings"
+      },
+      "description": "Sample for ListAccessBindings",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_access_bindings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccessBindings_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_access_bindings_sync.py"
     },
     {
       "canonical": true,
@@ -10239,6 +11976,167 @@
           "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
           "shortName": "AnalyticsAdminServiceAsyncClient"
         },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.list_expanded_data_sets",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListExpandedDataSets",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListExpandedDataSets"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.ListExpandedDataSetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListExpandedDataSetsAsyncPager",
+        "shortName": "list_expanded_data_sets"
+      },
+      "description": "Sample for ListExpandedDataSets",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_expanded_data_sets_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListExpandedDataSets_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_expanded_data_sets_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_expanded_data_sets",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListExpandedDataSets",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListExpandedDataSets"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.ListExpandedDataSetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListExpandedDataSetsPager",
+        "shortName": "list_expanded_data_sets"
+      },
+      "description": "Sample for ListExpandedDataSets",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_expanded_data_sets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListExpandedDataSets_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_expanded_data_sets_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
         "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.list_firebase_links",
         "method": {
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListFirebaseLinks",
@@ -11809,6 +13707,167 @@
           "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
           "shortName": "AnalyticsAdminServiceAsyncClient"
         },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.update_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.UpdateAccessBindingRequest"
+          },
+          {
+            "name": "access_binding",
+            "type": "google.analytics.admin_v1alpha.types.AccessBinding"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.AccessBinding",
+        "shortName": "update_access_binding"
+      },
+      "description": "Sample for UpdateAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateAccessBinding_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_access_binding",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateAccessBinding",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.UpdateAccessBindingRequest"
+          },
+          {
+            "name": "access_binding",
+            "type": "google.analytics.admin_v1alpha.types.AccessBinding"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.AccessBinding",
+        "shortName": "update_access_binding"
+      },
+      "description": "Sample for UpdateAccessBinding",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateAccessBinding_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_access_binding_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
         "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.update_account",
         "method": {
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateAccount",
@@ -13152,6 +15211,175 @@
         }
       ],
       "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_display_video360_advertiser_link_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient",
+          "shortName": "AnalyticsAdminServiceAsyncClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceAsyncClient.update_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.UpdateExpandedDataSetRequest"
+          },
+          {
+            "name": "expanded_data_set",
+            "type": "google.analytics.admin_v1alpha.types.ExpandedDataSet"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.ExpandedDataSet",
+        "shortName": "update_expanded_data_set"
+      },
+      "description": "Sample for UpdateExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_expanded_data_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateExpandedDataSet_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_expanded_data_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient",
+          "shortName": "AnalyticsAdminServiceClient"
+        },
+        "fullName": "google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_expanded_data_set",
+        "method": {
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateExpandedDataSet",
+          "service": {
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateExpandedDataSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.admin_v1alpha.types.UpdateExpandedDataSetRequest"
+          },
+          {
+            "name": "expanded_data_set",
+            "type": "google.analytics.admin_v1alpha.types.ExpandedDataSet"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.admin_v1alpha.types.ExpandedDataSet",
+        "shortName": "update_expanded_data_set"
+      },
+      "description": "Sample for UpdateExpandedDataSet",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_expanded_data_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateExpandedDataSet_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_expanded_data_set_sync.py"
     },
     {
       "canonical": true,

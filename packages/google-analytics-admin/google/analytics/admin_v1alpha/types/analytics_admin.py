@@ -19,6 +19,9 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.analytics.admin_v1alpha.types import (
+    expanded_data_set as gaa_expanded_data_set,
+)
 from google.analytics.admin_v1alpha.types import access_report
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import resources
@@ -134,6 +137,25 @@ __protobuf__ = proto.module(
         "ArchiveAudienceRequest",
         "GetAttributionSettingsRequest",
         "UpdateAttributionSettingsRequest",
+        "GetAccessBindingRequest",
+        "BatchGetAccessBindingsRequest",
+        "BatchGetAccessBindingsResponse",
+        "ListAccessBindingsRequest",
+        "ListAccessBindingsResponse",
+        "CreateAccessBindingRequest",
+        "BatchCreateAccessBindingsRequest",
+        "BatchCreateAccessBindingsResponse",
+        "UpdateAccessBindingRequest",
+        "BatchUpdateAccessBindingsRequest",
+        "BatchUpdateAccessBindingsResponse",
+        "DeleteAccessBindingRequest",
+        "BatchDeleteAccessBindingsRequest",
+        "CreateExpandedDataSetRequest",
+        "UpdateExpandedDataSetRequest",
+        "DeleteExpandedDataSetRequest",
+        "GetExpandedDataSetRequest",
+        "ListExpandedDataSetsRequest",
+        "ListExpandedDataSetsResponse",
         "SetAutomatedGa4ConfigurationOptOutRequest",
         "SetAutomatedGa4ConfigurationOptOutResponse",
         "FetchAutomatedGa4ConfigurationOptOutRequest",
@@ -171,7 +193,7 @@ class RunAccessReportRequest(proto.Message):
             ranges. Requests are allowed up to 2 date
             ranges.
         dimension_filter (google.analytics.admin_v1alpha.types.AccessFilterExpression):
-            Dimension filters allow you to restrict report response to
+            Dimension filters let you restrict report response to
             specific dimension values which match the filter. For
             example, filtering on access records of a single user. To
             learn more, see `Fundamentals of Dimension
@@ -446,9 +468,9 @@ class UpdateAccountRequest(proto.Message):
             field is used to identify the account.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Field names must
-            be in snake case (e.g., "field_to_update"). Omitted fields
-            will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            be in snake case (for example, "field_to_update"). Omitted
+            fields will not be updated. To replace the entire entity,
+            use one path with the string "*" to match all fields.
     """
 
     account: resources.Account = proto.Field(
@@ -473,7 +495,7 @@ class ProvisionAccountTicketRequest(proto.Message):
             Redirect URI where the user will be sent
             after accepting Terms of Service. Must be
             configured in Developers Console as a Redirect
-            URI
+            URI.
     """
 
     account: resources.Account = proto.Field(
@@ -2905,6 +2927,449 @@ class UpdateAttributionSettingsRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetAccessBindingRequest(proto.Message):
+    r"""Request message for GetAccessBinding RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the access binding to
+            retrieve. Formats:
+            -
+            accounts/{account}/accessBindings/{accessBinding}
+            -
+            properties/{property}/accessBindings/{accessBinding}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class BatchGetAccessBindingsRequest(proto.Message):
+    r"""Request message for BatchGetAccessBindings RPC.
+
+    Attributes:
+        parent (str):
+            Required. The account or property that owns
+            the access bindings. The parent of all provided
+            values for the 'names' field must match this
+            field. Formats:
+            - accounts/{account}
+            - properties/{property}
+        names (MutableSequence[str]):
+            Required. The names of the access bindings to
+            retrieve. A maximum of 1000 access bindings can
+            be retrieved in a batch. Formats:
+            -
+            accounts/{account}/accessBindings/{accessBinding}
+            -
+            properties/{property}/accessBindings/{accessBinding}
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchGetAccessBindingsResponse(proto.Message):
+    r"""Response message for BatchGetAccessBindings RPC.
+
+    Attributes:
+        access_bindings (MutableSequence[google.analytics.admin_v1alpha.types.AccessBinding]):
+            The requested access bindings.
+    """
+
+    access_bindings: MutableSequence[resources.AccessBinding] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.AccessBinding,
+    )
+
+
+class ListAccessBindingsRequest(proto.Message):
+    r"""Request message for ListAccessBindings RPC.
+
+    Attributes:
+        parent (str):
+            Required. Formats:
+            - accounts/{account}
+            - properties/{property}
+        page_size (int):
+            The maximum number of access bindings to
+            return. The service may return fewer than this
+            value. If unspecified, at most 200 access
+            bindings will be returned. The maximum value is
+            500; values above 500 will be coerced to 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListAccessBindings`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListAccessBindings`` must match the call that
+            provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListAccessBindingsResponse(proto.Message):
+    r"""Response message for ListAccessBindings RPC.
+
+    Attributes:
+        access_bindings (MutableSequence[google.analytics.admin_v1alpha.types.AccessBinding]):
+            List of AccessBindings. These will be ordered
+            stably, but in an arbitrary order.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    access_bindings: MutableSequence[resources.AccessBinding] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.AccessBinding,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateAccessBindingRequest(proto.Message):
+    r"""Request message for CreateAccessBinding RPC.
+
+    Attributes:
+        parent (str):
+            Required. Formats:
+            - accounts/{account}
+            - properties/{property}
+        access_binding (google.analytics.admin_v1alpha.types.AccessBinding):
+            Required. The access binding to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    access_binding: resources.AccessBinding = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.AccessBinding,
+    )
+
+
+class BatchCreateAccessBindingsRequest(proto.Message):
+    r"""Request message for BatchCreateAccessBindings RPC.
+
+    Attributes:
+        parent (str):
+            Required. The account or property that owns
+            the access bindings. The parent field in the
+            CreateAccessBindingRequest messages must either
+            be empty or match this field. Formats:
+            - accounts/{account}
+            - properties/{property}
+        requests (MutableSequence[google.analytics.admin_v1alpha.types.CreateAccessBindingRequest]):
+            Required. The requests specifying the access
+            bindings to create. A maximum of 1000 access
+            bindings can be created in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateAccessBindingRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="CreateAccessBindingRequest",
+    )
+
+
+class BatchCreateAccessBindingsResponse(proto.Message):
+    r"""Response message for BatchCreateAccessBindings RPC.
+
+    Attributes:
+        access_bindings (MutableSequence[google.analytics.admin_v1alpha.types.AccessBinding]):
+            The access bindings created.
+    """
+
+    access_bindings: MutableSequence[resources.AccessBinding] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.AccessBinding,
+    )
+
+
+class UpdateAccessBindingRequest(proto.Message):
+    r"""Request message for UpdateAccessBinding RPC.
+
+    Attributes:
+        access_binding (google.analytics.admin_v1alpha.types.AccessBinding):
+            Required. The access binding to update.
+    """
+
+    access_binding: resources.AccessBinding = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.AccessBinding,
+    )
+
+
+class BatchUpdateAccessBindingsRequest(proto.Message):
+    r"""Request message for BatchUpdateAccessBindings RPC.
+
+    Attributes:
+        parent (str):
+            Required. The account or property that owns
+            the access bindings. The parent field in the
+            UpdateAccessBindingRequest messages must either
+            be empty or match this field. Formats:
+            - accounts/{account}
+            - properties/{property}
+        requests (MutableSequence[google.analytics.admin_v1alpha.types.UpdateAccessBindingRequest]):
+            Required. The requests specifying the access
+            bindings to update. A maximum of 1000 access
+            bindings can be updated in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateAccessBindingRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateAccessBindingRequest",
+    )
+
+
+class BatchUpdateAccessBindingsResponse(proto.Message):
+    r"""Response message for BatchUpdateAccessBindings RPC.
+
+    Attributes:
+        access_bindings (MutableSequence[google.analytics.admin_v1alpha.types.AccessBinding]):
+            The access bindings updated.
+    """
+
+    access_bindings: MutableSequence[resources.AccessBinding] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.AccessBinding,
+    )
+
+
+class DeleteAccessBindingRequest(proto.Message):
+    r"""Request message for DeleteAccessBinding RPC.
+
+    Attributes:
+        name (str):
+            Required. Formats:
+            -
+            accounts/{account}/accessBindings/{accessBinding}
+            -
+            properties/{property}/accessBindings/{accessBinding}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class BatchDeleteAccessBindingsRequest(proto.Message):
+    r"""Request message for BatchDeleteAccessBindings RPC.
+
+    Attributes:
+        parent (str):
+            Required. The account or property that owns
+            the access bindings. The parent field in the
+            DeleteAccessBindingRequest messages must either
+            be empty or match this field. Formats:
+            - accounts/{account}
+            - properties/{property}
+        requests (MutableSequence[google.analytics.admin_v1alpha.types.DeleteAccessBindingRequest]):
+            Required. The requests specifying the access
+            bindings to delete. A maximum of 1000 access
+            bindings can be deleted in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["DeleteAccessBindingRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="DeleteAccessBindingRequest",
+    )
+
+
+class CreateExpandedDataSetRequest(proto.Message):
+    r"""Request message for CreateExpandedDataSet RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        expanded_data_set (google.analytics.admin_v1alpha.types.ExpandedDataSet):
+            Required. The ExpandedDataSet to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expanded_data_set: gaa_expanded_data_set.ExpandedDataSet = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gaa_expanded_data_set.ExpandedDataSet,
+    )
+
+
+class UpdateExpandedDataSetRequest(proto.Message):
+    r"""Request message for UpdateExpandedDataSet RPC.
+
+    Attributes:
+        expanded_data_set (google.analytics.admin_v1alpha.types.ExpandedDataSet):
+            Required. The ExpandedDataSet to update. The resource's
+            ``name`` field is used to identify the ExpandedDataSet to be
+            updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    expanded_data_set: gaa_expanded_data_set.ExpandedDataSet = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_expanded_data_set.ExpandedDataSet,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteExpandedDataSetRequest(proto.Message):
+    r"""Request message for DeleteExpandedDataSet RPC.
+
+    Attributes:
+        name (str):
+            Required. Example format:
+            properties/1234/expandedDataSets/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetExpandedDataSetRequest(proto.Message):
+    r"""Request message for GetExpandedDataSet RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the Audience to get.
+            Example format:
+            properties/1234/expandedDataSets/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListExpandedDataSetsRequest(proto.Message):
+    r"""Request message for ListExpandedDataSets RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous
+            ``ListExpandedDataSets`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListExpandedDataSet`` must match the call that provided
+            the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListExpandedDataSetsResponse(proto.Message):
+    r"""Response message for ListExpandedDataSets RPC.
+
+    Attributes:
+        expanded_data_sets (MutableSequence[google.analytics.admin_v1alpha.types.ExpandedDataSet]):
+            List of ExpandedDataSet. These will be
+            ordered stably, but in an arbitrary order.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    expanded_data_sets: MutableSequence[
+        gaa_expanded_data_set.ExpandedDataSet
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_expanded_data_set.ExpandedDataSet,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

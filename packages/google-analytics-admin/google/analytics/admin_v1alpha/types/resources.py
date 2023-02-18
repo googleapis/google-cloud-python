@@ -60,6 +60,7 @@ __protobuf__ = proto.module(
         "CustomMetric",
         "DataRetentionSettings",
         "AttributionSettings",
+        "AccessBinding",
         "BigQueryLink",
     },
 )
@@ -2216,6 +2217,54 @@ class AttributionSettings(proto.Message):
         proto.ENUM,
         number=4,
         enum=ReportingAttributionModel,
+    )
+
+
+class AccessBinding(proto.Message):
+    r"""A binding of a user to a set of roles.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        user (str):
+            If set, the email address of the user to set
+            roles for. Format: "someuser@gmail.com".
+
+            This field is a member of `oneof`_ ``access_target``.
+        name (str):
+            Output only. Resource name of this binding.
+
+            Format: accounts/{account}/accessBindings/{access_binding}
+            or properties/{property}/accessBindings/{access_binding}
+
+            Example: "accounts/100/accessBindings/200".
+        roles (MutableSequence[str]):
+            A list of roles for to grant to the parent
+            resource.
+            Valid values:
+            predefinedRoles/viewer
+            predefinedRoles/analyst
+            predefinedRoles/editor
+            predefinedRoles/admin
+            predefinedRoles/no-cost-data
+            predefinedRoles/no-revenue-data
+
+            For users, if an empty list of roles is set,
+            this AccessBinding will be deleted.
+    """
+
+    user: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="access_target",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    roles: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

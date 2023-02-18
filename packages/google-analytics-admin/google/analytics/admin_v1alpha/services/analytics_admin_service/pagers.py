@@ -24,7 +24,12 @@ from typing import (
     Tuple,
 )
 
-from google.analytics.admin_v1alpha.types import analytics_admin, audience, resources
+from google.analytics.admin_v1alpha.types import (
+    analytics_admin,
+    audience,
+    expanded_data_set,
+    resources,
+)
 
 
 class ListAccountsPager:
@@ -2242,6 +2247,264 @@ class ListSearchAds360LinksAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.search_ads_360_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAccessBindingsPager:
+    """A pager for iterating through ``list_access_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListAccessBindingsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``access_bindings`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAccessBindings`` requests and continue to iterate
+    through the ``access_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAccessBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListAccessBindingsResponse],
+        request: analytics_admin.ListAccessBindingsRequest,
+        response: analytics_admin.ListAccessBindingsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListAccessBindingsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListAccessBindingsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListAccessBindingsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListAccessBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.AccessBinding]:
+        for page in self.pages:
+            yield from page.access_bindings
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAccessBindingsAsyncPager:
+    """A pager for iterating through ``list_access_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListAccessBindingsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``access_bindings`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAccessBindings`` requests and continue to iterate
+    through the ``access_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAccessBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListAccessBindingsResponse]],
+        request: analytics_admin.ListAccessBindingsRequest,
+        response: analytics_admin.ListAccessBindingsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListAccessBindingsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListAccessBindingsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListAccessBindingsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[analytics_admin.ListAccessBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.AccessBinding]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.access_bindings:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListExpandedDataSetsPager:
+    """A pager for iterating through ``list_expanded_data_sets`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListExpandedDataSetsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``expanded_data_sets`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListExpandedDataSets`` requests and continue to iterate
+    through the ``expanded_data_sets`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListExpandedDataSetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListExpandedDataSetsResponse],
+        request: analytics_admin.ListExpandedDataSetsRequest,
+        response: analytics_admin.ListExpandedDataSetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListExpandedDataSetsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListExpandedDataSetsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListExpandedDataSetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListExpandedDataSetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[expanded_data_set.ExpandedDataSet]:
+        for page in self.pages:
+            yield from page.expanded_data_sets
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListExpandedDataSetsAsyncPager:
+    """A pager for iterating through ``list_expanded_data_sets`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListExpandedDataSetsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``expanded_data_sets`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListExpandedDataSets`` requests and continue to iterate
+    through the ``expanded_data_sets`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListExpandedDataSetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListExpandedDataSetsResponse]],
+        request: analytics_admin.ListExpandedDataSetsRequest,
+        response: analytics_admin.ListExpandedDataSetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListExpandedDataSetsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListExpandedDataSetsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListExpandedDataSetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[analytics_admin.ListExpandedDataSetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[expanded_data_set.ExpandedDataSet]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.expanded_data_sets:
                     yield response
 
         return async_generator()
