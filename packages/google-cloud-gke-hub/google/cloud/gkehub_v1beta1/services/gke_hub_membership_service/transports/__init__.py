@@ -19,6 +19,10 @@ from typing import Dict, Type
 from .base import GkeHubMembershipServiceTransport
 from .grpc import GkeHubMembershipServiceGrpcTransport
 from .grpc_asyncio import GkeHubMembershipServiceGrpcAsyncIOTransport
+from .rest import (
+    GkeHubMembershipServiceRestInterceptor,
+    GkeHubMembershipServiceRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +30,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[GkeHubMembershipServiceTransport]]
 _transport_registry["grpc"] = GkeHubMembershipServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = GkeHubMembershipServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = GkeHubMembershipServiceRestTransport
 
 __all__ = (
     "GkeHubMembershipServiceTransport",
     "GkeHubMembershipServiceGrpcTransport",
     "GkeHubMembershipServiceGrpcAsyncIOTransport",
+    "GkeHubMembershipServiceRestTransport",
+    "GkeHubMembershipServiceRestInterceptor",
 )

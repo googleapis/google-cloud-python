@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import GkeHubTransport
 from .grpc import GkeHubGrpcTransport
 from .grpc_asyncio import GkeHubGrpcAsyncIOTransport
+from .rest import GkeHubRestInterceptor, GkeHubRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[GkeHubTransport]]
 _transport_registry["grpc"] = GkeHubGrpcTransport
 _transport_registry["grpc_asyncio"] = GkeHubGrpcAsyncIOTransport
+_transport_registry["rest"] = GkeHubRestTransport
 
 __all__ = (
     "GkeHubTransport",
     "GkeHubGrpcTransport",
     "GkeHubGrpcAsyncIOTransport",
+    "GkeHubRestTransport",
+    "GkeHubRestInterceptor",
 )

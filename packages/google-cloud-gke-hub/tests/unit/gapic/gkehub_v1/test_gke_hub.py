@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -43,12 +45,15 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
 from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
@@ -104,6 +109,7 @@ def test__get_default_mtls_endpoint():
     [
         (GkeHubClient, "grpc"),
         (GkeHubAsyncClient, "grpc_asyncio"),
+        (GkeHubClient, "rest"),
     ],
 )
 def test_gke_hub_client_from_service_account_info(client_class, transport_name):
@@ -117,7 +123,11 @@ def test_gke_hub_client_from_service_account_info(client_class, transport_name):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkehub.googleapis.com:443")
+        assert client.transport._host == (
+            "gkehub.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkehub.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -125,6 +135,7 @@ def test_gke_hub_client_from_service_account_info(client_class, transport_name):
     [
         (transports.GkeHubGrpcTransport, "grpc"),
         (transports.GkeHubGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.GkeHubRestTransport, "rest"),
     ],
 )
 def test_gke_hub_client_service_account_always_use_jwt(transport_class, transport_name):
@@ -148,6 +159,7 @@ def test_gke_hub_client_service_account_always_use_jwt(transport_class, transpor
     [
         (GkeHubClient, "grpc"),
         (GkeHubAsyncClient, "grpc_asyncio"),
+        (GkeHubClient, "rest"),
     ],
 )
 def test_gke_hub_client_from_service_account_file(client_class, transport_name):
@@ -168,13 +180,18 @@ def test_gke_hub_client_from_service_account_file(client_class, transport_name):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkehub.googleapis.com:443")
+        assert client.transport._host == (
+            "gkehub.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkehub.googleapis.com"
+        )
 
 
 def test_gke_hub_client_get_transport_class():
     transport = GkeHubClient.get_transport_class()
     available_transports = [
         transports.GkeHubGrpcTransport,
+        transports.GkeHubRestTransport,
     ]
     assert transport in available_transports
 
@@ -187,6 +204,7 @@ def test_gke_hub_client_get_transport_class():
     [
         (GkeHubClient, transports.GkeHubGrpcTransport, "grpc"),
         (GkeHubAsyncClient, transports.GkeHubGrpcAsyncIOTransport, "grpc_asyncio"),
+        (GkeHubClient, transports.GkeHubRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -326,6 +344,8 @@ def test_gke_hub_client_client_options(client_class, transport_class, transport_
             "grpc_asyncio",
             "false",
         ),
+        (GkeHubClient, transports.GkeHubRestTransport, "rest", "true"),
+        (GkeHubClient, transports.GkeHubRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -511,6 +531,7 @@ def test_gke_hub_client_get_mtls_endpoint_and_cert_source(client_class):
     [
         (GkeHubClient, transports.GkeHubGrpcTransport, "grpc"),
         (GkeHubAsyncClient, transports.GkeHubGrpcAsyncIOTransport, "grpc_asyncio"),
+        (GkeHubClient, transports.GkeHubRestTransport, "rest"),
     ],
 )
 def test_gke_hub_client_client_options_scopes(
@@ -546,6 +567,7 @@ def test_gke_hub_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (GkeHubClient, transports.GkeHubRestTransport, "rest", None),
     ],
 )
 def test_gke_hub_client_client_options_credentials_file(
@@ -3666,6 +3688,2908 @@ async def test_generate_connect_manifest_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListMembershipsRequest,
+        dict,
+    ],
+)
+def test_list_memberships_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListMembershipsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListMembershipsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_memberships(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMembershipsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_memberships_rest_required_fields(
+    request_type=service.ListMembershipsRequest,
+):
+    transport_class = transports.GkeHubRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_memberships._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_memberships._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListMembershipsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListMembershipsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_memberships(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_memberships_rest_unset_required_fields():
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_memberships._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_memberships_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_list_memberships"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_list_memberships"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListMembershipsRequest.pb(service.ListMembershipsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListMembershipsResponse.to_json(
+            service.ListMembershipsResponse()
+        )
+
+        request = service.ListMembershipsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListMembershipsResponse()
+
+        client.list_memberships(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_memberships_rest_bad_request(
+    transport: str = "rest", request_type=service.ListMembershipsRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_memberships(request)
+
+
+def test_list_memberships_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListMembershipsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListMembershipsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_memberships(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/memberships"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_memberships_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_memberships(
+            service.ListMembershipsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_memberships_rest_pager(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListMembershipsResponse(
+                resources=[
+                    membership.Membership(),
+                    membership.Membership(),
+                    membership.Membership(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListMembershipsResponse(
+                resources=[],
+                next_page_token="def",
+            ),
+            service.ListMembershipsResponse(
+                resources=[
+                    membership.Membership(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListMembershipsResponse(
+                resources=[
+                    membership.Membership(),
+                    membership.Membership(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListMembershipsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_memberships(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, membership.Membership) for i in results)
+
+        pages = list(client.list_memberships(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListFeaturesRequest,
+        dict,
+    ],
+)
+def test_list_features_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListFeaturesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListFeaturesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_features(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFeaturesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_features_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_list_features"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_list_features"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListFeaturesRequest.pb(service.ListFeaturesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListFeaturesResponse.to_json(
+            service.ListFeaturesResponse()
+        )
+
+        request = service.ListFeaturesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListFeaturesResponse()
+
+        client.list_features(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_features_rest_bad_request(
+    transport: str = "rest", request_type=service.ListFeaturesRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_features(request)
+
+
+def test_list_features_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListFeaturesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListFeaturesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_features(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/features" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_features_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_features(
+            service.ListFeaturesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_features_rest_pager(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListFeaturesResponse(
+                resources=[
+                    feature.Feature(),
+                    feature.Feature(),
+                    feature.Feature(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListFeaturesResponse(
+                resources=[],
+                next_page_token="def",
+            ),
+            service.ListFeaturesResponse(
+                resources=[
+                    feature.Feature(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListFeaturesResponse(
+                resources=[
+                    feature.Feature(),
+                    feature.Feature(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListFeaturesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_features(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, feature.Feature) for i in results)
+
+        pages = list(client.list_features(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetMembershipRequest,
+        dict,
+    ],
+)
+def test_get_membership_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = membership.Membership(
+            name="name_value",
+            description="description_value",
+            external_id="external_id_value",
+            unique_id="unique_id_value",
+            endpoint=membership.MembershipEndpoint(
+                gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = membership.Membership.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_membership(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, membership.Membership)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.external_id == "external_id_value"
+    assert response.unique_id == "unique_id_value"
+
+
+def test_get_membership_rest_required_fields(request_type=service.GetMembershipRequest):
+    transport_class = transports.GkeHubRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_membership._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_membership._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = membership.Membership()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = membership.Membership.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_membership(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_membership_rest_unset_required_fields():
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_membership._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_membership_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_get_membership"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_get_membership"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetMembershipRequest.pb(service.GetMembershipRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = membership.Membership.to_json(
+            membership.Membership()
+        )
+
+        request = service.GetMembershipRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = membership.Membership()
+
+        client.get_membership(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_membership_rest_bad_request(
+    transport: str = "rest", request_type=service.GetMembershipRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_membership(request)
+
+
+def test_get_membership_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = membership.Membership()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/memberships/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = membership.Membership.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_membership(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/memberships/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_membership_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_membership(
+            service.GetMembershipRequest(),
+            name="name_value",
+        )
+
+
+def test_get_membership_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetFeatureRequest,
+        dict,
+    ],
+)
+def test_get_feature_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/features/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = feature.Feature(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = feature.Feature.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_feature(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, feature.Feature)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_feature_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_get_feature"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_get_feature"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetFeatureRequest.pb(service.GetFeatureRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = feature.Feature.to_json(feature.Feature())
+
+        request = service.GetFeatureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = feature.Feature()
+
+        client.get_feature(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_feature_rest_bad_request(
+    transport: str = "rest", request_type=service.GetFeatureRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/features/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_feature(request)
+
+
+def test_get_feature_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = feature.Feature()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/features/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = feature.Feature.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_feature(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/features/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_feature_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_feature(
+            service.GetFeatureRequest(),
+            name="name_value",
+        )
+
+
+def test_get_feature_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateMembershipRequest,
+        dict,
+    ],
+)
+def test_create_membership_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["resource"] = {
+        "endpoint": {
+            "gke_cluster": {"resource_link": "resource_link_value"},
+            "kubernetes_metadata": {
+                "kubernetes_api_server_version": "kubernetes_api_server_version_value",
+                "node_provider_id": "node_provider_id_value",
+                "node_count": 1070,
+                "vcpu_count": 1094,
+                "memory_mb": 967,
+                "update_time": {"seconds": 751, "nanos": 543},
+            },
+            "kubernetes_resource": {
+                "membership_cr_manifest": "membership_cr_manifest_value",
+                "membership_resources": [
+                    {"manifest": "manifest_value", "cluster_scoped": True}
+                ],
+                "connect_resources": {},
+                "resource_options": {
+                    "connect_version": "connect_version_value",
+                    "v1beta1_crd": True,
+                    "k8s_version": "k8s_version_value",
+                },
+            },
+        },
+        "name": "name_value",
+        "labels": {},
+        "description": "description_value",
+        "state": {"code": 1},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "external_id": "external_id_value",
+        "last_connection_time": {},
+        "unique_id": "unique_id_value",
+        "authority": {
+            "issuer": "issuer_value",
+            "workload_identity_pool": "workload_identity_pool_value",
+            "identity_provider": "identity_provider_value",
+            "oidc_jwks": b"oidc_jwks_blob",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_membership(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_membership_rest_required_fields(
+    request_type=service.CreateMembershipRequest,
+):
+    transport_class = transports.GkeHubRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["membership_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "membershipId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_membership._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "membershipId" in jsonified_request
+    assert jsonified_request["membershipId"] == request_init["membership_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["membershipId"] = "membership_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_membership._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "membership_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "membershipId" in jsonified_request
+    assert jsonified_request["membershipId"] == "membership_id_value"
+
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_membership(request)
+
+            expected_params = [
+                (
+                    "membershipId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_membership_rest_unset_required_fields():
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_membership._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "membershipId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "membershipId",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_membership_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_create_membership"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_create_membership"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateMembershipRequest.pb(
+            service.CreateMembershipRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateMembershipRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_membership(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_membership_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateMembershipRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["resource"] = {
+        "endpoint": {
+            "gke_cluster": {"resource_link": "resource_link_value"},
+            "kubernetes_metadata": {
+                "kubernetes_api_server_version": "kubernetes_api_server_version_value",
+                "node_provider_id": "node_provider_id_value",
+                "node_count": 1070,
+                "vcpu_count": 1094,
+                "memory_mb": 967,
+                "update_time": {"seconds": 751, "nanos": 543},
+            },
+            "kubernetes_resource": {
+                "membership_cr_manifest": "membership_cr_manifest_value",
+                "membership_resources": [
+                    {"manifest": "manifest_value", "cluster_scoped": True}
+                ],
+                "connect_resources": {},
+                "resource_options": {
+                    "connect_version": "connect_version_value",
+                    "v1beta1_crd": True,
+                    "k8s_version": "k8s_version_value",
+                },
+            },
+        },
+        "name": "name_value",
+        "labels": {},
+        "description": "description_value",
+        "state": {"code": 1},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "external_id": "external_id_value",
+        "last_connection_time": {},
+        "unique_id": "unique_id_value",
+        "authority": {
+            "issuer": "issuer_value",
+            "workload_identity_pool": "workload_identity_pool_value",
+            "identity_provider": "identity_provider_value",
+            "oidc_jwks": b"oidc_jwks_blob",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_membership(request)
+
+
+def test_create_membership_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
+            membership_id="membership_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_membership(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/memberships"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_membership_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_membership(
+            service.CreateMembershipRequest(),
+            parent="parent_value",
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
+            membership_id="membership_id_value",
+        )
+
+
+def test_create_membership_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateFeatureRequest,
+        dict,
+    ],
+)
+def test_create_feature_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["resource"] = {
+        "name": "name_value",
+        "labels": {},
+        "resource_state": {"state": 1},
+        "spec": {
+            "multiclusteringress": {"config_membership": "config_membership_value"}
+        },
+        "membership_specs": {},
+        "state": {
+            "state": {
+                "code": 1,
+                "description": "description_value",
+                "update_time": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "membership_states": {},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_feature(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_feature_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_create_feature"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_create_feature"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateFeatureRequest.pb(service.CreateFeatureRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateFeatureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_feature(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_feature_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateFeatureRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["resource"] = {
+        "name": "name_value",
+        "labels": {},
+        "resource_state": {"state": 1},
+        "spec": {
+            "multiclusteringress": {"config_membership": "config_membership_value"}
+        },
+        "membership_specs": {},
+        "state": {
+            "state": {
+                "code": 1,
+                "description": "description_value",
+                "update_time": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "membership_states": {},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_feature(request)
+
+
+def test_create_feature_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            resource=feature.Feature(name="name_value"),
+            feature_id="feature_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_feature(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/features" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_feature_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_feature(
+            service.CreateFeatureRequest(),
+            parent="parent_value",
+            resource=feature.Feature(name="name_value"),
+            feature_id="feature_id_value",
+        )
+
+
+def test_create_feature_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteMembershipRequest,
+        dict,
+    ],
+)
+def test_delete_membership_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_membership(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_membership_rest_required_fields(
+    request_type=service.DeleteMembershipRequest,
+):
+    transport_class = transports.GkeHubRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_membership._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_membership._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_membership(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_membership_rest_unset_required_fields():
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_membership._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_membership_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_delete_membership"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_delete_membership"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteMembershipRequest.pb(
+            service.DeleteMembershipRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteMembershipRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_membership(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_membership_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteMembershipRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_membership(request)
+
+
+def test_delete_membership_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/memberships/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_membership(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/memberships/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_membership_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_membership(
+            service.DeleteMembershipRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_membership_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteFeatureRequest,
+        dict,
+    ],
+)
+def test_delete_feature_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/features/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_feature(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_feature_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_delete_feature"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_delete_feature"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteFeatureRequest.pb(service.DeleteFeatureRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteFeatureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_feature(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_feature_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteFeatureRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/features/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_feature(request)
+
+
+def test_delete_feature_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/features/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_feature(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/features/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_feature_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_feature(
+            service.DeleteFeatureRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_feature_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateMembershipRequest,
+        dict,
+    ],
+)
+def test_update_membership_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request_init["resource"] = {
+        "endpoint": {
+            "gke_cluster": {"resource_link": "resource_link_value"},
+            "kubernetes_metadata": {
+                "kubernetes_api_server_version": "kubernetes_api_server_version_value",
+                "node_provider_id": "node_provider_id_value",
+                "node_count": 1070,
+                "vcpu_count": 1094,
+                "memory_mb": 967,
+                "update_time": {"seconds": 751, "nanos": 543},
+            },
+            "kubernetes_resource": {
+                "membership_cr_manifest": "membership_cr_manifest_value",
+                "membership_resources": [
+                    {"manifest": "manifest_value", "cluster_scoped": True}
+                ],
+                "connect_resources": {},
+                "resource_options": {
+                    "connect_version": "connect_version_value",
+                    "v1beta1_crd": True,
+                    "k8s_version": "k8s_version_value",
+                },
+            },
+        },
+        "name": "name_value",
+        "labels": {},
+        "description": "description_value",
+        "state": {"code": 1},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "external_id": "external_id_value",
+        "last_connection_time": {},
+        "unique_id": "unique_id_value",
+        "authority": {
+            "issuer": "issuer_value",
+            "workload_identity_pool": "workload_identity_pool_value",
+            "identity_provider": "identity_provider_value",
+            "oidc_jwks": b"oidc_jwks_blob",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_membership(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_membership_rest_required_fields(
+    request_type=service.UpdateMembershipRequest,
+):
+    transport_class = transports.GkeHubRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_membership._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_membership._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_membership(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_membership_rest_unset_required_fields():
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_membership._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "name",
+                "updateMask",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_membership_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_update_membership"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_update_membership"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateMembershipRequest.pb(
+            service.UpdateMembershipRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateMembershipRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_membership(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_membership_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateMembershipRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request_init["resource"] = {
+        "endpoint": {
+            "gke_cluster": {"resource_link": "resource_link_value"},
+            "kubernetes_metadata": {
+                "kubernetes_api_server_version": "kubernetes_api_server_version_value",
+                "node_provider_id": "node_provider_id_value",
+                "node_count": 1070,
+                "vcpu_count": 1094,
+                "memory_mb": 967,
+                "update_time": {"seconds": 751, "nanos": 543},
+            },
+            "kubernetes_resource": {
+                "membership_cr_manifest": "membership_cr_manifest_value",
+                "membership_resources": [
+                    {"manifest": "manifest_value", "cluster_scoped": True}
+                ],
+                "connect_resources": {},
+                "resource_options": {
+                    "connect_version": "connect_version_value",
+                    "v1beta1_crd": True,
+                    "k8s_version": "k8s_version_value",
+                },
+            },
+        },
+        "name": "name_value",
+        "labels": {},
+        "description": "description_value",
+        "state": {"code": 1},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "external_id": "external_id_value",
+        "last_connection_time": {},
+        "unique_id": "unique_id_value",
+        "authority": {
+            "issuer": "issuer_value",
+            "workload_identity_pool": "workload_identity_pool_value",
+            "identity_provider": "identity_provider_value",
+            "oidc_jwks": b"oidc_jwks_blob",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_membership(request)
+
+
+def test_update_membership_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/memberships/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_membership(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/memberships/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_membership_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_membership(
+            service.UpdateMembershipRequest(),
+            name="name_value",
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_membership_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateFeatureRequest,
+        dict,
+    ],
+)
+def test_update_feature_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/features/sample3"}
+    request_init["resource"] = {
+        "name": "name_value",
+        "labels": {},
+        "resource_state": {"state": 1},
+        "spec": {
+            "multiclusteringress": {"config_membership": "config_membership_value"}
+        },
+        "membership_specs": {},
+        "state": {
+            "state": {
+                "code": 1,
+                "description": "description_value",
+                "update_time": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "membership_states": {},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_feature(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_feature_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_update_feature"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_update_feature"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateFeatureRequest.pb(service.UpdateFeatureRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateFeatureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_feature(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_feature_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateFeatureRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/features/sample3"}
+    request_init["resource"] = {
+        "name": "name_value",
+        "labels": {},
+        "resource_state": {"state": 1},
+        "spec": {
+            "multiclusteringress": {"config_membership": "config_membership_value"}
+        },
+        "membership_specs": {},
+        "state": {
+            "state": {
+                "code": 1,
+                "description": "description_value",
+                "update_time": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "membership_states": {},
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_feature(request)
+
+
+def test_update_feature_rest_flattened():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/features/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            resource=feature.Feature(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_feature(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/features/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_feature_rest_flattened_error(transport: str = "rest"):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_feature(
+            service.UpdateFeatureRequest(),
+            name="name_value",
+            resource=feature.Feature(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_feature_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateConnectManifestRequest,
+        dict,
+    ],
+)
+def test_generate_connect_manifest_rest(request_type):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.GenerateConnectManifestResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.GenerateConnectManifestResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_connect_manifest(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.GenerateConnectManifestResponse)
+
+
+def test_generate_connect_manifest_rest_required_fields(
+    request_type=service.GenerateConnectManifestRequest,
+):
+    transport_class = transports.GkeHubRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_connect_manifest._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_connect_manifest._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "image_pull_secret_content",
+            "is_upgrade",
+            "namespace",
+            "proxy",
+            "registry",
+            "version",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.GenerateConnectManifestResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.GenerateConnectManifestResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_connect_manifest(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_connect_manifest_rest_unset_required_fields():
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.generate_connect_manifest._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "imagePullSecretContent",
+                "isUpgrade",
+                "namespace",
+                "proxy",
+                "registry",
+                "version",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_connect_manifest_rest_interceptors(null_interceptor):
+    transport = transports.GkeHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.GkeHubRestInterceptor(),
+    )
+    client = GkeHubClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_generate_connect_manifest"
+    ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "pre_generate_connect_manifest"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GenerateConnectManifestRequest.pb(
+            service.GenerateConnectManifestRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.GenerateConnectManifestResponse.to_json(
+            service.GenerateConnectManifestResponse()
+        )
+
+        request = service.GenerateConnectManifestRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.GenerateConnectManifestResponse()
+
+        client.generate_connect_manifest(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_connect_manifest_rest_bad_request(
+    transport: str = "rest", request_type=service.GenerateConnectManifestRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_connect_manifest(request)
+
+
+def test_generate_connect_manifest_rest_error():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.GkeHubGrpcTransport(
@@ -3747,6 +6671,7 @@ def test_transport_get_channel():
     [
         transports.GkeHubGrpcTransport,
         transports.GkeHubGrpcAsyncIOTransport,
+        transports.GkeHubRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3761,6 +6686,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3905,6 +6831,7 @@ def test_gke_hub_transport_auth_adc(transport_class):
     [
         transports.GkeHubGrpcTransport,
         transports.GkeHubGrpcAsyncIOTransport,
+        transports.GkeHubRestTransport,
     ],
 )
 def test_gke_hub_transport_auth_gdch_credentials(transport_class):
@@ -3999,11 +6926,40 @@ def test_gke_hub_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_gke_hub_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.GkeHubRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_gke_hub_rest_lro_client():
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_gke_hub_host_no_port(transport_name):
@@ -4014,7 +6970,11 @@ def test_gke_hub_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkehub.googleapis.com:443")
+    assert client.transport._host == (
+        "gkehub.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkehub.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -4022,6 +6982,7 @@ def test_gke_hub_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_gke_hub_host_with_port(transport_name):
@@ -4032,7 +6993,63 @@ def test_gke_hub_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkehub.googleapis.com:8000")
+    assert client.transport._host == (
+        "gkehub.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkehub.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_gke_hub_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = GkeHubClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = GkeHubClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_memberships._session
+    session2 = client2.transport.list_memberships._session
+    assert session1 != session2
+    session1 = client1.transport.list_features._session
+    session2 = client2.transport.list_features._session
+    assert session1 != session2
+    session1 = client1.transport.get_membership._session
+    session2 = client2.transport.get_membership._session
+    assert session1 != session2
+    session1 = client1.transport.get_feature._session
+    session2 = client2.transport.get_feature._session
+    assert session1 != session2
+    session1 = client1.transport.create_membership._session
+    session2 = client2.transport.create_membership._session
+    assert session1 != session2
+    session1 = client1.transport.create_feature._session
+    session2 = client2.transport.create_feature._session
+    assert session1 != session2
+    session1 = client1.transport.delete_membership._session
+    session2 = client2.transport.delete_membership._session
+    assert session1 != session2
+    session1 = client1.transport.delete_feature._session
+    session2 = client2.transport.delete_feature._session
+    assert session1 != session2
+    session1 = client1.transport.update_membership._session
+    session2 = client2.transport.update_membership._session
+    assert session1 != session2
+    session1 = client1.transport.update_feature._session
+    session2 = client2.transport.update_feature._session
+    assert session1 != session2
+    session1 = client1.transport.generate_connect_manifest._session
+    session2 = client2.transport.generate_connect_manifest._session
+    assert session1 != session2
 
 
 def test_gke_hub_grpc_transport_channel():
@@ -4383,6 +7400,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4400,6 +7418,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

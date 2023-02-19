@@ -63,6 +63,7 @@ from google.cloud.gkehub_v1beta1.types import membership
 from .transports.base import DEFAULT_CLIENT_INFO, GkeHubMembershipServiceTransport
 from .transports.grpc import GkeHubMembershipServiceGrpcTransport
 from .transports.grpc_asyncio import GkeHubMembershipServiceGrpcAsyncIOTransport
+from .transports.rest import GkeHubMembershipServiceRestTransport
 
 
 class GkeHubMembershipServiceClientMeta(type):
@@ -78,6 +79,7 @@ class GkeHubMembershipServiceClientMeta(type):
     )  # type: Dict[str, Type[GkeHubMembershipServiceTransport]]
     _transport_registry["grpc"] = GkeHubMembershipServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = GkeHubMembershipServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = GkeHubMembershipServiceRestTransport
 
     def get_transport_class(
         cls,
