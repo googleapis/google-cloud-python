@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -31,6 +33,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import grpc
@@ -38,6 +41,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.gsuiteaddons_v1.services.g_suite_add_ons import (
     GSuiteAddOnsAsyncClient,
@@ -94,6 +99,7 @@ def test__get_default_mtls_endpoint():
     [
         (GSuiteAddOnsClient, "grpc"),
         (GSuiteAddOnsAsyncClient, "grpc_asyncio"),
+        (GSuiteAddOnsClient, "rest"),
     ],
 )
 def test_g_suite_add_ons_client_from_service_account_info(client_class, transport_name):
@@ -107,7 +113,11 @@ def test_g_suite_add_ons_client_from_service_account_info(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gsuiteaddons.googleapis.com:443")
+        assert client.transport._host == (
+            "gsuiteaddons.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gsuiteaddons.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -115,6 +125,7 @@ def test_g_suite_add_ons_client_from_service_account_info(client_class, transpor
     [
         (transports.GSuiteAddOnsGrpcTransport, "grpc"),
         (transports.GSuiteAddOnsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.GSuiteAddOnsRestTransport, "rest"),
     ],
 )
 def test_g_suite_add_ons_client_service_account_always_use_jwt(
@@ -140,6 +151,7 @@ def test_g_suite_add_ons_client_service_account_always_use_jwt(
     [
         (GSuiteAddOnsClient, "grpc"),
         (GSuiteAddOnsAsyncClient, "grpc_asyncio"),
+        (GSuiteAddOnsClient, "rest"),
     ],
 )
 def test_g_suite_add_ons_client_from_service_account_file(client_class, transport_name):
@@ -160,13 +172,18 @@ def test_g_suite_add_ons_client_from_service_account_file(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gsuiteaddons.googleapis.com:443")
+        assert client.transport._host == (
+            "gsuiteaddons.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gsuiteaddons.googleapis.com"
+        )
 
 
 def test_g_suite_add_ons_client_get_transport_class():
     transport = GSuiteAddOnsClient.get_transport_class()
     available_transports = [
         transports.GSuiteAddOnsGrpcTransport,
+        transports.GSuiteAddOnsRestTransport,
     ]
     assert transport in available_transports
 
@@ -183,6 +200,7 @@ def test_g_suite_add_ons_client_get_transport_class():
             transports.GSuiteAddOnsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (GSuiteAddOnsClient, transports.GSuiteAddOnsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -326,6 +344,8 @@ def test_g_suite_add_ons_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (GSuiteAddOnsClient, transports.GSuiteAddOnsRestTransport, "rest", "true"),
+        (GSuiteAddOnsClient, transports.GSuiteAddOnsRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -519,6 +539,7 @@ def test_g_suite_add_ons_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.GSuiteAddOnsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (GSuiteAddOnsClient, transports.GSuiteAddOnsRestTransport, "rest"),
     ],
 )
 def test_g_suite_add_ons_client_client_options_scopes(
@@ -559,6 +580,7 @@ def test_g_suite_add_ons_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (GSuiteAddOnsClient, transports.GSuiteAddOnsRestTransport, "rest", None),
     ],
 )
 def test_g_suite_add_ons_client_client_options_credentials_file(
@@ -3060,6 +3082,2875 @@ async def test_get_install_status_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.GetAuthorizationRequest,
+        dict,
+    ],
+)
+def test_get_authorization_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/authorization"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Authorization(
+            name="name_value",
+            service_account_email="service_account_email_value",
+            oauth_client_id="oauth_client_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Authorization.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_authorization(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsuiteaddons.Authorization)
+    assert response.name == "name_value"
+    assert response.service_account_email == "service_account_email_value"
+    assert response.oauth_client_id == "oauth_client_id_value"
+
+
+def test_get_authorization_rest_required_fields(
+    request_type=gsuiteaddons.GetAuthorizationRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_authorization._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_authorization._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gsuiteaddons.Authorization()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gsuiteaddons.Authorization.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_authorization(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_authorization_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_authorization._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_authorization_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "post_get_authorization"
+    ) as post, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_get_authorization"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsuiteaddons.GetAuthorizationRequest.pb(
+            gsuiteaddons.GetAuthorizationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gsuiteaddons.Authorization.to_json(
+            gsuiteaddons.Authorization()
+        )
+
+        request = gsuiteaddons.GetAuthorizationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsuiteaddons.Authorization()
+
+        client.get_authorization(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_authorization_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.GetAuthorizationRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/authorization"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_authorization(request)
+
+
+def test_get_authorization_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Authorization()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/authorization"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Authorization.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_authorization(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/authorization}" % client.transport._host, args[1]
+        )
+
+
+def test_get_authorization_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_authorization(
+            gsuiteaddons.GetAuthorizationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_authorization_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.CreateDeploymentRequest,
+        dict,
+    ],
+)
+def test_create_deployment_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["deployment"] = {
+        "name": "name_value",
+        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+        "add_ons": {
+            "common": {
+                "name": "name_value",
+                "logo_url": "logo_url_value",
+                "layout_properties": {
+                    "primary_color": "primary_color_value",
+                    "secondary_color": "secondary_color_value",
+                },
+                "add_on_widget_set": {"used_widgets": [1]},
+                "use_locale_from_app": True,
+                "homepage_trigger": {
+                    "run_function": "run_function_value",
+                    "enabled": {"value": True},
+                },
+                "universal_actions": [
+                    {
+                        "label": "label_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "open_link_url_prefixes": {
+                    "values": [
+                        {
+                            "null_value": 0,
+                            "number_value": 0.1285,
+                            "string_value": "string_value_value",
+                            "bool_value": True,
+                            "struct_value": {"fields": {}},
+                            "list_value": {},
+                        }
+                    ]
+                },
+            },
+            "gmail": {
+                "homepage_trigger": {},
+                "contextual_triggers": [
+                    {
+                        "unconditional": {},
+                        "on_trigger_function": "on_trigger_function_value",
+                    }
+                ],
+                "universal_actions": [
+                    {
+                        "text": "text_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "compose_trigger": {
+                    "actions": [
+                        {
+                            "run_function": "run_function_value",
+                            "label": "label_value",
+                            "logo_url": "logo_url_value",
+                        }
+                    ],
+                    "draft_access": 1,
+                },
+                "authorization_check_function": "authorization_check_function_value",
+            },
+            "drive": {
+                "homepage_trigger": {},
+                "on_items_selected_trigger": {"run_function": "run_function_value"},
+            },
+            "calendar": {
+                "homepage_trigger": {},
+                "conference_solution": [
+                    {
+                        "on_create_function": "on_create_function_value",
+                        "id": "id_value",
+                        "name": "name_value",
+                        "logo_url": "logo_url_value",
+                    }
+                ],
+                "create_settings_url_function": "create_settings_url_function_value",
+                "event_open_trigger": {"run_function": "run_function_value"},
+                "event_update_trigger": {},
+                "current_event_access": 1,
+            },
+            "docs": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "sheets": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "slides": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "http_options": {"authorization_header": 1},
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Deployment(
+            name="name_value",
+            oauth_scopes=["oauth_scopes_value"],
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsuiteaddons.Deployment)
+    assert response.name == "name_value"
+    assert response.oauth_scopes == ["oauth_scopes_value"]
+    assert response.etag == "etag_value"
+
+
+def test_create_deployment_rest_required_fields(
+    request_type=gsuiteaddons.CreateDeploymentRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["deployment_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "deploymentId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "deploymentId" in jsonified_request
+    assert jsonified_request["deploymentId"] == request_init["deployment_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["deploymentId"] = "deployment_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_deployment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("deployment_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "deploymentId" in jsonified_request
+    assert jsonified_request["deploymentId"] == "deployment_id_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gsuiteaddons.Deployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_deployment(request)
+
+            expected_params = [
+                (
+                    "deploymentId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_deployment_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("deploymentId",))
+        & set(
+            (
+                "parent",
+                "deploymentId",
+                "deployment",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_deployment_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "post_create_deployment"
+    ) as post, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_create_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsuiteaddons.CreateDeploymentRequest.pb(
+            gsuiteaddons.CreateDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gsuiteaddons.Deployment.to_json(
+            gsuiteaddons.Deployment()
+        )
+
+        request = gsuiteaddons.CreateDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsuiteaddons.Deployment()
+
+        client.create_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_deployment_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.CreateDeploymentRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["deployment"] = {
+        "name": "name_value",
+        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+        "add_ons": {
+            "common": {
+                "name": "name_value",
+                "logo_url": "logo_url_value",
+                "layout_properties": {
+                    "primary_color": "primary_color_value",
+                    "secondary_color": "secondary_color_value",
+                },
+                "add_on_widget_set": {"used_widgets": [1]},
+                "use_locale_from_app": True,
+                "homepage_trigger": {
+                    "run_function": "run_function_value",
+                    "enabled": {"value": True},
+                },
+                "universal_actions": [
+                    {
+                        "label": "label_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "open_link_url_prefixes": {
+                    "values": [
+                        {
+                            "null_value": 0,
+                            "number_value": 0.1285,
+                            "string_value": "string_value_value",
+                            "bool_value": True,
+                            "struct_value": {"fields": {}},
+                            "list_value": {},
+                        }
+                    ]
+                },
+            },
+            "gmail": {
+                "homepage_trigger": {},
+                "contextual_triggers": [
+                    {
+                        "unconditional": {},
+                        "on_trigger_function": "on_trigger_function_value",
+                    }
+                ],
+                "universal_actions": [
+                    {
+                        "text": "text_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "compose_trigger": {
+                    "actions": [
+                        {
+                            "run_function": "run_function_value",
+                            "label": "label_value",
+                            "logo_url": "logo_url_value",
+                        }
+                    ],
+                    "draft_access": 1,
+                },
+                "authorization_check_function": "authorization_check_function_value",
+            },
+            "drive": {
+                "homepage_trigger": {},
+                "on_items_selected_trigger": {"run_function": "run_function_value"},
+            },
+            "calendar": {
+                "homepage_trigger": {},
+                "conference_solution": [
+                    {
+                        "on_create_function": "on_create_function_value",
+                        "id": "id_value",
+                        "name": "name_value",
+                        "logo_url": "logo_url_value",
+                    }
+                ],
+                "create_settings_url_function": "create_settings_url_function_value",
+                "event_open_trigger": {"run_function": "run_function_value"},
+                "event_update_trigger": {},
+                "current_event_access": 1,
+            },
+            "docs": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "sheets": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "slides": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "http_options": {"authorization_header": 1},
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_deployment(request)
+
+
+def test_create_deployment_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Deployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            deployment=gsuiteaddons.Deployment(name="name_value"),
+            deployment_id="deployment_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/deployments" % client.transport._host, args[1]
+        )
+
+
+def test_create_deployment_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_deployment(
+            gsuiteaddons.CreateDeploymentRequest(),
+            parent="parent_value",
+            deployment=gsuiteaddons.Deployment(name="name_value"),
+            deployment_id="deployment_id_value",
+        )
+
+
+def test_create_deployment_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.ReplaceDeploymentRequest,
+        dict,
+    ],
+)
+def test_replace_deployment_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"deployment": {"name": "projects/sample1/deployments/sample2"}}
+    request_init["deployment"] = {
+        "name": "projects/sample1/deployments/sample2",
+        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+        "add_ons": {
+            "common": {
+                "name": "name_value",
+                "logo_url": "logo_url_value",
+                "layout_properties": {
+                    "primary_color": "primary_color_value",
+                    "secondary_color": "secondary_color_value",
+                },
+                "add_on_widget_set": {"used_widgets": [1]},
+                "use_locale_from_app": True,
+                "homepage_trigger": {
+                    "run_function": "run_function_value",
+                    "enabled": {"value": True},
+                },
+                "universal_actions": [
+                    {
+                        "label": "label_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "open_link_url_prefixes": {
+                    "values": [
+                        {
+                            "null_value": 0,
+                            "number_value": 0.1285,
+                            "string_value": "string_value_value",
+                            "bool_value": True,
+                            "struct_value": {"fields": {}},
+                            "list_value": {},
+                        }
+                    ]
+                },
+            },
+            "gmail": {
+                "homepage_trigger": {},
+                "contextual_triggers": [
+                    {
+                        "unconditional": {},
+                        "on_trigger_function": "on_trigger_function_value",
+                    }
+                ],
+                "universal_actions": [
+                    {
+                        "text": "text_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "compose_trigger": {
+                    "actions": [
+                        {
+                            "run_function": "run_function_value",
+                            "label": "label_value",
+                            "logo_url": "logo_url_value",
+                        }
+                    ],
+                    "draft_access": 1,
+                },
+                "authorization_check_function": "authorization_check_function_value",
+            },
+            "drive": {
+                "homepage_trigger": {},
+                "on_items_selected_trigger": {"run_function": "run_function_value"},
+            },
+            "calendar": {
+                "homepage_trigger": {},
+                "conference_solution": [
+                    {
+                        "on_create_function": "on_create_function_value",
+                        "id": "id_value",
+                        "name": "name_value",
+                        "logo_url": "logo_url_value",
+                    }
+                ],
+                "create_settings_url_function": "create_settings_url_function_value",
+                "event_open_trigger": {"run_function": "run_function_value"},
+                "event_update_trigger": {},
+                "current_event_access": 1,
+            },
+            "docs": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "sheets": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "slides": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "http_options": {"authorization_header": 1},
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Deployment(
+            name="name_value",
+            oauth_scopes=["oauth_scopes_value"],
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.replace_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsuiteaddons.Deployment)
+    assert response.name == "name_value"
+    assert response.oauth_scopes == ["oauth_scopes_value"]
+    assert response.etag == "etag_value"
+
+
+def test_replace_deployment_rest_required_fields(
+    request_type=gsuiteaddons.ReplaceDeploymentRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).replace_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).replace_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gsuiteaddons.Deployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.replace_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_replace_deployment_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.replace_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("deployment",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_replace_deployment_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "post_replace_deployment"
+    ) as post, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_replace_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsuiteaddons.ReplaceDeploymentRequest.pb(
+            gsuiteaddons.ReplaceDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gsuiteaddons.Deployment.to_json(
+            gsuiteaddons.Deployment()
+        )
+
+        request = gsuiteaddons.ReplaceDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsuiteaddons.Deployment()
+
+        client.replace_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_replace_deployment_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.ReplaceDeploymentRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"deployment": {"name": "projects/sample1/deployments/sample2"}}
+    request_init["deployment"] = {
+        "name": "projects/sample1/deployments/sample2",
+        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+        "add_ons": {
+            "common": {
+                "name": "name_value",
+                "logo_url": "logo_url_value",
+                "layout_properties": {
+                    "primary_color": "primary_color_value",
+                    "secondary_color": "secondary_color_value",
+                },
+                "add_on_widget_set": {"used_widgets": [1]},
+                "use_locale_from_app": True,
+                "homepage_trigger": {
+                    "run_function": "run_function_value",
+                    "enabled": {"value": True},
+                },
+                "universal_actions": [
+                    {
+                        "label": "label_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "open_link_url_prefixes": {
+                    "values": [
+                        {
+                            "null_value": 0,
+                            "number_value": 0.1285,
+                            "string_value": "string_value_value",
+                            "bool_value": True,
+                            "struct_value": {"fields": {}},
+                            "list_value": {},
+                        }
+                    ]
+                },
+            },
+            "gmail": {
+                "homepage_trigger": {},
+                "contextual_triggers": [
+                    {
+                        "unconditional": {},
+                        "on_trigger_function": "on_trigger_function_value",
+                    }
+                ],
+                "universal_actions": [
+                    {
+                        "text": "text_value",
+                        "open_link": "open_link_value",
+                        "run_function": "run_function_value",
+                    }
+                ],
+                "compose_trigger": {
+                    "actions": [
+                        {
+                            "run_function": "run_function_value",
+                            "label": "label_value",
+                            "logo_url": "logo_url_value",
+                        }
+                    ],
+                    "draft_access": 1,
+                },
+                "authorization_check_function": "authorization_check_function_value",
+            },
+            "drive": {
+                "homepage_trigger": {},
+                "on_items_selected_trigger": {"run_function": "run_function_value"},
+            },
+            "calendar": {
+                "homepage_trigger": {},
+                "conference_solution": [
+                    {
+                        "on_create_function": "on_create_function_value",
+                        "id": "id_value",
+                        "name": "name_value",
+                        "logo_url": "logo_url_value",
+                    }
+                ],
+                "create_settings_url_function": "create_settings_url_function_value",
+                "event_open_trigger": {"run_function": "run_function_value"},
+                "event_update_trigger": {},
+                "current_event_access": 1,
+            },
+            "docs": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "sheets": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "slides": {
+                "homepage_trigger": {},
+                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
+            },
+            "http_options": {"authorization_header": 1},
+        },
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.replace_deployment(request)
+
+
+def test_replace_deployment_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Deployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "deployment": {"name": "projects/sample1/deployments/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            deployment=gsuiteaddons.Deployment(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.replace_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{deployment.name=projects/*/deployments/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_replace_deployment_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.replace_deployment(
+            gsuiteaddons.ReplaceDeploymentRequest(),
+            deployment=gsuiteaddons.Deployment(name="name_value"),
+        )
+
+
+def test_replace_deployment_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.GetDeploymentRequest,
+        dict,
+    ],
+)
+def test_get_deployment_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Deployment(
+            name="name_value",
+            oauth_scopes=["oauth_scopes_value"],
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsuiteaddons.Deployment)
+    assert response.name == "name_value"
+    assert response.oauth_scopes == ["oauth_scopes_value"]
+    assert response.etag == "etag_value"
+
+
+def test_get_deployment_rest_required_fields(
+    request_type=gsuiteaddons.GetDeploymentRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gsuiteaddons.Deployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_deployment_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_deployment_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "post_get_deployment"
+    ) as post, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_get_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsuiteaddons.GetDeploymentRequest.pb(
+            gsuiteaddons.GetDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gsuiteaddons.Deployment.to_json(
+            gsuiteaddons.Deployment()
+        )
+
+        request = gsuiteaddons.GetDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsuiteaddons.Deployment()
+
+        client.get_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_deployment_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.GetDeploymentRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_deployment(request)
+
+
+def test_get_deployment_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.Deployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/deployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/deployments/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_deployment_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_deployment(
+            gsuiteaddons.GetDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_get_deployment_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.ListDeploymentsRequest,
+        dict,
+    ],
+)
+def test_list_deployments_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.ListDeploymentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_deployments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDeploymentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_deployments_rest_required_fields(
+    request_type=gsuiteaddons.ListDeploymentsRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_deployments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_deployments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gsuiteaddons.ListDeploymentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_deployments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_deployments_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_deployments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_deployments_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "post_list_deployments"
+    ) as post, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_list_deployments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsuiteaddons.ListDeploymentsRequest.pb(
+            gsuiteaddons.ListDeploymentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gsuiteaddons.ListDeploymentsResponse.to_json(
+            gsuiteaddons.ListDeploymentsResponse()
+        )
+
+        request = gsuiteaddons.ListDeploymentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsuiteaddons.ListDeploymentsResponse()
+
+        client.list_deployments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_deployments_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.ListDeploymentsRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_deployments(request)
+
+
+def test_list_deployments_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.ListDeploymentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_deployments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/deployments" % client.transport._host, args[1]
+        )
+
+
+def test_list_deployments_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_deployments(
+            gsuiteaddons.ListDeploymentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_deployments_rest_pager(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            gsuiteaddons.ListDeploymentsResponse(
+                deployments=[
+                    gsuiteaddons.Deployment(),
+                    gsuiteaddons.Deployment(),
+                    gsuiteaddons.Deployment(),
+                ],
+                next_page_token="abc",
+            ),
+            gsuiteaddons.ListDeploymentsResponse(
+                deployments=[],
+                next_page_token="def",
+            ),
+            gsuiteaddons.ListDeploymentsResponse(
+                deployments=[
+                    gsuiteaddons.Deployment(),
+                ],
+                next_page_token="ghi",
+            ),
+            gsuiteaddons.ListDeploymentsResponse(
+                deployments=[
+                    gsuiteaddons.Deployment(),
+                    gsuiteaddons.Deployment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            gsuiteaddons.ListDeploymentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1"}
+
+        pager = client.list_deployments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, gsuiteaddons.Deployment) for i in results)
+
+        pages = list(client.list_deployments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.DeleteDeploymentRequest,
+        dict,
+    ],
+)
+def test_delete_deployment_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_deployment_rest_required_fields(
+    request_type=gsuiteaddons.DeleteDeploymentRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_deployment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("etag",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_deployment_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_deployment_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_delete_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = gsuiteaddons.DeleteDeploymentRequest.pb(
+            gsuiteaddons.DeleteDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = gsuiteaddons.DeleteDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_deployment_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.DeleteDeploymentRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_deployment(request)
+
+
+def test_delete_deployment_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/deployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/deployments/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_deployment_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_deployment(
+            gsuiteaddons.DeleteDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_deployment_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.InstallDeploymentRequest,
+        dict,
+    ],
+)
+def test_install_deployment_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.install_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_install_deployment_rest_required_fields(
+    request_type=gsuiteaddons.InstallDeploymentRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).install_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).install_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.install_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_install_deployment_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.install_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_install_deployment_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_install_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = gsuiteaddons.InstallDeploymentRequest.pb(
+            gsuiteaddons.InstallDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = gsuiteaddons.InstallDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.install_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_install_deployment_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.InstallDeploymentRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.install_deployment(request)
+
+
+def test_install_deployment_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/deployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.install_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/deployments/*}:install" % client.transport._host,
+            args[1],
+        )
+
+
+def test_install_deployment_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.install_deployment(
+            gsuiteaddons.InstallDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_install_deployment_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.UninstallDeploymentRequest,
+        dict,
+    ],
+)
+def test_uninstall_deployment_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.uninstall_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_uninstall_deployment_rest_required_fields(
+    request_type=gsuiteaddons.UninstallDeploymentRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).uninstall_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).uninstall_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.uninstall_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_uninstall_deployment_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.uninstall_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_uninstall_deployment_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_uninstall_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = gsuiteaddons.UninstallDeploymentRequest.pb(
+            gsuiteaddons.UninstallDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = gsuiteaddons.UninstallDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.uninstall_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_uninstall_deployment_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.UninstallDeploymentRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.uninstall_deployment(request)
+
+
+def test_uninstall_deployment_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/deployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.uninstall_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/deployments/*}:uninstall" % client.transport._host,
+            args[1],
+        )
+
+
+def test_uninstall_deployment_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.uninstall_deployment(
+            gsuiteaddons.UninstallDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_uninstall_deployment_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsuiteaddons.GetInstallStatusRequest,
+        dict,
+    ],
+)
+def test_get_install_status_rest(request_type):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2/installStatus"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.InstallStatus(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.InstallStatus.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_install_status(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsuiteaddons.InstallStatus)
+    assert response.name == "name_value"
+
+
+def test_get_install_status_rest_required_fields(
+    request_type=gsuiteaddons.GetInstallStatusRequest,
+):
+    transport_class = transports.GSuiteAddOnsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_install_status._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_install_status._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gsuiteaddons.InstallStatus()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gsuiteaddons.InstallStatus.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_install_status(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_install_status_rest_unset_required_fields():
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_install_status._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_install_status_rest_interceptors(null_interceptor):
+    transport = transports.GSuiteAddOnsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GSuiteAddOnsRestInterceptor(),
+    )
+    client = GSuiteAddOnsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "post_get_install_status"
+    ) as post, mock.patch.object(
+        transports.GSuiteAddOnsRestInterceptor, "pre_get_install_status"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsuiteaddons.GetInstallStatusRequest.pb(
+            gsuiteaddons.GetInstallStatusRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gsuiteaddons.InstallStatus.to_json(
+            gsuiteaddons.InstallStatus()
+        )
+
+        request = gsuiteaddons.GetInstallStatusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsuiteaddons.InstallStatus()
+
+        client.get_install_status(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_install_status_rest_bad_request(
+    transport: str = "rest", request_type=gsuiteaddons.GetInstallStatusRequest
+):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/deployments/sample2/installStatus"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_install_status(request)
+
+
+def test_get_install_status_rest_flattened():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsuiteaddons.InstallStatus()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/deployments/sample2/installStatus"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gsuiteaddons.InstallStatus.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_install_status(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/deployments/*/installStatus}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_install_status_rest_flattened_error(transport: str = "rest"):
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_install_status(
+            gsuiteaddons.GetInstallStatusRequest(),
+            name="name_value",
+        )
+
+
+def test_get_install_status_rest_error():
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.GSuiteAddOnsGrpcTransport(
@@ -3141,6 +6032,7 @@ def test_transport_get_channel():
     [
         transports.GSuiteAddOnsGrpcTransport,
         transports.GSuiteAddOnsGrpcAsyncIOTransport,
+        transports.GSuiteAddOnsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3155,6 +6047,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3292,6 +6185,7 @@ def test_g_suite_add_ons_transport_auth_adc(transport_class):
     [
         transports.GSuiteAddOnsGrpcTransport,
         transports.GSuiteAddOnsGrpcAsyncIOTransport,
+        transports.GSuiteAddOnsRestTransport,
     ],
 )
 def test_g_suite_add_ons_transport_auth_gdch_credentials(transport_class):
@@ -3386,11 +6280,23 @@ def test_g_suite_add_ons_grpc_transport_client_cert_source_for_mtls(transport_cl
             )
 
 
+def test_g_suite_add_ons_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.GSuiteAddOnsRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_g_suite_add_ons_host_no_port(transport_name):
@@ -3401,7 +6307,11 @@ def test_g_suite_add_ons_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gsuiteaddons.googleapis.com:443")
+    assert client.transport._host == (
+        "gsuiteaddons.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gsuiteaddons.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3409,6 +6319,7 @@ def test_g_suite_add_ons_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_g_suite_add_ons_host_with_port(transport_name):
@@ -3419,7 +6330,57 @@ def test_g_suite_add_ons_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gsuiteaddons.googleapis.com:8000")
+    assert client.transport._host == (
+        "gsuiteaddons.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gsuiteaddons.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_g_suite_add_ons_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = GSuiteAddOnsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = GSuiteAddOnsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.get_authorization._session
+    session2 = client2.transport.get_authorization._session
+    assert session1 != session2
+    session1 = client1.transport.create_deployment._session
+    session2 = client2.transport.create_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.replace_deployment._session
+    session2 = client2.transport.replace_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.get_deployment._session
+    session2 = client2.transport.get_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.list_deployments._session
+    session2 = client2.transport.list_deployments._session
+    assert session1 != session2
+    session1 = client1.transport.delete_deployment._session
+    session2 = client2.transport.delete_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.install_deployment._session
+    session2 = client2.transport.install_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.uninstall_deployment._session
+    session2 = client2.transport.uninstall_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.get_install_status._session
+    session2 = client2.transport.get_install_status._session
+    assert session1 != session2
 
 
 def test_g_suite_add_ons_grpc_transport_channel():
@@ -3750,6 +6711,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3767,6 +6729,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

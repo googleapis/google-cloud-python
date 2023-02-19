@@ -54,6 +54,7 @@ from google.cloud.gsuiteaddons_v1.types import gsuiteaddons
 from .transports.base import DEFAULT_CLIENT_INFO, GSuiteAddOnsTransport
 from .transports.grpc import GSuiteAddOnsGrpcTransport
 from .transports.grpc_asyncio import GSuiteAddOnsGrpcAsyncIOTransport
+from .transports.rest import GSuiteAddOnsRestTransport
 
 
 class GSuiteAddOnsClientMeta(type):
@@ -67,6 +68,7 @@ class GSuiteAddOnsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[GSuiteAddOnsTransport]]
     _transport_registry["grpc"] = GSuiteAddOnsGrpcTransport
     _transport_registry["grpc_asyncio"] = GSuiteAddOnsGrpcAsyncIOTransport
+    _transport_registry["rest"] = GSuiteAddOnsRestTransport
 
     def get_transport_class(
         cls,

@@ -106,6 +106,56 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "GSuiteAddOnsClient",
+          "rpcs": {
+            "CreateDeployment": {
+              "methods": [
+                "create_deployment"
+              ]
+            },
+            "DeleteDeployment": {
+              "methods": [
+                "delete_deployment"
+              ]
+            },
+            "GetAuthorization": {
+              "methods": [
+                "get_authorization"
+              ]
+            },
+            "GetDeployment": {
+              "methods": [
+                "get_deployment"
+              ]
+            },
+            "GetInstallStatus": {
+              "methods": [
+                "get_install_status"
+              ]
+            },
+            "InstallDeployment": {
+              "methods": [
+                "install_deployment"
+              ]
+            },
+            "ListDeployments": {
+              "methods": [
+                "list_deployments"
+              ]
+            },
+            "ReplaceDeployment": {
+              "methods": [
+                "replace_deployment"
+              ]
+            },
+            "UninstallDeployment": {
+              "methods": [
+                "uninstall_deployment"
+              ]
+            }
+          }
         }
       }
     }
