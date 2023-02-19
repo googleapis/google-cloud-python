@@ -59,6 +59,7 @@ from google.cloud.domains_v1.types import domains
 from .transports.base import DEFAULT_CLIENT_INFO, DomainsTransport
 from .transports.grpc import DomainsGrpcTransport
 from .transports.grpc_asyncio import DomainsGrpcAsyncIOTransport
+from .transports.rest import DomainsRestTransport
 
 
 class DomainsClientMeta(type):
@@ -72,6 +73,7 @@ class DomainsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[DomainsTransport]]
     _transport_registry["grpc"] = DomainsGrpcTransport
     _transport_registry["grpc_asyncio"] = DomainsGrpcAsyncIOTransport
+    _transport_registry["rest"] = DomainsRestTransport
 
     def get_transport_class(
         cls,
