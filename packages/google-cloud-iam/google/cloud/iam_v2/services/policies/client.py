@@ -58,6 +58,7 @@ from google.cloud.iam_v2.types import policy as gi_policy
 from .transports.base import DEFAULT_CLIENT_INFO, PoliciesTransport
 from .transports.grpc import PoliciesGrpcTransport
 from .transports.grpc_asyncio import PoliciesGrpcAsyncIOTransport
+from .transports.rest import PoliciesRestTransport
 
 
 class PoliciesClientMeta(type):
@@ -71,6 +72,7 @@ class PoliciesClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[PoliciesTransport]]
     _transport_registry["grpc"] = PoliciesGrpcTransport
     _transport_registry["grpc_asyncio"] = PoliciesGrpcAsyncIOTransport
+    _transport_registry["rest"] = PoliciesRestTransport
 
     def get_transport_class(
         cls,

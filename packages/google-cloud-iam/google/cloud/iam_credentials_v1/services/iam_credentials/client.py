@@ -54,6 +54,7 @@ from google.cloud.iam_credentials_v1.types import common
 from .transports.base import DEFAULT_CLIENT_INFO, IAMCredentialsTransport
 from .transports.grpc import IAMCredentialsGrpcTransport
 from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
+from .transports.rest import IAMCredentialsRestTransport
 
 
 class IAMCredentialsClientMeta(type):
@@ -69,6 +70,7 @@ class IAMCredentialsClientMeta(type):
     )  # type: Dict[str, Type[IAMCredentialsTransport]]
     _transport_registry["grpc"] = IAMCredentialsGrpcTransport
     _transport_registry["grpc_asyncio"] = IAMCredentialsGrpcAsyncIOTransport
+    _transport_registry["rest"] = IAMCredentialsRestTransport
 
     def get_transport_class(
         cls,
