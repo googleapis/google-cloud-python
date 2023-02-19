@@ -64,23 +64,34 @@ def dataset(bigquery_client):
     bigquery_client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=False)
 
 
-def test_export_assets(asset_bucket, dataset, capsys):
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_export_assets(transport, asset_bucket, dataset, capsys):
     dump_file_path = "gs://{}/assets-dump.txt".format(asset_bucket)
-    quickstart_exportassets.export_assets(PROJECT, dump_file_path)
+    quickstart_exportassets.export_assets(
+        project_id=PROJECT, dump_file_path=dump_file_path, transport=transport
+    )
     out, _ = capsys.readouterr()
     assert dump_file_path in out
 
     content_type = asset_v1.ContentType.RESOURCE
     dataset_id = "projects/{}/datasets/{}".format(PROJECT, dataset)
     quickstart_exportassets.export_assets_bigquery(
-        PROJECT, dataset_id, "assettable", content_type
+        project_id=PROJECT,
+        dataset=dataset_id,
+        table="assettable",
+        content_type=content_type,
+        transport=transport,
     )
     out, _ = capsys.readouterr()
     assert dataset_id in out
 
     content_type_r = asset_v1.ContentType.RELATIONSHIP
     quickstart_exportassets.export_assets_bigquery(
-        PROJECT, dataset_id, "assettable", content_type_r
+        project_id=PROJECT,
+        dataset=dataset_id,
+        table="assettable",
+        content_type=content_type_r,
+        transport=transport,
     )
     out_r, _ = capsys.readouterr()
     assert dataset_id in out_r

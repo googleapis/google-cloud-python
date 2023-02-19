@@ -18,15 +18,23 @@
 import argparse
 
 
-def update_saved_query(saved_query_name, description):
+def update_saved_query(saved_query_name: str, description: str, transport: str = None):
+    """
+    Args:
+        saved_query_name(str): SavedQuery Name you want to update
+        description(str): New description
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
     # [START asset_quickstart_update_saved_query]
     from google.cloud import asset_v1
     from google.protobuf import field_mask_pb2
 
     # TODO saved_query_name = 'SavedQuery Name you want to update'
     # TODO description = "New description'
+    # TODO transport = 'The transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     saved_query = asset_v1.SavedQuery()
     saved_query.name = saved_query_name
     saved_query.description = description

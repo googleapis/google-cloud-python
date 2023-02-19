@@ -25,6 +25,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.asset_v1p5beta1.types import asset_service
+from google.longrunning import operations_pb2
 from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import AssetServiceGrpcTransport
 

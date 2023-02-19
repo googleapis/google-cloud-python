@@ -14,11 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 import quickstart_getfeed
 
 
-def test_get_feed(capsys, test_feed):
-    quickstart_getfeed.get_feed(test_feed.name)
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_get_feed(transport, capsys, test_feed):
+    quickstart_getfeed.get_feed(test_feed.name, transport=transport)
     out, _ = capsys.readouterr()
 
     assert "gotten_feed" in out

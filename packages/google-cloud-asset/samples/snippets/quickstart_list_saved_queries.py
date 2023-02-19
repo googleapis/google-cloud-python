@@ -18,13 +18,14 @@
 import argparse
 
 
-def list_saved_queries(parent_resource):
+def list_saved_queries(parent_resource, transport: str = None):
     # [START asset_quickstart_list_saved_queries]
     from google.cloud import asset_v1
 
     # TODO parent_resource = 'Parent resource you want to list all saved_queries'
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     response = client.list_saved_queries(request={"parent": parent_resource})
     print(f"saved_queries: {response.saved_queries}")
     # [END asset_quickstart_list_saved_queries]

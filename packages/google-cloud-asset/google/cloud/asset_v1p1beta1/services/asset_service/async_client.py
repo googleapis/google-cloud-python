@@ -45,6 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.asset_v1p1beta1.services.asset_service import pagers
 from google.cloud.asset_v1p1beta1.types import asset_service
 from google.cloud.asset_v1p1beta1.types import assets
+from google.longrunning import operations_pb2
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .client import AssetServiceClient

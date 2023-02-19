@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AssetServiceClient",
+          "rpcs": {
+            "SearchAllIamPolicies": {
+              "methods": [
+                "search_all_iam_policies"
+              ]
+            },
+            "SearchAllResources": {
+              "methods": [
+                "search_all_resources"
+              ]
+            }
+          }
         }
       }
     }

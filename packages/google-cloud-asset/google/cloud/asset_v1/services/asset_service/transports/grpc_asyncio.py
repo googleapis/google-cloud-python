@@ -26,6 +26,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.asset_v1.types import asset_service
+from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
@@ -991,6 +992,23 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
 
 
 __all__ = ("AssetServiceGrpcAsyncIOTransport",)

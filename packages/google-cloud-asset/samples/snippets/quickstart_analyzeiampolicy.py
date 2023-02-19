@@ -18,13 +18,19 @@
 import argparse
 
 
-def analyze_iam_policy(project_id):
+def analyze_iam_policy(project_id: str, transport: str = "None") -> None:
+    """
+    Args:
+        project_id(str): The project id.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
     # [START asset_quickstart_analyze_iam_policy]
     from google.cloud import asset_v1
 
     # TODO project_id = 'Your Google Cloud Project ID'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     parent = "projects/{}".format(project_id)
 
     # Build analysis query

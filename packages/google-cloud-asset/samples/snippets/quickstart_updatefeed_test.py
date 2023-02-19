@@ -14,11 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 import quickstart_updatefeed
 
 
-def test_update_feed(capsys, test_feed, another_topic):
-    quickstart_updatefeed.update_feed(test_feed.name, another_topic.name)
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_update_feed(transport, capsys, test_feed, another_topic):
+    quickstart_updatefeed.update_feed(
+        feed_name=test_feed.name,
+        topic=another_topic.name,
+        transport=transport,
+    )
     out, _ = capsys.readouterr()
 
     assert "updated_feed" in out

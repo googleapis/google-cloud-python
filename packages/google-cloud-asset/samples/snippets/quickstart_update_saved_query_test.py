@@ -14,11 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 import quickstart_update_saved_query
 
 
-def test_update_saved_query(capsys, test_saved_query):
-    quickstart_update_saved_query.update_saved_query(test_saved_query.name, "bar")
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_update_saved_query(transport, capsys, test_saved_query):
+    quickstart_update_saved_query.update_saved_query(
+        saved_query_name=test_saved_query.name, description="bar", transport=transport
+    )
     out, _ = capsys.readouterr()
 
     assert "updated_saved_query" in out

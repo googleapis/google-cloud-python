@@ -18,13 +18,14 @@
 import argparse
 
 
-def get_saved_query(saved_query_name):
+def get_saved_query(saved_query_name, transport: str = None):
     # [START asset_quickstart_get_saved_query]
     from google.cloud import asset_v1
 
     # TODO saved_query_name = 'SavedQuery Name you want to get'
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     response = client.get_saved_query(request={"name": saved_query_name})
     print(f"gotten_saved_query: {response}")
     # [END asset_quickstart_get_saved_query]

@@ -16,10 +16,18 @@
 
 
 import argparse
+from typing import List
+
+from google.cloud.asset_v1 import ContentType
 
 
 def search_all_resources(
-    scope, query=None, asset_types=None, page_size=None, order_by=None
+    scope: str,
+    query: str = None,
+    asset_types: List[ContentType] = None,
+    page_size: int = None,
+    order_by: List[str] = None,
+    transport: str = None,
 ):
     # [START asset_quickstart_search_all_resources]
     from google.cloud import asset_v1
@@ -29,8 +37,9 @@ def search_all_resources(
     # TODO asset_types = 'List of asset types to search for'
     # TODO page_size = Size of each result page
     # TODO order_by = 'Fields to sort the results'
+    # TODO transport= 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     response = client.search_all_resources(
         request={
             "scope": scope,

@@ -18,13 +18,14 @@
 import argparse
 
 
-def list_feeds(parent_resource):
+def list_feeds(parent_resource, transport: str = None):
     # [START asset_quickstart_list_feeds]
     from google.cloud import asset_v1
 
     # TODO parent_resource = 'Parent resource you want to list all feeds'
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     response = client.list_feeds(request={"parent": parent_resource})
     print("feeds: {}".format(response.feeds))
     # [END asset_quickstart_list_feeds]

@@ -18,13 +18,20 @@
 import argparse
 
 
-def delete_feed(feed_name):
+def delete_feed(feed_name: str, transport: str = None):
+    """
+    Args:
+        feed_name(str): Feed name you want to delete.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
     # [START asset_quickstart_delete_feed]
     from google.cloud import asset_v1
 
     # TODO feed_name = 'Feed name you want to delete'
+    # TODO transport = 'Transport that you want to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     client.delete_feed(request={"name": feed_name})
     print("deleted_feed")
     # [END asset_quickstart_delete_feed]

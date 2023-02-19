@@ -18,15 +18,16 @@
 import argparse
 
 
-def search_all_iam_policies(scope, query=None, page_size=None):
+def search_all_iam_policies(scope, query=None, page_size=None, transport: str = None):
     # [START asset_quickstart_search_all_iam_policies]
     from google.cloud import asset_v1
 
     # TODO scope = 'Scope of the search'
     # TODO query = 'Query statement'
     # TODO page_size = Size of each result page
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     response = client.search_all_iam_policies(
         request={"scope": scope, "query": query, "page_size": page_size}
     )

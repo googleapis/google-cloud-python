@@ -28,6 +28,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.asset_v1.types import asset_service
+from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -624,6 +625,15 @@ class AssetServiceTransport(abc.ABC):
             asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
             Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

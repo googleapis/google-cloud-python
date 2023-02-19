@@ -15,15 +15,19 @@
 # limitations under the License.
 
 import os
+import pytest
 
 import quickstart_searchalliampolicies
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
 
-def test_search_all_iam_policies(capsys):
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_search_all_iam_policies(transport, capsys):
     scope = "projects/{}".format(PROJECT)
     query = "policy:roles/owner"
-    quickstart_searchalliampolicies.search_all_iam_policies(scope, query=query)
+    quickstart_searchalliampolicies.search_all_iam_policies(
+        scope=scope, query=query, transport=transport
+    )
     out, _ = capsys.readouterr()
     assert "roles/owner" in out

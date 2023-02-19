@@ -18,13 +18,14 @@
 import argparse
 
 
-def get_feed(feed_name):
+def get_feed(feed_name, transport: str = None):
     # [START asset_quickstart_get_feed]
     from google.cloud import asset_v1
 
     # TODO feed_name = 'Feed Name you want to get'
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     response = client.get_feed(request={"name": feed_name})
     print("gotten_feed: {}".format(response))
     # [START asset_quickstart_get_feed]

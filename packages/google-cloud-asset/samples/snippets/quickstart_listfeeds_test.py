@@ -15,14 +15,16 @@
 # limitations under the License.
 
 import os
+import pytest
 
 import quickstart_listfeeds
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
 
-def test_list_feeds(capsys):
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_list_feeds(transport, capsys):
     parent_resource = "projects/{}".format(PROJECT)
-    quickstart_listfeeds.list_feeds(parent_resource)
+    quickstart_listfeeds.list_feeds(parent_resource, transport=transport)
     out, _ = capsys.readouterr()
     assert "feeds" in out

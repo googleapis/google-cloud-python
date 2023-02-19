@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+import pytest
 import uuid
 
 import quickstart_createfeed
@@ -26,22 +27,29 @@ FEED_ID = "feed-{}".format(uuid.uuid4().hex)
 FEED_ID_R = "feed-{}".format(uuid.uuid4().hex)
 
 
-def test_create_feed(capsys, test_topic, deleter):
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_create_feed(transport, capsys, test_topic, deleter):
     from google.cloud import asset_v1
 
     feed = quickstart_createfeed.create_feed(
-        PROJECT, FEED_ID, [ASSET_NAME], test_topic.name, asset_v1.ContentType.RESOURCE
+        project_id=PROJECT,
+        feed_id=f"{FEED_ID}-{transport}",
+        asset_names=[f"{ASSET_NAME}"],
+        topic=test_topic.name,
+        content_type=asset_v1.ContentType.RESOURCE,
+        transport=transport,
     )
     deleter.append(feed.name)
     out, _ = capsys.readouterr()
     assert "feed" in out
 
     feed_r = quickstart_createfeed.create_feed(
-        PROJECT,
-        FEED_ID_R,
-        [ASSET_NAME],
-        test_topic.name,
-        asset_v1.ContentType.RELATIONSHIP,
+        project_id=PROJECT,
+        feed_id=f"{FEED_ID_R}-{transport}",
+        asset_names=[f"{ASSET_NAME}"],
+        topic=test_topic.name,
+        content_type=asset_v1.ContentType.RELATIONSHIP,
+        transport=transport,
     )
     deleter.append(feed_r.name)
     out_r, _ = capsys.readouterr()

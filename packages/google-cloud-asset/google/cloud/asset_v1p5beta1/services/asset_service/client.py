@@ -49,9 +49,11 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.asset_v1p5beta1.services.asset_service import pagers
 from google.cloud.asset_v1p5beta1.types import asset_service
 from google.cloud.asset_v1p5beta1.types import assets
+from google.longrunning import operations_pb2
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AssetServiceGrpcTransport
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
+from .transports.rest import AssetServiceRestTransport
 
 
 class AssetServiceClientMeta(type):
@@ -65,6 +67,7 @@ class AssetServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AssetServiceTransport]]
     _transport_registry["grpc"] = AssetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AssetServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AssetServiceRestTransport
 
     def get_transport_class(
         cls,

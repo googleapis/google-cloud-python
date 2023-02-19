@@ -18,14 +18,26 @@
 import argparse
 
 
-def analyze_iam_policy_longrunning_gcs(project_id, dump_file_path):
+def analyze_iam_policy_longrunning_gcs(
+    project_id: str, dump_file_path: str, transport: str = None
+) -> None:
+    """
+    Args:
+
+        project_id(str): Your Google Cloud Project ID
+        dump_file_path(str): Your analysis dump file path
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+
     # [START asset_quickstart_analyze_iam_policy_longrunning_gcs]
     from google.cloud import asset_v1
 
     # TODO project_id = 'Your Google Cloud Project ID'
     # TODO dump_file_path = 'Your analysis dump file path'
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     parent = "projects/{}".format(project_id)
 
     # Build analysis query
@@ -48,15 +60,28 @@ def analyze_iam_policy_longrunning_gcs(project_id, dump_file_path):
     # [END asset_quickstart_analyze_iam_policy_longrunning_gcs]
 
 
-def analyze_iam_policy_longrunning_bigquery(project_id, dataset, table):
+def analyze_iam_policy_longrunning_bigquery(
+    project_id: str, dataset: str, table, transport: str = None
+) -> None:
+    """
+    Args:
+
+        project_id(str): Your Google Cloud Project ID
+        dataset(str): 'Your BigQuery dataset path'
+        table(str): 'Your BigQuery table name'
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+
+    """
     # [START asset_quickstart_analyze_iam_policy_longrunning_bigquery]
     from google.cloud import asset_v1
 
     # TODO project_id = 'Your Google Cloud Project ID'
     # TODO dataset = 'Your BigQuery dataset path'
     # TODO table = 'Your BigQuery table name'
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     parent = "projects/{}".format(project_id)
 
     # Build analysis query

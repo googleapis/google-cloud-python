@@ -16,16 +16,28 @@
 
 
 import argparse
+from typing import List
 
 
-def batch_get_effective_iam_policies(resource_names, scope):
+def batch_get_effective_iam_policies(
+    resource_names: List[str], scope: str, transport: str = None
+):
+    """
+    Args:
+        resource_names(List[str]): List of resource names
+        scope(str): project ID/number, folder number or org number
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+
     # [START asset_quickstart_batch_get_effective_iam_policies]
     from google.cloud import asset_v1
 
-    # TODO scope = 'project ID/number, folder number or org number'
     # TODO resource_names = 'List of resource names'
+    # TODO scope = 'project ID/number, folder number or org number'
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
 
     response = client.batch_get_effective_iam_policies(
         request={"scope": scope, "names": resource_names}

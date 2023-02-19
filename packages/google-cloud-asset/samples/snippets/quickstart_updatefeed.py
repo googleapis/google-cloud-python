@@ -18,15 +18,23 @@
 import argparse
 
 
-def update_feed(feed_name, topic):
+def update_feed(feed_name: str, topic: str, transport: str = None):
+    """
+    Args:
+        feed_name(str): Feed Name you want to update
+        topic(str): Topic name you want to update with
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
     # [START asset_quickstart_update_feed]
     from google.cloud import asset_v1
     from google.protobuf import field_mask_pb2
 
     # TODO feed_name = 'Feed Name you want to update'
     # TODO topic = "Topic name you want to update with"
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     feed = asset_v1.Feed()
     feed.name = feed_name
     feed.feed_output_config.pubsub_destination.topic = topic

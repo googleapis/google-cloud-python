@@ -18,13 +18,24 @@
 import argparse
 
 
-def create_saved_query(project_id, saved_query_id, description):
+def create_saved_query(
+    project_id: str, saved_query_id: str, description: str, transport: str = None
+):
+    """
+    Args:
+        project_id(str): Your Google Cloud Project ID
+        saved_query_id(str): SavedQuery ID you want to create
+        description(str): The description for the query.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
     # [START asset_quickstart_create_saved_query]
     from google.cloud import asset_v1
 
     # TODO project_id = 'Your Google Cloud Project ID'
     # TODO saved_query_id = 'SavedQuery ID you want to create'
-    client = asset_v1.AssetServiceClient()
+
+    client = asset_v1.AssetServiceClient(transport=transport)
     parent = f"projects/{project_id}"
     saved_query = asset_v1.SavedQuery()
     saved_query.description = description

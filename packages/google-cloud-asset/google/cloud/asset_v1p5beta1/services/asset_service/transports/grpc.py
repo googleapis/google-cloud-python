@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.asset_v1p5beta1.types import asset_service
+from google.longrunning import operations_pb2
 from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 
 

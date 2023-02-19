@@ -16,9 +16,28 @@
 
 
 import argparse
+from typing import List
+from google.cloud.asset_v1 import ContentType
 
 
-def create_feed(project_id, feed_id, asset_names, topic, content_type):
+def create_feed(
+    project_id: str,
+    feed_id: str,
+    asset_names: List[str],
+    topic: str,
+    content_type: ContentType,
+    transport: str = None,
+):
+    """
+    Args:
+        project_id(str): The project id.
+        feed_id(str): Feed ID you want to create
+        asset_names(List[str]): List of asset names the feed listen to
+        topic(str): Topic name of the feed.
+        content_type[google.cloud.asset_v1.ContentType]: Content type of the feed.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
     # [START asset_quickstart_create_feed]
     from google.cloud import asset_v1
 
@@ -27,8 +46,9 @@ def create_feed(project_id, feed_id, asset_names, topic, content_type):
     # TODO asset_names = 'List of asset names the feed listen to'
     # TODO topic = "Topic name of the feed"
     # TODO content_type ="Content type of the feed"
+    # TODO transport = 'Transport to use. Either "grpc" or "rest"'
 
-    client = asset_v1.AssetServiceClient()
+    client = asset_v1.AssetServiceClient(transport=transport)
     parent = "projects/{}".format(project_id)
     feed = asset_v1.Feed()
     feed.asset_names.extend(asset_names)

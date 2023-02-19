@@ -26,6 +26,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AssetServiceClient",
+          "rpcs": {
+            "ListAssets": {
+              "methods": [
+                "list_assets"
+              ]
+            }
+          }
         }
       }
     }

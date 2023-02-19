@@ -24,7 +24,9 @@ PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
 def test_delete_saved_query(capsys, test_saved_query):
 
-    quickstart_delete_saved_query.delete_saved_query(test_saved_query.name)
+    quickstart_delete_saved_query.delete_saved_query(
+        saved_query_name=test_saved_query.name, transport="grpc"
+    )
 
     out, _ = capsys.readouterr()
     assert "deleted_saved_query" in out

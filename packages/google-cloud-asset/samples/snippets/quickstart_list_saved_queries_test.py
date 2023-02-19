@@ -15,14 +15,18 @@
 # limitations under the License.
 
 import os
+import pytest
 
 import quickstart_list_saved_queries
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
 
-def test_list_saved_queries(capsys):
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
+def test_list_saved_queries(transport, capsys):
     parent_resource = f"projects/{PROJECT}"
-    quickstart_list_saved_queries.list_saved_queries(parent_resource)
+    quickstart_list_saved_queries.list_saved_queries(
+        parent_resource, transport=transport
+    )
     out, _ = capsys.readouterr()
     assert "saved_queries" in out
