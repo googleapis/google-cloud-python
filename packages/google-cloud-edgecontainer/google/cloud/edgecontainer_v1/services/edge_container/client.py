@@ -58,6 +58,7 @@ from google.cloud.edgecontainer_v1.types import resources, service
 from .transports.base import DEFAULT_CLIENT_INFO, EdgeContainerTransport
 from .transports.grpc import EdgeContainerGrpcTransport
 from .transports.grpc_asyncio import EdgeContainerGrpcAsyncIOTransport
+from .transports.rest import EdgeContainerRestTransport
 
 
 class EdgeContainerClientMeta(type):
@@ -71,6 +72,7 @@ class EdgeContainerClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[EdgeContainerTransport]]
     _transport_registry["grpc"] = EdgeContainerGrpcTransport
     _transport_registry["grpc_asyncio"] = EdgeContainerGrpcAsyncIOTransport
+    _transport_registry["rest"] = EdgeContainerRestTransport
 
     def get_transport_class(
         cls,

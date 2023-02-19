@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -44,6 +46,7 @@ from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
@@ -51,6 +54,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.edgecontainer_v1.services.edge_container import (
     EdgeContainerAsyncClient,
@@ -110,6 +115,7 @@ def test__get_default_mtls_endpoint():
     [
         (EdgeContainerClient, "grpc"),
         (EdgeContainerAsyncClient, "grpc_asyncio"),
+        (EdgeContainerClient, "rest"),
     ],
 )
 def test_edge_container_client_from_service_account_info(client_class, transport_name):
@@ -123,7 +129,11 @@ def test_edge_container_client_from_service_account_info(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("edgecontainer.googleapis.com:443")
+        assert client.transport._host == (
+            "edgecontainer.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://edgecontainer.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -131,6 +141,7 @@ def test_edge_container_client_from_service_account_info(client_class, transport
     [
         (transports.EdgeContainerGrpcTransport, "grpc"),
         (transports.EdgeContainerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.EdgeContainerRestTransport, "rest"),
     ],
 )
 def test_edge_container_client_service_account_always_use_jwt(
@@ -156,6 +167,7 @@ def test_edge_container_client_service_account_always_use_jwt(
     [
         (EdgeContainerClient, "grpc"),
         (EdgeContainerAsyncClient, "grpc_asyncio"),
+        (EdgeContainerClient, "rest"),
     ],
 )
 def test_edge_container_client_from_service_account_file(client_class, transport_name):
@@ -176,13 +188,18 @@ def test_edge_container_client_from_service_account_file(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("edgecontainer.googleapis.com:443")
+        assert client.transport._host == (
+            "edgecontainer.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://edgecontainer.googleapis.com"
+        )
 
 
 def test_edge_container_client_get_transport_class():
     transport = EdgeContainerClient.get_transport_class()
     available_transports = [
         transports.EdgeContainerGrpcTransport,
+        transports.EdgeContainerRestTransport,
     ]
     assert transport in available_transports
 
@@ -199,6 +216,7 @@ def test_edge_container_client_get_transport_class():
             transports.EdgeContainerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (EdgeContainerClient, transports.EdgeContainerRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -344,6 +362,8 @@ def test_edge_container_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (EdgeContainerClient, transports.EdgeContainerRestTransport, "rest", "true"),
+        (EdgeContainerClient, transports.EdgeContainerRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -543,6 +563,7 @@ def test_edge_container_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.EdgeContainerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (EdgeContainerClient, transports.EdgeContainerRestTransport, "rest"),
     ],
 )
 def test_edge_container_client_client_options_scopes(
@@ -583,6 +604,7 @@ def test_edge_container_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (EdgeContainerClient, transports.EdgeContainerRestTransport, "rest", None),
     ],
 )
 def test_edge_container_client_client_options_credentials_file(
@@ -5561,6 +5583,5061 @@ async def test_delete_vpn_connection_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListClustersRequest,
+        dict,
+    ],
+)
+def test_list_clusters_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListClustersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_clusters(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListClustersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_clusters_rest_required_fields(request_type=service.ListClustersRequest):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_clusters._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_clusters._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListClustersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListClustersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_clusters(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_clusters_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_clusters._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_clusters_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_list_clusters"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_list_clusters"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListClustersRequest.pb(service.ListClustersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListClustersResponse.to_json(
+            service.ListClustersResponse()
+        )
+
+        request = service.ListClustersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListClustersResponse()
+
+        client.list_clusters(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_clusters_rest_bad_request(
+    transport: str = "rest", request_type=service.ListClustersRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_clusters(request)
+
+
+def test_list_clusters_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListClustersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_clusters(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/clusters" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_clusters_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_clusters(
+            service.ListClustersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_clusters_rest_pager(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListClustersResponse(
+                clusters=[
+                    resources.Cluster(),
+                    resources.Cluster(),
+                    resources.Cluster(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListClustersResponse(
+                clusters=[],
+                next_page_token="def",
+            ),
+            service.ListClustersResponse(
+                clusters=[
+                    resources.Cluster(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListClustersResponse(
+                clusters=[
+                    resources.Cluster(),
+                    resources.Cluster(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListClustersResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_clusters(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Cluster) for i in results)
+
+        pages = list(client.list_clusters(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetClusterRequest,
+        dict,
+    ],
+)
+def test_get_cluster_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Cluster(
+            name="name_value",
+            default_max_pods_per_node=2634,
+            endpoint="endpoint_value",
+            cluster_ca_certificate="cluster_ca_certificate_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Cluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Cluster)
+    assert response.name == "name_value"
+    assert response.default_max_pods_per_node == 2634
+    assert response.endpoint == "endpoint_value"
+    assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
+
+
+def test_get_cluster_rest_required_fields(request_type=service.GetClusterRequest):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Cluster()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Cluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_cluster(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_cluster_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_cluster_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_get_cluster"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_get_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetClusterRequest.pb(service.GetClusterRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Cluster.to_json(resources.Cluster())
+
+        request = service.GetClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Cluster()
+
+        client.get_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_cluster_rest_bad_request(
+    transport: str = "rest", request_type=service.GetClusterRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_cluster(request)
+
+
+def test_get_cluster_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Cluster()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Cluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/clusters/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_cluster_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_cluster(
+            service.GetClusterRequest(),
+            name="name_value",
+        )
+
+
+def test_get_cluster_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateClusterRequest,
+        dict,
+    ],
+)
+def test_create_cluster_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["cluster"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "networking": {
+            "cluster_ipv4_cidr_blocks": [
+                "cluster_ipv4_cidr_blocks_value1",
+                "cluster_ipv4_cidr_blocks_value2",
+            ],
+            "services_ipv4_cidr_blocks": [
+                "services_ipv4_cidr_blocks_value1",
+                "services_ipv4_cidr_blocks_value2",
+            ],
+        },
+        "authorization": {"admin_users": {"username": "username_value"}},
+        "default_max_pods_per_node": 2634,
+        "endpoint": "endpoint_value",
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "maintenance_policy": {
+            "window": {
+                "recurring_window": {
+                    "window": {"start_time": {}, "end_time": {}},
+                    "recurrence": "recurrence_value",
+                }
+            }
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_cluster_rest_required_fields(request_type=service.CreateClusterRequest):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["cluster_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "clusterId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "clusterId" in jsonified_request
+    assert jsonified_request["clusterId"] == request_init["cluster_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["clusterId"] = "cluster_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "cluster_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "clusterId" in jsonified_request
+    assert jsonified_request["clusterId"] == "cluster_id_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_cluster(request)
+
+            expected_params = [
+                (
+                    "clusterId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_cluster_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "clusterId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "clusterId",
+                "cluster",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_cluster_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_create_cluster"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_create_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateClusterRequest.pb(service.CreateClusterRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_cluster_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateClusterRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["cluster"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "networking": {
+            "cluster_ipv4_cidr_blocks": [
+                "cluster_ipv4_cidr_blocks_value1",
+                "cluster_ipv4_cidr_blocks_value2",
+            ],
+            "services_ipv4_cidr_blocks": [
+                "services_ipv4_cidr_blocks_value1",
+                "services_ipv4_cidr_blocks_value2",
+            ],
+        },
+        "authorization": {"admin_users": {"username": "username_value"}},
+        "default_max_pods_per_node": 2634,
+        "endpoint": "endpoint_value",
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "maintenance_policy": {
+            "window": {
+                "recurring_window": {
+                    "window": {"start_time": {}, "end_time": {}},
+                    "recurrence": "recurrence_value",
+                }
+            }
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_cluster(request)
+
+
+def test_create_cluster_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            cluster=resources.Cluster(name="name_value"),
+            cluster_id="cluster_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/clusters" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_cluster_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_cluster(
+            service.CreateClusterRequest(),
+            parent="parent_value",
+            cluster=resources.Cluster(name="name_value"),
+            cluster_id="cluster_id_value",
+        )
+
+
+def test_create_cluster_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateClusterRequest,
+        dict,
+    ],
+)
+def test_update_cluster_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "cluster": {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    }
+    request_init["cluster"] = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "networking": {
+            "cluster_ipv4_cidr_blocks": [
+                "cluster_ipv4_cidr_blocks_value1",
+                "cluster_ipv4_cidr_blocks_value2",
+            ],
+            "services_ipv4_cidr_blocks": [
+                "services_ipv4_cidr_blocks_value1",
+                "services_ipv4_cidr_blocks_value2",
+            ],
+        },
+        "authorization": {"admin_users": {"username": "username_value"}},
+        "default_max_pods_per_node": 2634,
+        "endpoint": "endpoint_value",
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "maintenance_policy": {
+            "window": {
+                "recurring_window": {
+                    "window": {"start_time": {}, "end_time": {}},
+                    "recurrence": "recurrence_value",
+                }
+            }
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_cluster_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_update_cluster"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_update_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateClusterRequest.pb(service.UpdateClusterRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_cluster_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateClusterRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "cluster": {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    }
+    request_init["cluster"] = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "networking": {
+            "cluster_ipv4_cidr_blocks": [
+                "cluster_ipv4_cidr_blocks_value1",
+                "cluster_ipv4_cidr_blocks_value2",
+            ],
+            "services_ipv4_cidr_blocks": [
+                "services_ipv4_cidr_blocks_value1",
+                "services_ipv4_cidr_blocks_value2",
+            ],
+        },
+        "authorization": {"admin_users": {"username": "username_value"}},
+        "default_max_pods_per_node": 2634,
+        "endpoint": "endpoint_value",
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "maintenance_policy": {
+            "window": {
+                "recurring_window": {
+                    "window": {"start_time": {}, "end_time": {}},
+                    "recurrence": "recurrence_value",
+                }
+            }
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_cluster(request)
+
+
+def test_update_cluster_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "cluster": {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            cluster=resources.Cluster(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{cluster.name=projects/*/locations/*/clusters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_cluster_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_cluster(
+            service.UpdateClusterRequest(),
+            cluster=resources.Cluster(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_cluster_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteClusterRequest,
+        dict,
+    ],
+)
+def test_delete_cluster_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_cluster_rest_required_fields(request_type=service.DeleteClusterRequest):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_cluster(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_cluster_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_cluster_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_delete_cluster"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_delete_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteClusterRequest.pb(service.DeleteClusterRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_cluster_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteClusterRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_cluster(request)
+
+
+def test_delete_cluster_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/clusters/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_cluster_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_cluster(
+            service.DeleteClusterRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_cluster_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateAccessTokenRequest,
+        dict,
+    ],
+)
+def test_generate_access_token_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"cluster": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.GenerateAccessTokenResponse(
+            access_token="access_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_access_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.GenerateAccessTokenResponse)
+    assert response.access_token == "access_token_value"
+
+
+def test_generate_access_token_rest_required_fields(
+    request_type=service.GenerateAccessTokenRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["cluster"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_access_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["cluster"] = "cluster_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_access_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "cluster" in jsonified_request
+    assert jsonified_request["cluster"] == "cluster_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.GenerateAccessTokenResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.GenerateAccessTokenResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_access_token(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_access_token_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.generate_access_token._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("cluster",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_access_token_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_generate_access_token"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_generate_access_token"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GenerateAccessTokenRequest.pb(
+            service.GenerateAccessTokenRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.GenerateAccessTokenResponse.to_json(
+            service.GenerateAccessTokenResponse()
+        )
+
+        request = service.GenerateAccessTokenRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.GenerateAccessTokenResponse()
+
+        client.generate_access_token(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_access_token_rest_bad_request(
+    transport: str = "rest", request_type=service.GenerateAccessTokenRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"cluster": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_access_token(request)
+
+
+def test_generate_access_token_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.GenerateAccessTokenResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "cluster": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            cluster="cluster_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.generate_access_token(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{cluster=projects/*/locations/*/clusters/*}:generateAccessToken"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_generate_access_token_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.generate_access_token(
+            service.GenerateAccessTokenRequest(),
+            cluster="cluster_value",
+        )
+
+
+def test_generate_access_token_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListNodePoolsRequest,
+        dict,
+    ],
+)
+def test_list_node_pools_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListNodePoolsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_node_pools(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNodePoolsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_node_pools_rest_required_fields(
+    request_type=service.ListNodePoolsRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_node_pools._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_node_pools._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListNodePoolsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListNodePoolsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_node_pools(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_node_pools_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_node_pools._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_node_pools_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_list_node_pools"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_list_node_pools"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListNodePoolsRequest.pb(service.ListNodePoolsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListNodePoolsResponse.to_json(
+            service.ListNodePoolsResponse()
+        )
+
+        request = service.ListNodePoolsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListNodePoolsResponse()
+
+        client.list_node_pools(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_node_pools_rest_bad_request(
+    transport: str = "rest", request_type=service.ListNodePoolsRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_node_pools(request)
+
+
+def test_list_node_pools_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListNodePoolsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_node_pools(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/clusters/*}/nodePools"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_node_pools_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_node_pools(
+            service.ListNodePoolsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_node_pools_rest_pager(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListNodePoolsResponse(
+                node_pools=[
+                    resources.NodePool(),
+                    resources.NodePool(),
+                    resources.NodePool(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListNodePoolsResponse(
+                node_pools=[],
+                next_page_token="def",
+            ),
+            service.ListNodePoolsResponse(
+                node_pools=[
+                    resources.NodePool(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListNodePoolsResponse(
+                node_pools=[
+                    resources.NodePool(),
+                    resources.NodePool(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListNodePoolsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        pager = client.list_node_pools(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.NodePool) for i in results)
+
+        pages = list(client.list_node_pools(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetNodePoolRequest,
+        dict,
+    ],
+)
+def test_get_node_pool_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.NodePool(
+            name="name_value",
+            node_location="node_location_value",
+            node_count=1070,
+            machine_filter="machine_filter_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.NodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.NodePool)
+    assert response.name == "name_value"
+    assert response.node_location == "node_location_value"
+    assert response.node_count == 1070
+    assert response.machine_filter == "machine_filter_value"
+
+
+def test_get_node_pool_rest_required_fields(request_type=service.GetNodePoolRequest):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.NodePool()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.NodePool.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_node_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_node_pool_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_node_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_get_node_pool"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_get_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetNodePoolRequest.pb(service.GetNodePoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.NodePool.to_json(resources.NodePool())
+
+        request = service.GetNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.NodePool()
+
+        client.get_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.GetNodePoolRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_node_pool(request)
+
+
+def test_get_node_pool_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.NodePool()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.NodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_node_pool(
+            service.GetNodePoolRequest(),
+            name="name_value",
+        )
+
+
+def test_get_node_pool_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateNodePoolRequest,
+        dict,
+    ],
+)
+def test_create_node_pool_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request_init["node_pool"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "node_location": "node_location_value",
+        "node_count": 1070,
+        "machine_filter": "machine_filter_value",
+        "local_disk_encryption": {
+            "kms_key": "kms_key_value",
+            "kms_key_active_version": "kms_key_active_version_value",
+            "kms_key_state": 1,
+            "kms_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_node_pool_rest_required_fields(
+    request_type=service.CreateNodePoolRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["node_pool_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "nodePoolId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "nodePoolId" in jsonified_request
+    assert jsonified_request["nodePoolId"] == request_init["node_pool_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["nodePoolId"] = "node_pool_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_node_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "node_pool_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "nodePoolId" in jsonified_request
+    assert jsonified_request["nodePoolId"] == "node_pool_id_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_node_pool(request)
+
+            expected_params = [
+                (
+                    "nodePoolId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_node_pool_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_node_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "nodePoolId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "nodePoolId",
+                "nodePool",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_create_node_pool"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_create_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateNodePoolRequest.pb(service.CreateNodePoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateNodePoolRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request_init["node_pool"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "node_location": "node_location_value",
+        "node_count": 1070,
+        "machine_filter": "machine_filter_value",
+        "local_disk_encryption": {
+            "kms_key": "kms_key_value",
+            "kms_key_active_version": "kms_key_active_version_value",
+            "kms_key_state": 1,
+            "kms_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_node_pool(request)
+
+
+def test_create_node_pool_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            node_pool=resources.NodePool(name="name_value"),
+            node_pool_id="node_pool_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/clusters/*}/nodePools"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_node_pool(
+            service.CreateNodePoolRequest(),
+            parent="parent_value",
+            node_pool=resources.NodePool(name="name_value"),
+            node_pool_id="node_pool_id_value",
+        )
+
+
+def test_create_node_pool_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateNodePoolRequest,
+        dict,
+    ],
+)
+def test_update_node_pool_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "node_pool": {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+        }
+    }
+    request_init["node_pool"] = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "node_location": "node_location_value",
+        "node_count": 1070,
+        "machine_filter": "machine_filter_value",
+        "local_disk_encryption": {
+            "kms_key": "kms_key_value",
+            "kms_key_active_version": "kms_key_active_version_value",
+            "kms_key_state": 1,
+            "kms_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_update_node_pool"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_update_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateNodePoolRequest.pb(service.UpdateNodePoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateNodePoolRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "node_pool": {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+        }
+    }
+    request_init["node_pool"] = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "node_location": "node_location_value",
+        "node_count": 1070,
+        "machine_filter": "machine_filter_value",
+        "local_disk_encryption": {
+            "kms_key": "kms_key_value",
+            "kms_key_active_version": "kms_key_active_version_value",
+            "kms_key_state": 1,
+            "kms_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_node_pool(request)
+
+
+def test_update_node_pool_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "node_pool": {
+                "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            node_pool=resources.NodePool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{node_pool.name=projects/*/locations/*/clusters/*/nodePools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_node_pool(
+            service.UpdateNodePoolRequest(),
+            node_pool=resources.NodePool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_node_pool_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteNodePoolRequest,
+        dict,
+    ],
+)
+def test_delete_node_pool_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_node_pool_rest_required_fields(
+    request_type=service.DeleteNodePoolRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_node_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_node_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_node_pool_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_node_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_delete_node_pool"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_delete_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteNodePoolRequest.pb(service.DeleteNodePoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteNodePoolRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_node_pool(request)
+
+
+def test_delete_node_pool_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/nodePools/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_node_pool(
+            service.DeleteNodePoolRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_node_pool_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListMachinesRequest,
+        dict,
+    ],
+)
+def test_list_machines_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListMachinesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListMachinesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_machines(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMachinesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_machines_rest_required_fields(request_type=service.ListMachinesRequest):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_machines._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_machines._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListMachinesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListMachinesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_machines(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_machines_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_machines._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_machines_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_list_machines"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_list_machines"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListMachinesRequest.pb(service.ListMachinesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListMachinesResponse.to_json(
+            service.ListMachinesResponse()
+        )
+
+        request = service.ListMachinesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListMachinesResponse()
+
+        client.list_machines(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_machines_rest_bad_request(
+    transport: str = "rest", request_type=service.ListMachinesRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_machines(request)
+
+
+def test_list_machines_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListMachinesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListMachinesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_machines(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/machines" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_machines_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_machines(
+            service.ListMachinesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_machines_rest_pager(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListMachinesResponse(
+                machines=[
+                    resources.Machine(),
+                    resources.Machine(),
+                    resources.Machine(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListMachinesResponse(
+                machines=[],
+                next_page_token="def",
+            ),
+            service.ListMachinesResponse(
+                machines=[
+                    resources.Machine(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListMachinesResponse(
+                machines=[
+                    resources.Machine(),
+                    resources.Machine(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListMachinesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_machines(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Machine) for i in results)
+
+        pages = list(client.list_machines(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetMachineRequest,
+        dict,
+    ],
+)
+def test_get_machine_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/machines/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Machine(
+            name="name_value",
+            hosted_node="hosted_node_value",
+            zone="zone_value",
+            disabled=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Machine.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_machine(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Machine)
+    assert response.name == "name_value"
+    assert response.hosted_node == "hosted_node_value"
+    assert response.zone == "zone_value"
+    assert response.disabled is True
+
+
+def test_get_machine_rest_required_fields(request_type=service.GetMachineRequest):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_machine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_machine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Machine()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Machine.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_machine(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_machine_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_machine._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_machine_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_get_machine"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_get_machine"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetMachineRequest.pb(service.GetMachineRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Machine.to_json(resources.Machine())
+
+        request = service.GetMachineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Machine()
+
+        client.get_machine(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_machine_rest_bad_request(
+    transport: str = "rest", request_type=service.GetMachineRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/machines/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_machine(request)
+
+
+def test_get_machine_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Machine()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/machines/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Machine.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_machine(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/machines/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_machine_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_machine(
+            service.GetMachineRequest(),
+            name="name_value",
+        )
+
+
+def test_get_machine_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListVpnConnectionsRequest,
+        dict,
+    ],
+)
+def test_list_vpn_connections_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListVpnConnectionsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListVpnConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_vpn_connections(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVpnConnectionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_vpn_connections_rest_required_fields(
+    request_type=service.ListVpnConnectionsRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_vpn_connections._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_vpn_connections._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListVpnConnectionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListVpnConnectionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_vpn_connections(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_vpn_connections_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_vpn_connections._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_vpn_connections_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_list_vpn_connections"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_list_vpn_connections"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListVpnConnectionsRequest.pb(
+            service.ListVpnConnectionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListVpnConnectionsResponse.to_json(
+            service.ListVpnConnectionsResponse()
+        )
+
+        request = service.ListVpnConnectionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListVpnConnectionsResponse()
+
+        client.list_vpn_connections(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_vpn_connections_rest_bad_request(
+    transport: str = "rest", request_type=service.ListVpnConnectionsRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_vpn_connections(request)
+
+
+def test_list_vpn_connections_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListVpnConnectionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListVpnConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_vpn_connections(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/vpnConnections"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_vpn_connections_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_vpn_connections(
+            service.ListVpnConnectionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_vpn_connections_rest_pager(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListVpnConnectionsResponse(
+                vpn_connections=[
+                    resources.VpnConnection(),
+                    resources.VpnConnection(),
+                    resources.VpnConnection(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListVpnConnectionsResponse(
+                vpn_connections=[],
+                next_page_token="def",
+            ),
+            service.ListVpnConnectionsResponse(
+                vpn_connections=[
+                    resources.VpnConnection(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListVpnConnectionsResponse(
+                vpn_connections=[
+                    resources.VpnConnection(),
+                    resources.VpnConnection(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            service.ListVpnConnectionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_vpn_connections(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.VpnConnection) for i in results)
+
+        pages = list(client.list_vpn_connections(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetVpnConnectionRequest,
+        dict,
+    ],
+)
+def test_get_vpn_connection_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/vpnConnections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.VpnConnection(
+            name="name_value",
+            nat_gateway_ip="nat_gateway_ip_value",
+            bgp_routing_mode=resources.VpnConnection.BgpRoutingMode.REGIONAL,
+            cluster="cluster_value",
+            vpc="vpc_value",
+            enable_high_availability=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.VpnConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_vpn_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.VpnConnection)
+    assert response.name == "name_value"
+    assert response.nat_gateway_ip == "nat_gateway_ip_value"
+    assert response.bgp_routing_mode == resources.VpnConnection.BgpRoutingMode.REGIONAL
+    assert response.cluster == "cluster_value"
+    assert response.vpc == "vpc_value"
+    assert response.enable_high_availability is True
+
+
+def test_get_vpn_connection_rest_required_fields(
+    request_type=service.GetVpnConnectionRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_vpn_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_vpn_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.VpnConnection()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.VpnConnection.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_vpn_connection(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_vpn_connection_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_vpn_connection._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_vpn_connection_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_get_vpn_connection"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_get_vpn_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetVpnConnectionRequest.pb(
+            service.GetVpnConnectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.VpnConnection.to_json(
+            resources.VpnConnection()
+        )
+
+        request = service.GetVpnConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.VpnConnection()
+
+        client.get_vpn_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_vpn_connection_rest_bad_request(
+    transport: str = "rest", request_type=service.GetVpnConnectionRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/vpnConnections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_vpn_connection(request)
+
+
+def test_get_vpn_connection_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.VpnConnection()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/vpnConnections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.VpnConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_vpn_connection(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/vpnConnections/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_vpn_connection_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_vpn_connection(
+            service.GetVpnConnectionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_vpn_connection_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateVpnConnectionRequest,
+        dict,
+    ],
+)
+def test_create_vpn_connection_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["vpn_connection"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "nat_gateway_ip": "nat_gateway_ip_value",
+        "bgp_routing_mode": 1,
+        "cluster": "cluster_value",
+        "vpc": "vpc_value",
+        "vpc_project": {
+            "project_id": "project_id_value",
+            "service_account": "service_account_value",
+        },
+        "enable_high_availability": True,
+        "details": {
+            "state": 1,
+            "error": "error_value",
+            "cloud_router": {"name": "name_value"},
+            "cloud_vpns": [{"gateway": "gateway_value"}],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_vpn_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_vpn_connection_rest_required_fields(
+    request_type=service.CreateVpnConnectionRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["vpn_connection_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "vpnConnectionId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_vpn_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "vpnConnectionId" in jsonified_request
+    assert jsonified_request["vpnConnectionId"] == request_init["vpn_connection_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["vpnConnectionId"] = "vpn_connection_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_vpn_connection._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "vpn_connection_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "vpnConnectionId" in jsonified_request
+    assert jsonified_request["vpnConnectionId"] == "vpn_connection_id_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_vpn_connection(request)
+
+            expected_params = [
+                (
+                    "vpnConnectionId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_vpn_connection_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_vpn_connection._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "vpnConnectionId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "vpnConnectionId",
+                "vpnConnection",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_vpn_connection_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_create_vpn_connection"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_create_vpn_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateVpnConnectionRequest.pb(
+            service.CreateVpnConnectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateVpnConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_vpn_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_vpn_connection_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateVpnConnectionRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["vpn_connection"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "nat_gateway_ip": "nat_gateway_ip_value",
+        "bgp_routing_mode": 1,
+        "cluster": "cluster_value",
+        "vpc": "vpc_value",
+        "vpc_project": {
+            "project_id": "project_id_value",
+            "service_account": "service_account_value",
+        },
+        "enable_high_availability": True,
+        "details": {
+            "state": 1,
+            "error": "error_value",
+            "cloud_router": {"name": "name_value"},
+            "cloud_vpns": [{"gateway": "gateway_value"}],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_vpn_connection(request)
+
+
+def test_create_vpn_connection_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            vpn_connection=resources.VpnConnection(name="name_value"),
+            vpn_connection_id="vpn_connection_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_vpn_connection(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/vpnConnections"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_vpn_connection_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_vpn_connection(
+            service.CreateVpnConnectionRequest(),
+            parent="parent_value",
+            vpn_connection=resources.VpnConnection(name="name_value"),
+            vpn_connection_id="vpn_connection_id_value",
+        )
+
+
+def test_create_vpn_connection_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteVpnConnectionRequest,
+        dict,
+    ],
+)
+def test_delete_vpn_connection_rest(request_type):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/vpnConnections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_vpn_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_vpn_connection_rest_required_fields(
+    request_type=service.DeleteVpnConnectionRequest,
+):
+    transport_class = transports.EdgeContainerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_vpn_connection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_vpn_connection._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_vpn_connection(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_vpn_connection_rest_unset_required_fields():
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_vpn_connection._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_vpn_connection_rest_interceptors(null_interceptor):
+    transport = transports.EdgeContainerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EdgeContainerRestInterceptor(),
+    )
+    client = EdgeContainerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "post_delete_vpn_connection"
+    ) as post, mock.patch.object(
+        transports.EdgeContainerRestInterceptor, "pre_delete_vpn_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteVpnConnectionRequest.pb(
+            service.DeleteVpnConnectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteVpnConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_vpn_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_vpn_connection_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteVpnConnectionRequest
+):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/vpnConnections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_vpn_connection(request)
+
+
+def test_delete_vpn_connection_rest_flattened():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/vpnConnections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_vpn_connection(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/vpnConnections/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_vpn_connection_rest_flattened_error(transport: str = "rest"):
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_vpn_connection(
+            service.DeleteVpnConnectionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_vpn_connection_rest_error():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EdgeContainerGrpcTransport(
@@ -5642,6 +10719,7 @@ def test_transport_get_channel():
     [
         transports.EdgeContainerGrpcTransport,
         transports.EdgeContainerGrpcAsyncIOTransport,
+        transports.EdgeContainerRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -5656,6 +10734,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -5806,6 +10885,7 @@ def test_edge_container_transport_auth_adc(transport_class):
     [
         transports.EdgeContainerGrpcTransport,
         transports.EdgeContainerGrpcAsyncIOTransport,
+        transports.EdgeContainerRestTransport,
     ],
 )
 def test_edge_container_transport_auth_gdch_credentials(transport_class):
@@ -5903,11 +10983,40 @@ def test_edge_container_grpc_transport_client_cert_source_for_mtls(transport_cla
             )
 
 
+def test_edge_container_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.EdgeContainerRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_edge_container_rest_lro_client():
+    client = EdgeContainerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_edge_container_host_no_port(transport_name):
@@ -5918,7 +11027,11 @@ def test_edge_container_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("edgecontainer.googleapis.com:443")
+    assert client.transport._host == (
+        "edgecontainer.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://edgecontainer.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -5926,6 +11039,7 @@ def test_edge_container_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_edge_container_host_with_port(transport_name):
@@ -5936,7 +11050,81 @@ def test_edge_container_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("edgecontainer.googleapis.com:8000")
+    assert client.transport._host == (
+        "edgecontainer.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://edgecontainer.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_edge_container_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = EdgeContainerClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = EdgeContainerClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_clusters._session
+    session2 = client2.transport.list_clusters._session
+    assert session1 != session2
+    session1 = client1.transport.get_cluster._session
+    session2 = client2.transport.get_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.create_cluster._session
+    session2 = client2.transport.create_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.update_cluster._session
+    session2 = client2.transport.update_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.delete_cluster._session
+    session2 = client2.transport.delete_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.generate_access_token._session
+    session2 = client2.transport.generate_access_token._session
+    assert session1 != session2
+    session1 = client1.transport.list_node_pools._session
+    session2 = client2.transport.list_node_pools._session
+    assert session1 != session2
+    session1 = client1.transport.get_node_pool._session
+    session2 = client2.transport.get_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.create_node_pool._session
+    session2 = client2.transport.create_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.update_node_pool._session
+    session2 = client2.transport.update_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.delete_node_pool._session
+    session2 = client2.transport.delete_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.list_machines._session
+    session2 = client2.transport.list_machines._session
+    assert session1 != session2
+    session1 = client1.transport.get_machine._session
+    session2 = client2.transport.get_machine._session
+    assert session1 != session2
+    session1 = client1.transport.list_vpn_connections._session
+    session2 = client2.transport.list_vpn_connections._session
+    assert session1 != session2
+    session1 = client1.transport.get_vpn_connection._session
+    session2 = client2.transport.get_vpn_connection._session
+    assert session1 != session2
+    session1 = client1.transport.create_vpn_connection._session
+    session2 = client2.transport.create_vpn_connection._session
+    assert session1 != session2
+    session1 = client1.transport.delete_vpn_connection._session
+    session2 = client2.transport.delete_vpn_connection._session
+    assert session1 != session2
 
 
 def test_edge_container_grpc_transport_channel():
@@ -6411,6 +11599,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -6428,6 +11617,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
