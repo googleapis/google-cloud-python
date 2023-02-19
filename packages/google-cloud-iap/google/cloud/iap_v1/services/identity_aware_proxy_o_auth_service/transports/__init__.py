@@ -19,6 +19,10 @@ from typing import Dict, Type
 from .base import IdentityAwareProxyOAuthServiceTransport
 from .grpc import IdentityAwareProxyOAuthServiceGrpcTransport
 from .grpc_asyncio import IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport
+from .rest import (
+    IdentityAwareProxyOAuthServiceRestInterceptor,
+    IdentityAwareProxyOAuthServiceRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +30,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[IdentityAwareProxyOAuthServiceTransport]]
 _transport_registry["grpc"] = IdentityAwareProxyOAuthServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = IdentityAwareProxyOAuthServiceRestTransport
 
 __all__ = (
     "IdentityAwareProxyOAuthServiceTransport",
     "IdentityAwareProxyOAuthServiceGrpcTransport",
     "IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport",
+    "IdentityAwareProxyOAuthServiceRestTransport",
+    "IdentityAwareProxyOAuthServiceRestInterceptor",
 )

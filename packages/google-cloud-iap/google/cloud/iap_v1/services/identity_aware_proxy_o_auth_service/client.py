@@ -55,6 +55,7 @@ from .transports.base import (
 )
 from .transports.grpc import IdentityAwareProxyOAuthServiceGrpcTransport
 from .transports.grpc_asyncio import IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport
+from .transports.rest import IdentityAwareProxyOAuthServiceRestTransport
 
 
 class IdentityAwareProxyOAuthServiceClientMeta(type):
@@ -72,6 +73,7 @@ class IdentityAwareProxyOAuthServiceClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = IdentityAwareProxyOAuthServiceRestTransport
 
     def get_transport_class(
         cls,
