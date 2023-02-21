@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import KeyManagementServiceTransport
 from .grpc import KeyManagementServiceGrpcTransport
 from .grpc_asyncio import KeyManagementServiceGrpcAsyncIOTransport
+from .rest import KeyManagementServiceRestInterceptor, KeyManagementServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[KeyManagementServiceTransport]]
 _transport_registry["grpc"] = KeyManagementServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = KeyManagementServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = KeyManagementServiceRestTransport
 
 __all__ = (
     "KeyManagementServiceTransport",
     "KeyManagementServiceGrpcTransport",
     "KeyManagementServiceGrpcAsyncIOTransport",
+    "KeyManagementServiceRestTransport",
+    "KeyManagementServiceRestInterceptor",
 )

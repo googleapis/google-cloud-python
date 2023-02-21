@@ -16,14 +16,17 @@
 
 import os
 
+import pytest
+
 from google.cloud import kms_v1
 
 
 class TestKeyManagementServiceClient(object):
-    def test_list_global_key_rings(self):
+    @pytest.mark.parametrize("transport", ["grpc", "rest"])
+    def test_list_global_key_rings(self, transport):
         project_id = os.environ["PROJECT_ID"]
 
         # List key rings from the global location.
-        client = kms_v1.KeyManagementServiceClient()
+        client = kms_v1.KeyManagementServiceClient(transport=transport)
         parent = f"projects/{project_id}/locations/global"
         client.list_key_rings(request={"parent": parent})

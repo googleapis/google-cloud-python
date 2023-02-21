@@ -45,7 +45,7 @@ for library in s.get_staging_dirs(default_version):
     )
 
     # Rename `format_` to `format` to avoid breaking change
-    s.replace(library / "google/**/types/*.py",
+    s.replace(library / "**/*.py",
         "format_",
         "format"
     )
