@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,6 +35,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
@@ -42,6 +45,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.osconfig_v1.services.os_config_service import (
     OsConfigServiceAsyncClient,
@@ -105,6 +110,7 @@ def test__get_default_mtls_endpoint():
     [
         (OsConfigServiceClient, "grpc"),
         (OsConfigServiceAsyncClient, "grpc_asyncio"),
+        (OsConfigServiceClient, "rest"),
     ],
 )
 def test_os_config_service_client_from_service_account_info(
@@ -120,7 +126,11 @@ def test_os_config_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("osconfig.googleapis.com:443")
+        assert client.transport._host == (
+            "osconfig.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://osconfig.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -128,6 +138,7 @@ def test_os_config_service_client_from_service_account_info(
     [
         (transports.OsConfigServiceGrpcTransport, "grpc"),
         (transports.OsConfigServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.OsConfigServiceRestTransport, "rest"),
     ],
 )
 def test_os_config_service_client_service_account_always_use_jwt(
@@ -153,6 +164,7 @@ def test_os_config_service_client_service_account_always_use_jwt(
     [
         (OsConfigServiceClient, "grpc"),
         (OsConfigServiceAsyncClient, "grpc_asyncio"),
+        (OsConfigServiceClient, "rest"),
     ],
 )
 def test_os_config_service_client_from_service_account_file(
@@ -175,13 +187,18 @@ def test_os_config_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("osconfig.googleapis.com:443")
+        assert client.transport._host == (
+            "osconfig.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://osconfig.googleapis.com"
+        )
 
 
 def test_os_config_service_client_get_transport_class():
     transport = OsConfigServiceClient.get_transport_class()
     available_transports = [
         transports.OsConfigServiceGrpcTransport,
+        transports.OsConfigServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -198,6 +215,7 @@ def test_os_config_service_client_get_transport_class():
             transports.OsConfigServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (OsConfigServiceClient, transports.OsConfigServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -351,6 +369,18 @@ def test_os_config_service_client_client_options(
             OsConfigServiceAsyncClient,
             transports.OsConfigServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            OsConfigServiceClient,
+            transports.OsConfigServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            OsConfigServiceClient,
+            transports.OsConfigServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -552,6 +582,7 @@ def test_os_config_service_client_get_mtls_endpoint_and_cert_source(client_class
             transports.OsConfigServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (OsConfigServiceClient, transports.OsConfigServiceRestTransport, "rest"),
     ],
 )
 def test_os_config_service_client_client_options_scopes(
@@ -592,6 +623,7 @@ def test_os_config_service_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (OsConfigServiceClient, transports.OsConfigServiceRestTransport, "rest", None),
     ],
 )
 def test_os_config_service_client_client_options_credentials_file(
@@ -4183,6 +4215,3815 @@ async def test_resume_patch_deployment_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.ExecutePatchJobRequest,
+        dict,
+    ],
+)
+def test_execute_patch_job_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.PatchJob(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            state=patch_jobs.PatchJob.State.STARTED,
+            dry_run=True,
+            error_message="error_message_value",
+            percent_complete=0.1705,
+            patch_deployment="patch_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.PatchJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.execute_patch_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_jobs.PatchJob)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_jobs.PatchJob.State.STARTED
+    assert response.dry_run is True
+    assert response.error_message == "error_message_value"
+    assert math.isclose(response.percent_complete, 0.1705, rel_tol=1e-6)
+    assert response.patch_deployment == "patch_deployment_value"
+
+
+def test_execute_patch_job_rest_required_fields(
+    request_type=patch_jobs.ExecutePatchJobRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_patch_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_patch_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_jobs.PatchJob()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_jobs.PatchJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.execute_patch_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_patch_job_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_patch_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "instanceFilter",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_patch_job_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_execute_patch_job"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_execute_patch_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_jobs.ExecutePatchJobRequest.pb(
+            patch_jobs.ExecutePatchJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_jobs.PatchJob.to_json(patch_jobs.PatchJob())
+
+        request = patch_jobs.ExecutePatchJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_jobs.PatchJob()
+
+        client.execute_patch_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_execute_patch_job_rest_bad_request(
+    transport: str = "rest", request_type=patch_jobs.ExecutePatchJobRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.execute_patch_job(request)
+
+
+def test_execute_patch_job_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.GetPatchJobRequest,
+        dict,
+    ],
+)
+def test_get_patch_job_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.PatchJob(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            state=patch_jobs.PatchJob.State.STARTED,
+            dry_run=True,
+            error_message="error_message_value",
+            percent_complete=0.1705,
+            patch_deployment="patch_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.PatchJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_patch_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_jobs.PatchJob)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_jobs.PatchJob.State.STARTED
+    assert response.dry_run is True
+    assert response.error_message == "error_message_value"
+    assert math.isclose(response.percent_complete, 0.1705, rel_tol=1e-6)
+    assert response.patch_deployment == "patch_deployment_value"
+
+
+def test_get_patch_job_rest_required_fields(request_type=patch_jobs.GetPatchJobRequest):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_patch_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_patch_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_jobs.PatchJob()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_jobs.PatchJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_patch_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_patch_job_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_patch_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_patch_job_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_get_patch_job"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_get_patch_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_jobs.GetPatchJobRequest.pb(patch_jobs.GetPatchJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_jobs.PatchJob.to_json(patch_jobs.PatchJob())
+
+        request = patch_jobs.GetPatchJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_jobs.PatchJob()
+
+        client.get_patch_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_patch_job_rest_bad_request(
+    transport: str = "rest", request_type=patch_jobs.GetPatchJobRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_patch_job(request)
+
+
+def test_get_patch_job_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.PatchJob()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/patchJobs/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.PatchJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_patch_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/patchJobs/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_patch_job_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_patch_job(
+            patch_jobs.GetPatchJobRequest(),
+            name="name_value",
+        )
+
+
+def test_get_patch_job_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.CancelPatchJobRequest,
+        dict,
+    ],
+)
+def test_cancel_patch_job_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.PatchJob(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            state=patch_jobs.PatchJob.State.STARTED,
+            dry_run=True,
+            error_message="error_message_value",
+            percent_complete=0.1705,
+            patch_deployment="patch_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.PatchJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_patch_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_jobs.PatchJob)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_jobs.PatchJob.State.STARTED
+    assert response.dry_run is True
+    assert response.error_message == "error_message_value"
+    assert math.isclose(response.percent_complete, 0.1705, rel_tol=1e-6)
+    assert response.patch_deployment == "patch_deployment_value"
+
+
+def test_cancel_patch_job_rest_required_fields(
+    request_type=patch_jobs.CancelPatchJobRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_patch_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_patch_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_jobs.PatchJob()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_jobs.PatchJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.cancel_patch_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_cancel_patch_job_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.cancel_patch_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_patch_job_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_cancel_patch_job"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_cancel_patch_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_jobs.CancelPatchJobRequest.pb(
+            patch_jobs.CancelPatchJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_jobs.PatchJob.to_json(patch_jobs.PatchJob())
+
+        request = patch_jobs.CancelPatchJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_jobs.PatchJob()
+
+        client.cancel_patch_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_patch_job_rest_bad_request(
+    transport: str = "rest", request_type=patch_jobs.CancelPatchJobRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_patch_job(request)
+
+
+def test_cancel_patch_job_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.ListPatchJobsRequest,
+        dict,
+    ],
+)
+def test_list_patch_jobs_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.ListPatchJobsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.ListPatchJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_patch_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPatchJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_patch_jobs_rest_required_fields(
+    request_type=patch_jobs.ListPatchJobsRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_patch_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_patch_jobs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_jobs.ListPatchJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_jobs.ListPatchJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_patch_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_patch_jobs_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_patch_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_patch_jobs_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_list_patch_jobs"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_list_patch_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_jobs.ListPatchJobsRequest.pb(
+            patch_jobs.ListPatchJobsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_jobs.ListPatchJobsResponse.to_json(
+            patch_jobs.ListPatchJobsResponse()
+        )
+
+        request = patch_jobs.ListPatchJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_jobs.ListPatchJobsResponse()
+
+        client.list_patch_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_patch_jobs_rest_bad_request(
+    transport: str = "rest", request_type=patch_jobs.ListPatchJobsRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_patch_jobs(request)
+
+
+def test_list_patch_jobs_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.ListPatchJobsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.ListPatchJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_patch_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/patchJobs" % client.transport._host, args[1]
+        )
+
+
+def test_list_patch_jobs_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_patch_jobs(
+            patch_jobs.ListPatchJobsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_patch_jobs_rest_pager(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            patch_jobs.ListPatchJobsResponse(
+                patch_jobs=[
+                    patch_jobs.PatchJob(),
+                    patch_jobs.PatchJob(),
+                    patch_jobs.PatchJob(),
+                ],
+                next_page_token="abc",
+            ),
+            patch_jobs.ListPatchJobsResponse(
+                patch_jobs=[],
+                next_page_token="def",
+            ),
+            patch_jobs.ListPatchJobsResponse(
+                patch_jobs=[
+                    patch_jobs.PatchJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            patch_jobs.ListPatchJobsResponse(
+                patch_jobs=[
+                    patch_jobs.PatchJob(),
+                    patch_jobs.PatchJob(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(patch_jobs.ListPatchJobsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1"}
+
+        pager = client.list_patch_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, patch_jobs.PatchJob) for i in results)
+
+        pages = list(client.list_patch_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.ListPatchJobInstanceDetailsRequest,
+        dict,
+    ],
+)
+def test_list_patch_job_instance_details_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/patchJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.ListPatchJobInstanceDetailsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.ListPatchJobInstanceDetailsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_patch_job_instance_details(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPatchJobInstanceDetailsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_patch_job_instance_details_rest_required_fields(
+    request_type=patch_jobs.ListPatchJobInstanceDetailsRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_patch_job_instance_details._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_patch_job_instance_details._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_jobs.ListPatchJobInstanceDetailsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_jobs.ListPatchJobInstanceDetailsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_patch_job_instance_details(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_patch_job_instance_details_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_patch_job_instance_details._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_patch_job_instance_details_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor,
+        "post_list_patch_job_instance_details",
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_list_patch_job_instance_details"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_jobs.ListPatchJobInstanceDetailsRequest.pb(
+            patch_jobs.ListPatchJobInstanceDetailsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            patch_jobs.ListPatchJobInstanceDetailsResponse.to_json(
+                patch_jobs.ListPatchJobInstanceDetailsResponse()
+            )
+        )
+
+        request = patch_jobs.ListPatchJobInstanceDetailsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_jobs.ListPatchJobInstanceDetailsResponse()
+
+        client.list_patch_job_instance_details(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_patch_job_instance_details_rest_bad_request(
+    transport: str = "rest", request_type=patch_jobs.ListPatchJobInstanceDetailsRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/patchJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_patch_job_instance_details(request)
+
+
+def test_list_patch_job_instance_details_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_jobs.ListPatchJobInstanceDetailsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/patchJobs/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_jobs.ListPatchJobInstanceDetailsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_patch_job_instance_details(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/patchJobs/*}/instanceDetails"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_patch_job_instance_details_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_patch_job_instance_details(
+            patch_jobs.ListPatchJobInstanceDetailsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_patch_job_instance_details_rest_pager(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            patch_jobs.ListPatchJobInstanceDetailsResponse(
+                patch_job_instance_details=[
+                    patch_jobs.PatchJobInstanceDetails(),
+                    patch_jobs.PatchJobInstanceDetails(),
+                    patch_jobs.PatchJobInstanceDetails(),
+                ],
+                next_page_token="abc",
+            ),
+            patch_jobs.ListPatchJobInstanceDetailsResponse(
+                patch_job_instance_details=[],
+                next_page_token="def",
+            ),
+            patch_jobs.ListPatchJobInstanceDetailsResponse(
+                patch_job_instance_details=[
+                    patch_jobs.PatchJobInstanceDetails(),
+                ],
+                next_page_token="ghi",
+            ),
+            patch_jobs.ListPatchJobInstanceDetailsResponse(
+                patch_job_instance_details=[
+                    patch_jobs.PatchJobInstanceDetails(),
+                    patch_jobs.PatchJobInstanceDetails(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            patch_jobs.ListPatchJobInstanceDetailsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/patchJobs/sample2"}
+
+        pager = client.list_patch_job_instance_details(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, patch_jobs.PatchJobInstanceDetails) for i in results)
+
+        pages = list(
+            client.list_patch_job_instance_details(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.CreatePatchDeploymentRequest,
+        dict,
+    ],
+)
+def test_create_patch_deployment_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["patch_deployment"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "instance_filter": {
+            "all_": True,
+            "group_labels": [{"labels": {}}],
+            "zones": ["zones_value1", "zones_value2"],
+            "instances": ["instances_value1", "instances_value2"],
+            "instance_name_prefixes": [
+                "instance_name_prefixes_value1",
+                "instance_name_prefixes_value2",
+            ],
+        },
+        "patch_config": {
+            "reboot_config": 1,
+            "apt": {
+                "type_": 1,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "yum": {
+                "security": True,
+                "minimal": True,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "goo": {},
+            "zypper": {
+                "with_optional": True,
+                "with_update": True,
+                "categories": ["categories_value1", "categories_value2"],
+                "severities": ["severities_value1", "severities_value2"],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "windows_update": {
+                "classifications": [1],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "pre_step": {
+                "linux_exec_step_config": {
+                    "local_path": "local_path_value",
+                    "gcs_object": {
+                        "bucket": "bucket_value",
+                        "object_": "object__value",
+                        "generation_number": 1812,
+                    },
+                    "allowed_success_codes": [2222, 2223],
+                    "interpreter": 1,
+                },
+                "windows_exec_step_config": {},
+            },
+            "post_step": {},
+            "mig_instances_allowed": True,
+        },
+        "duration": {"seconds": 751, "nanos": 543},
+        "one_time_schedule": {"execute_time": {"seconds": 751, "nanos": 543}},
+        "recurring_schedule": {
+            "time_zone": {"id": "id_value", "version": "version_value"},
+            "start_time": {},
+            "end_time": {},
+            "time_of_day": {"hours": 561, "minutes": 773, "seconds": 751, "nanos": 543},
+            "frequency": 1,
+            "weekly": {"day_of_week": 1},
+            "monthly": {
+                "week_day_of_month": {
+                    "week_ordinal": 1268,
+                    "day_of_week": 1,
+                    "day_offset": 1060,
+                },
+                "month_day": 963,
+            },
+            "last_execute_time": {},
+            "next_execute_time": {},
+        },
+        "create_time": {},
+        "update_time": {},
+        "last_execute_time": {},
+        "rollout": {"mode": 1, "disruption_budget": {"fixed": 528, "percent": 753}},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_patch_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_create_patch_deployment_rest_required_fields(
+    request_type=patch_deployments.CreatePatchDeploymentRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["patch_deployment_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "patchDeploymentId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "patchDeploymentId" in jsonified_request
+    assert jsonified_request["patchDeploymentId"] == request_init["patch_deployment_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["patchDeploymentId"] = "patch_deployment_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_patch_deployment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("patch_deployment_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "patchDeploymentId" in jsonified_request
+    assert jsonified_request["patchDeploymentId"] == "patch_deployment_id_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_deployments.PatchDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_patch_deployment(request)
+
+            expected_params = [
+                (
+                    "patchDeploymentId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_patch_deployment_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_patch_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("patchDeploymentId",))
+        & set(
+            (
+                "parent",
+                "patchDeploymentId",
+                "patchDeployment",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_patch_deployment_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_create_patch_deployment"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_create_patch_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_deployments.CreatePatchDeploymentRequest.pb(
+            patch_deployments.CreatePatchDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_deployments.PatchDeployment.to_json(
+            patch_deployments.PatchDeployment()
+        )
+
+        request = patch_deployments.CreatePatchDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_deployments.PatchDeployment()
+
+        client.create_patch_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_patch_deployment_rest_bad_request(
+    transport: str = "rest", request_type=patch_deployments.CreatePatchDeploymentRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["patch_deployment"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "instance_filter": {
+            "all_": True,
+            "group_labels": [{"labels": {}}],
+            "zones": ["zones_value1", "zones_value2"],
+            "instances": ["instances_value1", "instances_value2"],
+            "instance_name_prefixes": [
+                "instance_name_prefixes_value1",
+                "instance_name_prefixes_value2",
+            ],
+        },
+        "patch_config": {
+            "reboot_config": 1,
+            "apt": {
+                "type_": 1,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "yum": {
+                "security": True,
+                "minimal": True,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "goo": {},
+            "zypper": {
+                "with_optional": True,
+                "with_update": True,
+                "categories": ["categories_value1", "categories_value2"],
+                "severities": ["severities_value1", "severities_value2"],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "windows_update": {
+                "classifications": [1],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "pre_step": {
+                "linux_exec_step_config": {
+                    "local_path": "local_path_value",
+                    "gcs_object": {
+                        "bucket": "bucket_value",
+                        "object_": "object__value",
+                        "generation_number": 1812,
+                    },
+                    "allowed_success_codes": [2222, 2223],
+                    "interpreter": 1,
+                },
+                "windows_exec_step_config": {},
+            },
+            "post_step": {},
+            "mig_instances_allowed": True,
+        },
+        "duration": {"seconds": 751, "nanos": 543},
+        "one_time_schedule": {"execute_time": {"seconds": 751, "nanos": 543}},
+        "recurring_schedule": {
+            "time_zone": {"id": "id_value", "version": "version_value"},
+            "start_time": {},
+            "end_time": {},
+            "time_of_day": {"hours": 561, "minutes": 773, "seconds": 751, "nanos": 543},
+            "frequency": 1,
+            "weekly": {"day_of_week": 1},
+            "monthly": {
+                "week_day_of_month": {
+                    "week_ordinal": 1268,
+                    "day_of_week": 1,
+                    "day_offset": 1060,
+                },
+                "month_day": 963,
+            },
+            "last_execute_time": {},
+            "next_execute_time": {},
+        },
+        "create_time": {},
+        "update_time": {},
+        "last_execute_time": {},
+        "rollout": {"mode": 1, "disruption_budget": {"fixed": 528, "percent": 753}},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_patch_deployment(request)
+
+
+def test_create_patch_deployment_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            patch_deployment_id="patch_deployment_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_patch_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/patchDeployments" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_patch_deployment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_patch_deployment(
+            patch_deployments.CreatePatchDeploymentRequest(),
+            parent="parent_value",
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            patch_deployment_id="patch_deployment_id_value",
+        )
+
+
+def test_create_patch_deployment_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.GetPatchDeploymentRequest,
+        dict,
+    ],
+)
+def test_get_patch_deployment_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_patch_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_get_patch_deployment_rest_required_fields(
+    request_type=patch_deployments.GetPatchDeploymentRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_deployments.PatchDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_patch_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_patch_deployment_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_patch_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_patch_deployment_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_get_patch_deployment"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_get_patch_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_deployments.GetPatchDeploymentRequest.pb(
+            patch_deployments.GetPatchDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_deployments.PatchDeployment.to_json(
+            patch_deployments.PatchDeployment()
+        )
+
+        request = patch_deployments.GetPatchDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_deployments.PatchDeployment()
+
+        client.get_patch_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_patch_deployment_rest_bad_request(
+    transport: str = "rest", request_type=patch_deployments.GetPatchDeploymentRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_patch_deployment(request)
+
+
+def test_get_patch_deployment_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/patchDeployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_patch_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/patchDeployments/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_patch_deployment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_patch_deployment(
+            patch_deployments.GetPatchDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_get_patch_deployment_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.ListPatchDeploymentsRequest,
+        dict,
+    ],
+)
+def test_list_patch_deployments_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.ListPatchDeploymentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.ListPatchDeploymentsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_patch_deployments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPatchDeploymentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_patch_deployments_rest_required_fields(
+    request_type=patch_deployments.ListPatchDeploymentsRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_patch_deployments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_patch_deployments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_deployments.ListPatchDeploymentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_deployments.ListPatchDeploymentsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_patch_deployments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_patch_deployments_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_patch_deployments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_patch_deployments_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_list_patch_deployments"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_list_patch_deployments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_deployments.ListPatchDeploymentsRequest.pb(
+            patch_deployments.ListPatchDeploymentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            patch_deployments.ListPatchDeploymentsResponse.to_json(
+                patch_deployments.ListPatchDeploymentsResponse()
+            )
+        )
+
+        request = patch_deployments.ListPatchDeploymentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_deployments.ListPatchDeploymentsResponse()
+
+        client.list_patch_deployments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_patch_deployments_rest_bad_request(
+    transport: str = "rest", request_type=patch_deployments.ListPatchDeploymentsRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_patch_deployments(request)
+
+
+def test_list_patch_deployments_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.ListPatchDeploymentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.ListPatchDeploymentsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_patch_deployments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/patchDeployments" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_patch_deployments_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_patch_deployments(
+            patch_deployments.ListPatchDeploymentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_patch_deployments_rest_pager(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            patch_deployments.ListPatchDeploymentsResponse(
+                patch_deployments=[
+                    patch_deployments.PatchDeployment(),
+                    patch_deployments.PatchDeployment(),
+                    patch_deployments.PatchDeployment(),
+                ],
+                next_page_token="abc",
+            ),
+            patch_deployments.ListPatchDeploymentsResponse(
+                patch_deployments=[],
+                next_page_token="def",
+            ),
+            patch_deployments.ListPatchDeploymentsResponse(
+                patch_deployments=[
+                    patch_deployments.PatchDeployment(),
+                ],
+                next_page_token="ghi",
+            ),
+            patch_deployments.ListPatchDeploymentsResponse(
+                patch_deployments=[
+                    patch_deployments.PatchDeployment(),
+                    patch_deployments.PatchDeployment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            patch_deployments.ListPatchDeploymentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1"}
+
+        pager = client.list_patch_deployments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, patch_deployments.PatchDeployment) for i in results)
+
+        pages = list(client.list_patch_deployments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.DeletePatchDeploymentRequest,
+        dict,
+    ],
+)
+def test_delete_patch_deployment_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_patch_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_patch_deployment_rest_required_fields(
+    request_type=patch_deployments.DeletePatchDeploymentRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_patch_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_patch_deployment_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_patch_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_patch_deployment_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_delete_patch_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = patch_deployments.DeletePatchDeploymentRequest.pb(
+            patch_deployments.DeletePatchDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = patch_deployments.DeletePatchDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_patch_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_patch_deployment_rest_bad_request(
+    transport: str = "rest", request_type=patch_deployments.DeletePatchDeploymentRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_patch_deployment(request)
+
+
+def test_delete_patch_deployment_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/patchDeployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_patch_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/patchDeployments/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_patch_deployment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_patch_deployment(
+            patch_deployments.DeletePatchDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_patch_deployment_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.UpdatePatchDeploymentRequest,
+        dict,
+    ],
+)
+def test_update_patch_deployment_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "patch_deployment": {"name": "projects/sample1/patchDeployments/sample2"}
+    }
+    request_init["patch_deployment"] = {
+        "name": "projects/sample1/patchDeployments/sample2",
+        "description": "description_value",
+        "instance_filter": {
+            "all_": True,
+            "group_labels": [{"labels": {}}],
+            "zones": ["zones_value1", "zones_value2"],
+            "instances": ["instances_value1", "instances_value2"],
+            "instance_name_prefixes": [
+                "instance_name_prefixes_value1",
+                "instance_name_prefixes_value2",
+            ],
+        },
+        "patch_config": {
+            "reboot_config": 1,
+            "apt": {
+                "type_": 1,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "yum": {
+                "security": True,
+                "minimal": True,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "goo": {},
+            "zypper": {
+                "with_optional": True,
+                "with_update": True,
+                "categories": ["categories_value1", "categories_value2"],
+                "severities": ["severities_value1", "severities_value2"],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "windows_update": {
+                "classifications": [1],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "pre_step": {
+                "linux_exec_step_config": {
+                    "local_path": "local_path_value",
+                    "gcs_object": {
+                        "bucket": "bucket_value",
+                        "object_": "object__value",
+                        "generation_number": 1812,
+                    },
+                    "allowed_success_codes": [2222, 2223],
+                    "interpreter": 1,
+                },
+                "windows_exec_step_config": {},
+            },
+            "post_step": {},
+            "mig_instances_allowed": True,
+        },
+        "duration": {"seconds": 751, "nanos": 543},
+        "one_time_schedule": {"execute_time": {"seconds": 751, "nanos": 543}},
+        "recurring_schedule": {
+            "time_zone": {"id": "id_value", "version": "version_value"},
+            "start_time": {},
+            "end_time": {},
+            "time_of_day": {"hours": 561, "minutes": 773, "seconds": 751, "nanos": 543},
+            "frequency": 1,
+            "weekly": {"day_of_week": 1},
+            "monthly": {
+                "week_day_of_month": {
+                    "week_ordinal": 1268,
+                    "day_of_week": 1,
+                    "day_offset": 1060,
+                },
+                "month_day": 963,
+            },
+            "last_execute_time": {},
+            "next_execute_time": {},
+        },
+        "create_time": {},
+        "update_time": {},
+        "last_execute_time": {},
+        "rollout": {"mode": 1, "disruption_budget": {"fixed": 528, "percent": 753}},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_patch_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_update_patch_deployment_rest_required_fields(
+    request_type=patch_deployments.UpdatePatchDeploymentRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_patch_deployment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_deployments.PatchDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_patch_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_patch_deployment_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_patch_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("patchDeployment",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_patch_deployment_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_update_patch_deployment"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_update_patch_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_deployments.UpdatePatchDeploymentRequest.pb(
+            patch_deployments.UpdatePatchDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_deployments.PatchDeployment.to_json(
+            patch_deployments.PatchDeployment()
+        )
+
+        request = patch_deployments.UpdatePatchDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_deployments.PatchDeployment()
+
+        client.update_patch_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_patch_deployment_rest_bad_request(
+    transport: str = "rest", request_type=patch_deployments.UpdatePatchDeploymentRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "patch_deployment": {"name": "projects/sample1/patchDeployments/sample2"}
+    }
+    request_init["patch_deployment"] = {
+        "name": "projects/sample1/patchDeployments/sample2",
+        "description": "description_value",
+        "instance_filter": {
+            "all_": True,
+            "group_labels": [{"labels": {}}],
+            "zones": ["zones_value1", "zones_value2"],
+            "instances": ["instances_value1", "instances_value2"],
+            "instance_name_prefixes": [
+                "instance_name_prefixes_value1",
+                "instance_name_prefixes_value2",
+            ],
+        },
+        "patch_config": {
+            "reboot_config": 1,
+            "apt": {
+                "type_": 1,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "yum": {
+                "security": True,
+                "minimal": True,
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_packages": [
+                    "exclusive_packages_value1",
+                    "exclusive_packages_value2",
+                ],
+            },
+            "goo": {},
+            "zypper": {
+                "with_optional": True,
+                "with_update": True,
+                "categories": ["categories_value1", "categories_value2"],
+                "severities": ["severities_value1", "severities_value2"],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "windows_update": {
+                "classifications": [1],
+                "excludes": ["excludes_value1", "excludes_value2"],
+                "exclusive_patches": [
+                    "exclusive_patches_value1",
+                    "exclusive_patches_value2",
+                ],
+            },
+            "pre_step": {
+                "linux_exec_step_config": {
+                    "local_path": "local_path_value",
+                    "gcs_object": {
+                        "bucket": "bucket_value",
+                        "object_": "object__value",
+                        "generation_number": 1812,
+                    },
+                    "allowed_success_codes": [2222, 2223],
+                    "interpreter": 1,
+                },
+                "windows_exec_step_config": {},
+            },
+            "post_step": {},
+            "mig_instances_allowed": True,
+        },
+        "duration": {"seconds": 751, "nanos": 543},
+        "one_time_schedule": {"execute_time": {"seconds": 751, "nanos": 543}},
+        "recurring_schedule": {
+            "time_zone": {"id": "id_value", "version": "version_value"},
+            "start_time": {},
+            "end_time": {},
+            "time_of_day": {"hours": 561, "minutes": 773, "seconds": 751, "nanos": 543},
+            "frequency": 1,
+            "weekly": {"day_of_week": 1},
+            "monthly": {
+                "week_day_of_month": {
+                    "week_ordinal": 1268,
+                    "day_of_week": 1,
+                    "day_offset": 1060,
+                },
+                "month_day": 963,
+            },
+            "last_execute_time": {},
+            "next_execute_time": {},
+        },
+        "create_time": {},
+        "update_time": {},
+        "last_execute_time": {},
+        "rollout": {"mode": 1, "disruption_budget": {"fixed": 528, "percent": 753}},
+        "state": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_patch_deployment(request)
+
+
+def test_update_patch_deployment_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "patch_deployment": {"name": "projects/sample1/patchDeployments/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_patch_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{patch_deployment.name=projects/*/patchDeployments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_patch_deployment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_patch_deployment(
+            patch_deployments.UpdatePatchDeploymentRequest(),
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_patch_deployment_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.PausePatchDeploymentRequest,
+        dict,
+    ],
+)
+def test_pause_patch_deployment_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.pause_patch_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_pause_patch_deployment_rest_required_fields(
+    request_type=patch_deployments.PausePatchDeploymentRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_deployments.PatchDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.pause_patch_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_pause_patch_deployment_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.pause_patch_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_pause_patch_deployment_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_pause_patch_deployment"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_pause_patch_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_deployments.PausePatchDeploymentRequest.pb(
+            patch_deployments.PausePatchDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_deployments.PatchDeployment.to_json(
+            patch_deployments.PatchDeployment()
+        )
+
+        request = patch_deployments.PausePatchDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_deployments.PatchDeployment()
+
+        client.pause_patch_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_pause_patch_deployment_rest_bad_request(
+    transport: str = "rest", request_type=patch_deployments.PausePatchDeploymentRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.pause_patch_deployment(request)
+
+
+def test_pause_patch_deployment_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/patchDeployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.pause_patch_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/patchDeployments/*}:pause" % client.transport._host,
+            args[1],
+        )
+
+
+def test_pause_patch_deployment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.pause_patch_deployment(
+            patch_deployments.PausePatchDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_pause_patch_deployment_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.ResumePatchDeploymentRequest,
+        dict,
+    ],
+)
+def test_resume_patch_deployment_rest(request_type):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.resume_patch_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_resume_patch_deployment_rest_required_fields(
+    request_type=patch_deployments.ResumePatchDeploymentRequest,
+):
+    transport_class = transports.OsConfigServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_patch_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = patch_deployments.PatchDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.resume_patch_deployment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_resume_patch_deployment_rest_unset_required_fields():
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.resume_patch_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_resume_patch_deployment_rest_interceptors(null_interceptor):
+    transport = transports.OsConfigServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OsConfigServiceRestInterceptor(),
+    )
+    client = OsConfigServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "post_resume_patch_deployment"
+    ) as post, mock.patch.object(
+        transports.OsConfigServiceRestInterceptor, "pre_resume_patch_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = patch_deployments.ResumePatchDeploymentRequest.pb(
+            patch_deployments.ResumePatchDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = patch_deployments.PatchDeployment.to_json(
+            patch_deployments.PatchDeployment()
+        )
+
+        request = patch_deployments.ResumePatchDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = patch_deployments.PatchDeployment()
+
+        client.resume_patch_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_resume_patch_deployment_rest_bad_request(
+    transport: str = "rest", request_type=patch_deployments.ResumePatchDeploymentRequest
+):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/patchDeployments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.resume_patch_deployment(request)
+
+
+def test_resume_patch_deployment_rest_flattened():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = patch_deployments.PatchDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/patchDeployments/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = patch_deployments.PatchDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.resume_patch_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/patchDeployments/*}:resume"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_resume_patch_deployment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resume_patch_deployment(
+            patch_deployments.ResumePatchDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_resume_patch_deployment_rest_error():
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.OsConfigServiceGrpcTransport(
@@ -4264,6 +8105,7 @@ def test_transport_get_channel():
     [
         transports.OsConfigServiceGrpcTransport,
         transports.OsConfigServiceGrpcAsyncIOTransport,
+        transports.OsConfigServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4278,6 +8120,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -4418,6 +8261,7 @@ def test_os_config_service_transport_auth_adc(transport_class):
     [
         transports.OsConfigServiceGrpcTransport,
         transports.OsConfigServiceGrpcAsyncIOTransport,
+        transports.OsConfigServiceRestTransport,
     ],
 )
 def test_os_config_service_transport_auth_gdch_credentials(transport_class):
@@ -4515,11 +8359,23 @@ def test_os_config_service_grpc_transport_client_cert_source_for_mtls(transport_
             )
 
 
+def test_os_config_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.OsConfigServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_os_config_service_host_no_port(transport_name):
@@ -4530,7 +8386,11 @@ def test_os_config_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("osconfig.googleapis.com:443")
+    assert client.transport._host == (
+        "osconfig.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://osconfig.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -4538,6 +8398,7 @@ def test_os_config_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_os_config_service_host_with_port(transport_name):
@@ -4548,7 +8409,66 @@ def test_os_config_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("osconfig.googleapis.com:8000")
+    assert client.transport._host == (
+        "osconfig.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://osconfig.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_os_config_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = OsConfigServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = OsConfigServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.execute_patch_job._session
+    session2 = client2.transport.execute_patch_job._session
+    assert session1 != session2
+    session1 = client1.transport.get_patch_job._session
+    session2 = client2.transport.get_patch_job._session
+    assert session1 != session2
+    session1 = client1.transport.cancel_patch_job._session
+    session2 = client2.transport.cancel_patch_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_patch_jobs._session
+    session2 = client2.transport.list_patch_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.list_patch_job_instance_details._session
+    session2 = client2.transport.list_patch_job_instance_details._session
+    assert session1 != session2
+    session1 = client1.transport.create_patch_deployment._session
+    session2 = client2.transport.create_patch_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.get_patch_deployment._session
+    session2 = client2.transport.get_patch_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.list_patch_deployments._session
+    session2 = client2.transport.list_patch_deployments._session
+    assert session1 != session2
+    session1 = client1.transport.delete_patch_deployment._session
+    session2 = client2.transport.delete_patch_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.update_patch_deployment._session
+    session2 = client2.transport.update_patch_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.pause_patch_deployment._session
+    session2 = client2.transport.pause_patch_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.resume_patch_deployment._session
+    session2 = client2.transport.resume_patch_deployment._session
+    assert session1 != session2
 
 
 def test_os_config_service_grpc_transport_channel():
@@ -4891,6 +8811,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4908,6 +8829,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

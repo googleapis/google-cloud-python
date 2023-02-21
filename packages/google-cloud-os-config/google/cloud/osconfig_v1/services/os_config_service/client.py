@@ -56,6 +56,7 @@ from google.cloud.osconfig_v1.types import patch_deployments, patch_jobs
 from .transports.base import DEFAULT_CLIENT_INFO, OsConfigServiceTransport
 from .transports.grpc import OsConfigServiceGrpcTransport
 from .transports.grpc_asyncio import OsConfigServiceGrpcAsyncIOTransport
+from .transports.rest import OsConfigServiceRestTransport
 
 
 class OsConfigServiceClientMeta(type):
@@ -71,6 +72,7 @@ class OsConfigServiceClientMeta(type):
     )  # type: Dict[str, Type[OsConfigServiceTransport]]
     _transport_registry["grpc"] = OsConfigServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = OsConfigServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = OsConfigServiceRestTransport
 
     def get_transport_class(
         cls,
