@@ -160,7 +160,7 @@ class Query(BaseQuery):
             for order in self._orders:
                 order.direction = _enum_from_direction(
                     self.DESCENDING
-                    if order.direction == self.ASCENDING
+                    if order.direction.name == self.ASCENDING
                     else self.ASCENDING
                 )
             self._limit_to_last = False
