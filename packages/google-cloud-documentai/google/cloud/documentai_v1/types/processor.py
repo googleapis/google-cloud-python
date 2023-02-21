@@ -19,6 +19,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.documentai_v1.types import document_schema as gcd_document_schema
+from google.cloud.documentai_v1.types import evaluation
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1",
@@ -50,6 +51,9 @@ class ProcessorVersion(proto.Message):
             The state of the processor version.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the processor version was created.
+        latest_evaluation (google.cloud.documentai_v1.types.EvaluationReference):
+            The most recently invoked evaluation for the
+            processor version.
         kms_key_name (str):
             The KMS key name used for encryption.
         kms_key_version_name (str):
@@ -142,6 +146,11 @@ class ProcessorVersion(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    latest_evaluation: evaluation.EvaluationReference = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=evaluation.EvaluationReference,
     )
     kms_key_name: str = proto.Field(
         proto.STRING,

@@ -80,7 +80,7 @@ class DocumentSchema(proto.Message):
                 The entity type that this type is derived
                 from.  For now, one and only one should be set.
             properties (MutableSequence[google.cloud.documentai_v1.types.DocumentSchema.EntityType.Property]):
-                Describing the nested structure, or
+                Description the nested structure, or
                 composition of an entity.
         """
 
@@ -116,22 +116,30 @@ class DocumentSchema(proto.Message):
             """
 
             class OccurrenceType(proto.Enum):
-                r"""Types of occurrences of the entity type in the document.
-                Note: this represents the number of instances of an entity
-                types, not number of mentions of a given entity instance.
+                r"""Types of occurrences of the entity type in the document. This
+                represents the number of instances of instances of an entity, not
+                number of mentions of an entity. For example, a bank statement may
+                only have one ``account_number``, but this account number may be
+                mentioned in several places on the document. In this case the
+                'account_number' would be considered a ``REQUIRED_ONCE`` entity
+                type. If, on the other hand, we expect a bank statement to contain
+                the status of multiple different accounts for the customers, the
+                occurrence type will be set to ``REQUIRED_MULTIPLE``.
 
                 Values:
                     OCCURRENCE_TYPE_UNSPECIFIED (0):
                         Unspecified occurrence type.
                     OPTIONAL_ONCE (1):
                         There will be zero or one instance of this
-                        entity type.
+                        entity type.  The same entity instance may be
+                        mentioned multiple times.
                     OPTIONAL_MULTIPLE (2):
                         The entity type will appear zero or multiple
                         times.
                     REQUIRED_ONCE (3):
                         The entity type will only appear exactly
-                        once.
+                        once.  The same entity instance may be mentioned
+                        multiple times.
                     REQUIRED_MULTIPLE (4):
                         The entity type will appear once or more
                         times.
