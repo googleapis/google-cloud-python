@@ -52,6 +52,7 @@ from google.cloud.orgpolicy_v2.types import orgpolicy
 from .transports.base import OrgPolicyTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import OrgPolicyGrpcTransport
 from .transports.grpc_asyncio import OrgPolicyGrpcAsyncIOTransport
+from .transports.rest import OrgPolicyRestTransport
 
 
 class OrgPolicyClientMeta(type):
@@ -65,6 +66,7 @@ class OrgPolicyClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[OrgPolicyTransport]]
     _transport_registry["grpc"] = OrgPolicyGrpcTransport
     _transport_registry["grpc_asyncio"] = OrgPolicyGrpcAsyncIOTransport
+    _transport_registry["rest"] = OrgPolicyRestTransport
 
     def get_transport_class(
         cls,

@@ -86,6 +86,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "OrgPolicyClient",
+          "rpcs": {
+            "CreatePolicy": {
+              "methods": [
+                "create_policy"
+              ]
+            },
+            "DeletePolicy": {
+              "methods": [
+                "delete_policy"
+              ]
+            },
+            "GetEffectivePolicy": {
+              "methods": [
+                "get_effective_policy"
+              ]
+            },
+            "GetPolicy": {
+              "methods": [
+                "get_policy"
+              ]
+            },
+            "ListConstraints": {
+              "methods": [
+                "list_constraints"
+              ]
+            },
+            "ListPolicies": {
+              "methods": [
+                "list_policies"
+              ]
+            },
+            "UpdatePolicy": {
+              "methods": [
+                "update_policy"
+              ]
+            }
+          }
         }
       }
     }
