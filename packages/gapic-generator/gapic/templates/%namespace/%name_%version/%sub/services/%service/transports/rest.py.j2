@@ -121,7 +121,9 @@ class {{ service.name }}RestInterceptor:
     {% endfor %}
 
     {% for name, signature in api.mixin_api_signatures.items() %}
-    def pre_{{ name|snake_case }}(self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]) -> {{signature.response_type}}:
+    def pre_{{ name|snake_case }}(
+        self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[{{signature.request_type}}, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for {{ name|snake_case }}
 
         Override in a subclass to manipulate the request or metadata
@@ -129,7 +131,9 @@ class {{ service.name }}RestInterceptor:
         """
         return request, metadata
 
-    def post_{{ name|snake_case }}(self, response: {{signature.request_type}}) -> {{signature.response_type}}:
+    def post_{{ name|snake_case }}(
+        self, response: {{signature.response_type}}
+    ) -> {{signature.response_type}}:
         """Post-rpc interceptor for {{ name|snake_case }}
 
         Override in a subclass to manipulate the response
