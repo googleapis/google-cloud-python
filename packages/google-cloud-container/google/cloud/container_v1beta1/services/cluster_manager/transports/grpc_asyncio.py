@@ -743,35 +743,6 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         return self._stubs["get_server_config"]
 
     @property
-    def list_node_pools(
-        self,
-    ) -> Callable[
-        [cluster_service.ListNodePoolsRequest],
-        Awaitable[cluster_service.ListNodePoolsResponse],
-    ]:
-        r"""Return a callable for the list node pools method over gRPC.
-
-        Lists the node pools for a cluster.
-
-        Returns:
-            Callable[[~.ListNodePoolsRequest],
-                    Awaitable[~.ListNodePoolsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_node_pools" not in self._stubs:
-            self._stubs["list_node_pools"] = self.grpc_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/ListNodePools",
-                request_serializer=cluster_service.ListNodePoolsRequest.serialize,
-                response_deserializer=cluster_service.ListNodePoolsResponse.deserialize,
-            )
-        return self._stubs["list_node_pools"]
-
-    @property
     def get_json_web_keys(
         self,
     ) -> Callable[
@@ -802,6 +773,35 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 response_deserializer=cluster_service.GetJSONWebKeysResponse.deserialize,
             )
         return self._stubs["get_json_web_keys"]
+
+    @property
+    def list_node_pools(
+        self,
+    ) -> Callable[
+        [cluster_service.ListNodePoolsRequest],
+        Awaitable[cluster_service.ListNodePoolsResponse],
+    ]:
+        r"""Return a callable for the list node pools method over gRPC.
+
+        Lists the node pools for a cluster.
+
+        Returns:
+            Callable[[~.ListNodePoolsRequest],
+                    Awaitable[~.ListNodePoolsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_node_pools" not in self._stubs:
+            self._stubs["list_node_pools"] = self.grpc_channel.unary_unary(
+                "/google.container.v1beta1.ClusterManager/ListNodePools",
+                request_serializer=cluster_service.ListNodePoolsRequest.serialize,
+                response_deserializer=cluster_service.ListNodePoolsResponse.deserialize,
+            )
+        return self._stubs["list_node_pools"]
 
     @property
     def get_node_pool(

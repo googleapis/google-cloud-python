@@ -2659,6 +2659,93 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         # Done; return the response.
         return response
 
+    def get_json_web_keys(
+        self,
+        request: Optional[Union[cluster_service.GetJSONWebKeysRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cluster_service.GetJSONWebKeysResponse:
+        r"""Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+        This API is not yet intended for general use, and is not
+        available for all clusters.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import container_v1beta1
+
+            def sample_get_json_web_keys():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.GetJSONWebKeysRequest(
+                )
+
+                # Make the request
+                response = client.get_json_web_keys(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.container_v1beta1.types.GetJSONWebKeysRequest, dict]):
+                The request object. GetJSONWebKeysRequest gets the
+                public component of the keys used by the cluster to sign
+                token requests. This will be the jwks_uri for the
+                discover document returned by getOpenIDConfig. See the
+                OpenID Connect Discovery 1.0 specification for details.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.container_v1beta1.types.GetJSONWebKeysResponse:
+                GetJSONWebKeysResponse is a valid
+                JSON Web Key Set as specififed in rfc
+                7517
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cluster_service.GetJSONWebKeysRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cluster_service.GetJSONWebKeysRequest):
+            request = cluster_service.GetJSONWebKeysRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_json_web_keys]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def list_node_pools(
         self,
         request: Optional[Union[cluster_service.ListNodePoolsRequest, dict]] = None,
@@ -2772,93 +2859,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_node_pools]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_json_web_keys(
-        self,
-        request: Optional[Union[cluster_service.GetJSONWebKeysRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cluster_service.GetJSONWebKeysResponse:
-        r"""Gets the public component of the cluster signing keys
-        in JSON Web Key format.
-        This API is not yet intended for general use, and is not
-        available for all clusters.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import container_v1beta1
-
-            def sample_get_json_web_keys():
-                # Create a client
-                client = container_v1beta1.ClusterManagerClient()
-
-                # Initialize request argument(s)
-                request = container_v1beta1.GetJSONWebKeysRequest(
-                )
-
-                # Make the request
-                response = client.get_json_web_keys(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.container_v1beta1.types.GetJSONWebKeysRequest, dict]):
-                The request object. GetJSONWebKeysRequest gets the
-                public component of the keys used by the cluster to sign
-                token requests. This will be the jwks_uri for the
-                discover document returned by getOpenIDConfig. See the
-                OpenID Connect Discovery 1.0 specification for details.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.container_v1beta1.types.GetJSONWebKeysResponse:
-                GetJSONWebKeysResponse is a valid
-                JSON Web Key Set as specififed in rfc
-                7517
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.GetJSONWebKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, cluster_service.GetJSONWebKeysRequest):
-            request = cluster_service.GetJSONWebKeysRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_json_web_keys]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

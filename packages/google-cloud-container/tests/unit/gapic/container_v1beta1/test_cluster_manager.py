@@ -5397,6 +5397,160 @@ async def test_get_server_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cluster_service.GetJSONWebKeysRequest,
+        dict,
+    ],
+)
+def test_get_json_web_keys(request_type, transport: str = "grpc"):
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cluster_service.GetJSONWebKeysResponse()
+        response = client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
+
+
+def test_get_json_web_keys_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        client.get_json_web_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_json_web_keys_async(
+    transport: str = "grpc_asyncio", request_type=cluster_service.GetJSONWebKeysRequest
+):
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.GetJSONWebKeysResponse()
+        )
+        response = await client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
+
+
+@pytest.mark.asyncio
+async def test_get_json_web_keys_async_from_dict():
+    await test_get_json_web_keys_async(request_type=dict)
+
+
+def test_get_json_web_keys_field_headers():
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.GetJSONWebKeysRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = cluster_service.GetJSONWebKeysResponse()
+        client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_json_web_keys_field_headers_async():
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.GetJSONWebKeysRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.GetJSONWebKeysResponse()
+        )
+        await client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cluster_service.ListNodePoolsRequest,
         dict,
     ],
@@ -5638,160 +5792,6 @@ async def test_list_node_pools_flattened_error_async():
             zone="zone_value",
             cluster_id="cluster_id_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cluster_service.GetJSONWebKeysRequest,
-        dict,
-    ],
-)
-def test_get_json_web_keys(request_type, transport: str = "grpc"):
-    client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_json_web_keys), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = cluster_service.GetJSONWebKeysResponse()
-        response = client.get_json_web_keys(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetJSONWebKeysRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
-
-
-def test_get_json_web_keys_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_json_web_keys), "__call__"
-    ) as call:
-        client.get_json_web_keys()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetJSONWebKeysRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_json_web_keys_async(
-    transport: str = "grpc_asyncio", request_type=cluster_service.GetJSONWebKeysRequest
-):
-    client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_json_web_keys), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cluster_service.GetJSONWebKeysResponse()
-        )
-        response = await client.get_json_web_keys(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetJSONWebKeysRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
-
-
-@pytest.mark.asyncio
-async def test_get_json_web_keys_async_from_dict():
-    await test_get_json_web_keys_async(request_type=dict)
-
-
-def test_get_json_web_keys_field_headers():
-    client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = cluster_service.GetJSONWebKeysRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_json_web_keys), "__call__"
-    ) as call:
-        call.return_value = cluster_service.GetJSONWebKeysResponse()
-        client.get_json_web_keys(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_json_web_keys_field_headers_async():
-    client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = cluster_service.GetJSONWebKeysRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_json_web_keys), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cluster_service.GetJSONWebKeysResponse()
-        )
-        await client.get_json_web_keys(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -10430,8 +10430,8 @@ def test_cluster_manager_base_transport():
         "get_operation",
         "cancel_operation",
         "get_server_config",
-        "list_node_pools",
         "get_json_web_keys",
+        "list_node_pools",
         "get_node_pool",
         "create_node_pool",
         "delete_node_pool",

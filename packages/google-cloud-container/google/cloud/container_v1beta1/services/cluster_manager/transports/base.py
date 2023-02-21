@@ -268,6 +268,11 @@ class ClusterManagerTransport(abc.ABC):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
+            self.get_json_web_keys: gapic_v1.method.wrap_method(
+                self.get_json_web_keys,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_node_pools: gapic_v1.method.wrap_method(
                 self.list_node_pools,
                 default_retry=retries.Retry(
@@ -281,11 +286,6 @@ class ClusterManagerTransport(abc.ABC):
                     deadline=20.0,
                 ),
                 default_timeout=20.0,
-                client_info=client_info,
-            ),
-            self.get_json_web_keys: gapic_v1.method.wrap_method(
-                self.get_json_web_keys,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_node_pool: gapic_v1.method.wrap_method(
@@ -574,18 +574,6 @@ class ClusterManagerTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_node_pools(
-        self,
-    ) -> Callable[
-        [cluster_service.ListNodePoolsRequest],
-        Union[
-            cluster_service.ListNodePoolsResponse,
-            Awaitable[cluster_service.ListNodePoolsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def get_json_web_keys(
         self,
     ) -> Callable[
@@ -593,6 +581,18 @@ class ClusterManagerTransport(abc.ABC):
         Union[
             cluster_service.GetJSONWebKeysResponse,
             Awaitable[cluster_service.GetJSONWebKeysResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_node_pools(
+        self,
+    ) -> Callable[
+        [cluster_service.ListNodePoolsRequest],
+        Union[
+            cluster_service.ListNodePoolsResponse,
+            Awaitable[cluster_service.ListNodePoolsResponse],
         ],
     ]:
         raise NotImplementedError()
