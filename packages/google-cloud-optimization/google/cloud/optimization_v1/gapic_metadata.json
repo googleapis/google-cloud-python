@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "FleetRoutingClient",
+          "rpcs": {
+            "BatchOptimizeTours": {
+              "methods": [
+                "batch_optimize_tours"
+              ]
+            },
+            "OptimizeTours": {
+              "methods": [
+                "optimize_tours"
+              ]
+            }
+          }
         }
       }
     }

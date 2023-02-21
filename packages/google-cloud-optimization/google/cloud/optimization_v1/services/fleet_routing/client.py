@@ -54,6 +54,7 @@ from google.longrunning import operations_pb2
 from .transports.base import FleetRoutingTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import FleetRoutingGrpcTransport
 from .transports.grpc_asyncio import FleetRoutingGrpcAsyncIOTransport
+from .transports.rest import FleetRoutingRestTransport
 
 
 class FleetRoutingClientMeta(type):
@@ -67,6 +68,7 @@ class FleetRoutingClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[FleetRoutingTransport]]
     _transport_registry["grpc"] = FleetRoutingGrpcTransport
     _transport_registry["grpc_asyncio"] = FleetRoutingGrpcAsyncIOTransport
+    _transport_registry["rest"] = FleetRoutingRestTransport
 
     def get_transport_class(
         cls,
