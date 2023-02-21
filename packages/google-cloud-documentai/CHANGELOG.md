@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.13.0](https://github.com/googleapis/python-documentai/compare/v2.12.0...v2.13.0) (2023-02-21)
+
+
+### Features
+
+* Added Training and Evaluation functions, request, responses and metadata to document_processor_service.proto ([#463](https://github.com/googleapis/python-documentai/issues/463)) ([6ff81aa](https://github.com/googleapis/python-documentai/commit/6ff81aa41059d61105f33c94ae9186357a1201c5))
+
 ## [2.12.0](https://github.com/googleapis/python-documentai/compare/v2.11.0...v2.12.0) (2023-02-08)
 
 
