@@ -51,6 +51,7 @@ except AttributeError:  # pragma: NO COVER
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.pubsub_v1.services.publisher import pagers
 from google.pubsub_v1.types import pubsub
 from google.pubsub_v1.types import TimeoutType
@@ -610,6 +611,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         self,
         request: Optional[Union[pubsub.UpdateTopicRequest, dict]] = None,
         *,
+        topic: Optional[pubsub.Topic] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -649,6 +652,23 @@ class PublisherClient(metaclass=PublisherClientMeta):
         Args:
             request (Union[google.pubsub_v1.types.UpdateTopicRequest, dict]):
                 The request object. Request for the UpdateTopic method.
+            topic (google.pubsub_v1.types.Topic):
+                Required. The updated topic object.
+                This corresponds to the ``topic`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Indicates which fields in the provided topic
+                to update. Must be specified and non-empty. Note that if
+                ``update_mask`` contains "message_storage_policy" but
+                the ``message_storage_policy`` is not set in the
+                ``topic`` provided above, then the updated value is
+                determined by the policy configured at the project or
+                organization level.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (TimeoutType):
@@ -661,12 +681,27 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 A topic resource.
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([topic, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.UpdateTopicRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, pubsub.UpdateTopicRequest):
             request = pubsub.UpdateTopicRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if topic is not None:
+                request.topic = topic
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

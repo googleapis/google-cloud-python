@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions

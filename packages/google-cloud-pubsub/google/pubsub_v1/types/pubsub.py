@@ -184,7 +184,7 @@ class Topic(proto.Message):
             timestamp <https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time>`__
             that is up to ``message_retention_duration`` in the past. If
             this field is not set, message retention is controlled by
-            settings on individual subscriptions. Cannot be more than 7
+            settings on individual subscriptions. Cannot be more than 31
             days or less than 10 minutes.
     """
 
@@ -581,7 +581,9 @@ class DetachSubscriptionResponse(proto.Message):
 
 
 class Subscription(proto.Message):
-    r"""A subscription resource.
+    r"""A subscription resource. If none of ``push_config`` or
+    ``bigquery_config`` is set, then the subscriber will pull and ack
+    messages using API methods. At most one of these fields may be set.
 
     Attributes:
         name (str):
@@ -601,23 +603,19 @@ class Subscription(proto.Message):
             field will be ``_deleted-topic_`` if the topic has been
             deleted.
         push_config (google.pubsub_v1.types.PushConfig):
-            If push delivery is used with this subscription, this field
-            is used to configure it. Either ``pushConfig`` or
-            ``bigQueryConfig`` can be set, but not both. If both are
-            empty, then the subscriber will pull and ack messages using
-            API methods.
+            If push delivery is used with this
+            subscription, this field is used to configure
+            it.
         bigquery_config (google.pubsub_v1.types.BigQueryConfig):
-            If delivery to BigQuery is used with this subscription, this
-            field is used to configure it. Either ``pushConfig`` or
-            ``bigQueryConfig`` can be set, but not both. If both are
-            empty, then the subscriber will pull and ack messages using
-            API methods.
+            If delivery to BigQuery is used with this
+            subscription, this field is used to configure
+            it.
         ack_deadline_seconds (int):
             The approximate amount of time (on a best-effort basis)
             Pub/Sub waits for the subscriber to acknowledge receipt
             before resending the message. In the interval after the
             message is delivered and before it is acknowledged, it is
-            considered to be outstanding. During that time period, the
+            considered to be *outstanding*. During that time period, the
             message will not be redelivered (on a best-effort basis).
 
             For pull subscriptions, this value is used as the initial
@@ -652,9 +650,8 @@ class Subscription(proto.Message):
             Defaults to 7 days. Cannot be more than 7 days or less than
             10 minutes.
         labels (MutableMapping[str, str]):
-            See <a
-            href="https://cloud.google.com/pubsub/docs/labels">
-            Creating and managing labels</a>.
+            See `Creating and managing
+            labels <https://cloud.google.com/pubsub/docs/labels>`__.
         enable_message_ordering (bool):
             If true, messages published with the same ``ordering_key``
             in ``PubsubMessage`` will be delivered to the subscribers in
@@ -977,11 +974,7 @@ class PushConfig(proto.Message):
             -  ``v1`` or ``v1beta2``: uses the push format defined in
                the v1 Pub/Sub API.
 
-            For example:
-
-            .. raw:: html
-
-                <pre><code>attributes { "x-goog-version": "v1" } </code></pre>
+            For example: ``attributes { "x-goog-version": "v1" }``
         oidc_token (google.pubsub_v1.types.PushConfig.OidcToken):
             If specified, Pub/Sub will generate and attach an OIDC JWT
             token as an ``Authorization`` header in the HTTP request for
@@ -1047,7 +1040,7 @@ class BigQueryConfig(proto.Message):
     Attributes:
         table (str):
             The name of the table to which to write data,
-            of the form {projectId}:{datasetId}.{tableId}
+            of the form {projectId}.{datasetId}.{tableId}
         use_topic_schema (bool):
             When true, use the topic's schema as the
             columns to write to in BigQuery, if it exists.
@@ -1081,8 +1074,15 @@ class BigQueryConfig(proto.Message):
                 The subscription can actively send messages
                 to BigQuery
             PERMISSION_DENIED (2):
-                Cannot write to the BigQuery table because of
-                permission denied errors.
+                Cannot write to the BigQuery table because of permission
+                denied errors. This can happen if
+
+                -  Pub/Sub SA has not been granted the `appropriate BigQuery
+                   IAM
+                   permissions <https://cloud.google.com/pubsub/docs/create-subscription#assign_bigquery_service_account>`__
+                -  bigquery.googleapis.com API is not enabled for the
+                   project
+                   (`instructions <https://cloud.google.com/service-usage/docs/enable-disable>`__)
             NOT_FOUND (3):
                 Cannot write to the BigQuery table because it
                 does not exist.
@@ -1347,9 +1347,10 @@ class PullResponse(proto.Message):
     Attributes:
         received_messages (MutableSequence[google.pubsub_v1.types.ReceivedMessage]):
             Received Pub/Sub messages. The list will be empty if there
-            are no more messages available in the backlog. For JSON, the
-            response can be entirely empty. The Pub/Sub system may
-            return fewer than the ``maxMessages`` requested even if
+            are no more messages available in the backlog, or if no
+            messages could be returned before the request timeout. For
+            JSON, the response can be entirely empty. The Pub/Sub system
+            may return fewer than the ``maxMessages`` requested even if
             there are more messages available in the backlog.
     """
 
@@ -1570,6 +1571,9 @@ class StreamingPullResponse(proto.Message):
             unordered_ack_ids (MutableSequence[str]):
                 List of acknowledgement IDs that were out of
                 order.
+            temporary_failed_ack_ids (MutableSequence[str]):
+                List of acknowledgement IDs that failed
+                processing with temporary issues.
         """
 
         ack_ids: MutableSequence[str] = proto.RepeatedField(
@@ -1584,6 +1588,10 @@ class StreamingPullResponse(proto.Message):
             proto.STRING,
             number=3,
         )
+        temporary_failed_ack_ids: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
 
     class ModifyAckDeadlineConfirmation(proto.Message):
         r"""Acknowledgement IDs sent in one or more previous requests to
@@ -1596,6 +1604,9 @@ class StreamingPullResponse(proto.Message):
                 List of acknowledgement IDs that were
                 malformed or whose acknowledgement deadline has
                 expired.
+            temporary_failed_ack_ids (MutableSequence[str]):
+                List of acknowledgement IDs that failed
+                processing with temporary issues.
         """
 
         ack_ids: MutableSequence[str] = proto.RepeatedField(
@@ -1605,6 +1616,10 @@ class StreamingPullResponse(proto.Message):
         invalid_ack_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
+        )
+        temporary_failed_ack_ids: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
         )
 
     class SubscriptionProperties(proto.Message):
@@ -1659,8 +1674,9 @@ class CreateSnapshotRequest(proto.Message):
             is not provided in the request, the server will assign a
             random name for this snapshot on the same project as the
             subscription. Note that for REST API requests, you must
-            specify a name. See the resource name rules. Format is
-            ``projects/{project}/snapshots/{snap}``.
+            specify a name. See the `resource name
+            rules <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+            Format is ``projects/{project}/snapshots/{snap}``.
         subscription (str):
             Required. The subscription whose backlog the snapshot
             retains. Specifically, the created snapshot is guaranteed to
@@ -1673,9 +1689,8 @@ class CreateSnapshotRequest(proto.Message):
             CreateSnapshot request. Format is
             ``projects/{project}/subscriptions/{sub}``.
         labels (MutableMapping[str, str]):
-            See <a
-            href="https://cloud.google.com/pubsub/docs/labels">
-            Creating and managing labels</a>.
+            See `Creating and managing
+            labels <https://cloud.google.com/pubsub/docs/labels>`__.
     """
 
     name: str = proto.Field(

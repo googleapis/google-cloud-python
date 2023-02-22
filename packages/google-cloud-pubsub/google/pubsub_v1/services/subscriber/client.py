@@ -53,6 +53,7 @@ except AttributeError:  # pragma: NO COVER
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.pubsub_v1.services.subscriber import pagers
 from google.pubsub_v1.types import pubsub
@@ -557,7 +558,10 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.Subscription, dict]):
-                The request object. A subscription resource.
+                The request object. A subscription resource. If none of
+                `push_config` or `bigquery_config` is set, then the
+                subscriber will pull and ack messages using API methods.
+                At most one of these fields may be set.
             name (str):
                 Required. The name of the subscription. It must have the
                 format
@@ -583,11 +587,9 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             push_config (google.pubsub_v1.types.PushConfig):
-                If push delivery is used with this subscription, this
-                field is used to configure it. Either ``pushConfig`` or
-                ``bigQueryConfig`` can be set, but not both. If both are
-                empty, then the subscriber will pull and ack messages
-                using API methods.
+                If push delivery is used with this
+                subscription, this field is used to
+                configure it.
 
                 This corresponds to the ``push_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -597,7 +599,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 Pub/Sub waits for the subscriber to acknowledge receipt
                 before resending the message. In the interval after the
                 message is delivered and before it is acknowledged, it
-                is considered to be outstanding. During that time
+                is considered to be *outstanding*. During that time
                 period, the message will not be redelivered (on a
                 best-effort basis).
 
@@ -629,7 +631,11 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
         Returns:
             google.pubsub_v1.types.Subscription:
-                A subscription resource.
+                A subscription resource. If none of push_config or bigquery_config is
+                   set, then the subscriber will pull and ack messages
+                   using API methods. At most one of these fields may be
+                   set.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -735,7 +741,11 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
         Returns:
             google.pubsub_v1.types.Subscription:
-                A subscription resource.
+                A subscription resource. If none of push_config or bigquery_config is
+                   set, then the subscriber will pull and ack messages
+                   using API methods. At most one of these fields may be
+                   set.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -785,6 +795,8 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         self,
         request: Optional[Union[pubsub.UpdateSubscriptionRequest, dict]] = None,
         *,
+        subscription: Optional[pubsub.Subscription] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -827,6 +839,21 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
             request (Union[google.pubsub_v1.types.UpdateSubscriptionRequest, dict]):
                 The request object. Request for the UpdateSubscription
                 method.
+            subscription (google.pubsub_v1.types.Subscription):
+                Required. The updated subscription
+                object.
+
+                This corresponds to the ``subscription`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Indicates which fields in
+                the provided subscription to update.
+                Must be specified and non-empty.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -835,15 +862,34 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
         Returns:
             google.pubsub_v1.types.Subscription:
-                A subscription resource.
+                A subscription resource. If none of push_config or bigquery_config is
+                   set, then the subscriber will pull and ack messages
+                   using API methods. At most one of these fields may be
+                   set.
+
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([subscription, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.UpdateSubscriptionRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, pubsub.UpdateSubscriptionRequest):
             request = pubsub.UpdateSubscriptionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if subscription is not None:
+                request.subscription = subscription
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1327,9 +1373,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.PullResponse:
-        r"""Pulls messages from the server. The server may return
-        ``UNAVAILABLE`` if there are too many concurrent pull requests
-        pending for the given subscription.
+        r"""Pulls messages from the server.
 
         .. code-block:: python
 
@@ -1674,13 +1718,12 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Snapshot:
-        r"""Gets the configuration details of a snapshot.
-        Snapshots are used in <a
-        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
-        operations, which allow you to manage message
-        acknowledgments in bulk. That is, you can set the
-        acknowledgment state of messages in an existing
-        subscription to the state captured by a snapshot.
+        r"""Gets the configuration details of a snapshot. Snapshots are used
+        in
+        `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
+        operations, which allow you to manage message acknowledgments in
+        bulk. That is, you can set the acknowledgment state of messages
+        in an existing subscription to the state captured by a snapshot.
 
         .. code-block:: python
 
@@ -1960,9 +2003,10 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 name is not provided in the request, the server will
                 assign a random name for this snapshot on the same
                 project as the subscription. Note that for REST API
-                requests, you must specify a name. See the resource name
-                rules. Format is
-                ``projects/{project}/snapshots/{snap}``.
+                requests, you must specify a name. See the `resource
+                name
+                rules <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+                Format is ``projects/{project}/snapshots/{snap}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2046,18 +2090,17 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         self,
         request: Optional[Union[pubsub.UpdateSnapshotRequest, dict]] = None,
         *,
+        snapshot: Optional[pubsub.Snapshot] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Snapshot:
         r"""Updates an existing snapshot. Snapshots are used in
-        <a
-        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
-        operations, which allow
-        you to manage message acknowledgments in bulk. That is,
-        you can set the acknowledgment state of messages in an
-        existing subscription to the state captured by a
-        snapshot.
+        `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
+        operations, which allow you to manage message acknowledgments in
+        bulk. That is, you can set the acknowledgment state of messages
+        in an existing subscription to the state captured by a snapshot.
 
         .. code-block:: python
 
@@ -2088,6 +2131,21 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
             request (Union[google.pubsub_v1.types.UpdateSnapshotRequest, dict]):
                 The request object. Request for the UpdateSnapshot
                 method.
+            snapshot (google.pubsub_v1.types.Snapshot):
+                Required. The updated snapshot
+                object.
+
+                This corresponds to the ``snapshot`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Indicates which fields in
+                the provided snapshot to update. Must be
+                specified and non-empty.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2105,12 +2163,27 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([snapshot, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.UpdateSnapshotRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, pubsub.UpdateSnapshotRequest):
             request = pubsub.UpdateSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if snapshot is not None:
+                request.snapshot = snapshot
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

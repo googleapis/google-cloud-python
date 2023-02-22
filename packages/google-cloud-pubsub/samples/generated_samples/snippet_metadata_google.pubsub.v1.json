@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-pubsub",
-    "version": "2.14.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -1316,6 +1316,14 @@
             "type": "google.pubsub_v1.types.UpdateTopicRequest"
           },
           {
+            "name": "topic",
+            "type": "google.pubsub_v1.types.Topic"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -1390,6 +1398,14 @@
           {
             "name": "request",
             "type": "google.pubsub_v1.types.UpdateTopicRequest"
+          },
+          {
+            "name": "topic",
+            "type": "google.pubsub_v1.types.Topic"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -5401,6 +5417,14 @@
             "type": "google.pubsub_v1.types.UpdateSnapshotRequest"
           },
           {
+            "name": "snapshot",
+            "type": "google.pubsub_v1.types.Snapshot"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -5475,6 +5499,14 @@
           {
             "name": "request",
             "type": "google.pubsub_v1.types.UpdateSnapshotRequest"
+          },
+          {
+            "name": "snapshot",
+            "type": "google.pubsub_v1.types.Snapshot"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",
@@ -5554,6 +5586,14 @@
             "type": "google.pubsub_v1.types.UpdateSubscriptionRequest"
           },
           {
+            "name": "subscription",
+            "type": "google.pubsub_v1.types.Subscription"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -5628,6 +5668,14 @@
           {
             "name": "request",
             "type": "google.pubsub_v1.types.UpdateSubscriptionRequest"
+          },
+          {
+            "name": "subscription",
+            "type": "google.pubsub_v1.types.Subscription"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",

@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -1055,6 +1062,96 @@ async def test_update_topic_field_headers_async():
         "x-goog-request-params",
         "topic.name=name_value",
     ) in kw["metadata"]
+
+
+def test_update_topic_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = pubsub.Topic()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_topic(
+            topic=pubsub.Topic(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].topic
+        mock_val = pubsub.Topic(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_topic_flattened_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_topic(
+            pubsub.UpdateTopicRequest(),
+            topic=pubsub.Topic(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_topic_flattened_async():
+    client = PublisherAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = pubsub.Topic()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(pubsub.Topic())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_topic(
+            topic=pubsub.Topic(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].topic
+        mock_val = pubsub.Topic(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_topic_flattened_error_async():
+    client = PublisherAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_topic(
+            pubsub.UpdateTopicRequest(),
+            topic=pubsub.Topic(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
 
 
 @pytest.mark.parametrize(

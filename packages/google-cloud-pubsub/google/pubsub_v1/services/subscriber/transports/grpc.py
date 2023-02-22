@@ -452,9 +452,7 @@ class SubscriberGrpcTransport(SubscriberTransport):
     def pull(self) -> Callable[[pubsub.PullRequest], pubsub.PullResponse]:
         r"""Return a callable for the pull method over gRPC.
 
-        Pulls messages from the server. The server may return
-        ``UNAVAILABLE`` if there are too many concurrent pull requests
-        pending for the given subscription.
+        Pulls messages from the server.
 
         Returns:
             Callable[[~.PullRequest],
@@ -543,13 +541,12 @@ class SubscriberGrpcTransport(SubscriberTransport):
     def get_snapshot(self) -> Callable[[pubsub.GetSnapshotRequest], pubsub.Snapshot]:
         r"""Return a callable for the get snapshot method over gRPC.
 
-        Gets the configuration details of a snapshot.
-        Snapshots are used in <a
-        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
-        operations, which allow you to manage message
-        acknowledgments in bulk. That is, you can set the
-        acknowledgment state of messages in an existing
-        subscription to the state captured by a snapshot.
+        Gets the configuration details of a snapshot. Snapshots are used
+        in
+        `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
+        operations, which allow you to manage message acknowledgments in
+        bulk. That is, you can set the acknowledgment state of messages
+        in an existing subscription to the state captured by a snapshot.
 
         Returns:
             Callable[[~.GetSnapshotRequest],
@@ -650,13 +647,10 @@ class SubscriberGrpcTransport(SubscriberTransport):
         r"""Return a callable for the update snapshot method over gRPC.
 
         Updates an existing snapshot. Snapshots are used in
-        <a
-        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
-        operations, which allow
-        you to manage message acknowledgments in bulk. That is,
-        you can set the acknowledgment state of messages in an
-        existing subscription to the state captured by a
-        snapshot.
+        `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
+        operations, which allow you to manage message acknowledgments in
+        bulk. That is, you can set the acknowledgment state of messages
+        in an existing subscription to the state captured by a snapshot.
 
         Returns:
             Callable[[~.UpdateSnapshotRequest],
