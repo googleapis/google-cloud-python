@@ -225,10 +225,7 @@ class Client(ClientWithProject):
             to acquire default credentials.
     """
 
-    SCOPE = (  # type: ignore
-        "https://www.googleapis.com/auth/bigquery",
-        "https://www.googleapis.com/auth/cloud-platform",
-    )
+    SCOPE = ("https://www.googleapis.com/auth/cloud-platform",)  # type: ignore
     """The scopes required for authenticating as a BigQuery consumer."""
 
     def __init__(
