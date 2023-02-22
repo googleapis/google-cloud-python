@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.10.0](https://github.com/googleapis/python-firestore/compare/v2.9.1...v2.10.0) (2023-02-21)
+
+
+### Features
+
+* Add `OR` query support ([#689](https://github.com/googleapis/python-firestore/issues/689)) ([22af4d7](https://github.com/googleapis/python-firestore/commit/22af4d7d402fc082b6006ffc6648e2455adf8b8c))
+
+
+### Bug Fixes
+
+* Ordering in limit_to_last ([#692](https://github.com/googleapis/python-firestore/issues/692)) ([cc9dfb3](https://github.com/googleapis/python-firestore/commit/cc9dfb3947442e57cc0a5bb50198c3dbe612165a)), closes [#536](https://github.com/googleapis/python-firestore/issues/536)
+* Type hinting in collection.py ([#688](https://github.com/googleapis/python-firestore/issues/688)) ([bfb97c2](https://github.com/googleapis/python-firestore/commit/bfb97c2cc7cb00c258cef0949bb7d32dcea4631e))
+
 ## [2.9.1](https://github.com/googleapis/python-firestore/compare/v2.9.0...v2.9.1) (2023-01-20)
 
 
