@@ -4,6 +4,8 @@
 
 {% with p = proto.disambiguate('proto') %}
 {% if proto.messages|length or proto.all_enums|length %}
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 {% endif %}
