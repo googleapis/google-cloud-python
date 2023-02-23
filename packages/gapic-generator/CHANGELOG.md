@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.8.5](https://github.com/googleapis/gapic-generator-python/compare/v1.8.4...v1.8.5) (2023-02-23)
+
+
+### Bug Fixes
+
+* Fix mypy error with rest interceptors ([#1603](https://github.com/googleapis/gapic-generator-python/issues/1603)) ([c36876f](https://github.com/googleapis/gapic-generator-python/commit/c36876f65cc6105cb38282ca1a8680f9d220d0bd))
+* Fix mypy errors in rest.py ([#1599](https://github.com/googleapis/gapic-generator-python/issues/1599)) ([120f19e](https://github.com/googleapis/gapic-generator-python/commit/120f19eef34ca3d722f079683222be99931363da))
+* Resolve errors from annotating containers with non-local enums ([#1608](https://github.com/googleapis/gapic-generator-python/issues/1608)) ([73652e3](https://github.com/googleapis/gapic-generator-python/commit/73652e3b88fe30f2fca21a900b8eacbf8822d2ce))
+
 ## [1.8.4](https://github.com/googleapis/gapic-generator-python/compare/v1.8.3...v1.8.4) (2023-02-07)
 
 
