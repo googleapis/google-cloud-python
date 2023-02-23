@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/python-os-config/compare/v1.14.1...v1.15.0) (2023-02-21)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#266](https://github.com/googleapis/python-os-config/issues/266)) ([679246f](https://github.com/googleapis/python-os-config/commit/679246ff80d7768e23fbdc7375515ecd6c1684b3))
+
 ## [1.14.1](https://github.com/googleapis/python-os-config/compare/v1.14.0...v1.14.1) (2023-01-20)
 
 
