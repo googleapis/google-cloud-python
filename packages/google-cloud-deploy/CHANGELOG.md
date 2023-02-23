@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-deploy/compare/v1.6.1...v1.7.0) (2023-02-16)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#155](https://github.com/googleapis/python-deploy/issues/155)) ([3d6d5fe](https://github.com/googleapis/python-deploy/commit/3d6d5fe5c742361a9b00c4826e98d1d450743931))
+
 ## [1.6.1](https://github.com/googleapis/python-deploy/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
