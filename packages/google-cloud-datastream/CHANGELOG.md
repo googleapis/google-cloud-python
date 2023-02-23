@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-datastream/compare/v1.4.1...v1.5.0) (2023-02-17)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#158](https://github.com/googleapis/python-datastream/issues/158)) ([c96a9ad](https://github.com/googleapis/python-datastream/commit/c96a9adaaae6d43b397438e717a7a0c5b11363b8))
+
 ## [1.4.1](https://github.com/googleapis/python-datastream/compare/v1.4.0...v1.4.1) (2023-01-20)
 
 
