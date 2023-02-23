@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-org-policy/compare/v1.7.1...v1.8.0) (2023-02-21)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#205](https://github.com/googleapis/python-org-policy/issues/205)) ([0bd530d](https://github.com/googleapis/python-org-policy/commit/0bd530d0440c43f2cce5b886a5ab19aa5837904f))
+
 ## [1.7.1](https://github.com/googleapis/python-org-policy/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
