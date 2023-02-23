@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-resource-settings/compare/v1.6.1...v1.7.0) (2023-02-16)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#161](https://github.com/googleapis/python-resource-settings/issues/161)) ([6a98eb5](https://github.com/googleapis/python-resource-settings/commit/6a98eb582064c411324eb1c11e6da8e33bb14057))
+
 ## [1.6.1](https://github.com/googleapis/python-resource-settings/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
