@@ -16,6 +16,7 @@ import io
 import json
 import os
 import subprocess
+import sys
 
 import mock
 import pytest  # type: ignore
@@ -73,7 +74,7 @@ def test_get_project_id_call_error(check_output):
 
 def test__run_subprocess_ignore_stderr():
     command = [
-        "python",
+        sys.executable,
         "-c",
         "from __future__ import print_function;"
         + "import sys;"
