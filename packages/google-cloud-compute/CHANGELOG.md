@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-compute/compare/v1.10.0...v1.10.1) (2023-02-23)
+
+
+### Documentation
+
+* **README:** Improving readme with some demos and more info ([#394](https://github.com/googleapis/python-compute/issues/394)) ([7db9a9d](https://github.com/googleapis/python-compute/commit/7db9a9d1aa9f7971a59e50486c7b675c7952dcd2))
+
 ## [1.10.0](https://github.com/googleapis/python-compute/compare/v1.9.0...v1.10.0) (2023-01-20)
 
 
