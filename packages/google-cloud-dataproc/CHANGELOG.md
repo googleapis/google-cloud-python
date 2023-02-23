@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.4.0](https://github.com/googleapis/python-dataproc/compare/v5.3.0...v5.4.0) (2023-02-17)
+
+
+### Features
+
+* Add support for new Dataproc features ([67bc8a2](https://github.com/googleapis/python-dataproc/commit/67bc8a2a9b36b62c3006ee1eb873eda101624e55))
+* Add TrinoJob ([67bc8a2](https://github.com/googleapis/python-dataproc/commit/67bc8a2a9b36b62c3006ee1eb873eda101624e55))
+* Add UsageMetrics ([67bc8a2](https://github.com/googleapis/python-dataproc/commit/67bc8a2a9b36b62c3006ee1eb873eda101624e55))
+* Add UsageSnapshot ([67bc8a2](https://github.com/googleapis/python-dataproc/commit/67bc8a2a9b36b62c3006ee1eb873eda101624e55))
+* Enable "rest" transport in Python for services supporting numeric enums ([#519](https://github.com/googleapis/python-dataproc/issues/519)) ([f1a9ba7](https://github.com/googleapis/python-dataproc/commit/f1a9ba72ff14ad7d64bfb9829d1fb4d674fa1b50))
+
 ## [5.3.0](https://github.com/googleapis/python-dataproc/compare/v5.2.0...v5.3.0) (2023-01-23)
 
 
