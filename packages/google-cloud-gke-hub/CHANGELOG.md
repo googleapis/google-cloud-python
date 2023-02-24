@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-gke-hub/compare/v1.7.1...v1.8.0) (2023-02-19)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#225](https://github.com/googleapis/python-gke-hub/issues/225)) ([8085e32](https://github.com/googleapis/python-gke-hub/commit/8085e32866edf55878d5d19416a50921e29e1223))
+
 ## [1.7.1](https://github.com/googleapis/python-gke-hub/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
