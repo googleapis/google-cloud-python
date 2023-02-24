@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-essential-contacts/compare/v1.4.1...v1.5.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#167](https://github.com/googleapis/python-essential-contacts/issues/167)) ([d9a0a35](https://github.com/googleapis/python-essential-contacts/commit/d9a0a3569ffab694648e4357cd99e303dc562b8f))
+
 ## [1.4.1](https://github.com/googleapis/python-essential-contacts/compare/v1.4.0...v1.4.1) (2023-01-20)
 
 
