@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.15.0](https://github.com/googleapis/python-kms/compare/v2.14.1...v2.15.0) (2023-02-21)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#377](https://github.com/googleapis/python-kms/issues/377)) ([ae74545](https://github.com/googleapis/python-kms/commit/ae745452faea7f02ac7c4c0264b24dec2be787ee))
+
 ## [2.14.1](https://github.com/googleapis/python-kms/compare/v2.14.0...v2.14.1) (2023-01-20)
 
 
