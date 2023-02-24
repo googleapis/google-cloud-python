@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-domains/compare/v1.4.1...v1.5.0) (2023-02-19)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#195](https://github.com/googleapis/python-domains/issues/195)) ([69b69a0](https://github.com/googleapis/python-domains/commit/69b69a04ef3285d8e1812edc993cdaa4db55eb08))
+
 ## [1.4.1](https://github.com/googleapis/python-domains/compare/v1.4.0...v1.4.1) (2023-01-20)
 
 
