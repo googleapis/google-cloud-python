@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-vpc-access/compare/v1.7.1...v1.8.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#165](https://github.com/googleapis/python-vpc-access/issues/165)) ([ba2b48f](https://github.com/googleapis/python-vpc-access/commit/ba2b48f449b375bba4a3097d3a0f1fb50b6818e0))
+
 ## [1.7.1](https://github.com/googleapis/python-vpc-access/compare/v1.7.0...v1.7.1) (2023-01-23)
 
 
