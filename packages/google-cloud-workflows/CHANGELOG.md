@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-workflows/compare/v1.9.1...v1.10.0) (2023-02-17)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#241](https://github.com/googleapis/python-workflows/issues/241)) ([3fc33a3](https://github.com/googleapis/python-workflows/commit/3fc33a33d2142a6c0e89cbf79959ca2984cf474d))
+
 ## [1.9.1](https://github.com/googleapis/python-workflows/compare/v1.9.0...v1.9.1) (2023-01-23)
 
 
