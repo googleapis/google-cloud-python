@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.9.1...v1.10.0) (2023-02-16)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#339](https://github.com/googleapis/python-bigquery-reservation/issues/339)) ([50de8ca](https://github.com/googleapis/python-bigquery-reservation/commit/50de8ca394e61e0fd97b9264c660d4017c241ece))
+
 ## [1.9.1](https://github.com/googleapis/python-bigquery-reservation/compare/v1.9.0...v1.9.1) (2023-01-20)
 
 
