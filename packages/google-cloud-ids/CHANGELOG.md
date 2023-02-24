@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-ids/compare/v1.4.1...v1.5.0) (2023-02-17)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#105](https://github.com/googleapis/python-ids/issues/105)) ([f51b4b3](https://github.com/googleapis/python-ids/commit/f51b4b3a317fc7fe05ed8524f79854e6c79f0aad))
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to py_gapic_library BUILD.bazel targets ([#107](https://github.com/googleapis/python-ids/issues/107)) ([d34c23c](https://github.com/googleapis/python-ids/commit/d34c23ccb20f522dfc04d6fe94a99fc3784e26aa))
+
 ## [1.4.1](https://github.com/googleapis/python-ids/compare/v1.4.0...v1.4.1) (2023-01-20)
 
 
