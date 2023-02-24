@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-shell/compare/v1.6.1...v1.7.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#157](https://github.com/googleapis/python-shell/issues/157)) ([ab83466](https://github.com/googleapis/python-shell/commit/ab83466c220483593acaef6ef47d8813f9ebd302))
+
 ## [1.6.1](https://github.com/googleapis/python-shell/compare/v1.6.0...v1.6.1) (2023-01-23)
 
 
