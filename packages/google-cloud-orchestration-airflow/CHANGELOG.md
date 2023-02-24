@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.6.1...v1.7.0) (2023-02-17)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#163](https://github.com/googleapis/python-orchestration-airflow/issues/163)) ([43b46e2](https://github.com/googleapis/python-orchestration-airflow/commit/43b46e2beb55748987a13dcbe8b3b9e339166b25))
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to py_gapic_library BUILD.bazel targets ([#165](https://github.com/googleapis/python-orchestration-airflow/issues/165)) ([e244bd5](https://github.com/googleapis/python-orchestration-airflow/commit/e244bd5b0221d348f39fc5f5c7e95c1e8b9e15fa))
+
 ## [1.6.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
