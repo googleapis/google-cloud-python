@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.12.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.11.1...v1.12.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#263](https://github.com/googleapis/python-websecurityscanner/issues/263)) ([ba21ec2](https://github.com/googleapis/python-websecurityscanner/commit/ba21ec23b8e4aecad90713a49c5e27d74ee3e94d))
+
 ## [1.11.1](https://github.com/googleapis/python-websecurityscanner/compare/v1.11.0...v1.11.1) (2023-01-23)
 
 
