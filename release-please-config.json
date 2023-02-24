@@ -136,6 +136,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-cloud-kms-inventory": {
+            "component": "google-cloud-kms-inventory",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/kms/inventory/gapic_version.py"
+            ]
         }
     }
 }
