@@ -30,6 +30,8 @@ from google.cloud.documentai_toolbox import document
 from google.cloud import documentai
 from google.cloud import storage
 
+from google.cloud.vision import AnnotateFileResponse
+
 
 def get_bytes(file_name):
     result = []
@@ -66,6 +68,23 @@ def get_bytes_splitter_mock():
     with mock.patch.object(document, "_get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/splitter")
         yield byte_factory
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+def test_get_bytes(mock_storage):
+    client = mock_storage.Client.return_value
+    mock_bucket = mock.Mock()
+    client.Bucket.return_value = mock_bucket
+    mock_blob1 = mock.Mock(name=[])
+    mock_blob1.name.ends_with.return_value = True
+    mock_blob1.download_as_bytes.return_value = (
+        "gs://test-directory/1/test-annotations.json"
+    )
+    client.list_blobs.return_value = [mock_blob1]
+
+    actual = document._get_bytes(gcs_bucket_name="test-directory", gcs_prefix="1")
+
+    assert actual == ["gs://test-directory/1/test-annotations.json"]
 
 
 def test_get_shards_with_gcs_uri_contains_file_type():
@@ -427,3 +446,13 @@ def test_split_pdf(mock_Pdf, get_bytes_splitter_mock):
         "procurement_multi_document_pg5_restaurant_statement.pdf",
         "procurement_multi_document_pg6-7_other.pdf",
     ]
+
+
+def test_convert_document_to_annotate_file_response():
+    doc = document.Document.from_document_path(
+        document_path="tests/unit/resources/0/toolbox_invoice_test-0.json"
+    )
+
+    actual = doc.convert_document_to_annotate_file_response()
+
+    assert actual != AnnotateFileResponse()

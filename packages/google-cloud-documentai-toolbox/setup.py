@@ -52,8 +52,10 @@ setuptools.setup(
         "google-cloud-bigquery >= 3.5.0, < 4.0.0dev",
         "google-cloud-documentai >= 1.2.1, < 3.0.0dev",
         "google-cloud-storage >= 1.31.0, < 3.0.0dev",
+        "google-cloud-vision >= 2.7.0, < 4.0.0dev ",
         "numpy >= 1.18.1",
         "pikepdf >= 6.2.9, < 8.0.0",
+        "immutabledict >= 2.0.0, < 3.0.0dev",
     ),
     python_requires=">=3.7",
     classifiers=[

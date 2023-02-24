@@ -30,6 +30,12 @@ from google.cloud.documentai_toolbox import constants
 from google.cloud.documentai_toolbox.wrappers.page import Page
 from google.cloud.documentai_toolbox.wrappers.page import FormField
 from google.cloud.documentai_toolbox.wrappers.entity import Entity
+from google.cloud.documentai_toolbox.converters.converters import (
+    _convert_to_vision_annotate_file_response,
+)
+
+from google.cloud.vision import AnnotateFileResponse
+
 
 from pikepdf import Pdf
 
@@ -157,6 +163,17 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
     return shards
 
 
+def _text_from_shards(shards: List[documentai.Document]) -> str:
+    total_text = ""
+    for shard in shards:
+        if total_text == "":
+            total_text = shard.text
+        elif total_text != shard.text:
+            total_text += shard.text
+
+    return total_text
+
+
 def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
     r"""Prints a tree of filenames in Cloud Storage folder.
 
@@ -242,10 +259,12 @@ class Document:
 
     pages: List[Page] = dataclasses.field(init=False, repr=False)
     entities: List[Entity] = dataclasses.field(init=False, repr=False)
+    text: str = dataclasses.field(init=False, repr=False)
 
     def __post_init__(self):
         self.pages = _pages_from_shards(shards=self.shards)
         self.entities = _entities_from_shards(shards=self.shards)
+        self.text = _text_from_shards(shards=self.shards)
 
     @classmethod
     def from_document_path(
@@ -474,3 +493,13 @@ class Document:
                 )
                 output_files.append(output_filename)
         return output_files
+
+    def convert_document_to_annotate_file_response(self) -> AnnotateFileResponse:
+        """Convert OCR data from Document proto to AnnotateFileResponse proto (Vision API).
+
+        Args:
+            None.
+        Returns:
+            AnnotateFileResponse proto with a TextAnnotation per page.
+        """
+        return _convert_to_vision_annotate_file_response(self.text, self.pages)

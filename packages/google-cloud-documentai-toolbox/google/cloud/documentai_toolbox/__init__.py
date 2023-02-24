@@ -24,8 +24,13 @@ from .wrappers import (
     entity,
 )
 
+from .converters import (
+    converters,
+)
+
 __all__ = (
     document,
     page,
     entity,
+    converters,
 )
