@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-tpu/compare/v1.7.2...v1.8.0) (2023-02-17)
+
+
+### Features
+
+* **v2alpha1:** Add AcceleratorConfig ([#214](https://github.com/googleapis/python-tpu/issues/214)) ([77b7f38](https://github.com/googleapis/python-tpu/commit/77b7f38d2413036442c0092224896102a1c3e54b))
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to py_gapic_library BUILD.bazel targets ([#216](https://github.com/googleapis/python-tpu/issues/216)) ([b45515e](https://github.com/googleapis/python-tpu/commit/b45515eb6f82e71c2420ddc6aadff331000bcc64))
+
 ## [1.7.2](https://github.com/googleapis/python-tpu/compare/v1.7.1...v1.7.2) (2023-01-30)
 
 
