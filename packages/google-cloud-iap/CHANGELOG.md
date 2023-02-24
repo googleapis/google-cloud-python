@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-iap/compare/v1.8.1...v1.9.0) (2023-02-19)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#157](https://github.com/googleapis/python-iap/issues/157)) ([15be642](https://github.com/googleapis/python-iap/commit/15be6424ef580e8f02855a7f939a331a42236cd1))
+
 ## [1.8.1](https://github.com/googleapis/python-iap/compare/v1.8.0...v1.8.1) (2023-01-20)
 
 
