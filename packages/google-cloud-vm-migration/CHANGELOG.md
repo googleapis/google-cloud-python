@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-vm-migration/compare/v1.5.1...v1.6.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#113](https://github.com/googleapis/python-vm-migration/issues/113)) ([f6d145d](https://github.com/googleapis/python-vm-migration/commit/f6d145d8ae1b287f55a381436273ffaa717381b7))
+
 ## [1.5.1](https://github.com/googleapis/python-vm-migration/compare/v1.5.0...v1.5.1) (2023-01-23)
 
 
