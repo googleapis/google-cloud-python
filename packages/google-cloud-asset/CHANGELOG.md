@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.18.0](https://github.com/googleapis/python-asset/compare/v3.17.1...v3.18.0) (2023-02-19)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#549](https://github.com/googleapis/python-asset/issues/549)) ([e6bd01b](https://github.com/googleapis/python-asset/commit/e6bd01b917e1a42157e8a0d8ea05de79462b02c7))
+
 ## [3.17.1](https://github.com/googleapis/python-asset/compare/v3.17.0...v3.17.1) (2023-01-20)
 
 
