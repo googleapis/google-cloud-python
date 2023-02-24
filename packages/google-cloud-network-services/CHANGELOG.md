@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-network-services/compare/v0.4.1...v0.5.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#70](https://github.com/googleapis/python-network-services/issues/70)) ([ccfdcec](https://github.com/googleapis/python-network-services/commit/ccfdcecec0f5d187260d3753039ddb0090b39346))
+
 ## [0.4.1](https://github.com/googleapis/python-network-services/compare/v0.4.0...v0.4.1) (2023-01-20)
 
 
