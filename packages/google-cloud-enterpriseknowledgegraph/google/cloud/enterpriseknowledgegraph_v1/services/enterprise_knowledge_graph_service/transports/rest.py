@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -418,7 +418,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("CancelEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -506,7 +506,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("CreateEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -606,7 +606,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("DeleteEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -685,7 +685,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("GetEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -776,7 +776,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("ListEntityReconciliationJobs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -869,7 +869,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("Lookup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "ids": "",
         }
 
@@ -961,7 +961,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("LookupPublicKg")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "ids": "",
         }
 
@@ -1055,7 +1055,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("Search")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "query": "",
         }
 
@@ -1147,7 +1147,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("SearchPublicKg")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "query": "",
         }
 

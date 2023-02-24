@@ -13,9 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
-import google.geo.type.types
+from google.geo.type import viewport_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -80,7 +82,7 @@ class Route(proto.Message):
         warnings (MutableSequence[str]):
             An array of warnings to show when displaying
             the route.
-        viewport (google.geo.type.types.Viewport):
+        viewport (google.geo.type.viewport_pb2.Viewport):
             The viewport bounding box of the polyline.
         travel_advisory (google.maps.routing_v2.types.RouteTravelAdvisory):
             Additional information about the route.
@@ -135,10 +137,10 @@ class Route(proto.Message):
         proto.STRING,
         number=7,
     )
-    viewport: google.geo.type.types.Viewport = proto.Field(
+    viewport: viewport_pb2.Viewport = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=google.geo.type.types.Viewport,
+        message=viewport_pb2.Viewport,
     )
     travel_advisory: "RouteTravelAdvisory" = proto.Field(
         proto.MESSAGE,

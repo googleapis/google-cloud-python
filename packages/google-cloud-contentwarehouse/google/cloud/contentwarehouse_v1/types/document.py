@@ -13,9 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
-import google.cloud.documentai_v1.types
+from google.cloud.documentai.v1 import document_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
@@ -110,7 +112,7 @@ class Document(proto.Message):
             Other document format, such as PPTX, XLXS
 
             This field is a member of `oneof`_ ``structured_content``.
-        cloud_ai_document (google.cloud.documentai_v1.types.Document):
+        cloud_ai_document (google.cloud.documentai.v1.document_pb2.Document):
             Document AI format to save the structured
             content, including OCR.
 
@@ -181,11 +183,11 @@ class Document(proto.Message):
         number=15,
         oneof="structured_content",
     )
-    cloud_ai_document: google.cloud.documentai_v1.types.Document = proto.Field(
+    cloud_ai_document: document_pb2.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="structured_content",
-        message=google.cloud.documentai_v1.types.Document,
+        message=document_pb2.Document,
     )
     structured_content_uri: str = proto.Field(
         proto.STRING,

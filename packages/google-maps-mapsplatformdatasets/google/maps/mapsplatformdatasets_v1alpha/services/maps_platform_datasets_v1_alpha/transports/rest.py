@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -363,7 +363,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
         def __hash__(self):
             return hash("CreateDataset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -460,7 +460,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
         def __hash__(self):
             return hash("DeleteDataset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -536,7 +536,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
         def __hash__(self):
             return hash("DeleteDatasetVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -614,7 +614,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
         def __hash__(self):
             return hash("GetDataset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -702,7 +702,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
         def __hash__(self):
             return hash("ListDatasets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -792,7 +792,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
         def __hash__(self):
             return hash("ListDatasetVersions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -884,7 +884,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
         def __hash__(self):
             return hash("UpdateDatasetMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
