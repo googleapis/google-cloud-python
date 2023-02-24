@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.9.0](https://github.com/googleapis/python-phishingprotection/compare/v1.8.1...v1.9.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#241](https://github.com/googleapis/python-phishingprotection/issues/241)) ([b5161ea](https://github.com/googleapis/python-phishingprotection/commit/b5161ea2b7e8aab4d686f1d654a2acad2c51a433))
+
 ## [1.8.1](https://github.com/googleapis/python-phishingprotection/compare/v1.8.0...v1.8.1) (2023-01-23)
 
 
