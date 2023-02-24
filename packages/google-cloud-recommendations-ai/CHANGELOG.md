@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/googleapis/python-recommendations-ai/compare/v0.10.1...v0.10.2) (2023-02-17)
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to py_gapic_library BUILD.bazel targets ([#215](https://github.com/googleapis/python-recommendations-ai/issues/215)) ([4423cbb](https://github.com/googleapis/python-recommendations-ai/commit/4423cbb1143ac4c1ebe688b0719c3058bf052c21))
+
 ## [0.10.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.10.0...v0.10.1) (2023-01-20)
 
 
