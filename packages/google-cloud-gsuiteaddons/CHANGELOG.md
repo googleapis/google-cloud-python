@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-gsuiteaddons/compare/v0.2.1...v0.3.0) (2023-02-19)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#22](https://github.com/googleapis/python-gsuiteaddons/issues/22)) ([3e96be1](https://github.com/googleapis/python-gsuiteaddons/commit/3e96be1efbd9b39f40db4ceb46bf7c228ab2de73))
+
 ## [0.2.1](https://github.com/googleapis/python-gsuiteaddons/compare/v0.2.0...v0.2.1) (2023-01-20)
 
 
