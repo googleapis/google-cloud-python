@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-eventarc/compare/v1.8.1...v1.9.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#194](https://github.com/googleapis/python-eventarc/issues/194)) ([1b7840c](https://github.com/googleapis/python-eventarc/commit/1b7840c6bfa128b5b43a4554c8b6d20bf20b0dca))
+
 ## [1.8.1](https://github.com/googleapis/python-eventarc/compare/v1.8.0...v1.8.1) (2023-01-20)
 
 
