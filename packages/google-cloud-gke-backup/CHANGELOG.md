@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/python-gke-backup/compare/v0.4.1...v0.4.2) (2023-02-17)
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to py_gapic_library BUILD.bazel targets ([#54](https://github.com/googleapis/python-gke-backup/issues/54)) ([d5f4bbd](https://github.com/googleapis/python-gke-backup/commit/d5f4bbd6a6ab6d8d7db65dbbf52ffab59b5645da))
+
 ## [0.4.1](https://github.com/googleapis/python-gke-backup/compare/v0.4.0...v0.4.1) (2023-01-20)
 
 
