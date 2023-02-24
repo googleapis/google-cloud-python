@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.11.0](https://github.com/googleapis/python-webrisk/compare/v1.10.1...v1.11.0) (2023-02-09)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#256](https://github.com/googleapis/python-webrisk/issues/256)) ([0bc759d](https://github.com/googleapis/python-webrisk/commit/0bc759d1ecff83656a08f8ea11e0712b8522cc7c))
+
 ## [1.10.1](https://github.com/googleapis/python-webrisk/compare/v1.10.0...v1.10.1) (2023-01-23)
 
 
