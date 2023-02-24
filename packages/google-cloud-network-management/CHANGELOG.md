@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-network-management/compare/v1.7.1...v1.8.0) (2023-02-17)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#173](https://github.com/googleapis/python-network-management/issues/173)) ([db69894](https://github.com/googleapis/python-network-management/commit/db69894712bdc50ec543f7391bf65817e567f7e7))
+
 ## [1.7.1](https://github.com/googleapis/python-network-management/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
