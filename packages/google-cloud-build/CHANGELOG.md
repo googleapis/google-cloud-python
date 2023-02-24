@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.13.0](https://github.com/googleapis/python-cloudbuild/compare/v3.12.0...v3.13.0) (2023-02-17)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([0c4d84f](https://github.com/googleapis/python-cloudbuild/commit/0c4d84f6bec2e1097b140ad167785236ff52d11c))
+
+
+### Bug Fixes
+
+* Remove empty v2.CloudBuild definition ([0c4d84f](https://github.com/googleapis/python-cloudbuild/commit/0c4d84f6bec2e1097b140ad167785236ff52d11c))
+
 ## [3.12.0](https://github.com/googleapis/python-cloudbuild/compare/v3.11.1...v3.12.0) (2023-02-04)
 
 
