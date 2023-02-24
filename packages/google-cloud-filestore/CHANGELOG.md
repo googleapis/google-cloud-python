@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-filestore/compare/v1.5.0...v1.5.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to py_gapic_library BUILD.bazel targets ([#133](https://github.com/googleapis/python-filestore/issues/133)) ([029b59d](https://github.com/googleapis/python-filestore/commit/029b59db52734ebc120e87f64db84ce45d437304))
+
 ## [1.5.0](https://github.com/googleapis/python-filestore/compare/v1.4.1...v1.5.0) (2023-02-09)
 
 
