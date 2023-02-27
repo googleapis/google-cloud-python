@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -407,7 +407,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("CreateBrand")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -505,7 +505,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("CreateIdentityAwareProxyClient")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -610,7 +610,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("DeleteIdentityAwareProxyClient")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -692,7 +692,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("GetBrand")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -781,7 +781,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("GetIdentityAwareProxyClient")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -874,7 +874,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("ListBrands")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -960,7 +960,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("ListIdentityAwareProxyClients")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1053,7 +1053,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         def __hash__(self):
             return hash("ResetIdentityAwareProxyClientSecret")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
