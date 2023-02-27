@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -375,7 +375,7 @@ class DataprocMetastoreFederationRestTransport(DataprocMetastoreFederationTransp
         def __hash__(self):
             return hash("CreateFederation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "federationId": "",
         }
 
@@ -475,7 +475,7 @@ class DataprocMetastoreFederationRestTransport(DataprocMetastoreFederationTransp
         def __hash__(self):
             return hash("DeleteFederation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -564,7 +564,7 @@ class DataprocMetastoreFederationRestTransport(DataprocMetastoreFederationTransp
         def __hash__(self):
             return hash("GetFederation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -652,7 +652,7 @@ class DataprocMetastoreFederationRestTransport(DataprocMetastoreFederationTransp
         def __hash__(self):
             return hash("ListFederations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -740,7 +740,7 @@ class DataprocMetastoreFederationRestTransport(DataprocMetastoreFederationTransp
         def __hash__(self):
             return hash("UpdateFederation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 

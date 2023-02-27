@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -808,7 +808,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("AlterMetadataResourceLocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -909,7 +909,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("CreateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "backupId": "",
         }
 
@@ -1009,7 +1009,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("CreateMetadataImport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "metadataImportId": "",
         }
 
@@ -1111,7 +1111,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("CreateService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "serviceId": "",
         }
 
@@ -1211,7 +1211,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("DeleteBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1300,7 +1300,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("DeleteService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1389,7 +1389,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("ExportMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1487,7 +1487,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("GetBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1575,7 +1575,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("GetMetadataImport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1667,7 +1667,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("GetService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1757,7 +1757,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("ListBackups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1847,7 +1847,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("ListMetadataImports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1939,7 +1939,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("ListServices")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2029,7 +2029,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("MoveTableToDatabase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2129,7 +2129,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("QueryMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2227,7 +2227,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("RemoveIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2328,7 +2328,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("RestoreService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2424,7 +2424,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("UpdateMetadataImport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -2526,7 +2526,7 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         def __hash__(self):
             return hash("UpdateService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
