@@ -32,7 +32,7 @@ from google.longrunning import operations_pb2
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -471,7 +471,7 @@ class FirestoreRestInterceptor:
         self,
         request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -479,9 +479,7 @@ class FirestoreRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -494,7 +492,7 @@ class FirestoreRestInterceptor:
         self,
         request: operations_pb2.DeleteOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -502,9 +500,7 @@ class FirestoreRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_operation(
-        self, response: operations_pb2.DeleteOperationRequest
-    ) -> None:
+    def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -517,7 +513,7 @@ class FirestoreRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -526,7 +522,7 @@ class FirestoreRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -540,7 +536,7 @@ class FirestoreRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -549,7 +545,7 @@ class FirestoreRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -667,7 +663,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("BatchGetDocuments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -767,7 +763,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("BatchWrite")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -866,7 +862,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("BeginTransaction")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -967,7 +963,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("Commit")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1066,7 +1062,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("CreateDocument")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1165,7 +1161,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("DeleteDocument")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1241,7 +1237,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("GetDocument")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1331,7 +1327,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("ListCollectionIds")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1437,7 +1433,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("ListDocuments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1547,7 +1543,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("PartitionQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1651,7 +1647,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("Rollback")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1736,7 +1732,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("RunAggregationQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1841,7 +1837,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("RunQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1942,7 +1938,7 @@ class FirestoreRestTransport(FirestoreTransport):
         def __hash__(self):
             return hash("UpdateDocument")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
