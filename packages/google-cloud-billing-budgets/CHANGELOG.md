@@ -1,4 +1,11 @@
 # Changelog
+## [1.10.0](https://github.com/googleapis/python-billingbudgets/compare/v1.9.1...v1.10.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#264](https://github.com/googleapis/python-billingbudgets/issues/264)) ([b3aa835](https://github.com/googleapis/python-billingbudgets/commit/b3aa835362da8302a44ea54a36341d26a13ffc2b))
+
 ## [1.9.1](https://github.com/googleapis/python-billingbudgets/compare/v1.9.0...v1.9.1) (2023-01-20)
 
 
