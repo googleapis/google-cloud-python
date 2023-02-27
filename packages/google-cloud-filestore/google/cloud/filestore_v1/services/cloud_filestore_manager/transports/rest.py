@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -603,7 +603,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("CreateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "backupId": "",
         }
 
@@ -701,7 +701,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("CreateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "instanceId": "",
         }
 
@@ -801,7 +801,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("DeleteBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -888,7 +888,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("DeleteInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -977,7 +977,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("GetBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1065,7 +1065,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("GetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1153,7 +1153,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("ListBackups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1241,7 +1241,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("ListInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1329,7 +1329,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("RestoreInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1430,7 +1430,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         def __hash__(self):
             return hash("UpdateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
