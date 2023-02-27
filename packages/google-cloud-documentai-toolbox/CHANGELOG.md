@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.2.1-alpha...v0.3.0-alpha) (2023-02-27)
+
+
+### Features
+
+* Added docproto to AnnotateFile convertor ([#63](https://github.com/googleapis/python-documentai-toolbox/issues/63)) ([f6dd89a](https://github.com/googleapis/python-documentai-toolbox/commit/f6dd89ae2d12a990439358d0aa8f94566fba28bb))
+
 ## [0.2.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.2.0-alpha...v0.2.1-alpha) (2023-02-15)
 
 
