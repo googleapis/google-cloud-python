@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-access-approval/compare/v1.10.1...v1.11.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#272](https://github.com/googleapis/python-access-approval/issues/272)) ([cac87bc](https://github.com/googleapis/python-access-approval/commit/cac87bccb7ed81a95cfe76e3fb2fdb2baacb28ca))
+
 ## [1.10.1](https://github.com/googleapis/python-access-approval/compare/v1.10.0...v1.10.1) (2023-01-20)
 
 
