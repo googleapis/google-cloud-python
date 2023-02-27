@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -1032,7 +1032,7 @@ class DataformRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1041,7 +1041,7 @@ class DataformRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -1055,7 +1055,7 @@ class DataformRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1064,7 +1064,7 @@ class DataformRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -1176,7 +1176,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("CancelWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1262,7 +1262,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("CommitWorkspaceChanges")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1347,7 +1347,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("CreateCompilationResult")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1446,7 +1446,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("CreateRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "repositoryId": "",
         }
 
@@ -1545,7 +1545,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("CreateWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1645,7 +1645,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("CreateWorkspace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "workspaceId": "",
         }
 
@@ -1744,7 +1744,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("DeleteRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1820,7 +1820,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("DeleteWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1897,7 +1897,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("DeleteWorkspace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1973,7 +1973,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("FetchFileDiff")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "path": "",
         }
 
@@ -2061,7 +2061,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("FetchFileGitStatuses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2149,7 +2149,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("FetchGitAheadBehind")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2237,7 +2237,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("FetchRemoteBranches")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2325,7 +2325,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("GetCompilationResult")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2415,7 +2415,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("GetRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2501,7 +2501,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("GetWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2591,7 +2591,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("GetWorkspace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2677,7 +2677,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("InstallNpmPackages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2774,7 +2774,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("ListCompilationResults")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2862,7 +2862,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("ListRepositories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2950,7 +2950,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("ListWorkflowInvocations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3038,7 +3038,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("ListWorkspaces")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3124,7 +3124,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("MakeDirectory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3219,7 +3219,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("MoveDirectory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3314,7 +3314,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("MoveFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3409,7 +3409,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("PullGitCommits")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3494,7 +3494,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("PushGitCommits")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3579,7 +3579,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("QueryCompilationResultActions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3668,7 +3668,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("QueryDirectoryContents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3756,7 +3756,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("QueryWorkflowInvocationActions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3845,7 +3845,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("ReadFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "path": "",
         }
 
@@ -3933,7 +3933,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("RemoveDirectory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4018,7 +4018,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("RemoveFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4101,7 +4101,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("ResetWorkspaceChanges")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4186,7 +4186,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("UpdateRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4283,7 +4283,7 @@ class DataformRestTransport(DataformTransport):
         def __hash__(self):
             return hash("WriteFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
