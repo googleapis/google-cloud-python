@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -682,7 +682,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("CreateApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "apiId": "",
         }
 
@@ -782,7 +782,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("CreateApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "apiConfigId": "",
         }
 
@@ -884,7 +884,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("CreateGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "gatewayId": "",
         }
 
@@ -984,7 +984,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("DeleteApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1073,7 +1073,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("DeleteApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1164,7 +1164,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("DeleteGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1253,7 +1253,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("GetApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1343,7 +1343,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("GetApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1434,7 +1434,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("GetGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1528,7 +1528,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("ListApiConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1620,7 +1620,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("ListApis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1710,7 +1710,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("ListGateways")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1800,7 +1800,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("UpdateApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1898,7 +1898,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("UpdateApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1998,7 +1998,7 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         def __hash__(self):
             return hash("UpdateGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
