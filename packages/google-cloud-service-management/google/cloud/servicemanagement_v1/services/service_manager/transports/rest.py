@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -618,7 +618,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("CreateService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -716,7 +716,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("CreateServiceConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -852,7 +852,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("CreateServiceRollout")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -952,7 +952,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("DeleteService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1041,7 +1041,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("GenerateConfigReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1142,7 +1142,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("GetService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1231,7 +1231,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("GetServiceConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1362,7 +1362,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("GetServiceRollout")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1458,7 +1458,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("ListServiceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1550,7 +1550,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("ListServiceRollouts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "filter": "",
         }
 
@@ -1719,7 +1719,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("SubmitConfigSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1819,7 +1819,7 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         def __hash__(self):
             return hash("UndeleteService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
