@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -291,7 +291,7 @@ class WebRiskServiceRestTransport(WebRiskServiceTransport):
         def __hash__(self):
             return hash("ComputeThreatListDiff")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "threatType": {},
             "constraints": {},
         }
@@ -382,7 +382,7 @@ class WebRiskServiceRestTransport(WebRiskServiceTransport):
         def __hash__(self):
             return hash("CreateSubmission")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -483,7 +483,7 @@ class WebRiskServiceRestTransport(WebRiskServiceTransport):
         def __hash__(self):
             return hash("SearchHashes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "threatTypes": {},
         }
 
@@ -573,7 +573,7 @@ class WebRiskServiceRestTransport(WebRiskServiceTransport):
         def __hash__(self):
             return hash("SearchUris")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "uri": "",
             "threatTypes": {},
         }
