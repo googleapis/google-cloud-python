@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-certificate-manager/compare/v1.3.1...v1.4.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#109](https://github.com/googleapis/python-certificate-manager/issues/109)) ([d63d706](https://github.com/googleapis/python-certificate-manager/commit/d63d7068b82568b45c66f2000d73658ae66c8424))
+
 ## [1.3.1](https://github.com/googleapis/python-certificate-manager/compare/v1.3.0...v1.3.1) (2023-01-20)
 
 
