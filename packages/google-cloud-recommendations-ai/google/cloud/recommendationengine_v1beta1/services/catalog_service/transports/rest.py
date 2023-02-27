@@ -31,7 +31,7 @@ from google.api_core import operations_v1
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -402,7 +402,7 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
         def __hash__(self):
             return hash("CreateCatalogItem")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -503,7 +503,7 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
         def __hash__(self):
             return hash("DeleteCatalogItem")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -581,7 +581,7 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
         def __hash__(self):
             return hash("GetCatalogItem")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -673,7 +673,7 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
         def __hash__(self):
             return hash("ImportCatalogItems")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -771,7 +771,7 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
         def __hash__(self):
             return hash("ListCatalogItems")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -863,7 +863,7 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
         def __hash__(self):
             return hash("UpdateCatalogItem")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
