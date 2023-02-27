@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -710,7 +710,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("CreateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "clusterId": "",
         }
 
@@ -808,7 +808,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("CreateNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "nodePoolId": "",
         }
 
@@ -908,7 +908,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("CreateVpnConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "vpnConnectionId": "",
         }
 
@@ -1008,7 +1008,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("DeleteCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1095,7 +1095,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("DeleteNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1184,7 +1184,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("DeleteVpnConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1273,7 +1273,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("GenerateAccessToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1363,7 +1363,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("GetCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1451,7 +1451,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("GetMachine")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1540,7 +1540,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("GetNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1629,7 +1629,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("GetVpnConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1717,7 +1717,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("ListClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1803,7 +1803,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("ListMachines")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1889,7 +1889,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("ListNodePools")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1975,7 +1975,7 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         def __hash__(self):
             return hash("ListVpnConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
