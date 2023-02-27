@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -1503,7 +1503,7 @@ class VmMigrationRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1512,7 +1512,7 @@ class VmMigrationRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -1526,7 +1526,7 @@ class VmMigrationRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1535,7 +1535,7 @@ class VmMigrationRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -1549,7 +1549,7 @@ class VmMigrationRestInterceptor:
         self,
         request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1557,9 +1557,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -1572,7 +1570,7 @@ class VmMigrationRestInterceptor:
         self,
         request: operations_pb2.DeleteOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1580,9 +1578,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_operation(
-        self, response: operations_pb2.DeleteOperationRequest
-    ) -> None:
+    def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -1595,7 +1591,7 @@ class VmMigrationRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1604,7 +1600,7 @@ class VmMigrationRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -1618,7 +1614,7 @@ class VmMigrationRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1627,7 +1623,7 @@ class VmMigrationRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -1792,7 +1788,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("AddGroupMigration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1892,7 +1888,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CancelCloneJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1992,7 +1988,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CancelCutoverJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2092,7 +2088,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateCloneJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "cloneJobId": "",
         }
 
@@ -2194,7 +2190,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateCutoverJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "cutoverJobId": "",
         }
 
@@ -2296,7 +2292,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateDatacenterConnector")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "datacenterConnectorId": "",
         }
 
@@ -2399,7 +2395,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "groupId": "",
         }
 
@@ -2499,7 +2495,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateMigratingVm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "migratingVmId": "",
         }
 
@@ -2601,7 +2597,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "sourceId": "",
         }
 
@@ -2701,7 +2697,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateTargetProject")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "targetProjectId": "",
         }
 
@@ -2803,7 +2799,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("CreateUtilizationReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "utilizationReportId": "",
         }
 
@@ -2905,7 +2901,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("DeleteDatacenterConnector")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2997,7 +2993,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("DeleteGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3086,7 +3082,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("DeleteMigratingVm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3177,7 +3173,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("DeleteSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3266,7 +3262,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("DeleteTargetProject")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3357,7 +3353,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("DeleteUtilizationReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3448,7 +3444,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("FetchInventory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3538,7 +3534,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("FinalizeMigration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3638,7 +3634,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetCloneJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3739,7 +3735,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetCutoverJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3833,7 +3829,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetDatacenterConnector")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3930,7 +3926,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4021,7 +4017,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetMigratingVm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4114,7 +4110,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetReplicationCycle")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4207,7 +4203,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4299,7 +4295,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetTargetProject")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4392,7 +4388,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("GetUtilizationReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4485,7 +4481,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListCloneJobs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -4577,7 +4573,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListCutoverJobs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -4671,7 +4667,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListDatacenterConnectors")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -4766,7 +4762,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListGroups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -4858,7 +4854,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListMigratingVms")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -4952,7 +4948,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListReplicationCycles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -5046,7 +5042,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListSources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -5138,7 +5134,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListTargetProjects")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -5232,7 +5228,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ListUtilizationReports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "pageToken": "",
         }
 
@@ -5326,7 +5322,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("PauseMigration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5424,7 +5420,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("RemoveGroupMigration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5524,7 +5520,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("ResumeMigration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5624,7 +5620,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("StartMigration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5722,7 +5718,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("UpdateGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5820,7 +5816,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("UpdateMigratingVm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5920,7 +5916,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("UpdateSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -6018,7 +6014,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("UpdateTargetProject")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -6118,7 +6114,7 @@ class VmMigrationRestTransport(VmMigrationTransport):
         def __hash__(self):
             return hash("UpgradeAppliance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
