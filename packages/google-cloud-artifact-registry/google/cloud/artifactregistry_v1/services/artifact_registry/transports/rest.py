@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -1121,7 +1121,7 @@ class ArtifactRegistryRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1130,7 +1130,7 @@ class ArtifactRegistryRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -1144,7 +1144,7 @@ class ArtifactRegistryRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1153,7 +1153,7 @@ class ArtifactRegistryRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -1167,7 +1167,7 @@ class ArtifactRegistryRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1176,7 +1176,7 @@ class ArtifactRegistryRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -1334,7 +1334,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("CreateRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1521,7 +1521,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("DeletePackage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1608,7 +1608,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("DeleteRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1836,7 +1836,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetDockerImage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1932,7 +1932,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2021,7 +2021,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2181,7 +2181,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetMavenArtifact")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2271,7 +2271,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetNpmPackage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2359,7 +2359,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetPackage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2447,7 +2447,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetProjectSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2539,7 +2539,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetPythonPackage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2629,7 +2629,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2875,7 +2875,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("GetVPCSCConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3143,7 +3143,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("ListDockerImages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3233,7 +3233,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("ListFiles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3319,7 +3319,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("ListMavenArtifacts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3409,7 +3409,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("ListNpmPackages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3499,7 +3499,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("ListPackages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3585,7 +3585,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("ListPythonPackages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3675,7 +3675,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("ListRepositories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3915,7 +3915,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4084,7 +4084,7 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         def __hash__(self):
             return hash("TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
