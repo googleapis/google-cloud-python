@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-artifact-registry/compare/v1.7.0...v1.8.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#224](https://github.com/googleapis/python-artifact-registry/issues/224)) ([c06b139](https://github.com/googleapis/python-artifact-registry/commit/c06b13969006b365fe7e4450ca86146ee79701c0))
+
 ## [1.7.0](https://github.com/googleapis/python-artifact-registry/compare/v1.6.1...v1.7.0) (2023-02-04)
 
 
