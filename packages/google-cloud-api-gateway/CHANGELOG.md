@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-api-gateway/compare/v1.6.1...v1.7.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#202](https://github.com/googleapis/python-api-gateway/issues/202)) ([bff081a](https://github.com/googleapis/python-api-gateway/commit/bff081a911ed79585259319c42855e112d9c8920))
+
 ## [1.6.1](https://github.com/googleapis/python-api-gateway/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
