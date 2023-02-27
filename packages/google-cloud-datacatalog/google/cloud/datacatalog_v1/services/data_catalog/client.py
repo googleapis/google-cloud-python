@@ -48,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.datacatalog_v1.services.data_catalog import pagers
