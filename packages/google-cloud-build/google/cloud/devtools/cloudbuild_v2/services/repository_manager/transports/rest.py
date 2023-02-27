@@ -35,7 +35,7 @@ from google.longrunning import operations_pb2
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -490,7 +490,7 @@ class RepositoryManagerRestInterceptor:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -498,9 +498,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iam_policy(
-        self, response: iam_policy_pb2.GetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the response
@@ -513,7 +511,7 @@ class RepositoryManagerRestInterceptor:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -521,9 +519,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_set_iam_policy(
-        self, response: iam_policy_pb2.SetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
@@ -536,7 +532,7 @@ class RepositoryManagerRestInterceptor:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -545,7 +541,7 @@ class RepositoryManagerRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsRequest
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -559,7 +555,7 @@ class RepositoryManagerRestInterceptor:
         self,
         request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -567,9 +563,7 @@ class RepositoryManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -582,7 +576,7 @@ class RepositoryManagerRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -591,7 +585,7 @@ class RepositoryManagerRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -744,7 +738,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("BatchCreateRepositories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -844,7 +838,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("CreateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "connectionId": "",
         }
 
@@ -944,7 +938,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("CreateRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "repositoryId": "",
         }
 
@@ -1044,7 +1038,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("DeleteConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1133,7 +1127,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("DeleteRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1222,7 +1216,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("FetchLinkableRepositories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1315,7 +1309,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("FetchReadToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1414,7 +1408,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("FetchReadWriteToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1515,7 +1509,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("GetConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1606,7 +1600,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("GetRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1696,7 +1690,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("ListConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1788,7 +1782,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("ListRepositories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1880,7 +1874,7 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
         def __hash__(self):
             return hash("UpdateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
