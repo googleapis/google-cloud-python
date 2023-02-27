@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -975,7 +975,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("CreateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1071,7 +1071,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("CreateBackupPlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "backupPlanId": "",
         }
 
@@ -1171,7 +1171,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("CreateRestore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "restoreId": "",
         }
 
@@ -1269,7 +1269,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("CreateRestorePlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "restorePlanId": "",
         }
 
@@ -1371,7 +1371,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("DeleteBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1458,7 +1458,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("DeleteBackupPlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1547,7 +1547,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("DeleteRestore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1634,7 +1634,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("DeleteRestorePlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1725,7 +1725,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("GetBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1819,7 +1819,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("GetBackupPlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1907,7 +1907,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("GetRestore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1997,7 +1997,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("GetRestorePlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2089,7 +2089,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("GetVolumeBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2183,7 +2183,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("GetVolumeRestore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2274,7 +2274,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("ListBackupPlans")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2362,7 +2362,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("ListBackups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2448,7 +2448,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("ListRestorePlans")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2538,7 +2538,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("ListRestores")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2624,7 +2624,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("ListVolumeBackups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2716,7 +2716,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("ListVolumeRestores")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2808,7 +2808,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("UpdateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2904,7 +2904,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("UpdateBackupPlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3002,7 +3002,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("UpdateRestore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3098,7 +3098,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
         def __hash__(self):
             return hash("UpdateRestorePlan")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
