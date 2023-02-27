@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -683,7 +683,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("ConfigureContactSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -782,7 +782,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("ConfigureDnsSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -880,7 +880,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("ConfigureManagementSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -979,7 +979,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("DeleteRegistration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1068,7 +1068,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("ExportRegistration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1166,7 +1166,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("GetRegistration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1276,7 +1276,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("ListRegistrations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1364,7 +1364,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("RegisterDomain")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1460,7 +1460,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("ResetAuthorizationCode")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1557,7 +1557,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("RetrieveAuthorizationCode")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1646,7 +1646,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("RetrieveRegisterParameters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "domainName": "",
         }
 
@@ -1737,7 +1737,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("RetrieveTransferParameters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "domainName": "",
         }
 
@@ -1828,7 +1828,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("SearchDomains")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "query": "",
         }
 
@@ -1916,7 +1916,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("TransferDomain")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2012,7 +2012,7 @@ class DomainsRestTransport(DomainsTransport):
         def __hash__(self):
             return hash("UpdateRegistration")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
