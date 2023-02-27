@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -1291,7 +1291,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1300,7 +1300,7 @@ class NetworkServicesRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -1314,7 +1314,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1323,7 +1323,7 @@ class NetworkServicesRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -1337,7 +1337,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1345,9 +1345,7 @@ class NetworkServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iam_policy(
-        self, response: iam_policy_pb2.GetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the response
@@ -1360,7 +1358,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1368,9 +1366,7 @@ class NetworkServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_set_iam_policy(
-        self, response: iam_policy_pb2.SetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
@@ -1383,7 +1379,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1392,7 +1388,7 @@ class NetworkServicesRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsRequest
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -1406,7 +1402,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1414,9 +1410,7 @@ class NetworkServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -1429,7 +1423,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: operations_pb2.DeleteOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1437,9 +1431,7 @@ class NetworkServicesRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_operation(
-        self, response: operations_pb2.DeleteOperationRequest
-    ) -> None:
+    def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -1452,7 +1444,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1461,7 +1453,7 @@ class NetworkServicesRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -1475,7 +1467,7 @@ class NetworkServicesRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1484,7 +1476,7 @@ class NetworkServicesRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -1647,7 +1639,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateEndpointPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "endpointPolicyId": "",
         }
 
@@ -1749,7 +1741,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "gatewayId": "",
         }
 
@@ -1849,7 +1841,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateGrpcRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "grpcRouteId": "",
         }
 
@@ -1951,7 +1943,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateHttpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "httpRouteId": "",
         }
 
@@ -2051,7 +2043,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateMesh")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "meshId": "",
         }
 
@@ -2151,7 +2143,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateServiceBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "serviceBindingId": "",
         }
 
@@ -2253,7 +2245,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateTcpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "tcpRouteId": "",
         }
 
@@ -2353,7 +2345,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("CreateTlsRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "tlsRouteId": "",
         }
 
@@ -2453,7 +2445,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteEndpointPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2544,7 +2536,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2633,7 +2625,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteGrpcRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2724,7 +2716,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteHttpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2815,7 +2807,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteMesh")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2904,7 +2896,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteServiceBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2995,7 +2987,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteTcpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3086,7 +3078,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("DeleteTlsRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3177,7 +3169,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetEndpointPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3273,7 +3265,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3369,7 +3361,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetGrpcRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3460,7 +3452,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetHttpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3551,7 +3543,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetMesh")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3643,7 +3635,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetServiceBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3736,7 +3728,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetTcpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3827,7 +3819,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("GetTlsRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3918,7 +3910,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListEndpointPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4010,7 +4002,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListGateways")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4100,7 +4092,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListGrpcRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4192,7 +4184,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListHttpRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4284,7 +4276,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListMeshes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4374,7 +4366,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListServiceBindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4466,7 +4458,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListTcpRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4556,7 +4548,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("ListTlsRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4646,7 +4638,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("UpdateEndpointPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4746,7 +4738,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("UpdateGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4844,7 +4836,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("UpdateGrpcRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4944,7 +4936,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("UpdateHttpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5044,7 +5036,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("UpdateMesh")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5142,7 +5134,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("UpdateTcpRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5242,7 +5234,7 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
         def __hash__(self):
             return hash("UpdateTlsRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
