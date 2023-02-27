@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -1192,7 +1192,7 @@ class ContactCenterInsightsRestInterceptor:
         self,
         request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1200,9 +1200,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -1215,7 +1213,7 @@ class ContactCenterInsightsRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1224,7 +1222,7 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -1238,7 +1236,7 @@ class ContactCenterInsightsRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1247,7 +1245,7 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -1406,7 +1404,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("BulkAnalyzeConversations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1509,7 +1507,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("CalculateIssueModelStats")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1604,7 +1602,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("CalculateStats")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1694,7 +1692,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("CreateAnalysis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1790,7 +1788,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("CreateConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1887,7 +1885,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("CreateIssueModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1985,7 +1983,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("CreatePhraseMatcher")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2082,7 +2080,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("CreateView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2177,7 +2175,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("DeleteAnalysis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2251,7 +2249,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("DeleteConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2327,7 +2325,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("DeleteIssue")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2401,7 +2399,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("DeleteIssueModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2490,7 +2488,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("DeletePhraseMatcher")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2568,7 +2566,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("DeleteView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2642,7 +2640,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("DeployIssueModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2740,7 +2738,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("ExportInsightsData")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2838,7 +2836,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("GetAnalysis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2924,7 +2922,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("GetConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3012,7 +3010,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("GetIssue")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3098,7 +3096,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("GetIssueModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3184,7 +3182,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("GetPhraseMatcher")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3274,7 +3272,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("GetSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3362,7 +3360,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("GetView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3448,7 +3446,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("IngestConversations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3546,7 +3544,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("ListAnalyses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3632,7 +3630,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("ListConversations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3722,7 +3720,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("ListIssueModels")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3810,7 +3808,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("ListIssues")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3896,7 +3894,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("ListPhraseMatchers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3986,7 +3984,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("ListViews")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4072,7 +4070,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("UndeployIssueModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4172,7 +4170,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("UpdateConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4269,7 +4267,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("UpdateIssue")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4364,7 +4362,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("UpdateIssueModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4461,7 +4459,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("UpdatePhraseMatcher")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4560,7 +4558,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("UpdateSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -4659,7 +4657,7 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def __hash__(self):
             return hash("UpdateView")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
