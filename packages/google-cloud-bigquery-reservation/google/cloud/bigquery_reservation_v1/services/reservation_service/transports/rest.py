@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -795,7 +795,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("CreateAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -899,7 +899,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("CreateCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1013,7 +1013,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("CreateReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1114,7 +1114,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("DeleteAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1194,7 +1194,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("DeleteCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1273,7 +1273,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("DeleteReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1351,7 +1351,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("GetBiReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1441,7 +1441,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("GetCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1545,7 +1545,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("GetReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1635,7 +1635,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("ListAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1727,7 +1727,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("ListCapacityCommitments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1819,7 +1819,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("ListReservations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2014,7 +2014,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("MoveAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2121,7 +2121,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("SearchAllAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2215,7 +2215,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("SearchAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2309,7 +2309,7 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         def __hash__(self):
             return hash("SplitCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
