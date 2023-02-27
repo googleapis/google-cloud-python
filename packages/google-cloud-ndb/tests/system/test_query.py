@@ -2010,3 +2010,29 @@ def test_query_updates_cache(dispose_of, client_context):
 
         # If there is a cache hit, we'll get back the same object, not just a copy
         assert key.get() is retrieved
+
+
+def test_query_with_explicit_use_cache_updates_cache(dispose_of, client_context):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    entity = SomeKind(foo=42)
+    key = entity.put(use_cache=False)
+    dispose_of(key._key)
+    assert len(client_context.cache) == 0
+
+    eventually(lambda: SomeKind.query().fetch(use_cache=True), length_equals(1))
+    assert len(client_context.cache) == 1
+
+
+def test_query_with_use_cache_false_does_not_update_cache(dispose_of, client_context):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    entity = SomeKind(foo=42)
+    key = entity.put(use_cache=False)
+    dispose_of(key._key)
+    assert len(client_context.cache) == 0
+
+    eventually(lambda: SomeKind.query().fetch(use_cache=False), length_equals(1))
+    assert len(client_context.cache) == 0

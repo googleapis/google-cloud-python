@@ -601,6 +601,36 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
         assert not cache_value
 
 
+def test_insert_entity_with_use_global_cache_false(dispose_of, client_context):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    global_cache = global_cache_module._InProcessGlobalCache()
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+
+        entity = SomeKind(foo=42, bar="none")
+        key = entity.put(use_global_cache=False)
+        dispose_of(key._key)
+        cache_key = _cache.global_cache_key(key._key)
+        cache_value = global_cache.get([cache_key])[0]
+        assert not cache_value
+
+        retrieved = key.get(use_global_cache=False)
+        assert retrieved.foo == 42
+        assert retrieved.bar == "none"
+
+        cache_value = global_cache.get([cache_key])[0]
+        assert not cache_value
+
+        entity.foo = 43
+        entity.put(use_global_cache=False)
+
+        cache_value = global_cache.get([cache_key])[0]
+        assert not cache_value
+
+
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
 def test_insert_entity_with_redis_cache(dispose_of, redis_context):
     class SomeKind(ndb.Model):
@@ -1873,3 +1903,42 @@ def test_structured_property_with_nested_compressed_json_property_using_legacy_f
         dispose_of(key._key)
 
         assert key.get().sub_model.data["test"] == 1
+
+
+def test_put_updates_cache(client_context, dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    client_context.set_cache_policy(None)  # Use default
+
+    entity = SomeKind(foo=42)
+    key = entity.put()
+    assert len(client_context.cache) == 1
+    dispose_of(key._key)
+
+
+def test_put_with_use_cache_true_updates_cache(client_context, dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    client_context.set_cache_policy(None)  # Use default
+
+    entity = SomeKind(foo=42)
+    key = entity.put(use_cache=True)
+    assert len(client_context.cache) == 1
+    assert client_context.cache[key] is entity
+
+    dispose_of(key._key)
+
+
+def test_put_with_use_cache_false_does_not_update_cache(client_context, dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    client_context.set_cache_policy(None)  # Use default
+
+    entity = SomeKind(foo=42)
+    key = entity.put(use_cache=False)
+    assert len(client_context.cache) == 0
+
+    dispose_of(key._key)

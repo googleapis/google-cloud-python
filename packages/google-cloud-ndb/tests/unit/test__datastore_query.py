@@ -1501,6 +1501,31 @@ class MockResultSet:
 
 class Test_Result:
     @staticmethod
+    def test_constructor_defaults():
+        result = _datastore_query._Result(
+            result_type=None,
+            result_pb=query_pb2.EntityResult(),
+        )
+        assert result.order_by is None
+        assert result._query_options is None
+
+    @staticmethod
+    def test_constructor_order_by():
+        order = query_module.PropertyOrder("foo")
+        result = _datastore_query._Result(
+            result_type=None, result_pb=query_pb2.EntityResult(), order_by=[order]
+        )
+        assert result.order_by == [order]
+
+    @staticmethod
+    def test_constructor_query_options():
+        options = query_module.QueryOptions(use_cache=False)
+        result = _datastore_query._Result(
+            result_type=None, result_pb=query_pb2.EntityResult(), query_options=options
+        )
+        assert result._query_options == options
+
+    @staticmethod
     def test_total_ordering():
         def result(foo, bar=0, baz=""):
             return _datastore_query._Result(
@@ -1660,8 +1685,14 @@ class Test_Result:
             mock.Mock(entity=entity_pb, cursor=b"123", spec=("entity", "cursor")),
         )
 
+        context = context_module.get_context()
+
+        assert len(context.cache) == 0
         assert result.entity() is entity
         model._entity_from_protobuf.assert_called_once_with(entity_pb)
+
+        # Regression test for #752: ensure cache is updated after querying
+        assert len(context.cache) == 1
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1702,6 +1733,57 @@ class Test_Result:
                 mock.Mock(entity=entity, cursor=b"123", spec=("entity", "cursor")),
             )
             assert result.entity() is entity
+
+            # Regression test for #752: ensure cache does not grow (i.e. use up memory)
+            assert len(context.cache) == 0
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_entity_full_entity_no_cache_via_cache_options(model):
+        context = context_module.get_context()
+        with context.new().use():
+            key_pb = entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+            )
+            entity = mock.Mock(key=key_pb)
+            model._entity_from_protobuf.return_value = entity
+            result = _datastore_query._Result(
+                _datastore_query.RESULT_TYPE_FULL,
+                mock.Mock(entity=entity, cursor=b"123", spec=("entity", "cursor")),
+                query_options=query_module.QueryOptions(use_cache=False),
+            )
+            assert result.entity() is entity
+
+            # Regression test for #752: ensure cache does not grow (i.e. use up memory)
+            assert len(context.cache) == 0
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_entity_full_entity_cache_options_true(model):
+        key_pb = entity_pb2.Key(
+            partition_id=entity_pb2.PartitionId(project_id="testing"),
+            path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+        )
+        entity_pb = mock.Mock(key=key_pb)
+        entity = mock.Mock(key=key_module.Key("ThisKind", 42))
+        model._entity_from_protobuf.return_value = entity
+        result = _datastore_query._Result(
+            _datastore_query.RESULT_TYPE_FULL,
+            mock.Mock(entity=entity_pb, cursor=b"123", spec=("entity", "cursor")),
+            query_options=query_module.QueryOptions(use_cache=True),
+        )
+
+        context = context_module.get_context()
+
+        assert len(context.cache) == 0
+        assert result.entity() is entity
+        model._entity_from_protobuf.assert_called_once_with(entity_pb)
+
+        # Regression test for #752: ensure cache is updated after querying
+        assert len(context.cache) == 1
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

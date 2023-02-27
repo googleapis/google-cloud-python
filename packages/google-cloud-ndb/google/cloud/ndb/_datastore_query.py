@@ -375,7 +375,7 @@ class _QueryIteratorImpl(QueryIterator):
         self._start_cursor = query.start_cursor
         self._index = 0
         self._batch = [
-            _Result(result_type, result_pb, query.order_by)
+            _Result(result_type, result_pb, query.order_by, query_options=query)
             for result_pb in response.batch.entity_results
         ]
 
@@ -755,16 +755,20 @@ class _Result(object):
         order_by (Optional[Sequence[query.PropertyOrder]]): Ordering for the
             query. Used to merge sorted result sets while maintaining sort
             order.
+        query_options (Optional[QueryOptions]): Other query_options.
+            use_cache is the only supported option.
     """
 
     _key = None
 
-    def __init__(self, result_type, result_pb, order_by=None):
+    def __init__(self, result_type, result_pb, order_by=None, query_options=None):
         self.result_type = result_type
         self.result_pb = result_pb
         self.order_by = order_by
 
         self.cursor = Cursor(result_pb.cursor)
+
+        self._query_options = query_options
 
     def __lt__(self, other):
         """For total ordering."""
@@ -854,7 +858,7 @@ class _Result(object):
                 will cause `None` to be recorded in the cache.
         """
         key = self.key()
-        if context._use_cache(key):
+        if context._use_cache(key, self._query_options):
             try:
                 return context.cache.get_and_validate(key)
             except KeyError:
@@ -880,7 +884,7 @@ class _Result(object):
             if entity is _KEY_NOT_IN_CACHE:
                 # entity not in cache, create one, and then add it to cache
                 entity = model._entity_from_protobuf(self.result_pb.entity)
-                if context._use_cache(entity.key):
+                if context._use_cache(entity.key, self._query_options):
                     context.cache[entity.key] = entity
             return entity
 
