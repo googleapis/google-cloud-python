@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -343,7 +343,7 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
         def __hash__(self):
             return hash("ComputeContacts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -443,7 +443,7 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
         def __hash__(self):
             return hash("CreateContact")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -552,7 +552,7 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
         def __hash__(self):
             return hash("DeleteContact")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -636,7 +636,7 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
         def __hash__(self):
             return hash("GetContact")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -734,7 +734,7 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
         def __hash__(self):
             return hash("ListContacts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -832,7 +832,7 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
         def __hash__(self):
             return hash("SendTestMessage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -929,7 +929,7 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
         def __hash__(self):
             return hash("UpdateContact")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
