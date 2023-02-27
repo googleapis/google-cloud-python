@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -796,7 +796,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("AbandonInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -911,7 +911,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("ApplyUpdatesToInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1029,7 +1029,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("CreateInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1144,7 +1144,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1246,7 +1246,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("DeleteInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1361,7 +1361,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("DeletePerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1479,7 +1479,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1575,7 +1575,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1686,7 +1686,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1775,7 +1775,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("ListErrors")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1864,7 +1864,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("ListManagedInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1957,7 +1957,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("ListPerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2052,7 +2052,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2163,7 +2163,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("PatchPerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2281,7 +2281,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("RecreateInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2396,7 +2396,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("Resize")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "size": 0,
         }
 
@@ -2500,7 +2500,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("SetInstanceTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2615,7 +2615,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("SetTargetPools")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2730,7 +2730,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         def __hash__(self):
             return hash("UpdatePerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):

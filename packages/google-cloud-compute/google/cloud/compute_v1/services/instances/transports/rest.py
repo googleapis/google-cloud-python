@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -1535,7 +1535,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("AddAccessConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "networkInterface": "",
         }
 
@@ -1650,7 +1650,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("AddResourcePolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1763,7 +1763,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1850,7 +1850,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("AttachDisk")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1961,7 +1961,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("BulkInsert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2072,7 +2072,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2174,7 +2174,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("DeleteAccessConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "accessConfig": "",
             "networkInterface": "",
         }
@@ -2281,7 +2281,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("DetachDisk")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "deviceName": "",
         }
 
@@ -2385,7 +2385,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2476,7 +2476,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("GetEffectiveFirewalls")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "networkInterface": "",
         }
 
@@ -2567,7 +2567,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("GetGuestAttributes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2656,7 +2656,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2784,7 +2784,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("GetScreenshot")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2871,7 +2871,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("GetSerialPortOutput")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2960,7 +2960,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("GetShieldedInstanceIdentity")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3050,7 +3050,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3161,7 +3161,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3247,7 +3247,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("ListReferrers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3336,7 +3336,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("RemoveResourcePolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3449,7 +3449,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Reset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3551,7 +3551,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Resume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3653,7 +3653,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SendDiagnosticInterrupt")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3745,7 +3745,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetDeletionProtection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3849,7 +3849,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetDiskAutoDelete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "autoDelete": False,
             "deviceName": "",
         }
@@ -3956,7 +3956,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4093,7 +4093,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetLabels")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4204,7 +4204,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetMachineResources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4317,7 +4317,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetMachineType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4430,7 +4430,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4541,7 +4541,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetMinCpuPlatform")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4654,7 +4654,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetScheduling")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4765,7 +4765,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetServiceAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4878,7 +4878,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetShieldedInstanceIntegrityPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4997,7 +4997,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SetTags")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5108,7 +5108,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("SimulateMaintenanceEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5213,7 +5213,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Start")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5315,7 +5315,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("StartWithEncryptionKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5428,7 +5428,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Stop")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5529,7 +5529,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Suspend")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5631,7 +5631,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5729,7 +5729,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("Update")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5840,7 +5840,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("UpdateAccessConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "networkInterface": "",
         }
 
@@ -5955,7 +5955,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("UpdateDisplayDevice")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -6068,7 +6068,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("UpdateNetworkInterface")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "networkInterface": "",
         }
 
@@ -6183,7 +6183,7 @@ class InstancesRestTransport(InstancesTransport):
         def __hash__(self):
             return hash("UpdateShieldedInstanceConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
