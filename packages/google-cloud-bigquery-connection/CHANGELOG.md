@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.9.1...v1.10.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#294](https://github.com/googleapis/python-bigquery-connection/issues/294)) ([e4cbcab](https://github.com/googleapis/python-bigquery-connection/commit/e4cbcabfa70da4e2ab4cc7b11a56831263400940))
+
 ## [1.9.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.9.0...v1.9.1) (2023-01-20)
 
 
