@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-billing/compare/v1.9.1...v1.10.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#237](https://github.com/googleapis/python-billing/issues/237)) ([872e1dd](https://github.com/googleapis/python-billing/commit/872e1dd4a72e9a7c479e9da33324bb15c5cb9f70))
+
 ## [1.9.1](https://github.com/googleapis/python-billing/compare/v1.9.0...v1.9.1) (2023-01-20)
 
 
