@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -712,7 +712,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("CreateAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "authorizationPolicyId": "",
         }
 
@@ -817,7 +817,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("CreateClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "clientTlsPolicyId": "",
         }
 
@@ -919,7 +919,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("CreateServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "serverTlsPolicyId": "",
         }
 
@@ -1021,7 +1021,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("DeleteAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1115,7 +1115,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("DeleteClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1206,7 +1206,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("DeleteServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1297,7 +1297,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("GetAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1394,7 +1394,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("GetClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1490,7 +1490,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("GetServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1587,7 +1587,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("ListAuthorizationPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1682,7 +1682,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("ListClientTlsPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1774,7 +1774,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("ListServerTlsPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1866,7 +1866,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("UpdateAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1969,7 +1969,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("UpdateClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2069,7 +2069,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):
             return hash("UpdateServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
