@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -877,7 +877,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("CreateConnectionProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "connectionProfileId": "",
         }
 
@@ -977,7 +977,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("CreatePrivateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "privateConnectionId": "",
         }
 
@@ -1077,7 +1077,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("CreateRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "routeId": "",
         }
 
@@ -1175,7 +1175,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("CreateStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "streamId": "",
         }
 
@@ -1273,7 +1273,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("DeleteConnectionProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1362,7 +1362,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("DeletePrivateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1451,7 +1451,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("DeleteRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1538,7 +1538,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("DeleteStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1625,7 +1625,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("DiscoverConnectionProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1812,7 +1812,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("FetchStaticIps")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1904,7 +1904,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("GetConnectionProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1992,7 +1992,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("GetPrivateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2084,7 +2084,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("GetRoute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2174,7 +2174,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("GetStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2260,7 +2260,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("ListConnectionProfiles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2348,7 +2348,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("ListPrivateConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2436,7 +2436,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("ListRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2522,7 +2522,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("ListStreams")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2608,7 +2608,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("UpdateConnectionProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2706,7 +2706,7 @@ class DatastreamRestTransport(DatastreamTransport):
         def __hash__(self):
             return hash("UpdateStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
