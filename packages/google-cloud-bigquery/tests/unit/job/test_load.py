@@ -392,6 +392,8 @@ class TestLoadJob(_Base):
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
+        self.assertEqual(len(job.connection_properties), 0)
+        self.assertIsNone(job.create_session)
 
     def test_from_api_with_encryption(self):
         self._setUpConstants()

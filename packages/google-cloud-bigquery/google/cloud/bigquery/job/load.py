@@ -28,6 +28,7 @@ from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery.job.base import _AsyncJob
 from google.cloud.bigquery.job.base import _JobConfig
 from google.cloud.bigquery.job.base import _JobReference
+from google.cloud.bigquery.query import ConnectionProperty
 
 
 class LoadJobConfig(_JobConfig):
@@ -121,6 +122,25 @@ class LoadJobConfig(_JobConfig):
             self._del_sub_prop("clustering")
 
     @property
+    def connection_properties(self) -> List[ConnectionProperty]:
+        """Connection properties.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.connection_properties
+
+        .. versionadded:: 3.7.0
+        """
+        resource = self._get_sub_prop("connectionProperties", [])
+        return [ConnectionProperty.from_api_repr(prop) for prop in resource]
+
+    @connection_properties.setter
+    def connection_properties(self, value: Iterable[ConnectionProperty]):
+        self._set_sub_prop(
+            "connectionProperties",
+            [prop.to_api_repr() for prop in value],
+        )
+
+    @property
     def create_disposition(self):
         """Optional[google.cloud.bigquery.job.CreateDisposition]: Specifies behavior
         for creating tables.
@@ -133,6 +153,27 @@ class LoadJobConfig(_JobConfig):
     @create_disposition.setter
     def create_disposition(self, value):
         self._set_sub_prop("createDisposition", value)
+
+    @property
+    def create_session(self) -> Optional[bool]:
+        """[Preview] If :data:`True`, creates a new session, where
+        :attr:`~google.cloud.bigquery.job.LoadJob.session_info` will contain a
+        random server generated session id.
+
+        If :data:`False`, runs load job with an existing ``session_id`` passed in
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.connection_properties`,
+        otherwise runs load job in non-session mode.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.create_session
+
+        .. versionadded:: 3.7.0
+        """
+        return self._get_sub_prop("createSession")
+
+    @create_session.setter
+    def create_session(self, value: Optional[bool]):
+        self._set_sub_prop("createSession", value)
 
     @property
     def decimal_target_types(self) -> Optional[FrozenSet[str]]:
@@ -630,11 +671,29 @@ class LoadJob(_AsyncJob):
         return self._configuration.autodetect
 
     @property
+    def connection_properties(self) -> List[ConnectionProperty]:
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.connection_properties`.
+
+        .. versionadded:: 3.7.0
+        """
+        return self._configuration.connection_properties
+
+    @property
     def create_disposition(self):
         """See
         :attr:`google.cloud.bigquery.job.LoadJobConfig.create_disposition`.
         """
         return self._configuration.create_disposition
+
+    @property
+    def create_session(self) -> Optional[bool]:
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.create_session`.
+
+        .. versionadded:: 3.7.0
+        """
+        return self._configuration.create_session
 
     @property
     def encoding(self):
