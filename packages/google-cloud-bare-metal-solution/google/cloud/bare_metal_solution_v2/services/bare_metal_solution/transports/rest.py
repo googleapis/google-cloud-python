@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -812,7 +812,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("DetachLun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -910,7 +910,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("GetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -998,7 +998,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("GetLun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1088,7 +1088,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("GetNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1176,7 +1176,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("GetNfsShare")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1264,7 +1264,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("GetVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1352,7 +1352,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ListInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1442,7 +1442,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ListLuns")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1532,7 +1532,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ListNetworks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1622,7 +1622,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ListNetworkUsage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1710,7 +1710,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ListNfsShares")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1800,7 +1800,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ListVolumes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1890,7 +1890,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ResetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1986,7 +1986,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("ResizeVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2082,7 +2082,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("StartInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2178,7 +2178,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("StopInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2274,7 +2274,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("UpdateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2372,7 +2372,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("UpdateNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2470,7 +2470,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("UpdateNfsShare")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2570,7 +2570,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         def __hash__(self):
             return hash("UpdateVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
