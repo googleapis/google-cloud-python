@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type import viewport_pb2  # type: ignore
+import google.geo.type.types  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -50,7 +50,7 @@ class Geocode(proto.Message):
             the returned address will match the original.
         plus_code (google.maps.addressvalidation_v1.types.PlusCode):
             The plus code corresponding to the ``location``.
-        bounds (google.geo.type.viewport_pb2.Viewport):
+        bounds (google.geo.type.types.Viewport):
             The bounds of the geocoded place.
         feature_size_meters (float):
             The size of the geocoded place, in meters.
@@ -79,10 +79,10 @@ class Geocode(proto.Message):
         number=2,
         message="PlusCode",
     )
-    bounds: viewport_pb2.Viewport = proto.Field(
+    bounds: google.geo.type.types.Viewport = proto.Field(
         proto.MESSAGE,
         number=4,
-        message=viewport_pb2.Viewport,
+        message=google.geo.type.types.Viewport,
     )
     feature_size_meters: float = proto.Field(
         proto.FLOAT,
