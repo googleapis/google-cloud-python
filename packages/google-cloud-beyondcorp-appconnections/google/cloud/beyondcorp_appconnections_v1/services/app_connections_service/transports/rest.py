@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -283,7 +283,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -292,7 +292,7 @@ class AppConnectionsServiceRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -306,7 +306,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -315,7 +315,7 @@ class AppConnectionsServiceRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -329,7 +329,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -337,9 +337,7 @@ class AppConnectionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iam_policy(
-        self, response: iam_policy_pb2.GetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the response
@@ -352,7 +350,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -360,9 +358,7 @@ class AppConnectionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_iam_policy(
-        self, response: iam_policy_pb2.SetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
@@ -375,7 +371,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -384,7 +380,7 @@ class AppConnectionsServiceRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsRequest
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -398,7 +394,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -406,9 +402,7 @@ class AppConnectionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -421,7 +415,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: operations_pb2.DeleteOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -429,9 +423,7 @@ class AppConnectionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_operation(
-        self, response: operations_pb2.DeleteOperationRequest
-    ) -> None:
+    def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -444,7 +436,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -453,7 +445,7 @@ class AppConnectionsServiceRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -467,7 +459,7 @@ class AppConnectionsServiceRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -476,7 +468,7 @@ class AppConnectionsServiceRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -654,7 +646,7 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
         def __hash__(self):
             return hash("CreateAppConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -754,7 +746,7 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
         def __hash__(self):
             return hash("DeleteAppConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -845,7 +837,7 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
         def __hash__(self):
             return hash("GetAppConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -943,7 +935,7 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
         def __hash__(self):
             return hash("ListAppConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1035,7 +1027,7 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
         def __hash__(self):
             return hash("ResolveAppConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "appConnectorId": "",
         }
 
@@ -1131,7 +1123,7 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
         def __hash__(self):
             return hash("UpdateAppConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
