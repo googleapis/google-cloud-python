@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -544,7 +544,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("CancelPatchJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -651,7 +651,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("CreatePatchDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "patchDeploymentId": "",
         }
 
@@ -758,7 +758,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("DeletePatchDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -836,7 +836,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("ExecutePatchJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -946,7 +946,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("GetPatchDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1042,7 +1042,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("GetPatchJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1140,7 +1140,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("ListPatchDeployments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1232,7 +1232,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("ListPatchJobInstanceDetails")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1325,7 +1325,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("ListPatchJobs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1415,7 +1415,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("PausePatchDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1520,7 +1520,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("ResumePatchDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1625,7 +1625,7 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
         def __hash__(self):
             return hash("UpdatePatchDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):

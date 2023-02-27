@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -690,7 +690,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("CreateOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "osPolicyAssignmentId": "",
         }
 
@@ -795,7 +795,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("DeleteOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -889,7 +889,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("GetInstanceOSPoliciesCompliance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1003,7 +1003,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("GetInventory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1101,7 +1101,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("GetOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1203,7 +1203,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("GetOSPolicyAssignmentReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1300,7 +1300,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("GetVulnerabilityReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1397,7 +1397,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("ListInstanceOSPoliciesCompliances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1501,7 +1501,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("ListInventories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1595,7 +1595,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("ListOSPolicyAssignmentReports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1697,7 +1697,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("ListOSPolicyAssignmentRevisions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1797,7 +1797,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("ListOSPolicyAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1892,7 +1892,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("ListVulnerabilityReports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1987,7 +1987,7 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         def __hash__(self):
             return hash("UpdateOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
