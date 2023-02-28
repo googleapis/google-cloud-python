@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -30,8 +32,11 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import grpc
@@ -39,6 +44,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.retail_v2.services.catalog_service import (
     CatalogServiceAsyncClient,
@@ -100,6 +107,7 @@ def test__get_default_mtls_endpoint():
     [
         (CatalogServiceClient, "grpc"),
         (CatalogServiceAsyncClient, "grpc_asyncio"),
+        (CatalogServiceClient, "rest"),
     ],
 )
 def test_catalog_service_client_from_service_account_info(client_class, transport_name):
@@ -113,7 +121,11 @@ def test_catalog_service_client_from_service_account_info(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("retail.googleapis.com:443")
+        assert client.transport._host == (
+            "retail.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://retail.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -121,6 +133,7 @@ def test_catalog_service_client_from_service_account_info(client_class, transpor
     [
         (transports.CatalogServiceGrpcTransport, "grpc"),
         (transports.CatalogServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CatalogServiceRestTransport, "rest"),
     ],
 )
 def test_catalog_service_client_service_account_always_use_jwt(
@@ -146,6 +159,7 @@ def test_catalog_service_client_service_account_always_use_jwt(
     [
         (CatalogServiceClient, "grpc"),
         (CatalogServiceAsyncClient, "grpc_asyncio"),
+        (CatalogServiceClient, "rest"),
     ],
 )
 def test_catalog_service_client_from_service_account_file(client_class, transport_name):
@@ -166,13 +180,18 @@ def test_catalog_service_client_from_service_account_file(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("retail.googleapis.com:443")
+        assert client.transport._host == (
+            "retail.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://retail.googleapis.com"
+        )
 
 
 def test_catalog_service_client_get_transport_class():
     transport = CatalogServiceClient.get_transport_class()
     available_transports = [
         transports.CatalogServiceGrpcTransport,
+        transports.CatalogServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -189,6 +208,7 @@ def test_catalog_service_client_get_transport_class():
             transports.CatalogServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CatalogServiceClient, transports.CatalogServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -334,6 +354,8 @@ def test_catalog_service_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (CatalogServiceClient, transports.CatalogServiceRestTransport, "rest", "true"),
+        (CatalogServiceClient, transports.CatalogServiceRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -533,6 +555,7 @@ def test_catalog_service_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.CatalogServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CatalogServiceClient, transports.CatalogServiceRestTransport, "rest"),
     ],
 )
 def test_catalog_service_client_client_options_scopes(
@@ -573,6 +596,7 @@ def test_catalog_service_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (CatalogServiceClient, transports.CatalogServiceRestTransport, "rest", None),
     ],
 )
 def test_catalog_service_client_client_options_credentials_file(
@@ -3466,6 +3490,2904 @@ async def test_replace_catalog_attribute_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.ListCatalogsRequest,
+        dict,
+    ],
+)
+def test_list_catalogs_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog_service.ListCatalogsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog_service.ListCatalogsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_catalogs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCatalogsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_catalogs_rest_required_fields(
+    request_type=catalog_service.ListCatalogsRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_catalogs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_catalogs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog_service.ListCatalogsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog_service.ListCatalogsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_catalogs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_catalogs_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_catalogs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_catalogs_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_list_catalogs"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_list_catalogs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.ListCatalogsRequest.pb(
+            catalog_service.ListCatalogsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog_service.ListCatalogsResponse.to_json(
+            catalog_service.ListCatalogsResponse()
+        )
+
+        request = catalog_service.ListCatalogsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog_service.ListCatalogsResponse()
+
+        client.list_catalogs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_catalogs_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.ListCatalogsRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_catalogs(request)
+
+
+def test_list_catalogs_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog_service.ListCatalogsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog_service.ListCatalogsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_catalogs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/catalogs" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_catalogs_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_catalogs(
+            catalog_service.ListCatalogsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_catalogs_rest_pager(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            catalog_service.ListCatalogsResponse(
+                catalogs=[
+                    catalog.Catalog(),
+                    catalog.Catalog(),
+                    catalog.Catalog(),
+                ],
+                next_page_token="abc",
+            ),
+            catalog_service.ListCatalogsResponse(
+                catalogs=[],
+                next_page_token="def",
+            ),
+            catalog_service.ListCatalogsResponse(
+                catalogs=[
+                    catalog.Catalog(),
+                ],
+                next_page_token="ghi",
+            ),
+            catalog_service.ListCatalogsResponse(
+                catalogs=[
+                    catalog.Catalog(),
+                    catalog.Catalog(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            catalog_service.ListCatalogsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_catalogs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, catalog.Catalog) for i in results)
+
+        pages = list(client.list_catalogs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.UpdateCatalogRequest,
+        dict,
+    ],
+)
+def test_update_catalog_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "catalog": {"name": "projects/sample1/locations/sample2/catalogs/sample3"}
+    }
+    request_init["catalog"] = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3",
+        "display_name": "display_name_value",
+        "product_level_config": {
+            "ingestion_product_type": "ingestion_product_type_value",
+            "merchant_center_product_id_field": "merchant_center_product_id_field_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_catalog.Catalog(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_catalog.Catalog.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_catalog(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_catalog.Catalog)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_update_catalog_rest_required_fields(
+    request_type=catalog_service.UpdateCatalogRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_catalog._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_catalog._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcr_catalog.Catalog()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcr_catalog.Catalog.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_catalog(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_catalog_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_catalog._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("catalog",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_catalog_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_update_catalog"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_update_catalog"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.UpdateCatalogRequest.pb(
+            catalog_service.UpdateCatalogRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcr_catalog.Catalog.to_json(gcr_catalog.Catalog())
+
+        request = catalog_service.UpdateCatalogRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcr_catalog.Catalog()
+
+        client.update_catalog(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_catalog_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.UpdateCatalogRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "catalog": {"name": "projects/sample1/locations/sample2/catalogs/sample3"}
+    }
+    request_init["catalog"] = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3",
+        "display_name": "display_name_value",
+        "product_level_config": {
+            "ingestion_product_type": "ingestion_product_type_value",
+            "merchant_center_product_id_field": "merchant_center_product_id_field_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_catalog(request)
+
+
+def test_update_catalog_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_catalog.Catalog()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "catalog": {"name": "projects/sample1/locations/sample2/catalogs/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            catalog=gcr_catalog.Catalog(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_catalog.Catalog.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_catalog(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{catalog.name=projects/*/locations/*/catalogs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_catalog_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_catalog(
+            catalog_service.UpdateCatalogRequest(),
+            catalog=gcr_catalog.Catalog(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_catalog_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.SetDefaultBranchRequest,
+        dict,
+    ],
+)
+def test_set_default_branch_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"catalog": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_default_branch(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_default_branch_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_set_default_branch"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = catalog_service.SetDefaultBranchRequest.pb(
+            catalog_service.SetDefaultBranchRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = catalog_service.SetDefaultBranchRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.set_default_branch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_set_default_branch_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.SetDefaultBranchRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"catalog": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_default_branch(request)
+
+
+def test_set_default_branch_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            catalog="catalog_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_default_branch(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{catalog=projects/*/locations/*/catalogs/*}:setDefaultBranch"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_default_branch_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_default_branch(
+            catalog_service.SetDefaultBranchRequest(),
+            catalog="catalog_value",
+        )
+
+
+def test_set_default_branch_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.GetDefaultBranchRequest,
+        dict,
+    ],
+)
+def test_get_default_branch_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"catalog": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog_service.GetDefaultBranchResponse(
+            branch="branch_value",
+            note="note_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog_service.GetDefaultBranchResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_default_branch(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog_service.GetDefaultBranchResponse)
+    assert response.branch == "branch_value"
+    assert response.note == "note_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_default_branch_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_get_default_branch"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_get_default_branch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.GetDefaultBranchRequest.pb(
+            catalog_service.GetDefaultBranchRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog_service.GetDefaultBranchResponse.to_json(
+            catalog_service.GetDefaultBranchResponse()
+        )
+
+        request = catalog_service.GetDefaultBranchRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog_service.GetDefaultBranchResponse()
+
+        client.get_default_branch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_default_branch_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.GetDefaultBranchRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"catalog": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_default_branch(request)
+
+
+def test_get_default_branch_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog_service.GetDefaultBranchResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            catalog="catalog_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog_service.GetDefaultBranchResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_default_branch(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{catalog=projects/*/locations/*/catalogs/*}:getDefaultBranch"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_default_branch_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_default_branch(
+            catalog_service.GetDefaultBranchRequest(),
+            catalog="catalog_value",
+        )
+
+
+def test_get_default_branch_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.GetCompletionConfigRequest,
+        dict,
+    ],
+)
+def test_get_completion_config_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.CompletionConfig(
+            name="name_value",
+            matching_order="matching_order_value",
+            max_suggestions=1632,
+            min_prefix_length=1810,
+            auto_learning=True,
+            last_suggestions_import_operation="last_suggestions_import_operation_value",
+            last_denylist_import_operation="last_denylist_import_operation_value",
+            last_allowlist_import_operation="last_allowlist_import_operation_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.CompletionConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_completion_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.CompletionConfig)
+    assert response.name == "name_value"
+    assert response.matching_order == "matching_order_value"
+    assert response.max_suggestions == 1632
+    assert response.min_prefix_length == 1810
+    assert response.auto_learning is True
+    assert (
+        response.last_suggestions_import_operation
+        == "last_suggestions_import_operation_value"
+    )
+    assert (
+        response.last_denylist_import_operation
+        == "last_denylist_import_operation_value"
+    )
+    assert (
+        response.last_allowlist_import_operation
+        == "last_allowlist_import_operation_value"
+    )
+
+
+def test_get_completion_config_rest_required_fields(
+    request_type=catalog_service.GetCompletionConfigRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_completion_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_completion_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.CompletionConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog.CompletionConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_completion_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_completion_config_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_completion_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_completion_config_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_get_completion_config"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_get_completion_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.GetCompletionConfigRequest.pb(
+            catalog_service.GetCompletionConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog.CompletionConfig.to_json(
+            catalog.CompletionConfig()
+        )
+
+        request = catalog_service.GetCompletionConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.CompletionConfig()
+
+        client.get_completion_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_completion_config_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.GetCompletionConfigRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_completion_config(request)
+
+
+def test_get_completion_config_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.CompletionConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.CompletionConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_completion_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/catalogs/*/completionConfig}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_completion_config_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_completion_config(
+            catalog_service.GetCompletionConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_completion_config_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.UpdateCompletionConfigRequest,
+        dict,
+    ],
+)
+def test_update_completion_config_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "completion_config": {
+            "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig"
+        }
+    }
+    request_init["completion_config"] = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig",
+        "matching_order": "matching_order_value",
+        "max_suggestions": 1632,
+        "min_prefix_length": 1810,
+        "auto_learning": True,
+        "suggestions_input_config": {
+            "big_query_source": {
+                "partition_date": {"year": 433, "month": 550, "day": 318},
+                "project_id": "project_id_value",
+                "dataset_id": "dataset_id_value",
+                "table_id": "table_id_value",
+                "gcs_staging_dir": "gcs_staging_dir_value",
+                "data_schema": "data_schema_value",
+            }
+        },
+        "last_suggestions_import_operation": "last_suggestions_import_operation_value",
+        "denylist_input_config": {},
+        "last_denylist_import_operation": "last_denylist_import_operation_value",
+        "allowlist_input_config": {},
+        "last_allowlist_import_operation": "last_allowlist_import_operation_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.CompletionConfig(
+            name="name_value",
+            matching_order="matching_order_value",
+            max_suggestions=1632,
+            min_prefix_length=1810,
+            auto_learning=True,
+            last_suggestions_import_operation="last_suggestions_import_operation_value",
+            last_denylist_import_operation="last_denylist_import_operation_value",
+            last_allowlist_import_operation="last_allowlist_import_operation_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.CompletionConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_completion_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.CompletionConfig)
+    assert response.name == "name_value"
+    assert response.matching_order == "matching_order_value"
+    assert response.max_suggestions == 1632
+    assert response.min_prefix_length == 1810
+    assert response.auto_learning is True
+    assert (
+        response.last_suggestions_import_operation
+        == "last_suggestions_import_operation_value"
+    )
+    assert (
+        response.last_denylist_import_operation
+        == "last_denylist_import_operation_value"
+    )
+    assert (
+        response.last_allowlist_import_operation
+        == "last_allowlist_import_operation_value"
+    )
+
+
+def test_update_completion_config_rest_required_fields(
+    request_type=catalog_service.UpdateCompletionConfigRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_completion_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_completion_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.CompletionConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog.CompletionConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_completion_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_completion_config_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_completion_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("completionConfig",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_completion_config_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_update_completion_config"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_update_completion_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.UpdateCompletionConfigRequest.pb(
+            catalog_service.UpdateCompletionConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog.CompletionConfig.to_json(
+            catalog.CompletionConfig()
+        )
+
+        request = catalog_service.UpdateCompletionConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.CompletionConfig()
+
+        client.update_completion_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_completion_config_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.UpdateCompletionConfigRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "completion_config": {
+            "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig"
+        }
+    }
+    request_init["completion_config"] = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig",
+        "matching_order": "matching_order_value",
+        "max_suggestions": 1632,
+        "min_prefix_length": 1810,
+        "auto_learning": True,
+        "suggestions_input_config": {
+            "big_query_source": {
+                "partition_date": {"year": 433, "month": 550, "day": 318},
+                "project_id": "project_id_value",
+                "dataset_id": "dataset_id_value",
+                "table_id": "table_id_value",
+                "gcs_staging_dir": "gcs_staging_dir_value",
+                "data_schema": "data_schema_value",
+            }
+        },
+        "last_suggestions_import_operation": "last_suggestions_import_operation_value",
+        "denylist_input_config": {},
+        "last_denylist_import_operation": "last_denylist_import_operation_value",
+        "allowlist_input_config": {},
+        "last_allowlist_import_operation": "last_allowlist_import_operation_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_completion_config(request)
+
+
+def test_update_completion_config_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.CompletionConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "completion_config": {
+                "name": "projects/sample1/locations/sample2/catalogs/sample3/completionConfig"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            completion_config=catalog.CompletionConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.CompletionConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_completion_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{completion_config.name=projects/*/locations/*/catalogs/*/completionConfig}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_completion_config_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_completion_config(
+            catalog_service.UpdateCompletionConfigRequest(),
+            completion_config=catalog.CompletionConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_completion_config_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.GetAttributesConfigRequest,
+        dict,
+    ],
+)
+def test_get_attributes_config_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.AttributesConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_attributes_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_get_attributes_config_rest_required_fields(
+    request_type=catalog_service.GetAttributesConfigRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attributes_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attributes_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.AttributesConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog.AttributesConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_attributes_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_attributes_config_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_attributes_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_attributes_config_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_get_attributes_config"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_get_attributes_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.GetAttributesConfigRequest.pb(
+            catalog_service.GetAttributesConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog.AttributesConfig.to_json(
+            catalog.AttributesConfig()
+        )
+
+        request = catalog_service.GetAttributesConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.AttributesConfig()
+
+        client.get_attributes_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_attributes_config_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.GetAttributesConfigRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_attributes_config(request)
+
+
+def test_get_attributes_config_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.AttributesConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.AttributesConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_attributes_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/catalogs/*/attributesConfig}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_attributes_config_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_attributes_config(
+            catalog_service.GetAttributesConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_attributes_config_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.UpdateAttributesConfigRequest,
+        dict,
+    ],
+)
+def test_update_attributes_config_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": {
+            "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+        }
+    }
+    request_init["attributes_config"] = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig",
+        "catalog_attributes": {},
+        "attribute_config_level": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.AttributesConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_attributes_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_update_attributes_config_rest_required_fields(
+    request_type=catalog_service.UpdateAttributesConfigRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_attributes_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_attributes_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.AttributesConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog.AttributesConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_attributes_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_attributes_config_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_attributes_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("attributesConfig",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_attributes_config_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_update_attributes_config"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_update_attributes_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.UpdateAttributesConfigRequest.pb(
+            catalog_service.UpdateAttributesConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog.AttributesConfig.to_json(
+            catalog.AttributesConfig()
+        )
+
+        request = catalog_service.UpdateAttributesConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.AttributesConfig()
+
+        client.update_attributes_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_attributes_config_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.UpdateAttributesConfigRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": {
+            "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+        }
+    }
+    request_init["attributes_config"] = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig",
+        "catalog_attributes": {},
+        "attribute_config_level": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_attributes_config(request)
+
+
+def test_update_attributes_config_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.AttributesConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "attributes_config": {
+                "name": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            attributes_config=catalog.AttributesConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.AttributesConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_attributes_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{attributes_config.name=projects/*/locations/*/catalogs/*/attributesConfig}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_attributes_config_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_attributes_config(
+            catalog_service.UpdateAttributesConfigRequest(),
+            attributes_config=catalog.AttributesConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_attributes_config_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.AddCatalogAttributeRequest,
+        dict,
+    ],
+)
+def test_add_catalog_attribute_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.AttributesConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.add_catalog_attribute(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_add_catalog_attribute_rest_required_fields(
+    request_type=catalog_service.AddCatalogAttributeRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["attributes_config"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_catalog_attribute._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["attributesConfig"] = "attributes_config_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_catalog_attribute._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "attributesConfig" in jsonified_request
+    assert jsonified_request["attributesConfig"] == "attributes_config_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.AttributesConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog.AttributesConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.add_catalog_attribute(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_catalog_attribute_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_catalog_attribute._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "attributesConfig",
+                "catalogAttribute",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_add_catalog_attribute_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_add_catalog_attribute"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_add_catalog_attribute"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.AddCatalogAttributeRequest.pb(
+            catalog_service.AddCatalogAttributeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog.AttributesConfig.to_json(
+            catalog.AttributesConfig()
+        )
+
+        request = catalog_service.AddCatalogAttributeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.AttributesConfig()
+
+        client.add_catalog_attribute(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_add_catalog_attribute_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.AddCatalogAttributeRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.add_catalog_attribute(request)
+
+
+def test_add_catalog_attribute_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.RemoveCatalogAttributeRequest,
+        dict,
+    ],
+)
+def test_remove_catalog_attribute_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.AttributesConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.remove_catalog_attribute(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_remove_catalog_attribute_rest_required_fields(
+    request_type=catalog_service.RemoveCatalogAttributeRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["attributes_config"] = ""
+    request_init["key"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_catalog_attribute._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["attributesConfig"] = "attributes_config_value"
+    jsonified_request["key"] = "key_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_catalog_attribute._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "attributesConfig" in jsonified_request
+    assert jsonified_request["attributesConfig"] == "attributes_config_value"
+    assert "key" in jsonified_request
+    assert jsonified_request["key"] == "key_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.AttributesConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog.AttributesConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.remove_catalog_attribute(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_catalog_attribute_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_catalog_attribute._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "attributesConfig",
+                "key",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_remove_catalog_attribute_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_remove_catalog_attribute"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_remove_catalog_attribute"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.RemoveCatalogAttributeRequest.pb(
+            catalog_service.RemoveCatalogAttributeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog.AttributesConfig.to_json(
+            catalog.AttributesConfig()
+        )
+
+        request = catalog_service.RemoveCatalogAttributeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.AttributesConfig()
+
+        client.remove_catalog_attribute(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_remove_catalog_attribute_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.RemoveCatalogAttributeRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.remove_catalog_attribute(request)
+
+
+def test_remove_catalog_attribute_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.ReplaceCatalogAttributeRequest,
+        dict,
+    ],
+)
+def test_replace_catalog_attribute_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = catalog.AttributesConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.replace_catalog_attribute(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_replace_catalog_attribute_rest_required_fields(
+    request_type=catalog_service.ReplaceCatalogAttributeRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["attributes_config"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).replace_catalog_attribute._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["attributesConfig"] = "attributes_config_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).replace_catalog_attribute._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "attributesConfig" in jsonified_request
+    assert jsonified_request["attributesConfig"] == "attributes_config_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.AttributesConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = catalog.AttributesConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.replace_catalog_attribute(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_replace_catalog_attribute_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.replace_catalog_attribute._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "attributesConfig",
+                "catalogAttribute",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_replace_catalog_attribute_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_replace_catalog_attribute"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_replace_catalog_attribute"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = catalog_service.ReplaceCatalogAttributeRequest.pb(
+            catalog_service.ReplaceCatalogAttributeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = catalog.AttributesConfig.to_json(
+            catalog.AttributesConfig()
+        )
+
+        request = catalog_service.ReplaceCatalogAttributeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.AttributesConfig()
+
+        client.replace_catalog_attribute(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_replace_catalog_attribute_rest_bad_request(
+    transport: str = "rest", request_type=catalog_service.ReplaceCatalogAttributeRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attributes_config": "projects/sample1/locations/sample2/catalogs/sample3/attributesConfig"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.replace_catalog_attribute(request)
+
+
+def test_replace_catalog_attribute_rest_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CatalogServiceGrpcTransport(
@@ -3547,6 +6469,7 @@ def test_transport_get_channel():
     [
         transports.CatalogServiceGrpcTransport,
         transports.CatalogServiceGrpcAsyncIOTransport,
+        transports.CatalogServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3561,6 +6484,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3614,6 +6538,8 @@ def test_catalog_service_base_transport():
         "add_catalog_attribute",
         "remove_catalog_attribute",
         "replace_catalog_attribute",
+        "get_operation",
+        "list_operations",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3700,6 +6626,7 @@ def test_catalog_service_transport_auth_adc(transport_class):
     [
         transports.CatalogServiceGrpcTransport,
         transports.CatalogServiceGrpcAsyncIOTransport,
+        transports.CatalogServiceRestTransport,
     ],
 )
 def test_catalog_service_transport_auth_gdch_credentials(transport_class):
@@ -3797,11 +6724,23 @@ def test_catalog_service_grpc_transport_client_cert_source_for_mtls(transport_cl
             )
 
 
+def test_catalog_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CatalogServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_catalog_service_host_no_port(transport_name):
@@ -3812,7 +6751,11 @@ def test_catalog_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("retail.googleapis.com:443")
+    assert client.transport._host == (
+        "retail.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://retail.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3820,6 +6763,7 @@ def test_catalog_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_catalog_service_host_with_port(transport_name):
@@ -3830,7 +6774,63 @@ def test_catalog_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("retail.googleapis.com:8000")
+    assert client.transport._host == (
+        "retail.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://retail.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_catalog_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CatalogServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CatalogServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_catalogs._session
+    session2 = client2.transport.list_catalogs._session
+    assert session1 != session2
+    session1 = client1.transport.update_catalog._session
+    session2 = client2.transport.update_catalog._session
+    assert session1 != session2
+    session1 = client1.transport.set_default_branch._session
+    session2 = client2.transport.set_default_branch._session
+    assert session1 != session2
+    session1 = client1.transport.get_default_branch._session
+    session2 = client2.transport.get_default_branch._session
+    assert session1 != session2
+    session1 = client1.transport.get_completion_config._session
+    session2 = client2.transport.get_completion_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_completion_config._session
+    session2 = client2.transport.update_completion_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_attributes_config._session
+    session2 = client2.transport.get_attributes_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_attributes_config._session
+    session2 = client2.transport.update_attributes_config._session
+    assert session1 != session2
+    session1 = client1.transport.add_catalog_attribute._session
+    session2 = client2.transport.add_catalog_attribute._session
+    assert session1 != session2
+    session1 = client1.transport.remove_catalog_attribute._session
+    session2 = client2.transport.remove_catalog_attribute._session
+    assert session1 != session2
+    session1 = client1.transport.replace_catalog_attribute._session
+    session2 = client2.transport.replace_catalog_attribute._session
+    assert session1 != session2
 
 
 def test_catalog_service_grpc_transport_channel():
@@ -4206,8 +7206,415 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_list_operations(transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.ListOperationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+        response = client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_operations_async(transport: str = "grpc"):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.ListOperationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        response = await client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_list_operations_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.ListOperationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_operations_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.ListOperationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_list_operations_from_dict():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        response = client.list_operations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_from_dict_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        response = await client.list_operations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4225,6 +7632,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

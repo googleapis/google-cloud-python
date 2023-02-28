@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import ServingConfigServiceTransport
 from .grpc import ServingConfigServiceGrpcTransport
 from .grpc_asyncio import ServingConfigServiceGrpcAsyncIOTransport
+from .rest import ServingConfigServiceRestInterceptor, ServingConfigServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[ServingConfigServiceTransport]]
 _transport_registry["grpc"] = ServingConfigServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ServingConfigServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = ServingConfigServiceRestTransport
 
 __all__ = (
     "ServingConfigServiceTransport",
     "ServingConfigServiceGrpcTransport",
     "ServingConfigServiceGrpcAsyncIOTransport",
+    "ServingConfigServiceRestTransport",
+    "ServingConfigServiceRestInterceptor",
 )
