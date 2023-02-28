@@ -96,6 +96,51 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "DatastoreClient",
+          "rpcs": {
+            "AllocateIds": {
+              "methods": [
+                "allocate_ids"
+              ]
+            },
+            "BeginTransaction": {
+              "methods": [
+                "begin_transaction"
+              ]
+            },
+            "Commit": {
+              "methods": [
+                "commit"
+              ]
+            },
+            "Lookup": {
+              "methods": [
+                "lookup"
+              ]
+            },
+            "ReserveIds": {
+              "methods": [
+                "reserve_ids"
+              ]
+            },
+            "Rollback": {
+              "methods": [
+                "rollback"
+              ]
+            },
+            "RunAggregationQuery": {
+              "methods": [
+                "run_aggregation_query"
+              ]
+            },
+            "RunQuery": {
+              "methods": [
+                "run_query"
+              ]
+            }
+          }
         }
       }
     }

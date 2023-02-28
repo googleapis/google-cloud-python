@@ -29,6 +29,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
+from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -249,6 +250,39 @@ class DatastoreAdminTransport(abc.ABC):
             Awaitable[datastore_admin.ListIndexesResponse],
         ],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

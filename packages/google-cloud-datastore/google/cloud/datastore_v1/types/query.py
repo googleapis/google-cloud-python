@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -60,6 +62,12 @@ class EntityResult(proto.Message):
             entities in ``LookupResponse``, this is the version of the
             snapshot that was used to look up the entity, and it is
             always set except for eventually consistent reads.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the entity was created. This field is set
+            for
+            [``FULL``][google.datastore.v1.EntityResult.ResultType.FULL]
+            entity results. If this entity is missing, this field will
+            not be set.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the entity was last changed. This field is
             set for
@@ -104,6 +112,11 @@ class EntityResult(proto.Message):
     version: int = proto.Field(
         proto.INT64,
         number=4,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -474,9 +487,13 @@ class CompositeFilter(proto.Message):
             AND (1):
                 The results are required to satisfy each of
                 the combined filters.
+            OR (2):
+                Documents are required to satisfy at least
+                one of the combined filters.
         """
         OPERATOR_UNSPECIFIED = 0
         AND = 1
+        OR = 2
 
     op: Operator = proto.Field(
         proto.ENUM,
@@ -560,6 +577,7 @@ class PropertyFilter(proto.Message):
                 Requires:
 
                 -  That ``value`` is an entity key.
+                -  No other ``HAS_ANCESTOR`` is in the same query.
             NOT_IN (13):
                 The value of the ``property`` is not in the given array.
 

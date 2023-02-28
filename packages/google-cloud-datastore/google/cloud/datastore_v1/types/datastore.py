@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -111,7 +113,9 @@ class LookupResponse(proto.Message):
             The identifier of the transaction that was started as part
             of this Lookup request.
 
-            Set only when [ReadOptions.begin_transaction][] was set in
+            Set only when
+            [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction]
+            was set in
             [LookupRequest.read_options][google.datastore.v1.LookupRequest.read_options].
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which these entities were read or
@@ -229,7 +233,9 @@ class RunQueryResponse(proto.Message):
             The identifier of the transaction that was started as part
             of this RunQuery request.
 
-            Set only when [ReadOptions.begin_transaction][] was set in
+            Set only when
+            [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction]
+            was set in
             [RunQueryRequest.read_options][google.datastore.v1.RunQueryRequest.read_options].
     """
 
@@ -335,7 +341,9 @@ class RunAggregationQueryResponse(proto.Message):
             The identifier of the transaction that was started as part
             of this RunAggregationQuery request.
 
-            Set only when [ReadOptions.begin_transaction][] was set in
+            Set only when
+            [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction]
+            was set in
             [RunAggregationQueryRequest.read_options][google.datastore.v1.RunAggregationQueryRequest.read_options].
     """
 
@@ -475,7 +483,7 @@ class CommitRequest(proto.Message):
             Options for beginning a new transaction for this request.
             The transaction is committed when the request completes. If
             specified,
-            [TransactionOptions.mode][google.datastore.v1.TransactionOptions.mode]
+            [TransactionOptions.mode][google.datastore.v1.TransactionOptions]
             must be
             [TransactionOptions.ReadWrite][google.datastore.v1.TransactionOptions.ReadWrite].
 
@@ -776,6 +784,9 @@ class MutationResult(proto.Message):
             greater than the version of any previous entity
             and less than the version of any possible future
             entity.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The create time of the entity. This field
+            will not be set after a 'delete'.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The update time of the entity on the server
             after processing the mutation. If the mutation
@@ -797,6 +808,11 @@ class MutationResult(proto.Message):
     version: int = proto.Field(
         proto.INT64,
         number=4,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

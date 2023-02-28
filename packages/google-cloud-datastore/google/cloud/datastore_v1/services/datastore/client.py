@@ -55,6 +55,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import DatastoreTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DatastoreGrpcTransport
 from .transports.grpc_asyncio import DatastoreGrpcAsyncIOTransport
+from .transports.rest import DatastoreRestTransport
 
 
 class DatastoreClientMeta(type):
@@ -68,6 +69,7 @@ class DatastoreClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[DatastoreTransport]]
     _transport_registry["grpc"] = DatastoreGrpcTransport
     _transport_registry["grpc_asyncio"] = DatastoreGrpcAsyncIOTransport
+    _transport_registry["rest"] = DatastoreRestTransport
 
     def get_transport_class(
         cls,
