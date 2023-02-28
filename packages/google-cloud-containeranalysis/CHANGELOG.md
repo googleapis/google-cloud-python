@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.0](https://github.com/googleapis/python-containeranalysis/compare/v2.11.1...v2.12.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#363](https://github.com/googleapis/python-containeranalysis/issues/363)) ([731fee9](https://github.com/googleapis/python-containeranalysis/commit/731fee94eeb50f330179ea74372f6da82b53f508))
+
 ## [2.11.1](https://github.com/googleapis/python-containeranalysis/compare/v2.11.0...v2.11.1) (2023-01-20)
 
 
