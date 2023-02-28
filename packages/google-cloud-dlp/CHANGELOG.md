@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.12.0](https://github.com/googleapis/python-dlp/compare/v3.11.1...v3.12.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#491](https://github.com/googleapis/python-dlp/issues/491)) ([4265240](https://github.com/googleapis/python-dlp/commit/4265240f00974b83a354300c49010f03ac7c8b7d))
+
 ## [3.11.1](https://github.com/googleapis/python-dlp/compare/v3.11.0...v3.11.1) (2023-01-20)
 
 
