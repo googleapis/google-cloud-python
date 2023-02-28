@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.20.0](https://github.com/googleapis/python-dialogflow/compare/v2.19.1...v2.20.0) (2023-02-28)
+
+
+### Features
+
+* Added support for AssistQueryParameters and SynthesizeSpeechConfig ([03199c4](https://github.com/googleapis/python-dialogflow/commit/03199c43fd509bd7bd2693ce6648e9defbea3cf2))
+* Enable "rest" transport in Python for services supporting numeric enums ([03199c4](https://github.com/googleapis/python-dialogflow/commit/03199c43fd509bd7bd2693ce6648e9defbea3cf2))
+
+
+### Documentation
+
+* Add more meaningful comments ([03199c4](https://github.com/googleapis/python-dialogflow/commit/03199c43fd509bd7bd2693ce6648e9defbea3cf2))
+
 ## [2.19.1](https://github.com/googleapis/python-dialogflow/compare/v2.19.0...v2.19.1) (2023-01-20)
 
 
