@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-service-directory/compare/v1.7.1...v1.8.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([d1506cb](https://github.com/googleapis/python-service-directory/commit/d1506cbd52a84ea1904320134b72b8a626d38aaa))
+
 ## [1.7.1](https://github.com/googleapis/python-service-directory/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
