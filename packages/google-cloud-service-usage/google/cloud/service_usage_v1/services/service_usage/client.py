@@ -55,6 +55,7 @@ from google.cloud.service_usage_v1.types import resources, serviceusage
 from .transports.base import DEFAULT_CLIENT_INFO, ServiceUsageTransport
 from .transports.grpc import ServiceUsageGrpcTransport
 from .transports.grpc_asyncio import ServiceUsageGrpcAsyncIOTransport
+from .transports.rest import ServiceUsageRestTransport
 
 
 class ServiceUsageClientMeta(type):
@@ -68,6 +69,7 @@ class ServiceUsageClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ServiceUsageTransport]]
     _transport_registry["grpc"] = ServiceUsageGrpcTransport
     _transport_registry["grpc_asyncio"] = ServiceUsageGrpcAsyncIOTransport
+    _transport_registry["rest"] = ServiceUsageRestTransport
 
     def get_transport_class(
         cls,

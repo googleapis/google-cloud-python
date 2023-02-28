@@ -76,6 +76,41 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ServiceUsageClient",
+          "rpcs": {
+            "BatchEnableServices": {
+              "methods": [
+                "batch_enable_services"
+              ]
+            },
+            "BatchGetServices": {
+              "methods": [
+                "batch_get_services"
+              ]
+            },
+            "DisableService": {
+              "methods": [
+                "disable_service"
+              ]
+            },
+            "EnableService": {
+              "methods": [
+                "enable_service"
+              ]
+            },
+            "GetService": {
+              "methods": [
+                "get_service"
+              ]
+            },
+            "ListServices": {
+              "methods": [
+                "list_services"
+              ]
+            }
+          }
         }
       }
     }

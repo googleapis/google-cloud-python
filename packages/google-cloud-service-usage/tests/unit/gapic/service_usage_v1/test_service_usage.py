@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -41,11 +43,14 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.service_usage_v1.services.service_usage import (
     ServiceUsageAsyncClient,
@@ -102,6 +107,7 @@ def test__get_default_mtls_endpoint():
     [
         (ServiceUsageClient, "grpc"),
         (ServiceUsageAsyncClient, "grpc_asyncio"),
+        (ServiceUsageClient, "rest"),
     ],
 )
 def test_service_usage_client_from_service_account_info(client_class, transport_name):
@@ -115,7 +121,11 @@ def test_service_usage_client_from_service_account_info(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("serviceusage.googleapis.com:443")
+        assert client.transport._host == (
+            "serviceusage.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://serviceusage.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -123,6 +133,7 @@ def test_service_usage_client_from_service_account_info(client_class, transport_
     [
         (transports.ServiceUsageGrpcTransport, "grpc"),
         (transports.ServiceUsageGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ServiceUsageRestTransport, "rest"),
     ],
 )
 def test_service_usage_client_service_account_always_use_jwt(
@@ -148,6 +159,7 @@ def test_service_usage_client_service_account_always_use_jwt(
     [
         (ServiceUsageClient, "grpc"),
         (ServiceUsageAsyncClient, "grpc_asyncio"),
+        (ServiceUsageClient, "rest"),
     ],
 )
 def test_service_usage_client_from_service_account_file(client_class, transport_name):
@@ -168,13 +180,18 @@ def test_service_usage_client_from_service_account_file(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("serviceusage.googleapis.com:443")
+        assert client.transport._host == (
+            "serviceusage.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://serviceusage.googleapis.com"
+        )
 
 
 def test_service_usage_client_get_transport_class():
     transport = ServiceUsageClient.get_transport_class()
     available_transports = [
         transports.ServiceUsageGrpcTransport,
+        transports.ServiceUsageRestTransport,
     ]
     assert transport in available_transports
 
@@ -191,6 +208,7 @@ def test_service_usage_client_get_transport_class():
             transports.ServiceUsageGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ServiceUsageClient, transports.ServiceUsageRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -334,6 +352,8 @@ def test_service_usage_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (ServiceUsageClient, transports.ServiceUsageRestTransport, "rest", "true"),
+        (ServiceUsageClient, transports.ServiceUsageRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -527,6 +547,7 @@ def test_service_usage_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.ServiceUsageGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ServiceUsageClient, transports.ServiceUsageRestTransport, "rest"),
     ],
 )
 def test_service_usage_client_client_options_scopes(
@@ -567,6 +588,7 @@ def test_service_usage_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (ServiceUsageClient, transports.ServiceUsageRestTransport, "rest", None),
     ],
 )
 def test_service_usage_client_client_options_credentials_file(
@@ -1772,6 +1794,808 @@ async def test_batch_get_services_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serviceusage.EnableServiceRequest,
+        dict,
+    ],
+)
+def test_enable_service_rest(request_type):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.enable_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enable_service_rest_interceptors(null_interceptor):
+    transport = transports.ServiceUsageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceUsageRestInterceptor(),
+    )
+    client = ServiceUsageClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "post_enable_service"
+    ) as post, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "pre_enable_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = serviceusage.EnableServiceRequest.pb(
+            serviceusage.EnableServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = serviceusage.EnableServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.enable_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_enable_service_rest_bad_request(
+    transport: str = "rest", request_type=serviceusage.EnableServiceRequest
+):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.enable_service(request)
+
+
+def test_enable_service_rest_error():
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serviceusage.DisableServiceRequest,
+        dict,
+    ],
+)
+def test_disable_service_rest(request_type):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.disable_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_disable_service_rest_interceptors(null_interceptor):
+    transport = transports.ServiceUsageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceUsageRestInterceptor(),
+    )
+    client = ServiceUsageClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "post_disable_service"
+    ) as post, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "pre_disable_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = serviceusage.DisableServiceRequest.pb(
+            serviceusage.DisableServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = serviceusage.DisableServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.disable_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_disable_service_rest_bad_request(
+    transport: str = "rest", request_type=serviceusage.DisableServiceRequest
+):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.disable_service(request)
+
+
+def test_disable_service_rest_error():
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serviceusage.GetServiceRequest,
+        dict,
+    ],
+)
+def test_get_service_rest(request_type):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Service(
+            name="name_value",
+            parent="parent_value",
+            state=resources.State.DISABLED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Service.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Service)
+    assert response.name == "name_value"
+    assert response.parent == "parent_value"
+    assert response.state == resources.State.DISABLED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_service_rest_interceptors(null_interceptor):
+    transport = transports.ServiceUsageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceUsageRestInterceptor(),
+    )
+    client = ServiceUsageClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "post_get_service"
+    ) as post, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "pre_get_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = serviceusage.GetServiceRequest.pb(serviceusage.GetServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Service.to_json(resources.Service())
+
+        request = serviceusage.GetServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Service()
+
+        client.get_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_service_rest_bad_request(
+    transport: str = "rest", request_type=serviceusage.GetServiceRequest
+):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_service(request)
+
+
+def test_get_service_rest_error():
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serviceusage.ListServicesRequest,
+        dict,
+    ],
+)
+def test_list_services_rest(request_type):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "sample1/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = serviceusage.ListServicesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = serviceusage.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_services(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListServicesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_services_rest_interceptors(null_interceptor):
+    transport = transports.ServiceUsageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceUsageRestInterceptor(),
+    )
+    client = ServiceUsageClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "post_list_services"
+    ) as post, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "pre_list_services"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = serviceusage.ListServicesRequest.pb(
+            serviceusage.ListServicesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = serviceusage.ListServicesResponse.to_json(
+            serviceusage.ListServicesResponse()
+        )
+
+        request = serviceusage.ListServicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = serviceusage.ListServicesResponse()
+
+        client.list_services(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_services_rest_bad_request(
+    transport: str = "rest", request_type=serviceusage.ListServicesRequest
+):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "sample1/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_services(request)
+
+
+def test_list_services_rest_pager(transport: str = "rest"):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            serviceusage.ListServicesResponse(
+                services=[
+                    resources.Service(),
+                    resources.Service(),
+                    resources.Service(),
+                ],
+                next_page_token="abc",
+            ),
+            serviceusage.ListServicesResponse(
+                services=[],
+                next_page_token="def",
+            ),
+            serviceusage.ListServicesResponse(
+                services=[
+                    resources.Service(),
+                ],
+                next_page_token="ghi",
+            ),
+            serviceusage.ListServicesResponse(
+                services=[
+                    resources.Service(),
+                    resources.Service(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(serviceusage.ListServicesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "sample1/sample2"}
+
+        pager = client.list_services(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Service) for i in results)
+
+        pages = list(client.list_services(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serviceusage.BatchEnableServicesRequest,
+        dict,
+    ],
+)
+def test_batch_enable_services_rest(request_type):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "sample1/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_enable_services(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_enable_services_rest_interceptors(null_interceptor):
+    transport = transports.ServiceUsageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceUsageRestInterceptor(),
+    )
+    client = ServiceUsageClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "post_batch_enable_services"
+    ) as post, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "pre_batch_enable_services"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = serviceusage.BatchEnableServicesRequest.pb(
+            serviceusage.BatchEnableServicesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = serviceusage.BatchEnableServicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_enable_services(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_enable_services_rest_bad_request(
+    transport: str = "rest", request_type=serviceusage.BatchEnableServicesRequest
+):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "sample1/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_enable_services(request)
+
+
+def test_batch_enable_services_rest_error():
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serviceusage.BatchGetServicesRequest,
+        dict,
+    ],
+)
+def test_batch_get_services_rest(request_type):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "sample1/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = serviceusage.BatchGetServicesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = serviceusage.BatchGetServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_get_services(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, serviceusage.BatchGetServicesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_get_services_rest_interceptors(null_interceptor):
+    transport = transports.ServiceUsageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceUsageRestInterceptor(),
+    )
+    client = ServiceUsageClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "post_batch_get_services"
+    ) as post, mock.patch.object(
+        transports.ServiceUsageRestInterceptor, "pre_batch_get_services"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = serviceusage.BatchGetServicesRequest.pb(
+            serviceusage.BatchGetServicesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = serviceusage.BatchGetServicesResponse.to_json(
+            serviceusage.BatchGetServicesResponse()
+        )
+
+        request = serviceusage.BatchGetServicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = serviceusage.BatchGetServicesResponse()
+
+        client.batch_get_services(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_get_services_rest_bad_request(
+    transport: str = "rest", request_type=serviceusage.BatchGetServicesRequest
+):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "sample1/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_get_services(request)
+
+
+def test_batch_get_services_rest_error():
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ServiceUsageGrpcTransport(
@@ -1853,6 +2677,7 @@ def test_transport_get_channel():
     [
         transports.ServiceUsageGrpcTransport,
         transports.ServiceUsageGrpcAsyncIOTransport,
+        transports.ServiceUsageRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1867,6 +2692,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2018,6 +2844,7 @@ def test_service_usage_transport_auth_adc(transport_class):
     [
         transports.ServiceUsageGrpcTransport,
         transports.ServiceUsageGrpcAsyncIOTransport,
+        transports.ServiceUsageRestTransport,
     ],
 )
 def test_service_usage_transport_auth_gdch_credentials(transport_class):
@@ -2116,11 +2943,40 @@ def test_service_usage_grpc_transport_client_cert_source_for_mtls(transport_clas
             )
 
 
+def test_service_usage_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ServiceUsageRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_service_usage_rest_lro_client():
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_service_usage_host_no_port(transport_name):
@@ -2131,7 +2987,11 @@ def test_service_usage_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("serviceusage.googleapis.com:443")
+    assert client.transport._host == (
+        "serviceusage.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://serviceusage.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2139,6 +2999,7 @@ def test_service_usage_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_service_usage_host_with_port(transport_name):
@@ -2149,7 +3010,48 @@ def test_service_usage_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("serviceusage.googleapis.com:8000")
+    assert client.transport._host == (
+        "serviceusage.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://serviceusage.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_service_usage_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ServiceUsageClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ServiceUsageClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.enable_service._session
+    session2 = client2.transport.enable_service._session
+    assert session1 != session2
+    session1 = client1.transport.disable_service._session
+    session2 = client2.transport.disable_service._session
+    assert session1 != session2
+    session1 = client1.transport.get_service._session
+    session2 = client2.transport.get_service._session
+    assert session1 != session2
+    session1 = client1.transport.list_services._session
+    session2 = client2.transport.list_services._session
+    assert session1 != session2
+    session1 = client1.transport.batch_enable_services._session
+    session2 = client2.transport.batch_enable_services._session
+    assert session1 != session2
+    session1 = client1.transport.batch_get_services._session
+    session2 = client2.transport.batch_get_services._session
+    assert session1 != session2
 
 
 def test_service_usage_grpc_transport_channel():
@@ -2446,6 +3348,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2463,6 +3366,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
