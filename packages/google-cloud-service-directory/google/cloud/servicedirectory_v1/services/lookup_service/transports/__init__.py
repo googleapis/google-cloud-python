@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import LookupServiceTransport
 from .grpc import LookupServiceGrpcTransport
 from .grpc_asyncio import LookupServiceGrpcAsyncIOTransport
+from .rest import LookupServiceRestInterceptor, LookupServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[LookupServiceTransport]]
 _transport_registry["grpc"] = LookupServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = LookupServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = LookupServiceRestTransport
 
 __all__ = (
     "LookupServiceTransport",
     "LookupServiceGrpcTransport",
     "LookupServiceGrpcAsyncIOTransport",
+    "LookupServiceRestTransport",
+    "LookupServiceRestInterceptor",
 )

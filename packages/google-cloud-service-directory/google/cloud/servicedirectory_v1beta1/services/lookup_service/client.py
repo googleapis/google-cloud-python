@@ -51,6 +51,7 @@ from google.cloud.servicedirectory_v1beta1.types import lookup_service, service
 from .transports.base import DEFAULT_CLIENT_INFO, LookupServiceTransport
 from .transports.grpc import LookupServiceGrpcTransport
 from .transports.grpc_asyncio import LookupServiceGrpcAsyncIOTransport
+from .transports.rest import LookupServiceRestTransport
 
 
 class LookupServiceClientMeta(type):
@@ -64,6 +65,7 @@ class LookupServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[LookupServiceTransport]]
     _transport_registry["grpc"] = LookupServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = LookupServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = LookupServiceRestTransport
 
     def get_transport_class(
         cls,

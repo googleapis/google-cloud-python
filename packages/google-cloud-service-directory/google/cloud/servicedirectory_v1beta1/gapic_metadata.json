@@ -26,6 +26,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "LookupServiceClient",
+          "rpcs": {
+            "ResolveService": {
+              "methods": [
+                "resolve_service"
+              ]
+            }
+          }
         }
       }
     },
@@ -128,6 +138,101 @@
         },
         "grpc-async": {
           "libraryClient": "RegistrationServiceAsyncClient",
+          "rpcs": {
+            "CreateEndpoint": {
+              "methods": [
+                "create_endpoint"
+              ]
+            },
+            "CreateNamespace": {
+              "methods": [
+                "create_namespace"
+              ]
+            },
+            "CreateService": {
+              "methods": [
+                "create_service"
+              ]
+            },
+            "DeleteEndpoint": {
+              "methods": [
+                "delete_endpoint"
+              ]
+            },
+            "DeleteNamespace": {
+              "methods": [
+                "delete_namespace"
+              ]
+            },
+            "DeleteService": {
+              "methods": [
+                "delete_service"
+              ]
+            },
+            "GetEndpoint": {
+              "methods": [
+                "get_endpoint"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetNamespace": {
+              "methods": [
+                "get_namespace"
+              ]
+            },
+            "GetService": {
+              "methods": [
+                "get_service"
+              ]
+            },
+            "ListEndpoints": {
+              "methods": [
+                "list_endpoints"
+              ]
+            },
+            "ListNamespaces": {
+              "methods": [
+                "list_namespaces"
+              ]
+            },
+            "ListServices": {
+              "methods": [
+                "list_services"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
+            "UpdateEndpoint": {
+              "methods": [
+                "update_endpoint"
+              ]
+            },
+            "UpdateNamespace": {
+              "methods": [
+                "update_namespace"
+              ]
+            },
+            "UpdateService": {
+              "methods": [
+                "update_service"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "RegistrationServiceClient",
           "rpcs": {
             "CreateEndpoint": {
               "methods": [

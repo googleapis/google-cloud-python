@@ -63,6 +63,7 @@ from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
 from .transports.base import DEFAULT_CLIENT_INFO, RegistrationServiceTransport
 from .transports.grpc import RegistrationServiceGrpcTransport
 from .transports.grpc_asyncio import RegistrationServiceGrpcAsyncIOTransport
+from .transports.rest import RegistrationServiceRestTransport
 
 
 class RegistrationServiceClientMeta(type):
@@ -78,6 +79,7 @@ class RegistrationServiceClientMeta(type):
     )  # type: Dict[str, Type[RegistrationServiceTransport]]
     _transport_registry["grpc"] = RegistrationServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = RegistrationServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = RegistrationServiceRestTransport
 
     def get_transport_class(
         cls,
