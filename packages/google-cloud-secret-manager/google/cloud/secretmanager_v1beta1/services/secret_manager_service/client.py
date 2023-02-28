@@ -57,6 +57,7 @@ from google.cloud.secretmanager_v1beta1.types import resources, service
 from .transports.base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
 from .transports.grpc import SecretManagerServiceGrpcTransport
 from .transports.grpc_asyncio import SecretManagerServiceGrpcAsyncIOTransport
+from .transports.rest import SecretManagerServiceRestTransport
 
 
 class SecretManagerServiceClientMeta(type):
@@ -72,6 +73,7 @@ class SecretManagerServiceClientMeta(type):
     )  # type: Dict[str, Type[SecretManagerServiceTransport]]
     _transport_registry["grpc"] = SecretManagerServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = SecretManagerServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = SecretManagerServiceRestTransport
 
     def get_transport_class(
         cls,
