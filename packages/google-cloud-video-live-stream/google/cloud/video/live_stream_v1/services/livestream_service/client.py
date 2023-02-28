@@ -59,6 +59,7 @@ from google.cloud.video.live_stream_v1.types import outputs, resources, service
 from .transports.base import DEFAULT_CLIENT_INFO, LivestreamServiceTransport
 from .transports.grpc import LivestreamServiceGrpcTransport
 from .transports.grpc_asyncio import LivestreamServiceGrpcAsyncIOTransport
+from .transports.rest import LivestreamServiceRestTransport
 
 
 class LivestreamServiceClientMeta(type):
@@ -74,6 +75,7 @@ class LivestreamServiceClientMeta(type):
     )  # type: Dict[str, Type[LivestreamServiceTransport]]
     _transport_registry["grpc"] = LivestreamServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = LivestreamServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = LivestreamServiceRestTransport
 
     def get_transport_class(
         cls,
