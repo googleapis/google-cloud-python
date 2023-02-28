@@ -31,7 +31,7 @@ from google.api_core import operations_v1
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -776,7 +776,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("CreateDataset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -874,7 +874,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("CreateModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -972,7 +972,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("DeleteDataset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1061,7 +1061,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("DeleteModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1150,7 +1150,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("DeployModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1248,7 +1248,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("ExportData")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1346,7 +1346,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("ExportModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1446,7 +1446,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("GetAnnotationSpec")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1536,7 +1536,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("GetDataset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1628,7 +1628,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("GetModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1718,7 +1718,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("GetModelEvaluation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1808,7 +1808,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("ImportData")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1906,7 +1906,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("ListDatasets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1996,7 +1996,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("ListModelEvaluations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "filter": "",
         }
 
@@ -2090,7 +2090,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("ListModels")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2180,7 +2180,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("UndeployModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2278,7 +2278,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("UpdateDataset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -2381,7 +2381,7 @@ class AutoMlRestTransport(AutoMlTransport):
         def __hash__(self):
             return hash("UpdateModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
