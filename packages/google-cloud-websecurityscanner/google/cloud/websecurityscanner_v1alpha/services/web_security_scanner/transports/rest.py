@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -560,7 +560,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("CreateScanConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -660,7 +660,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("DeleteScanConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -736,7 +736,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("GetFinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -825,7 +825,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("GetScanConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -914,7 +914,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("GetScanRun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1002,7 +1002,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("ListCrawledUrls")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1090,7 +1090,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("ListFindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "filter": "",
         }
 
@@ -1178,7 +1178,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("ListFindingTypeStats")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1266,7 +1266,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("ListScanConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1354,7 +1354,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("ListScanRuns")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1440,7 +1440,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("StartScanRun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1537,7 +1537,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("StopScanRun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1634,7 +1634,7 @@ class WebSecurityScannerRestTransport(WebSecurityScannerTransport):
         def __hash__(self):
             return hash("UpdateScanConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
