@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.11.0](https://github.com/googleapis/python-recommender/compare/v2.10.1...v2.11.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([d5153be](https://github.com/googleapis/python-recommender/commit/d5153be9761fbe52835c7bd02074e2be2c8950b9))
+
 ## [2.10.1](https://github.com/googleapis/python-recommender/compare/v2.10.0...v2.10.1) (2023-01-20)
 
 
