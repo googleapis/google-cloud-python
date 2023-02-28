@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,6 +35,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -42,6 +45,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.servicecontrol_v2.services.service_controller import (
     ServiceControllerAsyncClient,
@@ -101,6 +106,7 @@ def test__get_default_mtls_endpoint():
     [
         (ServiceControllerClient, "grpc"),
         (ServiceControllerAsyncClient, "grpc_asyncio"),
+        (ServiceControllerClient, "rest"),
     ],
 )
 def test_service_controller_client_from_service_account_info(
@@ -116,7 +122,11 @@ def test_service_controller_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("servicecontrol.googleapis.com:443")
+        assert client.transport._host == (
+            "servicecontrol.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://servicecontrol.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -124,6 +134,7 @@ def test_service_controller_client_from_service_account_info(
     [
         (transports.ServiceControllerGrpcTransport, "grpc"),
         (transports.ServiceControllerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ServiceControllerRestTransport, "rest"),
     ],
 )
 def test_service_controller_client_service_account_always_use_jwt(
@@ -149,6 +160,7 @@ def test_service_controller_client_service_account_always_use_jwt(
     [
         (ServiceControllerClient, "grpc"),
         (ServiceControllerAsyncClient, "grpc_asyncio"),
+        (ServiceControllerClient, "rest"),
     ],
 )
 def test_service_controller_client_from_service_account_file(
@@ -171,13 +183,18 @@ def test_service_controller_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("servicecontrol.googleapis.com:443")
+        assert client.transport._host == (
+            "servicecontrol.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://servicecontrol.googleapis.com"
+        )
 
 
 def test_service_controller_client_get_transport_class():
     transport = ServiceControllerClient.get_transport_class()
     available_transports = [
         transports.ServiceControllerGrpcTransport,
+        transports.ServiceControllerRestTransport,
     ]
     assert transport in available_transports
 
@@ -194,6 +211,7 @@ def test_service_controller_client_get_transport_class():
             transports.ServiceControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ServiceControllerClient, transports.ServiceControllerRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -347,6 +365,18 @@ def test_service_controller_client_client_options(
             ServiceControllerAsyncClient,
             transports.ServiceControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ServiceControllerClient,
+            transports.ServiceControllerRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ServiceControllerClient,
+            transports.ServiceControllerRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -548,6 +578,7 @@ def test_service_controller_client_get_mtls_endpoint_and_cert_source(client_clas
             transports.ServiceControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ServiceControllerClient, transports.ServiceControllerRestTransport, "rest"),
     ],
 )
 def test_service_controller_client_client_options_scopes(
@@ -587,6 +618,12 @@ def test_service_controller_client_client_options_scopes(
             transports.ServiceControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ServiceControllerClient,
+            transports.ServiceControllerRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -991,6 +1028,252 @@ async def test_report_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service_controller.CheckRequest,
+        dict,
+    ],
+)
+def test_check_rest(request_type):
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service_controller.CheckResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service_controller.CheckResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.check(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service_controller.CheckResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_check_rest_interceptors(null_interceptor):
+    transport = transports.ServiceControllerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceControllerRestInterceptor(),
+    )
+    client = ServiceControllerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceControllerRestInterceptor, "post_check"
+    ) as post, mock.patch.object(
+        transports.ServiceControllerRestInterceptor, "pre_check"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service_controller.CheckRequest.pb(
+            service_controller.CheckRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service_controller.CheckResponse.to_json(
+            service_controller.CheckResponse()
+        )
+
+        request = service_controller.CheckRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service_controller.CheckResponse()
+
+        client.check(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_check_rest_bad_request(
+    transport: str = "rest", request_type=service_controller.CheckRequest
+):
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.check(request)
+
+
+def test_check_rest_error():
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service_controller.ReportRequest,
+        dict,
+    ],
+)
+def test_report_rest(request_type):
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service_controller.ReportResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service_controller.ReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service_controller.ReportResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_report_rest_interceptors(null_interceptor):
+    transport = transports.ServiceControllerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceControllerRestInterceptor(),
+    )
+    client = ServiceControllerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceControllerRestInterceptor, "post_report"
+    ) as post, mock.patch.object(
+        transports.ServiceControllerRestInterceptor, "pre_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service_controller.ReportRequest.pb(
+            service_controller.ReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service_controller.ReportResponse.to_json(
+            service_controller.ReportResponse()
+        )
+
+        request = service_controller.ReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service_controller.ReportResponse()
+
+        client.report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_report_rest_bad_request(
+    transport: str = "rest", request_type=service_controller.ReportRequest
+):
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service_name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.report(request)
+
+
+def test_report_rest_error():
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ServiceControllerGrpcTransport(
@@ -1072,6 +1355,7 @@ def test_transport_get_channel():
     [
         transports.ServiceControllerGrpcTransport,
         transports.ServiceControllerGrpcAsyncIOTransport,
+        transports.ServiceControllerRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1086,6 +1370,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1225,6 +1510,7 @@ def test_service_controller_transport_auth_adc(transport_class):
     [
         transports.ServiceControllerGrpcTransport,
         transports.ServiceControllerGrpcAsyncIOTransport,
+        transports.ServiceControllerRestTransport,
     ],
 )
 def test_service_controller_transport_auth_gdch_credentials(transport_class):
@@ -1325,11 +1611,23 @@ def test_service_controller_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
+def test_service_controller_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ServiceControllerRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_service_controller_host_no_port(transport_name):
@@ -1340,7 +1638,11 @@ def test_service_controller_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("servicecontrol.googleapis.com:443")
+    assert client.transport._host == (
+        "servicecontrol.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://servicecontrol.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1348,6 +1650,7 @@ def test_service_controller_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_service_controller_host_with_port(transport_name):
@@ -1358,7 +1661,36 @@ def test_service_controller_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("servicecontrol.googleapis.com:8000")
+    assert client.transport._host == (
+        "servicecontrol.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://servicecontrol.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_service_controller_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ServiceControllerClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ServiceControllerClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.check._session
+    session2 = client2.transport.check._session
+    assert session1 != session2
+    session1 = client1.transport.report._session
+    session2 = client2.transport.report._session
+    assert session1 != session2
 
 
 def test_service_controller_grpc_transport_channel():
@@ -1629,6 +1961,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1646,6 +1979,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

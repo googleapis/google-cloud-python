@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ServiceControllerClient",
+          "rpcs": {
+            "Check": {
+              "methods": [
+                "check"
+              ]
+            },
+            "Report": {
+              "methods": [
+                "report"
+              ]
+            }
+          }
         }
       }
     }

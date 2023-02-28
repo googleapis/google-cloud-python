@@ -53,6 +53,7 @@ from google.cloud.servicecontrol_v2.types import service_controller
 from .transports.base import DEFAULT_CLIENT_INFO, ServiceControllerTransport
 from .transports.grpc import ServiceControllerGrpcTransport
 from .transports.grpc_asyncio import ServiceControllerGrpcAsyncIOTransport
+from .transports.rest import ServiceControllerRestTransport
 
 
 class ServiceControllerClientMeta(type):
@@ -68,6 +69,7 @@ class ServiceControllerClientMeta(type):
     )  # type: Dict[str, Type[ServiceControllerTransport]]
     _transport_registry["grpc"] = ServiceControllerGrpcTransport
     _transport_registry["grpc_asyncio"] = ServiceControllerGrpcAsyncIOTransport
+    _transport_registry["rest"] = ServiceControllerRestTransport
 
     def get_transport_class(
         cls,

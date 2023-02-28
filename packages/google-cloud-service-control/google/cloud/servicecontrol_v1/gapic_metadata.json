@@ -26,6 +26,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "QuotaControllerClient",
+          "rpcs": {
+            "AllocateQuota": {
+              "methods": [
+                "allocate_quota"
+              ]
+            }
+          }
         }
       }
     },
@@ -48,6 +58,21 @@
         },
         "grpc-async": {
           "libraryClient": "ServiceControllerAsyncClient",
+          "rpcs": {
+            "Check": {
+              "methods": [
+                "check"
+              ]
+            },
+            "Report": {
+              "methods": [
+                "report"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ServiceControllerClient",
           "rpcs": {
             "Check": {
               "methods": [

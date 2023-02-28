@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import QuotaControllerTransport
 from .grpc import QuotaControllerGrpcTransport
 from .grpc_asyncio import QuotaControllerGrpcAsyncIOTransport
+from .rest import QuotaControllerRestInterceptor, QuotaControllerRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[QuotaControllerTransport]]
 _transport_registry["grpc"] = QuotaControllerGrpcTransport
 _transport_registry["grpc_asyncio"] = QuotaControllerGrpcAsyncIOTransport
+_transport_registry["rest"] = QuotaControllerRestTransport
 
 __all__ = (
     "QuotaControllerTransport",
     "QuotaControllerGrpcTransport",
     "QuotaControllerGrpcAsyncIOTransport",
+    "QuotaControllerRestTransport",
+    "QuotaControllerRestInterceptor",
 )

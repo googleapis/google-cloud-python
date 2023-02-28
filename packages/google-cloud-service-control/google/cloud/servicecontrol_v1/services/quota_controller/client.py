@@ -51,6 +51,7 @@ from google.cloud.servicecontrol_v1.types import metric_value, quota_controller
 from .transports.base import DEFAULT_CLIENT_INFO, QuotaControllerTransport
 from .transports.grpc import QuotaControllerGrpcTransport
 from .transports.grpc_asyncio import QuotaControllerGrpcAsyncIOTransport
+from .transports.rest import QuotaControllerRestTransport
 
 
 class QuotaControllerClientMeta(type):
@@ -66,6 +67,7 @@ class QuotaControllerClientMeta(type):
     )  # type: Dict[str, Type[QuotaControllerTransport]]
     _transport_registry["grpc"] = QuotaControllerGrpcTransport
     _transport_registry["grpc_asyncio"] = QuotaControllerGrpcAsyncIOTransport
+    _transport_registry["rest"] = QuotaControllerRestTransport
 
     def get_transport_class(
         cls,
