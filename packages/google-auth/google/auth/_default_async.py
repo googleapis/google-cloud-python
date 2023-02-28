@@ -281,4 +281,4 @@ def default_async(scopes=None, request=None, quota_project_id=None):
                 )
             return credentials, effective_project_id
 
-    raise exceptions.DefaultCredentialsError(_default._HELP_MESSAGE)
+    raise exceptions.DefaultCredentialsError(_default._CLOUD_SDK_MISSING_CREDENTIALS)

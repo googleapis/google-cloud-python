@@ -48,23 +48,18 @@ _VALID_TYPES = (
 )
 
 # Help message when no credentials can be found.
-_HELP_MESSAGE = """\
-Could not automatically determine credentials. Please set {env} or \
-explicitly create credentials and re-run the application. For more \
-information, please see \
-https://cloud.google.com/docs/authentication/getting-started
-""".format(
-    env=environment_vars.CREDENTIALS
-).strip()
+_CLOUD_SDK_MISSING_CREDENTIALS = """\
+Your default credentials were not found. To set up Application Default Credentials, \
+see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.\
+"""
 
 # Warning when using Cloud SDK user credentials
 _CLOUD_SDK_CREDENTIALS_WARNING = """\
 Your application has authenticated using end user credentials from Google \
 Cloud SDK without a quota project. You might receive a "quota exceeded" \
-or "API not enabled" error. We recommend you rerun \
-`gcloud auth application-default login` and make sure a quota project is \
-added. Or you can use service accounts instead. For more information \
-about service accounts, see https://cloud.google.com/docs/authentication/"""
+or "API not enabled" error. See the following page for troubleshooting: \
+https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds. \
+"""
 
 # The subject token type used for AWS external_account credentials.
 _AWS_SUBJECT_TOKEN_TYPE = "urn:ietf:params:aws:token-type:aws4_request"
@@ -650,4 +645,4 @@ def default(scopes=None, request=None, quota_project_id=None, default_scopes=Non
                 )
             return credentials, effective_project_id
 
-    raise exceptions.DefaultCredentialsError(_HELP_MESSAGE)
+    raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)

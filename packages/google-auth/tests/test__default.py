@@ -916,8 +916,10 @@ def test_default_without_project_id(
     autospec=True,
 )
 def test_default_fail(unused_gce, unused_gae, unused_sdk, unused_explicit):
-    with pytest.raises(exceptions.DefaultCredentialsError):
+    with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
         assert _default.default()
+
+    assert excinfo.match(_default._CLOUD_SDK_MISSING_CREDENTIALS)
 
 
 @mock.patch(
@@ -1128,7 +1130,7 @@ def test_default_environ_external_credentials_bad_format(monkeypatch, tmpdir):
 def test_default_warning_without_quota_project_id_for_user_creds(get_adc_path):
     get_adc_path.return_value = AUTHORIZED_USER_CLOUD_SDK_FILE
 
-    with pytest.warns(UserWarning, match="Cloud SDK"):
+    with pytest.warns(UserWarning, match=_default._CLOUD_SDK_CREDENTIALS_WARNING):
         credentials, project_id = _default.default(quota_project_id=None)
 
 
