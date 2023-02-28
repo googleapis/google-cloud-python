@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.18.0...v1.19.0) (2023-02-28)
+
+
+### Features
+
+* Added gcs.proto. added support for GcsDestination and TextToSpeechSettings ([acfd1a1](https://github.com/googleapis/python-dialogflow-cx/commit/acfd1a11aca9c9cba7fb351f1781fa73c1e1d985))
+* Added persist_parameter_changes field from query_params to MatchIntentRequest  ([acfd1a1](https://github.com/googleapis/python-dialogflow-cx/commit/acfd1a11aca9c9cba7fb351f1781fa73c1e1d985))
+* Enable "rest" transport in Python for services supporting numeric enums ([acfd1a1](https://github.com/googleapis/python-dialogflow-cx/commit/acfd1a11aca9c9cba7fb351f1781fa73c1e1d985))
+* Remove [REQUIRED] for VersionConfig ([acfd1a1](https://github.com/googleapis/python-dialogflow-cx/commit/acfd1a11aca9c9cba7fb351f1781fa73c1e1d985))
+
+
+### Documentation
+
+* Add more meaningful comments ([acfd1a1](https://github.com/googleapis/python-dialogflow-cx/commit/acfd1a11aca9c9cba7fb351f1781fa73c1e1d985))
+
 ## [1.18.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.17.1...v1.18.0) (2023-01-30)
 
 
