@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/python-retail/compare/v1.14.1...v1.15.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#394](https://github.com/googleapis/python-retail/issues/394)) ([afebfd9](https://github.com/googleapis/python-retail/commit/afebfd928c3c30ec7495e7eb27176bd4bb2d54ca))
+
 ## [1.14.1](https://github.com/googleapis/python-retail/compare/v1.14.0...v1.14.1) (2023-01-20)
 
 
