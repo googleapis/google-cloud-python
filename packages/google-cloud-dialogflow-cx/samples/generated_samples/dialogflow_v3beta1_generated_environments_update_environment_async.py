@@ -41,7 +41,6 @@ async def sample_update_environment():
     # Initialize request argument(s)
     environment = dialogflowcx_v3beta1.Environment()
     environment.display_name = "display_name_value"
-    environment.version_configs.version = "version_value"
 
     request = dialogflowcx_v3beta1.UpdateEnvironmentRequest(
         environment=environment,

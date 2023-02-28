@@ -55,6 +55,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import IntentsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import IntentsGrpcTransport
 from .transports.grpc_asyncio import IntentsGrpcAsyncIOTransport
+from .transports.rest import IntentsRestTransport
 
 
 class IntentsClientMeta(type):
@@ -68,6 +69,7 @@ class IntentsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[IntentsTransport]]
     _transport_registry["grpc"] = IntentsGrpcTransport
     _transport_registry["grpc_asyncio"] = IntentsGrpcAsyncIOTransport
+    _transport_registry["rest"] = IntentsRestTransport
 
     def get_transport_class(
         cls,

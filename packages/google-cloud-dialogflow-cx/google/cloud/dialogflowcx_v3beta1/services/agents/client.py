@@ -52,6 +52,7 @@ from google.cloud.dialogflowcx_v3beta1.services.agents import pagers
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
+from google.cloud.dialogflowcx_v3beta1.types import audio_config
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
@@ -61,6 +62,7 @@ from google.protobuf import struct_pb2  # type: ignore
 from .transports.base import AgentsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AgentsGrpcTransport
 from .transports.grpc_asyncio import AgentsGrpcAsyncIOTransport
+from .transports.rest import AgentsRestTransport
 
 
 class AgentsClientMeta(type):
@@ -74,6 +76,7 @@ class AgentsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AgentsTransport]]
     _transport_registry["grpc"] = AgentsGrpcTransport
     _transport_registry["grpc_asyncio"] = AgentsGrpcAsyncIOTransport
+    _transport_registry["rest"] = AgentsRestTransport
 
     def get_transport_class(
         cls,

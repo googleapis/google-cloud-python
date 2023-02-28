@@ -57,6 +57,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import SecuritySettingsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SecuritySettingsServiceGrpcTransport
 from .transports.grpc_asyncio import SecuritySettingsServiceGrpcAsyncIOTransport
+from .transports.rest import SecuritySettingsServiceRestTransport
 
 
 class SecuritySettingsServiceClientMeta(type):
@@ -72,6 +73,7 @@ class SecuritySettingsServiceClientMeta(type):
     )  # type: Dict[str, Type[SecuritySettingsServiceTransport]]
     _transport_registry["grpc"] = SecuritySettingsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = SecuritySettingsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = SecuritySettingsServiceRestTransport
 
     def get_transport_class(
         cls,

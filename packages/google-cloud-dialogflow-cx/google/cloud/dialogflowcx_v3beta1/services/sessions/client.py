@@ -56,6 +56,7 @@ from google.longrunning import operations_pb2
 from .transports.base import SessionsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SessionsGrpcTransport
 from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
+from .transports.rest import SessionsRestTransport
 
 
 class SessionsClientMeta(type):
@@ -69,6 +70,7 @@ class SessionsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionsTransport]]
     _transport_registry["grpc"] = SessionsGrpcTransport
     _transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
+    _transport_registry["rest"] = SessionsRestTransport
 
     def get_transport_class(
         cls,

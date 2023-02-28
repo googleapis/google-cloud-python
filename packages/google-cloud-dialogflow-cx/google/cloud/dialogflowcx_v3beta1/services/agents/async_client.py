@@ -48,6 +48,7 @@ from google.cloud.dialogflowcx_v3beta1.services.agents import pagers
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
+from google.cloud.dialogflowcx_v3beta1.types import audio_config
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2

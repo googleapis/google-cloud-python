@@ -113,7 +113,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'list_webhooks': ('parent', 'page_size', 'page_token', ),
         'load_version': ('name', 'allow_override_agent_resources', ),
         'lookup_environment_history': ('name', 'page_size', 'page_token', ),
-        'match_intent': ('session', 'query_input', 'query_params', ),
+        'match_intent': ('session', 'query_input', 'query_params', 'persist_parameter_changes', ),
         'restore_agent': ('name', 'agent_uri', 'agent_content', 'restore_option', ),
         'run_continuous_test': ('environment', ),
         'run_test_case': ('name', 'environment', ),

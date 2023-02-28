@@ -37,6 +37,7 @@ from .audio_config import (
     OutputAudioConfig,
     SpeechWordInfo,
     SynthesizeSpeechConfig,
+    TextToSpeechSettings,
     VoiceSelectionParams,
     AudioEncoding,
     OutputAudioEncoding,
@@ -119,6 +120,9 @@ from .flow import (
 )
 from .fulfillment import (
     Fulfillment,
+)
+from .gcs import (
+    GcsDestination,
 )
 from .intent import (
     CreateIntentRequest,
@@ -280,6 +284,7 @@ __all__ = (
     "OutputAudioConfig",
     "SpeechWordInfo",
     "SynthesizeSpeechConfig",
+    "TextToSpeechSettings",
     "VoiceSelectionParams",
     "AudioEncoding",
     "OutputAudioEncoding",
@@ -348,6 +353,7 @@ __all__ = (
     "UpdateFlowRequest",
     "ValidateFlowRequest",
     "Fulfillment",
+    "GcsDestination",
     "CreateIntentRequest",
     "DeleteIntentRequest",
     "GetIntentRequest",

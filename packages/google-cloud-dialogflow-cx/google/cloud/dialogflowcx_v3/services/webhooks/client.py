@@ -56,6 +56,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import WebhooksTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import WebhooksGrpcTransport
 from .transports.grpc_asyncio import WebhooksGrpcAsyncIOTransport
+from .transports.rest import WebhooksRestTransport
 
 
 class WebhooksClientMeta(type):
@@ -69,6 +70,7 @@ class WebhooksClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[WebhooksTransport]]
     _transport_registry["grpc"] = WebhooksGrpcTransport
     _transport_registry["grpc_asyncio"] = WebhooksGrpcAsyncIOTransport
+    _transport_registry["rest"] = WebhooksRestTransport
 
     def get_transport_class(
         cls,

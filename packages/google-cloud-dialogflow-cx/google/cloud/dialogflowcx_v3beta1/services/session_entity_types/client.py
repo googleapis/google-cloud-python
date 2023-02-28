@@ -58,6 +58,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import SessionEntityTypesTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SessionEntityTypesGrpcTransport
 from .transports.grpc_asyncio import SessionEntityTypesGrpcAsyncIOTransport
+from .transports.rest import SessionEntityTypesRestTransport
 
 
 class SessionEntityTypesClientMeta(type):
@@ -73,6 +74,7 @@ class SessionEntityTypesClientMeta(type):
     )  # type: Dict[str, Type[SessionEntityTypesTransport]]
     _transport_registry["grpc"] = SessionEntityTypesGrpcTransport
     _transport_registry["grpc_asyncio"] = SessionEntityTypesGrpcAsyncIOTransport
+    _transport_registry["rest"] = SessionEntityTypesRestTransport
 
     def get_transport_class(
         cls,

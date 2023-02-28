@@ -59,6 +59,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import EnvironmentsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import EnvironmentsGrpcTransport
 from .transports.grpc_asyncio import EnvironmentsGrpcAsyncIOTransport
+from .transports.rest import EnvironmentsRestTransport
 
 
 class EnvironmentsClientMeta(type):
@@ -72,6 +73,7 @@ class EnvironmentsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[EnvironmentsTransport]]
     _transport_registry["grpc"] = EnvironmentsGrpcTransport
     _transport_registry["grpc_asyncio"] = EnvironmentsGrpcAsyncIOTransport
+    _transport_registry["rest"] = EnvironmentsRestTransport
 
     def get_transport_class(
         cls,
@@ -880,7 +882,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 # Initialize request argument(s)
                 environment = dialogflowcx_v3beta1.Environment()
                 environment.display_name = "display_name_value"
-                environment.version_configs.version = "version_value"
 
                 request = dialogflowcx_v3beta1.CreateEnvironmentRequest(
                     parent="parent_value",
@@ -1035,7 +1036,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 # Initialize request argument(s)
                 environment = dialogflowcx_v3beta1.Environment()
                 environment.display_name = "display_name_value"
-                environment.version_configs.version = "version_value"
 
                 request = dialogflowcx_v3beta1.UpdateEnvironmentRequest(
                     environment=environment,

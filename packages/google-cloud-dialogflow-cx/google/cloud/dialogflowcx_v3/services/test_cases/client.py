@@ -58,6 +58,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import TestCasesTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import TestCasesGrpcTransport
 from .transports.grpc_asyncio import TestCasesGrpcAsyncIOTransport
+from .transports.rest import TestCasesRestTransport
 
 
 class TestCasesClientMeta(type):
@@ -71,6 +72,7 @@ class TestCasesClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[TestCasesTransport]]
     _transport_registry["grpc"] = TestCasesGrpcTransport
     _transport_registry["grpc_asyncio"] = TestCasesGrpcAsyncIOTransport
+    _transport_registry["rest"] = TestCasesRestTransport
 
     def get_transport_class(
         cls,

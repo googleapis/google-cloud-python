@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -73,10 +75,10 @@ class Environment(proto.Message):
             characters. If exceeded, the request is
             rejected.
         version_configs (MutableSequence[google.cloud.dialogflowcx_v3.types.Environment.VersionConfig]):
-            Required. A list of configurations for flow versions. You
-            should include version configs for all flows that are
-            reachable from [``Start Flow``][Agent.start_flow] in the
-            agent. Otherwise, an error will be returned.
+            A list of configurations for flow versions. You should
+            include version configs for all flows that are reachable
+            from [``Start Flow``][Agent.start_flow] in the agent.
+            Otherwise, an error will be returned.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Update time of this environment.
         test_cases_config (google.cloud.dialogflowcx_v3.types.Environment.TestCasesConfig):

@@ -19,6 +19,8 @@ from typing import Dict, Type
 from .base import SessionEntityTypesTransport
 from .grpc import SessionEntityTypesGrpcTransport
 from .grpc_asyncio import SessionEntityTypesGrpcAsyncIOTransport
+from .rest import SessionEntityTypesRestTransport
+from .rest import SessionEntityTypesRestInterceptor
 
 
 # Compile a registry of transports.
@@ -27,9 +29,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[SessionEntityTypesTransport]]
 _transport_registry["grpc"] = SessionEntityTypesGrpcTransport
 _transport_registry["grpc_asyncio"] = SessionEntityTypesGrpcAsyncIOTransport
+_transport_registry["rest"] = SessionEntityTypesRestTransport
 
 __all__ = (
     "SessionEntityTypesTransport",
     "SessionEntityTypesGrpcTransport",
     "SessionEntityTypesGrpcAsyncIOTransport",
+    "SessionEntityTypesRestTransport",
+    "SessionEntityTypesRestInterceptor",
 )

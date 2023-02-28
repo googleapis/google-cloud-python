@@ -13,9 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
+
+from google.cloud.dialogflowcx_v3beta1.types import gcs
 
 
 __protobuf__ = proto.module(
@@ -41,6 +45,13 @@ class AdvancedSettings(proto.Message):
     Hierarchy: Agent->Flow->Page->Fulfillment/Parameter.
 
     Attributes:
+        audio_export_gcs_destination (google.cloud.dialogflowcx_v3beta1.types.GcsDestination):
+            If present, incoming audio is exported by
+            Dialogflow to the configured Google Cloud
+            Storage destination. Exposed at the following
+            levels:
+            - Agent level
+            - Flow level
         logging_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings.LoggingSettings):
             Settings for logging.
             Settings for Dialogflow History, Contact Center
@@ -70,6 +81,11 @@ class AdvancedSettings(proto.Message):
             number=3,
         )
 
+    audio_export_gcs_destination: gcs.GcsDestination = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcs.GcsDestination,
+    )
     logging_settings: LoggingSettings = proto.Field(
         proto.MESSAGE,
         number=6,

@@ -70,6 +70,7 @@ from .types.audio_config import InputAudioConfig
 from .types.audio_config import OutputAudioConfig
 from .types.audio_config import SpeechWordInfo
 from .types.audio_config import SynthesizeSpeechConfig
+from .types.audio_config import TextToSpeechSettings
 from .types.audio_config import VoiceSelectionParams
 from .types.audio_config import AudioEncoding
 from .types.audio_config import OutputAudioEncoding
@@ -138,6 +139,7 @@ from .types.flow import TrainFlowRequest
 from .types.flow import UpdateFlowRequest
 from .types.flow import ValidateFlowRequest
 from .types.fulfillment import Fulfillment
+from .types.gcs import GcsDestination
 from .types.intent import CreateIntentRequest
 from .types.intent import DeleteIntentRequest
 from .types.intent import GetIntentRequest
@@ -347,6 +349,7 @@ __all__ = (
     "FulfillIntentRequest",
     "FulfillIntentResponse",
     "Fulfillment",
+    "GcsDestination",
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
     "GetChangelogRequest",
@@ -462,6 +465,7 @@ __all__ = (
     "TestResult",
     "TestRunDifference",
     "TextInput",
+    "TextToSpeechSettings",
     "TrainFlowRequest",
     "TransitionCoverage",
     "TransitionRoute",

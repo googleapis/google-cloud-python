@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -20,6 +22,7 @@ import proto  # type: ignore
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
 )
+from google.cloud.dialogflowcx_v3.types import audio_config
 from google.cloud.dialogflowcx_v3.types import flow
 from google.protobuf import field_mask_pb2  # type: ignore
 
@@ -139,6 +142,10 @@ class Agent(proto.Message):
             agent. The settings exposed at the lower level
             overrides the settings exposed at the higher
             level.
+        text_to_speech_settings (google.cloud.dialogflowcx_v3.types.TextToSpeechSettings):
+            Settings on instructing the speech
+            synthesizer on how to generate the output audio
+            content.
     """
 
     name: str = proto.Field(
@@ -198,6 +205,11 @@ class Agent(proto.Message):
         proto.MESSAGE,
         number=22,
         message=gcdc_advanced_settings.AdvancedSettings,
+    )
+    text_to_speech_settings: audio_config.TextToSpeechSettings = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=audio_config.TextToSpeechSettings,
     )
 
 

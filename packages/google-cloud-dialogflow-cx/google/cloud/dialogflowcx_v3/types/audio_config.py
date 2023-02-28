@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -32,6 +34,7 @@ __protobuf__ = proto.module(
         "VoiceSelectionParams",
         "SynthesizeSpeechConfig",
         "OutputAudioConfig",
+        "TextToSpeechSettings",
     },
 )
 
@@ -467,6 +470,27 @@ class OutputAudioConfig(proto.Message):
     synthesize_speech_config: "SynthesizeSpeechConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
+        message="SynthesizeSpeechConfig",
+    )
+
+
+class TextToSpeechSettings(proto.Message):
+    r"""Settings related to speech generating.
+
+    Attributes:
+        synthesize_speech_configs (MutableMapping[str, google.cloud.dialogflowcx_v3.types.SynthesizeSpeechConfig]):
+            Configuration of how speech should be
+            synthesized, mapping from language
+            (https://dialogflow.com/docs/reference/language)
+            to SynthesizeSpeechConfig.
+    """
+
+    synthesize_speech_configs: MutableMapping[
+        str, "SynthesizeSpeechConfig"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
         message="SynthesizeSpeechConfig",
     )
 

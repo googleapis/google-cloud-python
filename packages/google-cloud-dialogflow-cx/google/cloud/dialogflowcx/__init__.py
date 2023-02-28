@@ -102,6 +102,7 @@ from google.cloud.dialogflowcx_v3.types.audio_config import InputAudioConfig
 from google.cloud.dialogflowcx_v3.types.audio_config import OutputAudioConfig
 from google.cloud.dialogflowcx_v3.types.audio_config import SpeechWordInfo
 from google.cloud.dialogflowcx_v3.types.audio_config import SynthesizeSpeechConfig
+from google.cloud.dialogflowcx_v3.types.audio_config import TextToSpeechSettings
 from google.cloud.dialogflowcx_v3.types.audio_config import VoiceSelectionParams
 from google.cloud.dialogflowcx_v3.types.audio_config import AudioEncoding
 from google.cloud.dialogflowcx_v3.types.audio_config import OutputAudioEncoding
@@ -178,6 +179,7 @@ from google.cloud.dialogflowcx_v3.types.flow import TrainFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import UpdateFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import ValidateFlowRequest
 from google.cloud.dialogflowcx_v3.types.fulfillment import Fulfillment
+from google.cloud.dialogflowcx_v3.types.gcs import GcsDestination
 from google.cloud.dialogflowcx_v3.types.intent import CreateIntentRequest
 from google.cloud.dialogflowcx_v3.types.intent import DeleteIntentRequest
 from google.cloud.dialogflowcx_v3.types.intent import GetIntentRequest
@@ -386,6 +388,7 @@ __all__ = (
     "OutputAudioConfig",
     "SpeechWordInfo",
     "SynthesizeSpeechConfig",
+    "TextToSpeechSettings",
     "VoiceSelectionParams",
     "AudioEncoding",
     "OutputAudioEncoding",
@@ -454,6 +457,7 @@ __all__ = (
     "UpdateFlowRequest",
     "ValidateFlowRequest",
     "Fulfillment",
+    "GcsDestination",
     "CreateIntentRequest",
     "DeleteIntentRequest",
     "GetIntentRequest",

@@ -61,6 +61,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import VersionsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import VersionsGrpcTransport
 from .transports.grpc_asyncio import VersionsGrpcAsyncIOTransport
+from .transports.rest import VersionsRestTransport
 
 
 class VersionsClientMeta(type):
@@ -74,6 +75,7 @@ class VersionsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[VersionsTransport]]
     _transport_registry["grpc"] = VersionsGrpcTransport
     _transport_registry["grpc_asyncio"] = VersionsGrpcAsyncIOTransport
+    _transport_registry["rest"] = VersionsRestTransport
 
     def get_transport_class(
         cls,

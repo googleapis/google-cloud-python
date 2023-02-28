@@ -58,6 +58,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import TransitionRouteGroupsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import TransitionRouteGroupsGrpcTransport
 from .transports.grpc_asyncio import TransitionRouteGroupsGrpcAsyncIOTransport
+from .transports.rest import TransitionRouteGroupsRestTransport
 
 
 class TransitionRouteGroupsClientMeta(type):
@@ -73,6 +74,7 @@ class TransitionRouteGroupsClientMeta(type):
     )  # type: Dict[str, Type[TransitionRouteGroupsTransport]]
     _transport_registry["grpc"] = TransitionRouteGroupsGrpcTransport
     _transport_registry["grpc_asyncio"] = TransitionRouteGroupsGrpcAsyncIOTransport
+    _transport_registry["rest"] = TransitionRouteGroupsRestTransport
 
     def get_transport_class(
         cls,

@@ -56,6 +56,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import PagesTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import PagesGrpcTransport
 from .transports.grpc_asyncio import PagesGrpcAsyncIOTransport
+from .transports.rest import PagesRestTransport
 
 
 class PagesClientMeta(type):
@@ -69,6 +70,7 @@ class PagesClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[PagesTransport]]
     _transport_registry["grpc"] = PagesGrpcTransport
     _transport_registry["grpc_asyncio"] = PagesGrpcAsyncIOTransport
+    _transport_registry["rest"] = PagesRestTransport
 
     def get_transport_class(
         cls,

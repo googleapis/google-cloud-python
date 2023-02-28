@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -1195,6 +1197,8 @@ class MatchIntentRequest(proto.Message):
             The parameters of this query.
         query_input (google.cloud.dialogflowcx_v3.types.QueryInput):
             Required. The input specification.
+        persist_parameter_changes (bool):
+            Persist session parameter changes from ``query_params``.
     """
 
     session: str = proto.Field(
@@ -1210,6 +1214,10 @@ class MatchIntentRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message="QueryInput",
+    )
+    persist_parameter_changes: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 

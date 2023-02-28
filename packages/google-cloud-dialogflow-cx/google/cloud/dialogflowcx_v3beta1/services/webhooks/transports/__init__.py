@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import WebhooksTransport
 from .grpc import WebhooksGrpcTransport
 from .grpc_asyncio import WebhooksGrpcAsyncIOTransport
+from .rest import WebhooksRestTransport
+from .rest import WebhooksRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[WebhooksTransport]]
 _transport_registry["grpc"] = WebhooksGrpcTransport
 _transport_registry["grpc_asyncio"] = WebhooksGrpcAsyncIOTransport
+_transport_registry["rest"] = WebhooksRestTransport
 
 __all__ = (
     "WebhooksTransport",
     "WebhooksGrpcTransport",
     "WebhooksGrpcAsyncIOTransport",
+    "WebhooksRestTransport",
+    "WebhooksRestInterceptor",
 )
