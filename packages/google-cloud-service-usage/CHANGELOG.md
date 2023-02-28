@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-service-usage/compare/v1.6.1...v1.7.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#166](https://github.com/googleapis/python-service-usage/issues/166)) ([3dcb482](https://github.com/googleapis/python-service-usage/commit/3dcb482eef0796cfb3ab874e6c7637fa631da01a))
+
 ## [1.6.1](https://github.com/googleapis/python-service-usage/compare/v1.6.0...v1.6.1) (2023-01-23)
 
 
