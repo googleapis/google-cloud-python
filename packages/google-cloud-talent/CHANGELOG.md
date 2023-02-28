@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.10.0](https://github.com/googleapis/python-talent/compare/v2.9.1...v2.10.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([6c4bf6e](https://github.com/googleapis/python-talent/commit/6c4bf6e734adeab6452e30741727df0efaf65ddf))
+
 ## [2.9.1](https://github.com/googleapis/python-talent/compare/v2.9.0...v2.9.1) (2023-01-23)
 
 
