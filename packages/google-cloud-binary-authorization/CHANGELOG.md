@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-binary-authorization/compare/v1.5.1...v1.6.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#204](https://github.com/googleapis/python-binary-authorization/issues/204)) ([3ef88ce](https://github.com/googleapis/python-binary-authorization/commit/3ef88cecf3af6a7945a4fe6a30dfd6c47e56c725))
+
 ## [1.5.1](https://github.com/googleapis/python-binary-authorization/compare/v1.5.0...v1.5.1) (2023-01-20)
 
 
