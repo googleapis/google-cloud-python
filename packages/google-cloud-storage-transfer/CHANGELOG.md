@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-storage-transfer/compare/v1.7.1...v1.8.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([20ec491](https://github.com/googleapis/python-storage-transfer/commit/20ec49112218b78212bf8b20437f3e63da2fb86e))
+
 ## [1.7.1](https://github.com/googleapis/python-storage-transfer/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
