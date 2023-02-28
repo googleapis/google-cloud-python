@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -30,13 +32,17 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.talent_v4.services.event_service import (
     EventServiceAsyncClient,
@@ -92,6 +98,7 @@ def test__get_default_mtls_endpoint():
     [
         (EventServiceClient, "grpc"),
         (EventServiceAsyncClient, "grpc_asyncio"),
+        (EventServiceClient, "rest"),
     ],
 )
 def test_event_service_client_from_service_account_info(client_class, transport_name):
@@ -105,7 +112,11 @@ def test_event_service_client_from_service_account_info(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -113,6 +124,7 @@ def test_event_service_client_from_service_account_info(client_class, transport_
     [
         (transports.EventServiceGrpcTransport, "grpc"),
         (transports.EventServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.EventServiceRestTransport, "rest"),
     ],
 )
 def test_event_service_client_service_account_always_use_jwt(
@@ -138,6 +150,7 @@ def test_event_service_client_service_account_always_use_jwt(
     [
         (EventServiceClient, "grpc"),
         (EventServiceAsyncClient, "grpc_asyncio"),
+        (EventServiceClient, "rest"),
     ],
 )
 def test_event_service_client_from_service_account_file(client_class, transport_name):
@@ -158,13 +171,18 @@ def test_event_service_client_from_service_account_file(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 def test_event_service_client_get_transport_class():
     transport = EventServiceClient.get_transport_class()
     available_transports = [
         transports.EventServiceGrpcTransport,
+        transports.EventServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -181,6 +199,7 @@ def test_event_service_client_get_transport_class():
             transports.EventServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (EventServiceClient, transports.EventServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -324,6 +343,8 @@ def test_event_service_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (EventServiceClient, transports.EventServiceRestTransport, "rest", "true"),
+        (EventServiceClient, transports.EventServiceRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -517,6 +538,7 @@ def test_event_service_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.EventServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (EventServiceClient, transports.EventServiceRestTransport, "rest"),
     ],
 )
 def test_event_service_client_client_options_scopes(
@@ -557,6 +579,7 @@ def test_event_service_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (EventServiceClient, transports.EventServiceRestTransport, "rest", None),
     ],
 )
 def test_event_service_client_client_options_credentials_file(
@@ -931,6 +954,301 @@ async def test_create_client_event_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_service.CreateClientEventRequest,
+        dict,
+    ],
+)
+def test_create_client_event_rest(request_type):
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request_init["client_event"] = {
+        "request_id": "request_id_value",
+        "event_id": "event_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "job_event": {"type_": 1, "jobs": ["jobs_value1", "jobs_value2"]},
+        "event_notes": "event_notes_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event.ClientEvent(
+            request_id="request_id_value",
+            event_id="event_id_value",
+            event_notes="event_notes_value",
+            job_event=event.JobEvent(type_=event.JobEvent.JobEventType.IMPRESSION),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event.ClientEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_client_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event.ClientEvent)
+    assert response.request_id == "request_id_value"
+    assert response.event_id == "event_id_value"
+    assert response.event_notes == "event_notes_value"
+
+
+def test_create_client_event_rest_required_fields(
+    request_type=event_service.CreateClientEventRequest,
+):
+    transport_class = transports.EventServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_client_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_client_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = event.ClientEvent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = event.ClientEvent.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_client_event(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_client_event_rest_unset_required_fields():
+    transport = transports.EventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_client_event._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "clientEvent",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_client_event_rest_interceptors(null_interceptor):
+    transport = transports.EventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EventServiceRestInterceptor(),
+    )
+    client = EventServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EventServiceRestInterceptor, "post_create_client_event"
+    ) as post, mock.patch.object(
+        transports.EventServiceRestInterceptor, "pre_create_client_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = event_service.CreateClientEventRequest.pb(
+            event_service.CreateClientEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = event.ClientEvent.to_json(event.ClientEvent())
+
+        request = event_service.CreateClientEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event.ClientEvent()
+
+        client.create_client_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_client_event_rest_bad_request(
+    transport: str = "rest", request_type=event_service.CreateClientEventRequest
+):
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request_init["client_event"] = {
+        "request_id": "request_id_value",
+        "event_id": "event_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "job_event": {"type_": 1, "jobs": ["jobs_value1", "jobs_value2"]},
+        "event_notes": "event_notes_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_client_event(request)
+
+
+def test_create_client_event_rest_flattened():
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event.ClientEvent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            client_event=event.ClientEvent(request_id="request_id_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event.ClientEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_client_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{parent=projects/*/tenants/*}/clientEvents" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_client_event_rest_flattened_error(transport: str = "rest"):
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_client_event(
+            event_service.CreateClientEventRequest(),
+            parent="parent_value",
+            client_event=event.ClientEvent(request_id="request_id_value"),
+        )
+
+
+def test_create_client_event_rest_error():
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EventServiceGrpcTransport(
@@ -1012,6 +1330,7 @@ def test_transport_get_channel():
     [
         transports.EventServiceGrpcTransport,
         transports.EventServiceGrpcAsyncIOTransport,
+        transports.EventServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1026,6 +1345,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1067,7 +1387,10 @@ def test_event_service_base_transport():
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = ("create_client_event",)
+    methods = (
+        "create_client_event",
+        "get_operation",
+    )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
@@ -1162,6 +1485,7 @@ def test_event_service_transport_auth_adc(transport_class):
     [
         transports.EventServiceGrpcTransport,
         transports.EventServiceGrpcAsyncIOTransport,
+        transports.EventServiceRestTransport,
     ],
 )
 def test_event_service_transport_auth_gdch_credentials(transport_class):
@@ -1259,11 +1583,23 @@ def test_event_service_grpc_transport_client_cert_source_for_mtls(transport_clas
             )
 
 
+def test_event_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.EventServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_event_service_host_no_port(transport_name):
@@ -1272,7 +1608,11 @@ def test_event_service_host_no_port(transport_name):
         client_options=client_options.ClientOptions(api_endpoint="jobs.googleapis.com"),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:443")
+    assert client.transport._host == (
+        "jobs.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1280,6 +1620,7 @@ def test_event_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_event_service_host_with_port(transport_name):
@@ -1290,7 +1631,33 @@ def test_event_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:8000")
+    assert client.transport._host == (
+        "jobs.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_event_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = EventServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = EventServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_client_event._session
+    session2 = client2.transport.create_client_event._session
+    assert session1 != session2
 
 
 def test_event_service_grpc_transport_channel():
@@ -1574,8 +1941,212 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = EventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = EventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = EventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = EventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1593,6 +2164,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

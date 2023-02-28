@@ -57,6 +57,7 @@ from google.cloud.talent_v4beta1.types import company_service
 from .transports.base import DEFAULT_CLIENT_INFO, CompanyServiceTransport
 from .transports.grpc import CompanyServiceGrpcTransport
 from .transports.grpc_asyncio import CompanyServiceGrpcAsyncIOTransport
+from .transports.rest import CompanyServiceRestTransport
 
 
 class CompanyServiceClientMeta(type):
@@ -72,6 +73,7 @@ class CompanyServiceClientMeta(type):
     )  # type: Dict[str, Type[CompanyServiceTransport]]
     _transport_registry["grpc"] = CompanyServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CompanyServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CompanyServiceRestTransport
 
     def get_transport_class(
         cls,

@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -32,11 +34,14 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.talent_v4beta1.services.completion import (
     CompletionAsyncClient,
@@ -92,6 +97,7 @@ def test__get_default_mtls_endpoint():
     [
         (CompletionClient, "grpc"),
         (CompletionAsyncClient, "grpc_asyncio"),
+        (CompletionClient, "rest"),
     ],
 )
 def test_completion_client_from_service_account_info(client_class, transport_name):
@@ -105,7 +111,11 @@ def test_completion_client_from_service_account_info(client_class, transport_nam
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -113,6 +123,7 @@ def test_completion_client_from_service_account_info(client_class, transport_nam
     [
         (transports.CompletionGrpcTransport, "grpc"),
         (transports.CompletionGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CompletionRestTransport, "rest"),
     ],
 )
 def test_completion_client_service_account_always_use_jwt(
@@ -138,6 +149,7 @@ def test_completion_client_service_account_always_use_jwt(
     [
         (CompletionClient, "grpc"),
         (CompletionAsyncClient, "grpc_asyncio"),
+        (CompletionClient, "rest"),
     ],
 )
 def test_completion_client_from_service_account_file(client_class, transport_name):
@@ -158,13 +170,18 @@ def test_completion_client_from_service_account_file(client_class, transport_nam
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 def test_completion_client_get_transport_class():
     transport = CompletionClient.get_transport_class()
     available_transports = [
         transports.CompletionGrpcTransport,
+        transports.CompletionRestTransport,
     ]
     assert transport in available_transports
 
@@ -181,6 +198,7 @@ def test_completion_client_get_transport_class():
             transports.CompletionGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CompletionClient, transports.CompletionRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -324,6 +342,8 @@ def test_completion_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (CompletionClient, transports.CompletionRestTransport, "rest", "true"),
+        (CompletionClient, transports.CompletionRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -517,6 +537,7 @@ def test_completion_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.CompletionGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CompletionClient, transports.CompletionRestTransport, "rest"),
     ],
 )
 def test_completion_client_client_options_scopes(
@@ -552,6 +573,7 @@ def test_completion_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (CompletionClient, transports.CompletionRestTransport, "rest", None),
     ],
 )
 def test_completion_client_client_options_credentials_file(
@@ -805,6 +827,268 @@ async def test_complete_query_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        completion_service.CompleteQueryRequest,
+        dict,
+    ],
+)
+def test_complete_query_rest(request_type):
+    client = CompletionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = completion_service.CompleteQueryResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = completion_service.CompleteQueryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.complete_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, completion_service.CompleteQueryResponse)
+
+
+def test_complete_query_rest_required_fields(
+    request_type=completion_service.CompleteQueryRequest,
+):
+    transport_class = transports.CompletionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["query"] = ""
+    request_init["page_size"] = 0
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "query" not in jsonified_request
+    assert "pageSize" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).complete_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == request_init["query"]
+    assert "pageSize" in jsonified_request
+    assert jsonified_request["pageSize"] == request_init["page_size"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["query"] = "query_value"
+    jsonified_request["pageSize"] = 951
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).complete_query._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "company",
+            "language_codes",
+            "page_size",
+            "query",
+            "scope",
+            "type_",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == "query_value"
+    assert "pageSize" in jsonified_request
+    assert jsonified_request["pageSize"] == 951
+
+    client = CompletionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = completion_service.CompleteQueryResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = completion_service.CompleteQueryResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.complete_query(request)
+
+            expected_params = [
+                (
+                    "query",
+                    "",
+                ),
+                (
+                    "pageSize",
+                    str(0),
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_complete_query_rest_unset_required_fields():
+    transport = transports.CompletionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.complete_query._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "company",
+                "languageCodes",
+                "pageSize",
+                "query",
+                "scope",
+                "type",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "query",
+                "pageSize",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_complete_query_rest_interceptors(null_interceptor):
+    transport = transports.CompletionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CompletionRestInterceptor(),
+    )
+    client = CompletionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CompletionRestInterceptor, "post_complete_query"
+    ) as post, mock.patch.object(
+        transports.CompletionRestInterceptor, "pre_complete_query"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = completion_service.CompleteQueryRequest.pb(
+            completion_service.CompleteQueryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = completion_service.CompleteQueryResponse.to_json(
+            completion_service.CompleteQueryResponse()
+        )
+
+        request = completion_service.CompleteQueryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = completion_service.CompleteQueryResponse()
+
+        client.complete_query(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_complete_query_rest_bad_request(
+    transport: str = "rest", request_type=completion_service.CompleteQueryRequest
+):
+    client = CompletionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.complete_query(request)
+
+
+def test_complete_query_rest_error():
+    client = CompletionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CompletionGrpcTransport(
@@ -886,6 +1170,7 @@ def test_transport_get_channel():
     [
         transports.CompletionGrpcTransport,
         transports.CompletionGrpcAsyncIOTransport,
+        transports.CompletionRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -900,6 +1185,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1039,6 +1325,7 @@ def test_completion_transport_auth_adc(transport_class):
     [
         transports.CompletionGrpcTransport,
         transports.CompletionGrpcAsyncIOTransport,
+        transports.CompletionRestTransport,
     ],
 )
 def test_completion_transport_auth_gdch_credentials(transport_class):
@@ -1136,11 +1423,23 @@ def test_completion_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_completion_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CompletionRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_completion_host_no_port(transport_name):
@@ -1149,7 +1448,11 @@ def test_completion_host_no_port(transport_name):
         client_options=client_options.ClientOptions(api_endpoint="jobs.googleapis.com"),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:443")
+    assert client.transport._host == (
+        "jobs.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1157,6 +1460,7 @@ def test_completion_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_completion_host_with_port(transport_name):
@@ -1167,7 +1471,33 @@ def test_completion_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:8000")
+    assert client.transport._host == (
+        "jobs.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_completion_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CompletionClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CompletionClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.complete_query._session
+    session2 = client2.transport.complete_query._session
+    assert session1 != session2
 
 
 def test_completion_grpc_transport_channel():
@@ -1454,6 +1784,64 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = CompletionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = CompletionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
 def test_get_operation(transport: str = "grpc"):
     client = CompletionClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1601,6 +1989,7 @@ async def test_get_operation_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1618,6 +2007,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

@@ -66,6 +66,36 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "CompanyServiceClient",
+          "rpcs": {
+            "CreateCompany": {
+              "methods": [
+                "create_company"
+              ]
+            },
+            "DeleteCompany": {
+              "methods": [
+                "delete_company"
+              ]
+            },
+            "GetCompany": {
+              "methods": [
+                "get_company"
+              ]
+            },
+            "ListCompanies": {
+              "methods": [
+                "list_companies"
+              ]
+            },
+            "UpdateCompany": {
+              "methods": [
+                "update_company"
+              ]
+            }
+          }
         }
       }
     },
@@ -90,6 +120,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "CompletionClient",
+          "rpcs": {
+            "CompleteQuery": {
+              "methods": [
+                "complete_query"
+              ]
+            }
+          }
         }
       }
     },
@@ -107,6 +147,16 @@
         },
         "grpc-async": {
           "libraryClient": "EventServiceAsyncClient",
+          "rpcs": {
+            "CreateClientEvent": {
+              "methods": [
+                "create_client_event"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "EventServiceClient",
           "rpcs": {
             "CreateClientEvent": {
               "methods": [
@@ -228,6 +278,61 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "JobServiceClient",
+          "rpcs": {
+            "BatchCreateJobs": {
+              "methods": [
+                "batch_create_jobs"
+              ]
+            },
+            "BatchDeleteJobs": {
+              "methods": [
+                "batch_delete_jobs"
+              ]
+            },
+            "BatchUpdateJobs": {
+              "methods": [
+                "batch_update_jobs"
+              ]
+            },
+            "CreateJob": {
+              "methods": [
+                "create_job"
+              ]
+            },
+            "DeleteJob": {
+              "methods": [
+                "delete_job"
+              ]
+            },
+            "GetJob": {
+              "methods": [
+                "get_job"
+              ]
+            },
+            "ListJobs": {
+              "methods": [
+                "list_jobs"
+              ]
+            },
+            "SearchJobs": {
+              "methods": [
+                "search_jobs"
+              ]
+            },
+            "SearchJobsForAlert": {
+              "methods": [
+                "search_jobs_for_alert"
+              ]
+            },
+            "UpdateJob": {
+              "methods": [
+                "update_job"
+              ]
+            }
+          }
         }
       }
     },
@@ -265,6 +370,36 @@
         },
         "grpc-async": {
           "libraryClient": "TenantServiceAsyncClient",
+          "rpcs": {
+            "CreateTenant": {
+              "methods": [
+                "create_tenant"
+              ]
+            },
+            "DeleteTenant": {
+              "methods": [
+                "delete_tenant"
+              ]
+            },
+            "GetTenant": {
+              "methods": [
+                "get_tenant"
+              ]
+            },
+            "ListTenants": {
+              "methods": [
+                "list_tenants"
+              ]
+            },
+            "UpdateTenant": {
+              "methods": [
+                "update_tenant"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "TenantServiceClient",
           "rpcs": {
             "CreateTenant": {
               "methods": [

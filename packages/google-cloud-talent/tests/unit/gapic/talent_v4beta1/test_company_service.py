@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,6 +35,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.type import latlng_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 import grpc
@@ -40,6 +43,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.talent_v4beta1.services.company_service import (
     CompanyServiceAsyncClient,
@@ -102,6 +107,7 @@ def test__get_default_mtls_endpoint():
     [
         (CompanyServiceClient, "grpc"),
         (CompanyServiceAsyncClient, "grpc_asyncio"),
+        (CompanyServiceClient, "rest"),
     ],
 )
 def test_company_service_client_from_service_account_info(client_class, transport_name):
@@ -115,7 +121,11 @@ def test_company_service_client_from_service_account_info(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -123,6 +133,7 @@ def test_company_service_client_from_service_account_info(client_class, transpor
     [
         (transports.CompanyServiceGrpcTransport, "grpc"),
         (transports.CompanyServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CompanyServiceRestTransport, "rest"),
     ],
 )
 def test_company_service_client_service_account_always_use_jwt(
@@ -148,6 +159,7 @@ def test_company_service_client_service_account_always_use_jwt(
     [
         (CompanyServiceClient, "grpc"),
         (CompanyServiceAsyncClient, "grpc_asyncio"),
+        (CompanyServiceClient, "rest"),
     ],
 )
 def test_company_service_client_from_service_account_file(client_class, transport_name):
@@ -168,13 +180,18 @@ def test_company_service_client_from_service_account_file(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 def test_company_service_client_get_transport_class():
     transport = CompanyServiceClient.get_transport_class()
     available_transports = [
         transports.CompanyServiceGrpcTransport,
+        transports.CompanyServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -191,6 +208,7 @@ def test_company_service_client_get_transport_class():
             transports.CompanyServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CompanyServiceClient, transports.CompanyServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -336,6 +354,8 @@ def test_company_service_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (CompanyServiceClient, transports.CompanyServiceRestTransport, "rest", "true"),
+        (CompanyServiceClient, transports.CompanyServiceRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -535,6 +555,7 @@ def test_company_service_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.CompanyServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CompanyServiceClient, transports.CompanyServiceRestTransport, "rest"),
     ],
 )
 def test_company_service_client_client_options_scopes(
@@ -575,6 +596,7 @@ def test_company_service_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (CompanyServiceClient, transports.CompanyServiceRestTransport, "rest", None),
     ],
 )
 def test_company_service_client_client_options_credentials_file(
@@ -2180,6 +2202,1490 @@ async def test_list_companies_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.CreateCompanyRequest,
+        dict,
+    ],
+)
+def test_create_company_rest(request_type):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_company.Company(
+            name="name_value",
+            display_name="display_name_value",
+            external_id="external_id_value",
+            size=common.CompanySize.MINI,
+            headquarters_address="headquarters_address_value",
+            hiring_agency=True,
+            eeo_text="eeo_text_value",
+            website_uri="website_uri_value",
+            career_site_uri="career_site_uri_value",
+            image_uri="image_uri_value",
+            keyword_searchable_job_custom_attributes=[
+                "keyword_searchable_job_custom_attributes_value"
+            ],
+            suspended=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_company.Company.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_company(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gct_company.Company)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.external_id == "external_id_value"
+    assert response.size == common.CompanySize.MINI
+    assert response.headquarters_address == "headquarters_address_value"
+    assert response.hiring_agency is True
+    assert response.eeo_text == "eeo_text_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.career_site_uri == "career_site_uri_value"
+    assert response.image_uri == "image_uri_value"
+    assert response.keyword_searchable_job_custom_attributes == [
+        "keyword_searchable_job_custom_attributes_value"
+    ]
+    assert response.suspended is True
+
+
+def test_create_company_rest_required_fields(
+    request_type=company_service.CreateCompanyRequest,
+):
+    transport_class = transports.CompanyServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gct_company.Company()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gct_company.Company.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_company(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_company_rest_unset_required_fields():
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_company._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "company",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_company_rest_interceptors(null_interceptor):
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CompanyServiceRestInterceptor(),
+    )
+    client = CompanyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "post_create_company"
+    ) as post, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "pre_create_company"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = company_service.CreateCompanyRequest.pb(
+            company_service.CreateCompanyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gct_company.Company.to_json(gct_company.Company())
+
+        request = company_service.CreateCompanyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gct_company.Company()
+
+        client.create_company(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_company_rest_bad_request(
+    transport: str = "rest", request_type=company_service.CreateCompanyRequest
+):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_company(request)
+
+
+def test_create_company_rest_flattened():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_company.Company()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            company=gct_company.Company(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_company.Company.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_company(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4beta1/{parent=projects/*/tenants/*}/companies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_company_rest_flattened_error(transport: str = "rest"):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_company(
+            company_service.CreateCompanyRequest(),
+            parent="parent_value",
+            company=gct_company.Company(name="name_value"),
+        )
+
+
+def test_create_company_rest_error():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.GetCompanyRequest,
+        dict,
+    ],
+)
+def test_get_company_rest(request_type):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = company.Company(
+            name="name_value",
+            display_name="display_name_value",
+            external_id="external_id_value",
+            size=common.CompanySize.MINI,
+            headquarters_address="headquarters_address_value",
+            hiring_agency=True,
+            eeo_text="eeo_text_value",
+            website_uri="website_uri_value",
+            career_site_uri="career_site_uri_value",
+            image_uri="image_uri_value",
+            keyword_searchable_job_custom_attributes=[
+                "keyword_searchable_job_custom_attributes_value"
+            ],
+            suspended=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = company.Company.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_company(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, company.Company)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.external_id == "external_id_value"
+    assert response.size == common.CompanySize.MINI
+    assert response.headquarters_address == "headquarters_address_value"
+    assert response.hiring_agency is True
+    assert response.eeo_text == "eeo_text_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.career_site_uri == "career_site_uri_value"
+    assert response.image_uri == "image_uri_value"
+    assert response.keyword_searchable_job_custom_attributes == [
+        "keyword_searchable_job_custom_attributes_value"
+    ]
+    assert response.suspended is True
+
+
+def test_get_company_rest_required_fields(
+    request_type=company_service.GetCompanyRequest,
+):
+    transport_class = transports.CompanyServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = company.Company()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = company.Company.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_company(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_company_rest_unset_required_fields():
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_company._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_company_rest_interceptors(null_interceptor):
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CompanyServiceRestInterceptor(),
+    )
+    client = CompanyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "post_get_company"
+    ) as post, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "pre_get_company"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = company_service.GetCompanyRequest.pb(
+            company_service.GetCompanyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = company.Company.to_json(company.Company())
+
+        request = company_service.GetCompanyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = company.Company()
+
+        client.get_company(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_company_rest_bad_request(
+    transport: str = "rest", request_type=company_service.GetCompanyRequest
+):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_company(request)
+
+
+def test_get_company_rest_flattened():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = company.Company()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = company.Company.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_company(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4beta1/{name=projects/*/tenants/*/companies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_company_rest_flattened_error(transport: str = "rest"):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_company(
+            company_service.GetCompanyRequest(),
+            name="name_value",
+        )
+
+
+def test_get_company_rest_error():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.UpdateCompanyRequest,
+        dict,
+    ],
+)
+def test_update_company_rest(request_type):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "company": {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_company.Company(
+            name="name_value",
+            display_name="display_name_value",
+            external_id="external_id_value",
+            size=common.CompanySize.MINI,
+            headquarters_address="headquarters_address_value",
+            hiring_agency=True,
+            eeo_text="eeo_text_value",
+            website_uri="website_uri_value",
+            career_site_uri="career_site_uri_value",
+            image_uri="image_uri_value",
+            keyword_searchable_job_custom_attributes=[
+                "keyword_searchable_job_custom_attributes_value"
+            ],
+            suspended=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_company.Company.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_company(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gct_company.Company)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.external_id == "external_id_value"
+    assert response.size == common.CompanySize.MINI
+    assert response.headquarters_address == "headquarters_address_value"
+    assert response.hiring_agency is True
+    assert response.eeo_text == "eeo_text_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.career_site_uri == "career_site_uri_value"
+    assert response.image_uri == "image_uri_value"
+    assert response.keyword_searchable_job_custom_attributes == [
+        "keyword_searchable_job_custom_attributes_value"
+    ]
+    assert response.suspended is True
+
+
+def test_update_company_rest_required_fields(
+    request_type=company_service.UpdateCompanyRequest,
+):
+    transport_class = transports.CompanyServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gct_company.Company()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gct_company.Company.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_company(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_company_rest_unset_required_fields():
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_company._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("company",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_company_rest_interceptors(null_interceptor):
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CompanyServiceRestInterceptor(),
+    )
+    client = CompanyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "post_update_company"
+    ) as post, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "pre_update_company"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = company_service.UpdateCompanyRequest.pb(
+            company_service.UpdateCompanyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gct_company.Company.to_json(gct_company.Company())
+
+        request = company_service.UpdateCompanyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gct_company.Company()
+
+        client.update_company(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_company_rest_bad_request(
+    transport: str = "rest", request_type=company_service.UpdateCompanyRequest
+):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "company": {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_company(request)
+
+
+def test_update_company_rest_flattened():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_company.Company()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "company": {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            company=gct_company.Company(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_company.Company.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_company(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4beta1/{company.name=projects/*/tenants/*/companies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_company_rest_flattened_error(transport: str = "rest"):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_company(
+            company_service.UpdateCompanyRequest(),
+            company=gct_company.Company(name="name_value"),
+        )
+
+
+def test_update_company_rest_error():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.DeleteCompanyRequest,
+        dict,
+    ],
+)
+def test_delete_company_rest(request_type):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_company(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_company_rest_required_fields(
+    request_type=company_service.DeleteCompanyRequest,
+):
+    transport_class = transports.CompanyServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_company._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_company(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_company_rest_unset_required_fields():
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_company._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_company_rest_interceptors(null_interceptor):
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CompanyServiceRestInterceptor(),
+    )
+    client = CompanyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "pre_delete_company"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = company_service.DeleteCompanyRequest.pb(
+            company_service.DeleteCompanyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = company_service.DeleteCompanyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_company(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_company_rest_bad_request(
+    transport: str = "rest", request_type=company_service.DeleteCompanyRequest
+):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_company(request)
+
+
+def test_delete_company_rest_flattened():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/tenants/sample2/companies/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_company(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4beta1/{name=projects/*/tenants/*/companies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_company_rest_flattened_error(transport: str = "rest"):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_company(
+            company_service.DeleteCompanyRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_company_rest_error():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.ListCompaniesRequest,
+        dict,
+    ],
+)
+def test_list_companies_rest(request_type):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = company_service.ListCompaniesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = company_service.ListCompaniesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_companies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCompaniesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_companies_rest_required_fields(
+    request_type=company_service.ListCompaniesRequest,
+):
+    transport_class = transports.CompanyServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_companies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_companies._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+            "require_open_jobs",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = company_service.ListCompaniesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = company_service.ListCompaniesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_companies(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_companies_rest_unset_required_fields():
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_companies._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+                "requireOpenJobs",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_companies_rest_interceptors(null_interceptor):
+    transport = transports.CompanyServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CompanyServiceRestInterceptor(),
+    )
+    client = CompanyServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "post_list_companies"
+    ) as post, mock.patch.object(
+        transports.CompanyServiceRestInterceptor, "pre_list_companies"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = company_service.ListCompaniesRequest.pb(
+            company_service.ListCompaniesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = company_service.ListCompaniesResponse.to_json(
+            company_service.ListCompaniesResponse()
+        )
+
+        request = company_service.ListCompaniesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = company_service.ListCompaniesResponse()
+
+        client.list_companies(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_companies_rest_bad_request(
+    transport: str = "rest", request_type=company_service.ListCompaniesRequest
+):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_companies(request)
+
+
+def test_list_companies_rest_flattened():
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = company_service.ListCompaniesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = company_service.ListCompaniesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_companies(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4beta1/{parent=projects/*/tenants/*}/companies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_companies_rest_flattened_error(transport: str = "rest"):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_companies(
+            company_service.ListCompaniesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_companies_rest_pager(transport: str = "rest"):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            company_service.ListCompaniesResponse(
+                companies=[
+                    company.Company(),
+                    company.Company(),
+                    company.Company(),
+                ],
+                next_page_token="abc",
+            ),
+            company_service.ListCompaniesResponse(
+                companies=[],
+                next_page_token="def",
+            ),
+            company_service.ListCompaniesResponse(
+                companies=[
+                    company.Company(),
+                ],
+                next_page_token="ghi",
+            ),
+            company_service.ListCompaniesResponse(
+                companies=[
+                    company.Company(),
+                    company.Company(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            company_service.ListCompaniesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        pager = client.list_companies(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, company.Company) for i in results)
+
+        pages = list(client.list_companies(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CompanyServiceGrpcTransport(
@@ -2261,6 +3767,7 @@ def test_transport_get_channel():
     [
         transports.CompanyServiceGrpcTransport,
         transports.CompanyServiceGrpcAsyncIOTransport,
+        transports.CompanyServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2275,6 +3782,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2418,6 +3926,7 @@ def test_company_service_transport_auth_adc(transport_class):
     [
         transports.CompanyServiceGrpcTransport,
         transports.CompanyServiceGrpcAsyncIOTransport,
+        transports.CompanyServiceRestTransport,
     ],
 )
 def test_company_service_transport_auth_gdch_credentials(transport_class):
@@ -2518,11 +4027,23 @@ def test_company_service_grpc_transport_client_cert_source_for_mtls(transport_cl
             )
 
 
+def test_company_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CompanyServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_company_service_host_no_port(transport_name):
@@ -2531,7 +4052,11 @@ def test_company_service_host_no_port(transport_name):
         client_options=client_options.ClientOptions(api_endpoint="jobs.googleapis.com"),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:443")
+    assert client.transport._host == (
+        "jobs.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2539,6 +4064,7 @@ def test_company_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_company_service_host_with_port(transport_name):
@@ -2549,7 +4075,45 @@ def test_company_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:8000")
+    assert client.transport._host == (
+        "jobs.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_company_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CompanyServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CompanyServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_company._session
+    session2 = client2.transport.create_company._session
+    assert session1 != session2
+    session1 = client1.transport.get_company._session
+    session2 = client2.transport.get_company._session
+    assert session1 != session2
+    session1 = client1.transport.update_company._session
+    session2 = client2.transport.update_company._session
+    assert session1 != session2
+    session1 = client1.transport.delete_company._session
+    session2 = client2.transport.delete_company._session
+    assert session1 != session2
+    session1 = client1.transport.list_companies._session
+    session2 = client2.transport.list_companies._session
+    assert session1 != session2
 
 
 def test_company_service_grpc_transport_channel():
@@ -2844,6 +4408,64 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
 def test_get_operation(transport: str = "grpc"):
     client = CompanyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2991,6 +4613,7 @@ async def test_get_operation_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3008,6 +4631,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

@@ -60,6 +60,7 @@ from google.cloud.talent_v4beta1.types import job_service
 from .transports.base import DEFAULT_CLIENT_INFO, JobServiceTransport
 from .transports.grpc import JobServiceGrpcTransport
 from .transports.grpc_asyncio import JobServiceGrpcAsyncIOTransport
+from .transports.rest import JobServiceRestTransport
 
 
 class JobServiceClientMeta(type):
@@ -73,6 +74,7 @@ class JobServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[JobServiceTransport]]
     _transport_registry["grpc"] = JobServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = JobServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = JobServiceRestTransport
 
     def get_transport_class(
         cls,

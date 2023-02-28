@@ -53,6 +53,7 @@ from google.cloud.talent_v4beta1.types import common, completion_service
 from .transports.base import DEFAULT_CLIENT_INFO, CompletionTransport
 from .transports.grpc import CompletionGrpcTransport
 from .transports.grpc_asyncio import CompletionGrpcAsyncIOTransport
+from .transports.rest import CompletionRestTransport
 
 
 class CompletionClientMeta(type):
@@ -66,6 +67,7 @@ class CompletionClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CompletionTransport]]
     _transport_registry["grpc"] = CompletionGrpcTransport
     _transport_registry["grpc_asyncio"] = CompletionGrpcAsyncIOTransport
+    _transport_registry["rest"] = CompletionRestTransport
 
     def get_transport_class(
         cls,

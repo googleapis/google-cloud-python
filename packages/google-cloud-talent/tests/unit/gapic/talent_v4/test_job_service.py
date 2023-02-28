@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -43,6 +45,7 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
@@ -54,6 +57,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.talent_v4.services.job_service import (
     JobServiceAsyncClient,
@@ -113,6 +118,7 @@ def test__get_default_mtls_endpoint():
     [
         (JobServiceClient, "grpc"),
         (JobServiceAsyncClient, "grpc_asyncio"),
+        (JobServiceClient, "rest"),
     ],
 )
 def test_job_service_client_from_service_account_info(client_class, transport_name):
@@ -126,7 +132,11 @@ def test_job_service_client_from_service_account_info(client_class, transport_na
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -134,6 +144,7 @@ def test_job_service_client_from_service_account_info(client_class, transport_na
     [
         (transports.JobServiceGrpcTransport, "grpc"),
         (transports.JobServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.JobServiceRestTransport, "rest"),
     ],
 )
 def test_job_service_client_service_account_always_use_jwt(
@@ -159,6 +170,7 @@ def test_job_service_client_service_account_always_use_jwt(
     [
         (JobServiceClient, "grpc"),
         (JobServiceAsyncClient, "grpc_asyncio"),
+        (JobServiceClient, "rest"),
     ],
 )
 def test_job_service_client_from_service_account_file(client_class, transport_name):
@@ -179,13 +191,18 @@ def test_job_service_client_from_service_account_file(client_class, transport_na
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("jobs.googleapis.com:443")
+        assert client.transport._host == (
+            "jobs.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://jobs.googleapis.com"
+        )
 
 
 def test_job_service_client_get_transport_class():
     transport = JobServiceClient.get_transport_class()
     available_transports = [
         transports.JobServiceGrpcTransport,
+        transports.JobServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -202,6 +219,7 @@ def test_job_service_client_get_transport_class():
             transports.JobServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (JobServiceClient, transports.JobServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -345,6 +363,8 @@ def test_job_service_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (JobServiceClient, transports.JobServiceRestTransport, "rest", "true"),
+        (JobServiceClient, transports.JobServiceRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -538,6 +558,7 @@ def test_job_service_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.JobServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (JobServiceClient, transports.JobServiceRestTransport, "rest"),
     ],
 )
 def test_job_service_client_client_options_scopes(
@@ -573,6 +594,7 @@ def test_job_service_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (JobServiceClient, transports.JobServiceRestTransport, "rest", None),
     ],
 )
 def test_job_service_client_client_options_credentials_file(
@@ -3329,6 +3351,3097 @@ async def test_search_jobs_for_alert_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.CreateJobRequest,
+        dict,
+    ],
+)
+def test_create_job_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request_init["job"] = {
+        "name": "name_value",
+        "company": "company_value",
+        "requisition_id": "requisition_id_value",
+        "title": "title_value",
+        "description": "description_value",
+        "addresses": ["addresses_value1", "addresses_value2"],
+        "application_info": {
+            "emails": ["emails_value1", "emails_value2"],
+            "instruction": "instruction_value",
+            "uris": ["uris_value1", "uris_value2"],
+        },
+        "job_benefits": [1],
+        "compensation_info": {
+            "entries": [
+                {
+                    "type_": 1,
+                    "unit": 1,
+                    "amount": {
+                        "currency_code": "currency_code_value",
+                        "units": 563,
+                        "nanos": 543,
+                    },
+                    "range_": {"max_compensation": {}, "min_compensation": {}},
+                    "description": "description_value",
+                    "expected_units_per_year": {"value": 0.541},
+                }
+            ],
+            "annualized_base_compensation_range": {},
+            "annualized_total_compensation_range": {},
+        },
+        "custom_attributes": {},
+        "degree_types": [1],
+        "department": "department_value",
+        "employment_types": [1],
+        "incentives": "incentives_value",
+        "language_code": "language_code_value",
+        "job_level": 1,
+        "promotion_value": 1635,
+        "qualifications": "qualifications_value",
+        "responsibilities": "responsibilities_value",
+        "posting_region": 1,
+        "visibility": 1,
+        "job_start_time": {"seconds": 751, "nanos": 543},
+        "job_end_time": {},
+        "posting_publish_time": {},
+        "posting_expire_time": {},
+        "posting_create_time": {},
+        "posting_update_time": {},
+        "company_display_name": "company_display_name_value",
+        "derived_info": {
+            "locations": [
+                {
+                    "location_type": 1,
+                    "postal_address": {
+                        "revision": 879,
+                        "region_code": "region_code_value",
+                        "language_code": "language_code_value",
+                        "postal_code": "postal_code_value",
+                        "sorting_code": "sorting_code_value",
+                        "administrative_area": "administrative_area_value",
+                        "locality": "locality_value",
+                        "sublocality": "sublocality_value",
+                        "address_lines": [
+                            "address_lines_value1",
+                            "address_lines_value2",
+                        ],
+                        "recipients": ["recipients_value1", "recipients_value2"],
+                        "organization": "organization_value",
+                    },
+                    "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+                    "radius_miles": 0.12810000000000002,
+                }
+            ],
+            "job_categories": [1],
+        },
+        "processing_options": {
+            "disable_street_address_resolution": True,
+            "html_sanitization": 1,
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_job.Job(
+            name="name_value",
+            company="company_value",
+            requisition_id="requisition_id_value",
+            title="title_value",
+            description="description_value",
+            addresses=["addresses_value"],
+            job_benefits=[common.JobBenefit.CHILD_CARE],
+            degree_types=[common.DegreeType.PRIMARY_EDUCATION],
+            department="department_value",
+            employment_types=[common.EmploymentType.FULL_TIME],
+            incentives="incentives_value",
+            language_code="language_code_value",
+            job_level=common.JobLevel.ENTRY_LEVEL,
+            promotion_value=1635,
+            qualifications="qualifications_value",
+            responsibilities="responsibilities_value",
+            posting_region=common.PostingRegion.ADMINISTRATIVE_AREA,
+            visibility=common.Visibility.ACCOUNT_ONLY,
+            company_display_name="company_display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gct_job.Job)
+    assert response.name == "name_value"
+    assert response.company == "company_value"
+    assert response.requisition_id == "requisition_id_value"
+    assert response.title == "title_value"
+    assert response.description == "description_value"
+    assert response.addresses == ["addresses_value"]
+    assert response.job_benefits == [common.JobBenefit.CHILD_CARE]
+    assert response.degree_types == [common.DegreeType.PRIMARY_EDUCATION]
+    assert response.department == "department_value"
+    assert response.employment_types == [common.EmploymentType.FULL_TIME]
+    assert response.incentives == "incentives_value"
+    assert response.language_code == "language_code_value"
+    assert response.job_level == common.JobLevel.ENTRY_LEVEL
+    assert response.promotion_value == 1635
+    assert response.qualifications == "qualifications_value"
+    assert response.responsibilities == "responsibilities_value"
+    assert response.posting_region == common.PostingRegion.ADMINISTRATIVE_AREA
+    assert response.visibility == common.Visibility.ACCOUNT_ONLY
+    assert response.company_display_name == "company_display_name_value"
+
+
+def test_create_job_rest_required_fields(request_type=job_service.CreateJobRequest):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gct_job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gct_job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_job_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "job",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_job_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_create_job"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_create_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.CreateJobRequest.pb(job_service.CreateJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gct_job.Job.to_json(gct_job.Job())
+
+        request = job_service.CreateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gct_job.Job()
+
+        client.create_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_job_rest_bad_request(
+    transport: str = "rest", request_type=job_service.CreateJobRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request_init["job"] = {
+        "name": "name_value",
+        "company": "company_value",
+        "requisition_id": "requisition_id_value",
+        "title": "title_value",
+        "description": "description_value",
+        "addresses": ["addresses_value1", "addresses_value2"],
+        "application_info": {
+            "emails": ["emails_value1", "emails_value2"],
+            "instruction": "instruction_value",
+            "uris": ["uris_value1", "uris_value2"],
+        },
+        "job_benefits": [1],
+        "compensation_info": {
+            "entries": [
+                {
+                    "type_": 1,
+                    "unit": 1,
+                    "amount": {
+                        "currency_code": "currency_code_value",
+                        "units": 563,
+                        "nanos": 543,
+                    },
+                    "range_": {"max_compensation": {}, "min_compensation": {}},
+                    "description": "description_value",
+                    "expected_units_per_year": {"value": 0.541},
+                }
+            ],
+            "annualized_base_compensation_range": {},
+            "annualized_total_compensation_range": {},
+        },
+        "custom_attributes": {},
+        "degree_types": [1],
+        "department": "department_value",
+        "employment_types": [1],
+        "incentives": "incentives_value",
+        "language_code": "language_code_value",
+        "job_level": 1,
+        "promotion_value": 1635,
+        "qualifications": "qualifications_value",
+        "responsibilities": "responsibilities_value",
+        "posting_region": 1,
+        "visibility": 1,
+        "job_start_time": {"seconds": 751, "nanos": 543},
+        "job_end_time": {},
+        "posting_publish_time": {},
+        "posting_expire_time": {},
+        "posting_create_time": {},
+        "posting_update_time": {},
+        "company_display_name": "company_display_name_value",
+        "derived_info": {
+            "locations": [
+                {
+                    "location_type": 1,
+                    "postal_address": {
+                        "revision": 879,
+                        "region_code": "region_code_value",
+                        "language_code": "language_code_value",
+                        "postal_code": "postal_code_value",
+                        "sorting_code": "sorting_code_value",
+                        "administrative_area": "administrative_area_value",
+                        "locality": "locality_value",
+                        "sublocality": "sublocality_value",
+                        "address_lines": [
+                            "address_lines_value1",
+                            "address_lines_value2",
+                        ],
+                        "recipients": ["recipients_value1", "recipients_value2"],
+                        "organization": "organization_value",
+                    },
+                    "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+                    "radius_miles": 0.12810000000000002,
+                }
+            ],
+            "job_categories": [1],
+        },
+        "processing_options": {
+            "disable_street_address_resolution": True,
+            "html_sanitization": 1,
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_job(request)
+
+
+def test_create_job_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            job=gct_job.Job(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{parent=projects/*/tenants/*}/jobs" % client.transport._host, args[1]
+        )
+
+
+def test_create_job_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_job(
+            job_service.CreateJobRequest(),
+            parent="parent_value",
+            job=gct_job.Job(name="name_value"),
+        )
+
+
+def test_create_job_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.BatchCreateJobsRequest,
+        dict,
+    ],
+)
+def test_batch_create_jobs_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_batch_create_jobs_rest_required_fields(
+    request_type=job_service.BatchCreateJobsRequest,
+):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_create_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_create_jobs_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_create_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "jobs",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_jobs_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_batch_create_jobs"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_batch_create_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.BatchCreateJobsRequest.pb(
+            job_service.BatchCreateJobsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = job_service.BatchCreateJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_create_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_jobs_rest_bad_request(
+    transport: str = "rest", request_type=job_service.BatchCreateJobsRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_create_jobs(request)
+
+
+def test_batch_create_jobs_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            jobs=[job.Job(name="name_value")],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.batch_create_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{parent=projects/*/tenants/*}/jobs:batchCreate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_create_jobs_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_create_jobs(
+            job_service.BatchCreateJobsRequest(),
+            parent="parent_value",
+            jobs=[job.Job(name="name_value")],
+        )
+
+
+def test_batch_create_jobs_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.GetJobRequest,
+        dict,
+    ],
+)
+def test_get_job_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job(
+            name="name_value",
+            company="company_value",
+            requisition_id="requisition_id_value",
+            title="title_value",
+            description="description_value",
+            addresses=["addresses_value"],
+            job_benefits=[common.JobBenefit.CHILD_CARE],
+            degree_types=[common.DegreeType.PRIMARY_EDUCATION],
+            department="department_value",
+            employment_types=[common.EmploymentType.FULL_TIME],
+            incentives="incentives_value",
+            language_code="language_code_value",
+            job_level=common.JobLevel.ENTRY_LEVEL,
+            promotion_value=1635,
+            qualifications="qualifications_value",
+            responsibilities="responsibilities_value",
+            posting_region=common.PostingRegion.ADMINISTRATIVE_AREA,
+            visibility=common.Visibility.ACCOUNT_ONLY,
+            company_display_name="company_display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, job.Job)
+    assert response.name == "name_value"
+    assert response.company == "company_value"
+    assert response.requisition_id == "requisition_id_value"
+    assert response.title == "title_value"
+    assert response.description == "description_value"
+    assert response.addresses == ["addresses_value"]
+    assert response.job_benefits == [common.JobBenefit.CHILD_CARE]
+    assert response.degree_types == [common.DegreeType.PRIMARY_EDUCATION]
+    assert response.department == "department_value"
+    assert response.employment_types == [common.EmploymentType.FULL_TIME]
+    assert response.incentives == "incentives_value"
+    assert response.language_code == "language_code_value"
+    assert response.job_level == common.JobLevel.ENTRY_LEVEL
+    assert response.promotion_value == 1635
+    assert response.qualifications == "qualifications_value"
+    assert response.responsibilities == "responsibilities_value"
+    assert response.posting_region == common.PostingRegion.ADMINISTRATIVE_AREA
+    assert response.visibility == common.Visibility.ACCOUNT_ONLY
+    assert response.company_display_name == "company_display_name_value"
+
+
+def test_get_job_rest_required_fields(request_type=job_service.GetJobRequest):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_job_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_get_job"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_get_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.GetJobRequest.pb(job_service.GetJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job.Job.to_json(job.Job())
+
+        request = job_service.GetJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job.Job()
+
+        client.get_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_rest_bad_request(
+    transport: str = "rest", request_type=job_service.GetJobRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job(request)
+
+
+def test_get_job_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/tenants/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{name=projects/*/tenants/*/jobs/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_job_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_job(
+            job_service.GetJobRequest(),
+            name="name_value",
+        )
+
+
+def test_get_job_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.UpdateJobRequest,
+        dict,
+    ],
+)
+def test_update_job_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"job": {"name": "projects/sample1/tenants/sample2/jobs/sample3"}}
+    request_init["job"] = {
+        "name": "projects/sample1/tenants/sample2/jobs/sample3",
+        "company": "company_value",
+        "requisition_id": "requisition_id_value",
+        "title": "title_value",
+        "description": "description_value",
+        "addresses": ["addresses_value1", "addresses_value2"],
+        "application_info": {
+            "emails": ["emails_value1", "emails_value2"],
+            "instruction": "instruction_value",
+            "uris": ["uris_value1", "uris_value2"],
+        },
+        "job_benefits": [1],
+        "compensation_info": {
+            "entries": [
+                {
+                    "type_": 1,
+                    "unit": 1,
+                    "amount": {
+                        "currency_code": "currency_code_value",
+                        "units": 563,
+                        "nanos": 543,
+                    },
+                    "range_": {"max_compensation": {}, "min_compensation": {}},
+                    "description": "description_value",
+                    "expected_units_per_year": {"value": 0.541},
+                }
+            ],
+            "annualized_base_compensation_range": {},
+            "annualized_total_compensation_range": {},
+        },
+        "custom_attributes": {},
+        "degree_types": [1],
+        "department": "department_value",
+        "employment_types": [1],
+        "incentives": "incentives_value",
+        "language_code": "language_code_value",
+        "job_level": 1,
+        "promotion_value": 1635,
+        "qualifications": "qualifications_value",
+        "responsibilities": "responsibilities_value",
+        "posting_region": 1,
+        "visibility": 1,
+        "job_start_time": {"seconds": 751, "nanos": 543},
+        "job_end_time": {},
+        "posting_publish_time": {},
+        "posting_expire_time": {},
+        "posting_create_time": {},
+        "posting_update_time": {},
+        "company_display_name": "company_display_name_value",
+        "derived_info": {
+            "locations": [
+                {
+                    "location_type": 1,
+                    "postal_address": {
+                        "revision": 879,
+                        "region_code": "region_code_value",
+                        "language_code": "language_code_value",
+                        "postal_code": "postal_code_value",
+                        "sorting_code": "sorting_code_value",
+                        "administrative_area": "administrative_area_value",
+                        "locality": "locality_value",
+                        "sublocality": "sublocality_value",
+                        "address_lines": [
+                            "address_lines_value1",
+                            "address_lines_value2",
+                        ],
+                        "recipients": ["recipients_value1", "recipients_value2"],
+                        "organization": "organization_value",
+                    },
+                    "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+                    "radius_miles": 0.12810000000000002,
+                }
+            ],
+            "job_categories": [1],
+        },
+        "processing_options": {
+            "disable_street_address_resolution": True,
+            "html_sanitization": 1,
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_job.Job(
+            name="name_value",
+            company="company_value",
+            requisition_id="requisition_id_value",
+            title="title_value",
+            description="description_value",
+            addresses=["addresses_value"],
+            job_benefits=[common.JobBenefit.CHILD_CARE],
+            degree_types=[common.DegreeType.PRIMARY_EDUCATION],
+            department="department_value",
+            employment_types=[common.EmploymentType.FULL_TIME],
+            incentives="incentives_value",
+            language_code="language_code_value",
+            job_level=common.JobLevel.ENTRY_LEVEL,
+            promotion_value=1635,
+            qualifications="qualifications_value",
+            responsibilities="responsibilities_value",
+            posting_region=common.PostingRegion.ADMINISTRATIVE_AREA,
+            visibility=common.Visibility.ACCOUNT_ONLY,
+            company_display_name="company_display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gct_job.Job)
+    assert response.name == "name_value"
+    assert response.company == "company_value"
+    assert response.requisition_id == "requisition_id_value"
+    assert response.title == "title_value"
+    assert response.description == "description_value"
+    assert response.addresses == ["addresses_value"]
+    assert response.job_benefits == [common.JobBenefit.CHILD_CARE]
+    assert response.degree_types == [common.DegreeType.PRIMARY_EDUCATION]
+    assert response.department == "department_value"
+    assert response.employment_types == [common.EmploymentType.FULL_TIME]
+    assert response.incentives == "incentives_value"
+    assert response.language_code == "language_code_value"
+    assert response.job_level == common.JobLevel.ENTRY_LEVEL
+    assert response.promotion_value == 1635
+    assert response.qualifications == "qualifications_value"
+    assert response.responsibilities == "responsibilities_value"
+    assert response.posting_region == common.PostingRegion.ADMINISTRATIVE_AREA
+    assert response.visibility == common.Visibility.ACCOUNT_ONLY
+    assert response.company_display_name == "company_display_name_value"
+
+
+def test_update_job_rest_required_fields(request_type=job_service.UpdateJobRequest):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gct_job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gct_job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_job_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("job",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_job_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_update_job"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_update_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.UpdateJobRequest.pb(job_service.UpdateJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gct_job.Job.to_json(gct_job.Job())
+
+        request = job_service.UpdateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gct_job.Job()
+
+        client.update_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_job_rest_bad_request(
+    transport: str = "rest", request_type=job_service.UpdateJobRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"job": {"name": "projects/sample1/tenants/sample2/jobs/sample3"}}
+    request_init["job"] = {
+        "name": "projects/sample1/tenants/sample2/jobs/sample3",
+        "company": "company_value",
+        "requisition_id": "requisition_id_value",
+        "title": "title_value",
+        "description": "description_value",
+        "addresses": ["addresses_value1", "addresses_value2"],
+        "application_info": {
+            "emails": ["emails_value1", "emails_value2"],
+            "instruction": "instruction_value",
+            "uris": ["uris_value1", "uris_value2"],
+        },
+        "job_benefits": [1],
+        "compensation_info": {
+            "entries": [
+                {
+                    "type_": 1,
+                    "unit": 1,
+                    "amount": {
+                        "currency_code": "currency_code_value",
+                        "units": 563,
+                        "nanos": 543,
+                    },
+                    "range_": {"max_compensation": {}, "min_compensation": {}},
+                    "description": "description_value",
+                    "expected_units_per_year": {"value": 0.541},
+                }
+            ],
+            "annualized_base_compensation_range": {},
+            "annualized_total_compensation_range": {},
+        },
+        "custom_attributes": {},
+        "degree_types": [1],
+        "department": "department_value",
+        "employment_types": [1],
+        "incentives": "incentives_value",
+        "language_code": "language_code_value",
+        "job_level": 1,
+        "promotion_value": 1635,
+        "qualifications": "qualifications_value",
+        "responsibilities": "responsibilities_value",
+        "posting_region": 1,
+        "visibility": 1,
+        "job_start_time": {"seconds": 751, "nanos": 543},
+        "job_end_time": {},
+        "posting_publish_time": {},
+        "posting_expire_time": {},
+        "posting_create_time": {},
+        "posting_update_time": {},
+        "company_display_name": "company_display_name_value",
+        "derived_info": {
+            "locations": [
+                {
+                    "location_type": 1,
+                    "postal_address": {
+                        "revision": 879,
+                        "region_code": "region_code_value",
+                        "language_code": "language_code_value",
+                        "postal_code": "postal_code_value",
+                        "sorting_code": "sorting_code_value",
+                        "administrative_area": "administrative_area_value",
+                        "locality": "locality_value",
+                        "sublocality": "sublocality_value",
+                        "address_lines": [
+                            "address_lines_value1",
+                            "address_lines_value2",
+                        ],
+                        "recipients": ["recipients_value1", "recipients_value2"],
+                        "organization": "organization_value",
+                    },
+                    "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+                    "radius_miles": 0.12810000000000002,
+                }
+            ],
+            "job_categories": [1],
+        },
+        "processing_options": {
+            "disable_street_address_resolution": True,
+            "html_sanitization": 1,
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_job(request)
+
+
+def test_update_job_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gct_job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "job": {"name": "projects/sample1/tenants/sample2/jobs/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            job=gct_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gct_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{job.name=projects/*/tenants/*/jobs/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_job_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_job(
+            job_service.UpdateJobRequest(),
+            job=gct_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_job_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.BatchUpdateJobsRequest,
+        dict,
+    ],
+)
+def test_batch_update_jobs_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_update_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_batch_update_jobs_rest_required_fields(
+    request_type=job_service.BatchUpdateJobsRequest,
+):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_update_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_update_jobs_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_update_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "jobs",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_update_jobs_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_batch_update_jobs"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_batch_update_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.BatchUpdateJobsRequest.pb(
+            job_service.BatchUpdateJobsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = job_service.BatchUpdateJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_update_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_update_jobs_rest_bad_request(
+    transport: str = "rest", request_type=job_service.BatchUpdateJobsRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_update_jobs(request)
+
+
+def test_batch_update_jobs_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            jobs=[job.Job(name="name_value")],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.batch_update_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{parent=projects/*/tenants/*}/jobs:batchUpdate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_update_jobs_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_update_jobs(
+            job_service.BatchUpdateJobsRequest(),
+            parent="parent_value",
+            jobs=[job.Job(name="name_value")],
+        )
+
+
+def test_batch_update_jobs_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.DeleteJobRequest,
+        dict,
+    ],
+)
+def test_delete_job_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_job_rest_required_fields(request_type=job_service.DeleteJobRequest):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_job_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_job_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_delete_job"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = job_service.DeleteJobRequest.pb(job_service.DeleteJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = job_service.DeleteJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_job_rest_bad_request(
+    transport: str = "rest", request_type=job_service.DeleteJobRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/tenants/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_job(request)
+
+
+def test_delete_job_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/tenants/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{name=projects/*/tenants/*/jobs/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_job_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_job(
+            job_service.DeleteJobRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_job_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.BatchDeleteJobsRequest,
+        dict,
+    ],
+)
+def test_batch_delete_jobs_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_delete_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_batch_delete_jobs_rest_required_fields(
+    request_type=job_service.BatchDeleteJobsRequest,
+):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_delete_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_delete_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_delete_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_delete_jobs_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_delete_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_delete_jobs_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_batch_delete_jobs"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_batch_delete_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.BatchDeleteJobsRequest.pb(
+            job_service.BatchDeleteJobsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = job_service.BatchDeleteJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_delete_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_delete_jobs_rest_bad_request(
+    transport: str = "rest", request_type=job_service.BatchDeleteJobsRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_delete_jobs(request)
+
+
+def test_batch_delete_jobs_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            names=["names_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.batch_delete_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{parent=projects/*/tenants/*}/jobs:batchDelete"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_delete_jobs_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_delete_jobs(
+            job_service.BatchDeleteJobsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+def test_batch_delete_jobs_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.ListJobsRequest,
+        dict,
+    ],
+)
+def test_list_jobs_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job_service.ListJobsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job_service.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_jobs_rest_required_fields(request_type=job_service.ListJobsRequest):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "filter" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == request_init["filter"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_jobs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "job_view",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job_service.ListJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job_service.ListJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_jobs(request)
+
+            expected_params = [
+                (
+                    "filter",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_jobs_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "jobView",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "filter",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_jobs_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_list_jobs"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_list_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.ListJobsRequest.pb(job_service.ListJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job_service.ListJobsResponse.to_json(
+            job_service.ListJobsResponse()
+        )
+
+        request = job_service.ListJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job_service.ListJobsResponse()
+
+        client.list_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_jobs_rest_bad_request(
+    transport: str = "rest", request_type=job_service.ListJobsRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_jobs(request)
+
+
+def test_list_jobs_rest_flattened():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job_service.ListJobsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            filter="filter_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job_service.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v4/{parent=projects/*/tenants/*}/jobs" % client.transport._host, args[1]
+        )
+
+
+def test_list_jobs_rest_flattened_error(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_jobs(
+            job_service.ListJobsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_list_jobs_rest_pager(transport: str = "rest"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            job_service.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                    job.Job(),
+                ],
+                next_page_token="abc",
+            ),
+            job_service.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            job_service.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            job_service.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(job_service.ListJobsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/tenants/sample2"}
+
+        pager = client.list_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, job.Job) for i in results)
+
+        pages = list(client.list_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.SearchJobsRequest,
+        dict,
+    ],
+)
+def test_search_jobs_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job_service.SearchJobsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+            broadened_query_jobs_count=2766,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job_service.SearchJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_jobs(request)
+
+    assert response.raw_page is response
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, job_service.SearchJobsResponse)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+    assert response.broadened_query_jobs_count == 2766
+
+
+def test_search_jobs_rest_required_fields(request_type=job_service.SearchJobsRequest):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job_service.SearchJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job_service.SearchJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_jobs_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requestMetadata",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_jobs_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_search_jobs"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_search_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.SearchJobsRequest.pb(job_service.SearchJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job_service.SearchJobsResponse.to_json(
+            job_service.SearchJobsResponse()
+        )
+
+        request = job_service.SearchJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job_service.SearchJobsResponse()
+
+        client.search_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_jobs_rest_bad_request(
+    transport: str = "rest", request_type=job_service.SearchJobsRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_jobs(request)
+
+
+def test_search_jobs_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        job_service.SearchJobsRequest,
+        dict,
+    ],
+)
+def test_search_jobs_for_alert_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job_service.SearchJobsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+            broadened_query_jobs_count=2766,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job_service.SearchJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_jobs_for_alert(request)
+
+    assert response.raw_page is response
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, job_service.SearchJobsResponse)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+    assert response.broadened_query_jobs_count == 2766
+
+
+def test_search_jobs_for_alert_rest_required_fields(
+    request_type=job_service.SearchJobsRequest,
+):
+    transport_class = transports.JobServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_jobs_for_alert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_jobs_for_alert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job_service.SearchJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job_service.SearchJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_jobs_for_alert(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_jobs_for_alert_rest_unset_required_fields():
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_jobs_for_alert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requestMetadata",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_jobs_for_alert_rest_interceptors(null_interceptor):
+    transport = transports.JobServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobServiceRestInterceptor(),
+    )
+    client = JobServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_search_jobs_for_alert"
+    ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "pre_search_jobs_for_alert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = job_service.SearchJobsRequest.pb(job_service.SearchJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job_service.SearchJobsResponse.to_json(
+            job_service.SearchJobsResponse()
+        )
+
+        request = job_service.SearchJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job_service.SearchJobsResponse()
+
+        client.search_jobs_for_alert(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_jobs_for_alert_rest_bad_request(
+    transport: str = "rest", request_type=job_service.SearchJobsRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/tenants/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_jobs_for_alert(request)
+
+
+def test_search_jobs_for_alert_rest_error():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.JobServiceGrpcTransport(
@@ -3410,6 +6523,7 @@ def test_transport_get_channel():
     [
         transports.JobServiceGrpcTransport,
         transports.JobServiceGrpcAsyncIOTransport,
+        transports.JobServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3424,6 +6538,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3476,6 +6591,7 @@ def test_job_service_base_transport():
         "list_jobs",
         "search_jobs",
         "search_jobs_for_alert",
+        "get_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3576,6 +6692,7 @@ def test_job_service_transport_auth_adc(transport_class):
     [
         transports.JobServiceGrpcTransport,
         transports.JobServiceGrpcAsyncIOTransport,
+        transports.JobServiceRestTransport,
     ],
 )
 def test_job_service_transport_auth_gdch_credentials(transport_class):
@@ -3673,11 +6790,40 @@ def test_job_service_grpc_transport_client_cert_source_for_mtls(transport_class)
             )
 
 
+def test_job_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.JobServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_job_service_rest_lro_client():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_job_service_host_no_port(transport_name):
@@ -3686,7 +6832,11 @@ def test_job_service_host_no_port(transport_name):
         client_options=client_options.ClientOptions(api_endpoint="jobs.googleapis.com"),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:443")
+    assert client.transport._host == (
+        "jobs.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3694,6 +6844,7 @@ def test_job_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_job_service_host_with_port(transport_name):
@@ -3704,7 +6855,60 @@ def test_job_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("jobs.googleapis.com:8000")
+    assert client.transport._host == (
+        "jobs.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://jobs.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_job_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = JobServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = JobServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_job._session
+    session2 = client2.transport.create_job._session
+    assert session1 != session2
+    session1 = client1.transport.batch_create_jobs._session
+    session2 = client2.transport.batch_create_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.get_job._session
+    session2 = client2.transport.get_job._session
+    assert session1 != session2
+    session1 = client1.transport.update_job._session
+    session2 = client2.transport.update_job._session
+    assert session1 != session2
+    session1 = client1.transport.batch_update_jobs._session
+    session2 = client2.transport.batch_update_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.delete_job._session
+    session2 = client2.transport.delete_job._session
+    assert session1 != session2
+    session1 = client1.transport.batch_delete_jobs._session
+    session2 = client2.transport.batch_delete_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.list_jobs._session
+    session2 = client2.transport.list_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.search_jobs._session
+    session2 = client2.transport.search_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.search_jobs_for_alert._session
+    session2 = client2.transport.search_jobs_for_alert._session
+    assert session1 != session2
 
 
 def test_job_service_grpc_transport_channel():
@@ -4074,8 +7278,212 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = JobServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = JobServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = JobServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = JobServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4093,6 +7501,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

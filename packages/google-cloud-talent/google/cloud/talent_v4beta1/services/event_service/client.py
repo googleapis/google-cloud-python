@@ -54,6 +54,7 @@ from google.cloud.talent_v4beta1.types import event, event_service
 from .transports.base import DEFAULT_CLIENT_INFO, EventServiceTransport
 from .transports.grpc import EventServiceGrpcTransport
 from .transports.grpc_asyncio import EventServiceGrpcAsyncIOTransport
+from .transports.rest import EventServiceRestTransport
 
 
 class EventServiceClientMeta(type):
@@ -67,6 +68,7 @@ class EventServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[EventServiceTransport]]
     _transport_registry["grpc"] = EventServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = EventServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = EventServiceRestTransport
 
     def get_transport_class(
         cls,
