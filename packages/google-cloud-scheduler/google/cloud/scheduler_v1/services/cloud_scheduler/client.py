@@ -60,6 +60,7 @@ from google.cloud.scheduler_v1.types import target
 from .transports.base import DEFAULT_CLIENT_INFO, CloudSchedulerTransport
 from .transports.grpc import CloudSchedulerGrpcTransport
 from .transports.grpc_asyncio import CloudSchedulerGrpcAsyncIOTransport
+from .transports.rest import CloudSchedulerRestTransport
 
 
 class CloudSchedulerClientMeta(type):
@@ -75,6 +76,7 @@ class CloudSchedulerClientMeta(type):
     )  # type: Dict[str, Type[CloudSchedulerTransport]]
     _transport_registry["grpc"] = CloudSchedulerGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudSchedulerGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudSchedulerRestTransport
 
     def get_transport_class(
         cls,

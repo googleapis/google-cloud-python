@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -34,6 +36,7 @@ from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
@@ -41,6 +44,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.scheduler_v1.services.cloud_scheduler import (
     CloudSchedulerAsyncClient,
@@ -103,6 +108,7 @@ def test__get_default_mtls_endpoint():
     [
         (CloudSchedulerClient, "grpc"),
         (CloudSchedulerAsyncClient, "grpc_asyncio"),
+        (CloudSchedulerClient, "rest"),
     ],
 )
 def test_cloud_scheduler_client_from_service_account_info(client_class, transport_name):
@@ -116,7 +122,11 @@ def test_cloud_scheduler_client_from_service_account_info(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("cloudscheduler.googleapis.com:443")
+        assert client.transport._host == (
+            "cloudscheduler.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://cloudscheduler.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -124,6 +134,7 @@ def test_cloud_scheduler_client_from_service_account_info(client_class, transpor
     [
         (transports.CloudSchedulerGrpcTransport, "grpc"),
         (transports.CloudSchedulerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CloudSchedulerRestTransport, "rest"),
     ],
 )
 def test_cloud_scheduler_client_service_account_always_use_jwt(
@@ -149,6 +160,7 @@ def test_cloud_scheduler_client_service_account_always_use_jwt(
     [
         (CloudSchedulerClient, "grpc"),
         (CloudSchedulerAsyncClient, "grpc_asyncio"),
+        (CloudSchedulerClient, "rest"),
     ],
 )
 def test_cloud_scheduler_client_from_service_account_file(client_class, transport_name):
@@ -169,13 +181,18 @@ def test_cloud_scheduler_client_from_service_account_file(client_class, transpor
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("cloudscheduler.googleapis.com:443")
+        assert client.transport._host == (
+            "cloudscheduler.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://cloudscheduler.googleapis.com"
+        )
 
 
 def test_cloud_scheduler_client_get_transport_class():
     transport = CloudSchedulerClient.get_transport_class()
     available_transports = [
         transports.CloudSchedulerGrpcTransport,
+        transports.CloudSchedulerRestTransport,
     ]
     assert transport in available_transports
 
@@ -192,6 +209,7 @@ def test_cloud_scheduler_client_get_transport_class():
             transports.CloudSchedulerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CloudSchedulerClient, transports.CloudSchedulerRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -337,6 +355,8 @@ def test_cloud_scheduler_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (CloudSchedulerClient, transports.CloudSchedulerRestTransport, "rest", "true"),
+        (CloudSchedulerClient, transports.CloudSchedulerRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -536,6 +556,7 @@ def test_cloud_scheduler_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.CloudSchedulerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (CloudSchedulerClient, transports.CloudSchedulerRestTransport, "rest"),
     ],
 )
 def test_cloud_scheduler_client_client_options_scopes(
@@ -576,6 +597,7 @@ def test_cloud_scheduler_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (CloudSchedulerClient, transports.CloudSchedulerRestTransport, "rest", None),
     ],
 )
 def test_cloud_scheduler_client_client_options_credentials_file(
@@ -2818,6 +2840,2476 @@ async def test_run_job_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.ListJobsRequest,
+        dict,
+    ],
+)
+def test_list_jobs_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudscheduler.ListJobsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudscheduler.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_jobs_rest_required_fields(request_type=cloudscheduler.ListJobsRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_jobs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudscheduler.ListJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudscheduler.ListJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_jobs_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_jobs_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "post_list_jobs"
+    ) as post, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_list_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudscheduler.ListJobsRequest.pb(cloudscheduler.ListJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudscheduler.ListJobsResponse.to_json(
+            cloudscheduler.ListJobsResponse()
+        )
+
+        request = cloudscheduler.ListJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudscheduler.ListJobsResponse()
+
+        client.list_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_jobs_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.ListJobsRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_jobs(request)
+
+
+def test_list_jobs_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudscheduler.ListJobsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudscheduler.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/jobs" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_jobs_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_jobs(
+            cloudscheduler.ListJobsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_jobs_rest_pager(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                    job.Job(),
+                ],
+                next_page_token="abc",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(cloudscheduler.ListJobsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, job.Job) for i in results)
+
+        pages = list(client.list_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.GetJobRequest,
+        dict,
+    ],
+)
+def test_get_job_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job(
+            name="name_value",
+            description="description_value",
+            schedule="schedule_value",
+            time_zone="time_zone_value",
+            state=job.Job.State.ENABLED,
+            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, job.Job)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.schedule == "schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.state == job.Job.State.ENABLED
+
+
+def test_get_job_rest_required_fields(request_type=cloudscheduler.GetJobRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_job_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "post_get_job"
+    ) as post, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_get_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudscheduler.GetJobRequest.pb(cloudscheduler.GetJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job.Job.to_json(job.Job())
+
+        request = cloudscheduler.GetJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job.Job()
+
+        client.get_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.GetJobRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job(request)
+
+
+def test_get_job_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobs/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_job(
+            cloudscheduler.GetJobRequest(),
+            name="name_value",
+        )
+
+
+def test_get_job_rest_error():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.CreateJobRequest,
+        dict,
+    ],
+)
+def test_create_job_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["job"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "pubsub_target": {
+            "topic_name": "topic_name_value",
+            "data": b"data_blob",
+            "attributes": {},
+        },
+        "app_engine_http_target": {
+            "http_method": 1,
+            "app_engine_routing": {
+                "service": "service_value",
+                "version": "version_value",
+                "instance": "instance_value",
+                "host": "host_value",
+            },
+            "relative_uri": "relative_uri_value",
+            "headers": {},
+            "body": b"body_blob",
+        },
+        "http_target": {
+            "uri": "uri_value",
+            "http_method": 1,
+            "headers": {},
+            "body": b"body_blob",
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
+        "schedule": "schedule_value",
+        "time_zone": "time_zone_value",
+        "user_update_time": {"seconds": 751, "nanos": 543},
+        "state": 1,
+        "status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "schedule_time": {},
+        "last_attempt_time": {},
+        "retry_config": {
+            "retry_count": 1214,
+            "max_retry_duration": {"seconds": 751, "nanos": 543},
+            "min_backoff_duration": {},
+            "max_backoff_duration": {},
+            "max_doublings": 1388,
+        },
+        "attempt_deadline": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_job.Job(
+            name="name_value",
+            description="description_value",
+            schedule="schedule_value",
+            time_zone="time_zone_value",
+            state=gcs_job.Job.State.ENABLED,
+            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcs_job.Job)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.schedule == "schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.state == gcs_job.Job.State.ENABLED
+
+
+def test_create_job_rest_required_fields(request_type=cloudscheduler.CreateJobRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcs_job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcs_job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_job_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "job",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "post_create_job"
+    ) as post, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_create_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudscheduler.CreateJobRequest.pb(
+            cloudscheduler.CreateJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcs_job.Job.to_json(gcs_job.Job())
+
+        request = cloudscheduler.CreateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcs_job.Job()
+
+        client.create_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_job_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.CreateJobRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["job"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "pubsub_target": {
+            "topic_name": "topic_name_value",
+            "data": b"data_blob",
+            "attributes": {},
+        },
+        "app_engine_http_target": {
+            "http_method": 1,
+            "app_engine_routing": {
+                "service": "service_value",
+                "version": "version_value",
+                "instance": "instance_value",
+                "host": "host_value",
+            },
+            "relative_uri": "relative_uri_value",
+            "headers": {},
+            "body": b"body_blob",
+        },
+        "http_target": {
+            "uri": "uri_value",
+            "http_method": 1,
+            "headers": {},
+            "body": b"body_blob",
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
+        "schedule": "schedule_value",
+        "time_zone": "time_zone_value",
+        "user_update_time": {"seconds": 751, "nanos": 543},
+        "state": 1,
+        "status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "schedule_time": {},
+        "last_attempt_time": {},
+        "retry_config": {
+            "retry_count": 1214,
+            "max_retry_duration": {"seconds": 751, "nanos": 543},
+            "min_backoff_duration": {},
+            "max_backoff_duration": {},
+            "max_doublings": 1388,
+        },
+        "attempt_deadline": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_job(request)
+
+
+def test_create_job_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            job=gcs_job.Job(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/jobs" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_job(
+            cloudscheduler.CreateJobRequest(),
+            parent="parent_value",
+            job=gcs_job.Job(name="name_value"),
+        )
+
+
+def test_create_job_rest_error():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.UpdateJobRequest,
+        dict,
+    ],
+)
+def test_update_job_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"job": {"name": "projects/sample1/locations/sample2/jobs/sample3"}}
+    request_init["job"] = {
+        "name": "projects/sample1/locations/sample2/jobs/sample3",
+        "description": "description_value",
+        "pubsub_target": {
+            "topic_name": "topic_name_value",
+            "data": b"data_blob",
+            "attributes": {},
+        },
+        "app_engine_http_target": {
+            "http_method": 1,
+            "app_engine_routing": {
+                "service": "service_value",
+                "version": "version_value",
+                "instance": "instance_value",
+                "host": "host_value",
+            },
+            "relative_uri": "relative_uri_value",
+            "headers": {},
+            "body": b"body_blob",
+        },
+        "http_target": {
+            "uri": "uri_value",
+            "http_method": 1,
+            "headers": {},
+            "body": b"body_blob",
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
+        "schedule": "schedule_value",
+        "time_zone": "time_zone_value",
+        "user_update_time": {"seconds": 751, "nanos": 543},
+        "state": 1,
+        "status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "schedule_time": {},
+        "last_attempt_time": {},
+        "retry_config": {
+            "retry_count": 1214,
+            "max_retry_duration": {"seconds": 751, "nanos": 543},
+            "min_backoff_duration": {},
+            "max_backoff_duration": {},
+            "max_doublings": 1388,
+        },
+        "attempt_deadline": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_job.Job(
+            name="name_value",
+            description="description_value",
+            schedule="schedule_value",
+            time_zone="time_zone_value",
+            state=gcs_job.Job.State.ENABLED,
+            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcs_job.Job)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.schedule == "schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.state == gcs_job.Job.State.ENABLED
+
+
+def test_update_job_rest_required_fields(request_type=cloudscheduler.UpdateJobRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcs_job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcs_job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_job_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "job",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "post_update_job"
+    ) as post, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_update_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudscheduler.UpdateJobRequest.pb(
+            cloudscheduler.UpdateJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcs_job.Job.to_json(gcs_job.Job())
+
+        request = cloudscheduler.UpdateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcs_job.Job()
+
+        client.update_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_job_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.UpdateJobRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"job": {"name": "projects/sample1/locations/sample2/jobs/sample3"}}
+    request_init["job"] = {
+        "name": "projects/sample1/locations/sample2/jobs/sample3",
+        "description": "description_value",
+        "pubsub_target": {
+            "topic_name": "topic_name_value",
+            "data": b"data_blob",
+            "attributes": {},
+        },
+        "app_engine_http_target": {
+            "http_method": 1,
+            "app_engine_routing": {
+                "service": "service_value",
+                "version": "version_value",
+                "instance": "instance_value",
+                "host": "host_value",
+            },
+            "relative_uri": "relative_uri_value",
+            "headers": {},
+            "body": b"body_blob",
+        },
+        "http_target": {
+            "uri": "uri_value",
+            "http_method": 1,
+            "headers": {},
+            "body": b"body_blob",
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
+        "schedule": "schedule_value",
+        "time_zone": "time_zone_value",
+        "user_update_time": {"seconds": 751, "nanos": 543},
+        "state": 1,
+        "status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "schedule_time": {},
+        "last_attempt_time": {},
+        "retry_config": {
+            "retry_count": 1214,
+            "max_retry_duration": {"seconds": 751, "nanos": 543},
+            "min_backoff_duration": {},
+            "max_backoff_duration": {},
+            "max_doublings": 1388,
+        },
+        "attempt_deadline": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_job(request)
+
+
+def test_update_job_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "job": {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            job=gcs_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{job.name=projects/*/locations/*/jobs/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_job(
+            cloudscheduler.UpdateJobRequest(),
+            job=gcs_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_job_rest_error():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.DeleteJobRequest,
+        dict,
+    ],
+)
+def test_delete_job_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_job_rest_required_fields(request_type=cloudscheduler.DeleteJobRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_job_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_delete_job"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = cloudscheduler.DeleteJobRequest.pb(
+            cloudscheduler.DeleteJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = cloudscheduler.DeleteJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_job_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.DeleteJobRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_job(request)
+
+
+def test_delete_job_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobs/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_job(
+            cloudscheduler.DeleteJobRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_job_rest_error():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.PauseJobRequest,
+        dict,
+    ],
+)
+def test_pause_job_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job(
+            name="name_value",
+            description="description_value",
+            schedule="schedule_value",
+            time_zone="time_zone_value",
+            state=job.Job.State.ENABLED,
+            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.pause_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, job.Job)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.schedule == "schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.state == job.Job.State.ENABLED
+
+
+def test_pause_job_rest_required_fields(request_type=cloudscheduler.PauseJobRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.pause_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_pause_job_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.pause_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_pause_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "post_pause_job"
+    ) as post, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_pause_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudscheduler.PauseJobRequest.pb(cloudscheduler.PauseJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job.Job.to_json(job.Job())
+
+        request = cloudscheduler.PauseJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job.Job()
+
+        client.pause_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_pause_job_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.PauseJobRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.pause_job(request)
+
+
+def test_pause_job_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.pause_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobs/*}:pause" % client.transport._host,
+            args[1],
+        )
+
+
+def test_pause_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.pause_job(
+            cloudscheduler.PauseJobRequest(),
+            name="name_value",
+        )
+
+
+def test_pause_job_rest_error():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.ResumeJobRequest,
+        dict,
+    ],
+)
+def test_resume_job_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job(
+            name="name_value",
+            description="description_value",
+            schedule="schedule_value",
+            time_zone="time_zone_value",
+            state=job.Job.State.ENABLED,
+            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.resume_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, job.Job)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.schedule == "schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.state == job.Job.State.ENABLED
+
+
+def test_resume_job_rest_required_fields(request_type=cloudscheduler.ResumeJobRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.resume_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_resume_job_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.resume_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_resume_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "post_resume_job"
+    ) as post, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_resume_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudscheduler.ResumeJobRequest.pb(
+            cloudscheduler.ResumeJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job.Job.to_json(job.Job())
+
+        request = cloudscheduler.ResumeJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job.Job()
+
+        client.resume_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_resume_job_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.ResumeJobRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.resume_job(request)
+
+
+def test_resume_job_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.resume_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobs/*}:resume"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_resume_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resume_job(
+            cloudscheduler.ResumeJobRequest(),
+            name="name_value",
+        )
+
+
+def test_resume_job_rest_error():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.RunJobRequest,
+        dict,
+    ],
+)
+def test_run_job_rest(request_type):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job(
+            name="name_value",
+            description="description_value",
+            schedule="schedule_value",
+            time_zone="time_zone_value",
+            state=job.Job.State.ENABLED,
+            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, job.Job)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.schedule == "schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.state == job.Job.State.ENABLED
+
+
+def test_run_job_rest_required_fields(request_type=cloudscheduler.RunJobRequest):
+    transport_class = transports.CloudSchedulerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.run_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_run_job_rest_unset_required_fields():
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.run_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudSchedulerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudSchedulerRestInterceptor(),
+    )
+    client = CloudSchedulerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "post_run_job"
+    ) as post, mock.patch.object(
+        transports.CloudSchedulerRestInterceptor, "pre_run_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudscheduler.RunJobRequest.pb(cloudscheduler.RunJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = job.Job.to_json(job.Job())
+
+        request = cloudscheduler.RunJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = job.Job()
+
+        client.run_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_job_rest_bad_request(
+    transport: str = "rest", request_type=cloudscheduler.RunJobRequest
+):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.run_job(request)
+
+
+def test_run_job_rest_flattened():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.run_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobs/*}:run" % client.transport._host,
+            args[1],
+        )
+
+
+def test_run_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.run_job(
+            cloudscheduler.RunJobRequest(),
+            name="name_value",
+        )
+
+
+def test_run_job_rest_error():
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudSchedulerGrpcTransport(
@@ -2899,6 +5391,7 @@ def test_transport_get_channel():
     [
         transports.CloudSchedulerGrpcTransport,
         transports.CloudSchedulerGrpcAsyncIOTransport,
+        transports.CloudSchedulerRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2913,6 +5406,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3049,6 +5543,7 @@ def test_cloud_scheduler_transport_auth_adc(transport_class):
     [
         transports.CloudSchedulerGrpcTransport,
         transports.CloudSchedulerGrpcAsyncIOTransport,
+        transports.CloudSchedulerRestTransport,
     ],
 )
 def test_cloud_scheduler_transport_auth_gdch_credentials(transport_class):
@@ -3146,11 +5641,23 @@ def test_cloud_scheduler_grpc_transport_client_cert_source_for_mtls(transport_cl
             )
 
 
+def test_cloud_scheduler_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CloudSchedulerRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_scheduler_host_no_port(transport_name):
@@ -3161,7 +5668,11 @@ def test_cloud_scheduler_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("cloudscheduler.googleapis.com:443")
+    assert client.transport._host == (
+        "cloudscheduler.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://cloudscheduler.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3169,6 +5680,7 @@ def test_cloud_scheduler_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_cloud_scheduler_host_with_port(transport_name):
@@ -3179,7 +5691,54 @@ def test_cloud_scheduler_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("cloudscheduler.googleapis.com:8000")
+    assert client.transport._host == (
+        "cloudscheduler.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://cloudscheduler.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_cloud_scheduler_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CloudSchedulerClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CloudSchedulerClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_jobs._session
+    session2 = client2.transport.list_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.get_job._session
+    session2 = client2.transport.get_job._session
+    assert session1 != session2
+    session1 = client1.transport.create_job._session
+    session2 = client2.transport.create_job._session
+    assert session1 != session2
+    session1 = client1.transport.update_job._session
+    session2 = client2.transport.update_job._session
+    assert session1 != session2
+    session1 = client1.transport.delete_job._session
+    session2 = client2.transport.delete_job._session
+    assert session1 != session2
+    session1 = client1.transport.pause_job._session
+    session2 = client2.transport.pause_job._session
+    assert session1 != session2
+    session1 = client1.transport.resume_job._session
+    session2 = client2.transport.resume_job._session
+    assert session1 != session2
+    session1 = client1.transport.run_job._session
+    session2 = client2.transport.run_job._session
+    assert session1 != session2
 
 
 def test_cloud_scheduler_grpc_transport_channel():
@@ -3499,6 +6058,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3516,6 +6076,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
