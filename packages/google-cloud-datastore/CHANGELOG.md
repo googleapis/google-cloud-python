@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.14.0](https://github.com/googleapis/python-datastore/compare/v2.13.2...v2.14.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([6785908](https://github.com/googleapis/python-datastore/commit/678590808a0867dbb2c2002c1ead39586d61be86))
+
+
+### Documentation
+
+* Minor documentation formatting and cleanup ([6785908](https://github.com/googleapis/python-datastore/commit/678590808a0867dbb2c2002c1ead39586d61be86))
+
 ## [2.13.2](https://github.com/googleapis/python-datastore/compare/v2.13.1...v2.13.2) (2023-01-23)
 
 
