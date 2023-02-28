@@ -52,6 +52,7 @@ from google.cloud.vision_v1p3beta1.types import image_annotator
 from .transports.base import ImageAnnotatorTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ImageAnnotatorGrpcTransport
 from .transports.grpc_asyncio import ImageAnnotatorGrpcAsyncIOTransport
+from .transports.rest import ImageAnnotatorRestTransport
 
 
 class ImageAnnotatorClientMeta(type):
@@ -67,6 +68,7 @@ class ImageAnnotatorClientMeta(type):
     )  # type: Dict[str, Type[ImageAnnotatorTransport]]
     _transport_registry["grpc"] = ImageAnnotatorGrpcTransport
     _transport_registry["grpc_asyncio"] = ImageAnnotatorGrpcAsyncIOTransport
+    _transport_registry["rest"] = ImageAnnotatorRestTransport
 
     def get_transport_class(
         cls,

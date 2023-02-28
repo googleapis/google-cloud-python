@@ -58,6 +58,7 @@ from google.rpc import status_pb2  # type: ignore
 from .transports.base import ProductSearchTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ProductSearchGrpcTransport
 from .transports.grpc_asyncio import ProductSearchGrpcAsyncIOTransport
+from .transports.rest import ProductSearchRestTransport
 
 
 class ProductSearchClientMeta(type):
@@ -71,6 +72,7 @@ class ProductSearchClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ProductSearchTransport]]
     _transport_registry["grpc"] = ProductSearchGrpcTransport
     _transport_registry["grpc_asyncio"] = ProductSearchGrpcAsyncIOTransport
+    _transport_registry["rest"] = ProductSearchRestTransport
 
     def get_transport_class(
         cls,

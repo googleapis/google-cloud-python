@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import ImageAnnotatorTransport
 from .grpc import ImageAnnotatorGrpcTransport
 from .grpc_asyncio import ImageAnnotatorGrpcAsyncIOTransport
+from .rest import ImageAnnotatorRestTransport
+from .rest import ImageAnnotatorRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ImageAnnotatorTransport]]
 _transport_registry["grpc"] = ImageAnnotatorGrpcTransport
 _transport_registry["grpc_asyncio"] = ImageAnnotatorGrpcAsyncIOTransport
+_transport_registry["rest"] = ImageAnnotatorRestTransport
 
 __all__ = (
     "ImageAnnotatorTransport",
     "ImageAnnotatorGrpcTransport",
     "ImageAnnotatorGrpcAsyncIOTransport",
+    "ImageAnnotatorRestTransport",
+    "ImageAnnotatorRestInterceptor",
 )
