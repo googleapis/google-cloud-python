@@ -67,6 +67,7 @@ from google.cloud.recommender_v1beta1.types import recommender_service
 from .transports.base import DEFAULT_CLIENT_INFO, RecommenderTransport
 from .transports.grpc import RecommenderGrpcTransport
 from .transports.grpc_asyncio import RecommenderGrpcAsyncIOTransport
+from .transports.rest import RecommenderRestTransport
 
 
 class RecommenderClientMeta(type):
@@ -80,6 +81,7 @@ class RecommenderClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[RecommenderTransport]]
     _transport_registry["grpc"] = RecommenderGrpcTransport
     _transport_registry["grpc_asyncio"] = RecommenderGrpcAsyncIOTransport
+    _transport_registry["rest"] = RecommenderRestTransport
 
     def get_transport_class(
         cls,

@@ -136,6 +136,71 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "RecommenderClient",
+          "rpcs": {
+            "GetInsight": {
+              "methods": [
+                "get_insight"
+              ]
+            },
+            "GetInsightTypeConfig": {
+              "methods": [
+                "get_insight_type_config"
+              ]
+            },
+            "GetRecommendation": {
+              "methods": [
+                "get_recommendation"
+              ]
+            },
+            "GetRecommenderConfig": {
+              "methods": [
+                "get_recommender_config"
+              ]
+            },
+            "ListInsights": {
+              "methods": [
+                "list_insights"
+              ]
+            },
+            "ListRecommendations": {
+              "methods": [
+                "list_recommendations"
+              ]
+            },
+            "MarkInsightAccepted": {
+              "methods": [
+                "mark_insight_accepted"
+              ]
+            },
+            "MarkRecommendationClaimed": {
+              "methods": [
+                "mark_recommendation_claimed"
+              ]
+            },
+            "MarkRecommendationFailed": {
+              "methods": [
+                "mark_recommendation_failed"
+              ]
+            },
+            "MarkRecommendationSucceeded": {
+              "methods": [
+                "mark_recommendation_succeeded"
+              ]
+            },
+            "UpdateInsightTypeConfig": {
+              "methods": [
+                "update_insight_type_config"
+              ]
+            },
+            "UpdateRecommenderConfig": {
+              "methods": [
+                "update_recommender_config"
+              ]
+            }
+          }
         }
       }
     }
