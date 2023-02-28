@@ -59,6 +59,7 @@ from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpannerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SpannerGrpcTransport
 from .transports.grpc_asyncio import SpannerGrpcAsyncIOTransport
+from .transports.rest import SpannerRestTransport
 
 
 class SpannerClientMeta(type):
@@ -72,6 +73,7 @@ class SpannerClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[SpannerTransport]]
     _transport_registry["grpc"] = SpannerGrpcTransport
     _transport_registry["grpc_asyncio"] = SpannerGrpcAsyncIOTransport
+    _transport_registry["rest"] = SpannerRestTransport
 
     def get_transport_class(
         cls,

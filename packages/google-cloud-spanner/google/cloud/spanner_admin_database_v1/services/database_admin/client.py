@@ -63,6 +63,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import DatabaseAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DatabaseAdminGrpcTransport
 from .transports.grpc_asyncio import DatabaseAdminGrpcAsyncIOTransport
+from .transports.rest import DatabaseAdminRestTransport
 
 
 class DatabaseAdminClientMeta(type):
@@ -76,6 +77,7 @@ class DatabaseAdminClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[DatabaseAdminTransport]]
     _transport_registry["grpc"] = DatabaseAdminGrpcTransport
     _transport_registry["grpc_asyncio"] = DatabaseAdminGrpcAsyncIOTransport
+    _transport_registry["rest"] = DatabaseAdminRestTransport
 
     def get_transport_class(
         cls,

@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -99,6 +106,7 @@ def test__get_default_mtls_endpoint():
     [
         (SpannerClient, "grpc"),
         (SpannerAsyncClient, "grpc_asyncio"),
+        (SpannerClient, "rest"),
     ],
 )
 def test_spanner_client_from_service_account_info(client_class, transport_name):
@@ -112,7 +120,11 @@ def test_spanner_client_from_service_account_info(client_class, transport_name):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("spanner.googleapis.com:443")
+        assert client.transport._host == (
+            "spanner.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://spanner.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -120,6 +132,7 @@ def test_spanner_client_from_service_account_info(client_class, transport_name):
     [
         (transports.SpannerGrpcTransport, "grpc"),
         (transports.SpannerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.SpannerRestTransport, "rest"),
     ],
 )
 def test_spanner_client_service_account_always_use_jwt(transport_class, transport_name):
@@ -143,6 +156,7 @@ def test_spanner_client_service_account_always_use_jwt(transport_class, transpor
     [
         (SpannerClient, "grpc"),
         (SpannerAsyncClient, "grpc_asyncio"),
+        (SpannerClient, "rest"),
     ],
 )
 def test_spanner_client_from_service_account_file(client_class, transport_name):
@@ -163,13 +177,18 @@ def test_spanner_client_from_service_account_file(client_class, transport_name):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("spanner.googleapis.com:443")
+        assert client.transport._host == (
+            "spanner.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://spanner.googleapis.com"
+        )
 
 
 def test_spanner_client_get_transport_class():
     transport = SpannerClient.get_transport_class()
     available_transports = [
         transports.SpannerGrpcTransport,
+        transports.SpannerRestTransport,
     ]
     assert transport in available_transports
 
@@ -182,6 +201,7 @@ def test_spanner_client_get_transport_class():
     [
         (SpannerClient, transports.SpannerGrpcTransport, "grpc"),
         (SpannerAsyncClient, transports.SpannerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (SpannerClient, transports.SpannerRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -321,6 +341,8 @@ def test_spanner_client_client_options(client_class, transport_class, transport_
             "grpc_asyncio",
             "false",
         ),
+        (SpannerClient, transports.SpannerRestTransport, "rest", "true"),
+        (SpannerClient, transports.SpannerRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -506,6 +528,7 @@ def test_spanner_client_get_mtls_endpoint_and_cert_source(client_class):
     [
         (SpannerClient, transports.SpannerGrpcTransport, "grpc"),
         (SpannerAsyncClient, transports.SpannerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (SpannerClient, transports.SpannerRestTransport, "rest"),
     ],
 )
 def test_spanner_client_client_options_scopes(
@@ -541,6 +564,7 @@ def test_spanner_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (SpannerClient, transports.SpannerRestTransport, "rest", None),
     ],
 )
 def test_spanner_client_client_options_credentials_file(
@@ -3831,6 +3855,3844 @@ async def test_partition_read_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.CreateSessionRequest,
+        dict,
+    ],
+)
+def test_create_session_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.Session(
+            name="name_value",
+            creator_role="creator_role_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.Session)
+    assert response.name == "name_value"
+    assert response.creator_role == "creator_role_value"
+
+
+def test_create_session_rest_required_fields(request_type=spanner.CreateSessionRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["database"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["database"] = "database_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "database" in jsonified_request
+    assert jsonified_request["database"] == "database_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner.Session()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = spanner.Session.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_session_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_session._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "database",
+                "session",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_session_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_create_session"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_create_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.CreateSessionRequest.pb(spanner.CreateSessionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = spanner.Session.to_json(spanner.Session())
+
+        request = spanner.CreateSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.Session()
+
+        client.create_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_session_rest_bad_request(
+    transport: str = "rest", request_type=spanner.CreateSessionRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_session(request)
+
+
+def test_create_session_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.Session()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "database": "projects/sample1/instances/sample2/databases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            database="database_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{database=projects/*/instances/*/databases/*}/sessions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_session_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_session(
+            spanner.CreateSessionRequest(),
+            database="database_value",
+        )
+
+
+def test_create_session_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BatchCreateSessionsRequest,
+        dict,
+    ],
+)
+def test_batch_create_sessions_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.BatchCreateSessionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_sessions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.BatchCreateSessionsResponse)
+
+
+def test_batch_create_sessions_rest_required_fields(
+    request_type=spanner.BatchCreateSessionsRequest,
+):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["database"] = ""
+    request_init["session_count"] = 0
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_sessions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["database"] = "database_value"
+    jsonified_request["sessionCount"] = 1420
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_sessions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "database" in jsonified_request
+    assert jsonified_request["database"] == "database_value"
+    assert "sessionCount" in jsonified_request
+    assert jsonified_request["sessionCount"] == 1420
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner.BatchCreateSessionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_create_sessions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_create_sessions_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_create_sessions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "database",
+                "sessionCount",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_sessions_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_batch_create_sessions"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_batch_create_sessions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.BatchCreateSessionsRequest.pb(
+            spanner.BatchCreateSessionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = spanner.BatchCreateSessionsResponse.to_json(
+            spanner.BatchCreateSessionsResponse()
+        )
+
+        request = spanner.BatchCreateSessionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.BatchCreateSessionsResponse()
+
+        client.batch_create_sessions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_sessions_rest_bad_request(
+    transport: str = "rest", request_type=spanner.BatchCreateSessionsRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_create_sessions(request)
+
+
+def test_batch_create_sessions_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.BatchCreateSessionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "database": "projects/sample1/instances/sample2/databases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            database="database_value",
+            session_count=1420,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.batch_create_sessions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{database=projects/*/instances/*/databases/*}/sessions:batchCreate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_create_sessions_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_create_sessions(
+            spanner.BatchCreateSessionsRequest(),
+            database="database_value",
+            session_count=1420,
+        )
+
+
+def test_batch_create_sessions_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.GetSessionRequest,
+        dict,
+    ],
+)
+def test_get_session_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.Session(
+            name="name_value",
+            creator_role="creator_role_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.Session)
+    assert response.name == "name_value"
+    assert response.creator_role == "creator_role_value"
+
+
+def test_get_session_rest_required_fields(request_type=spanner.GetSessionRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner.Session()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = spanner.Session.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_session_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_session._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_session_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_get_session"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_get_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.GetSessionRequest.pb(spanner.GetSessionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = spanner.Session.to_json(spanner.Session())
+
+        request = spanner.GetSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.Session()
+
+        client.get_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_session_rest_bad_request(
+    transport: str = "rest", request_type=spanner.GetSessionRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_session(request)
+
+
+def test_get_session_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.Session()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_session_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_session(
+            spanner.GetSessionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_session_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ListSessionsRequest,
+        dict,
+    ],
+)
+def test_list_sessions_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.ListSessionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.ListSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_sessions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSessionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_sessions_rest_required_fields(request_type=spanner.ListSessionsRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["database"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sessions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["database"] = "database_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sessions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "database" in jsonified_request
+    assert jsonified_request["database"] == "database_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner.ListSessionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = spanner.ListSessionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_sessions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_sessions_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_sessions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("database",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_sessions_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_list_sessions"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_list_sessions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ListSessionsRequest.pb(spanner.ListSessionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = spanner.ListSessionsResponse.to_json(
+            spanner.ListSessionsResponse()
+        )
+
+        request = spanner.ListSessionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.ListSessionsResponse()
+
+        client.list_sessions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_sessions_rest_bad_request(
+    transport: str = "rest", request_type=spanner.ListSessionsRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_sessions(request)
+
+
+def test_list_sessions_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.ListSessionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "database": "projects/sample1/instances/sample2/databases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            database="database_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.ListSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_sessions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{database=projects/*/instances/*/databases/*}/sessions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_sessions_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sessions(
+            spanner.ListSessionsRequest(),
+            database="database_value",
+        )
+
+
+def test_list_sessions_rest_pager(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            spanner.ListSessionsResponse(
+                sessions=[
+                    spanner.Session(),
+                    spanner.Session(),
+                    spanner.Session(),
+                ],
+                next_page_token="abc",
+            ),
+            spanner.ListSessionsResponse(
+                sessions=[],
+                next_page_token="def",
+            ),
+            spanner.ListSessionsResponse(
+                sessions=[
+                    spanner.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            spanner.ListSessionsResponse(
+                sessions=[
+                    spanner.Session(),
+                    spanner.Session(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(spanner.ListSessionsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "database": "projects/sample1/instances/sample2/databases/sample3"
+        }
+
+        pager = client.list_sessions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, spanner.Session) for i in results)
+
+        pages = list(client.list_sessions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.DeleteSessionRequest,
+        dict,
+    ],
+)
+def test_delete_session_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_session_rest_required_fields(request_type=spanner.DeleteSessionRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_session_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_session._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_session_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_delete_session"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = spanner.DeleteSessionRequest.pb(spanner.DeleteSessionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = spanner.DeleteSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_session_rest_bad_request(
+    transport: str = "rest", request_type=spanner.DeleteSessionRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_session(request)
+
+
+def test_delete_session_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_session_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_session(
+            spanner.DeleteSessionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_session_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteSqlRequest,
+        dict,
+    ],
+)
+def test_execute_sql_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.ResultSet()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = result_set.ResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.execute_sql(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.ResultSet)
+
+
+def test_execute_sql_rest_required_fields(request_type=spanner.ExecuteSqlRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["sql"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_sql._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["sql"] = "sql_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_sql._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "sql" in jsonified_request
+    assert jsonified_request["sql"] == "sql_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = result_set.ResultSet()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = result_set.ResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.execute_sql(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_sql_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_sql._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "sql",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_sql_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_execute_sql"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_execute_sql"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ExecuteSqlRequest.pb(spanner.ExecuteSqlRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = result_set.ResultSet.to_json(result_set.ResultSet())
+
+        request = spanner.ExecuteSqlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.ResultSet()
+
+        client.execute_sql(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_execute_sql_rest_bad_request(
+    transport: str = "rest", request_type=spanner.ExecuteSqlRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.execute_sql(request)
+
+
+def test_execute_sql_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteSqlRequest,
+        dict,
+    ],
+)
+def test_execute_streaming_sql_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.PartialResultSet(
+            chunked_value=True,
+            resume_token=b"resume_token_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = result_set.PartialResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        json_return_value = "[{}]".format(json_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        with mock.patch.object(response_value, "iter_content") as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            response = client.execute_streaming_sql(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.PartialResultSet)
+    assert response.chunked_value is True
+    assert response.resume_token == b"resume_token_blob"
+
+
+def test_execute_streaming_sql_rest_required_fields(
+    request_type=spanner.ExecuteSqlRequest,
+):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["sql"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_streaming_sql._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["sql"] = "sql_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_streaming_sql._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "sql" in jsonified_request
+    assert jsonified_request["sql"] == "sql_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = result_set.PartialResultSet()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = result_set.PartialResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = "[{}]".format(json_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            with mock.patch.object(response_value, "iter_content") as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.execute_streaming_sql(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_streaming_sql_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_streaming_sql._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "sql",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_streaming_sql_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_execute_streaming_sql"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_execute_streaming_sql"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ExecuteSqlRequest.pb(spanner.ExecuteSqlRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = result_set.PartialResultSet.to_json(
+            result_set.PartialResultSet()
+        )
+        req.return_value._content = "[{}]".format(req.return_value._content)
+
+        request = spanner.ExecuteSqlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.PartialResultSet()
+
+        client.execute_streaming_sql(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_execute_streaming_sql_rest_bad_request(
+    transport: str = "rest", request_type=spanner.ExecuteSqlRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.execute_streaming_sql(request)
+
+
+def test_execute_streaming_sql_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteBatchDmlRequest,
+        dict,
+    ],
+)
+def test_execute_batch_dml_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.ExecuteBatchDmlResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.execute_batch_dml(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.ExecuteBatchDmlResponse)
+
+
+def test_execute_batch_dml_rest_required_fields(
+    request_type=spanner.ExecuteBatchDmlRequest,
+):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["seqno"] = 0
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_batch_dml._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["seqno"] = 550
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).execute_batch_dml._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "seqno" in jsonified_request
+    assert jsonified_request["seqno"] == 550
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner.ExecuteBatchDmlResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.execute_batch_dml(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_execute_batch_dml_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.execute_batch_dml._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "transaction",
+                "statements",
+                "seqno",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_batch_dml_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_execute_batch_dml"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_execute_batch_dml"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ExecuteBatchDmlRequest.pb(spanner.ExecuteBatchDmlRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = spanner.ExecuteBatchDmlResponse.to_json(
+            spanner.ExecuteBatchDmlResponse()
+        )
+
+        request = spanner.ExecuteBatchDmlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.ExecuteBatchDmlResponse()
+
+        client.execute_batch_dml(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_execute_batch_dml_rest_bad_request(
+    transport: str = "rest", request_type=spanner.ExecuteBatchDmlRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.execute_batch_dml(request)
+
+
+def test_execute_batch_dml_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ReadRequest,
+        dict,
+    ],
+)
+def test_read_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.ResultSet()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = result_set.ResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.read(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.ResultSet)
+
+
+def test_read_rest_required_fields(request_type=spanner.ReadRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["table"] = ""
+    request_init["columns"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).read._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["table"] = "table_value"
+    jsonified_request["columns"] = "columns_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).read._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "table" in jsonified_request
+    assert jsonified_request["table"] == "table_value"
+    assert "columns" in jsonified_request
+    assert jsonified_request["columns"] == "columns_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = result_set.ResultSet()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = result_set.ResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.read(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_read_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.read._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "table",
+                "columns",
+                "keySet",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_read_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_read"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_read"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ReadRequest.pb(spanner.ReadRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = result_set.ResultSet.to_json(result_set.ResultSet())
+
+        request = spanner.ReadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.ResultSet()
+
+        client.read(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_read_rest_bad_request(
+    transport: str = "rest", request_type=spanner.ReadRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.read(request)
+
+
+def test_read_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ReadRequest,
+        dict,
+    ],
+)
+def test_streaming_read_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.PartialResultSet(
+            chunked_value=True,
+            resume_token=b"resume_token_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = result_set.PartialResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        json_return_value = "[{}]".format(json_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        with mock.patch.object(response_value, "iter_content") as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            response = client.streaming_read(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.PartialResultSet)
+    assert response.chunked_value is True
+    assert response.resume_token == b"resume_token_blob"
+
+
+def test_streaming_read_rest_required_fields(request_type=spanner.ReadRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["table"] = ""
+    request_init["columns"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).streaming_read._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["table"] = "table_value"
+    jsonified_request["columns"] = "columns_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).streaming_read._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "table" in jsonified_request
+    assert jsonified_request["table"] == "table_value"
+    assert "columns" in jsonified_request
+    assert jsonified_request["columns"] == "columns_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = result_set.PartialResultSet()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = result_set.PartialResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = "[{}]".format(json_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            with mock.patch.object(response_value, "iter_content") as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.streaming_read(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_streaming_read_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.streaming_read._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "table",
+                "columns",
+                "keySet",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_streaming_read_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_streaming_read"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_streaming_read"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ReadRequest.pb(spanner.ReadRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = result_set.PartialResultSet.to_json(
+            result_set.PartialResultSet()
+        )
+        req.return_value._content = "[{}]".format(req.return_value._content)
+
+        request = spanner.ReadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.PartialResultSet()
+
+        client.streaming_read(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_streaming_read_rest_bad_request(
+    transport: str = "rest", request_type=spanner.ReadRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.streaming_read(request)
+
+
+def test_streaming_read_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BeginTransactionRequest,
+        dict,
+    ],
+)
+def test_begin_transaction_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = transaction.Transaction(
+            id=b"id_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = transaction.Transaction.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.begin_transaction(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transaction.Transaction)
+    assert response.id == b"id_blob"
+
+
+def test_begin_transaction_rest_required_fields(
+    request_type=spanner.BeginTransactionRequest,
+):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).begin_transaction._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).begin_transaction._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = transaction.Transaction()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = transaction.Transaction.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.begin_transaction(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_begin_transaction_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.begin_transaction._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "options",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_begin_transaction_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_begin_transaction"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_begin_transaction"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.BeginTransactionRequest.pb(
+            spanner.BeginTransactionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = transaction.Transaction.to_json(
+            transaction.Transaction()
+        )
+
+        request = spanner.BeginTransactionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = transaction.Transaction()
+
+        client.begin_transaction(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_begin_transaction_rest_bad_request(
+    transport: str = "rest", request_type=spanner.BeginTransactionRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.begin_transaction(request)
+
+
+def test_begin_transaction_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = transaction.Transaction()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            session="session_value",
+            options=transaction.TransactionOptions(
+                read_write=transaction.TransactionOptions.ReadWrite(
+                    read_lock_mode=transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
+                )
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = transaction.Transaction.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.begin_transaction(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_begin_transaction_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.begin_transaction(
+            spanner.BeginTransactionRequest(),
+            session="session_value",
+            options=transaction.TransactionOptions(
+                read_write=transaction.TransactionOptions.ReadWrite(
+                    read_lock_mode=transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
+                )
+            ),
+        )
+
+
+def test_begin_transaction_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.CommitRequest,
+        dict,
+    ],
+)
+def test_commit_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = commit_response.CommitResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = commit_response.CommitResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.commit(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, commit_response.CommitResponse)
+
+
+def test_commit_rest_required_fields(request_type=spanner.CommitRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).commit._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).commit._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = commit_response.CommitResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = commit_response.CommitResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.commit(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_commit_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.commit._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("session",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_commit_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_commit"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_commit"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.CommitRequest.pb(spanner.CommitRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = commit_response.CommitResponse.to_json(
+            commit_response.CommitResponse()
+        )
+
+        request = spanner.CommitRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = commit_response.CommitResponse()
+
+        client.commit(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_commit_rest_bad_request(
+    transport: str = "rest", request_type=spanner.CommitRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.commit(request)
+
+
+def test_commit_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = commit_response.CommitResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            session="session_value",
+            mutations=[
+                mutation.Mutation(insert=mutation.Mutation.Write(table="table_value"))
+            ],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = commit_response.CommitResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.commit(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_commit_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.commit(
+            spanner.CommitRequest(),
+            session="session_value",
+            transaction_id=b"transaction_id_blob",
+            mutations=[
+                mutation.Mutation(insert=mutation.Mutation.Write(table="table_value"))
+            ],
+            single_use_transaction=transaction.TransactionOptions(
+                read_write=transaction.TransactionOptions.ReadWrite(
+                    read_lock_mode=transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
+                )
+            ),
+        )
+
+
+def test_commit_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.RollbackRequest,
+        dict,
+    ],
+)
+def test_rollback_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_rollback_rest_required_fields(request_type=spanner.RollbackRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["transaction_id"] = b""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["transactionId"] = b"transaction_id_blob"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "transactionId" in jsonified_request
+    assert jsonified_request["transactionId"] == b"transaction_id_blob"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rollback(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rollback_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rollback._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "transactionId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_rollback"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = spanner.RollbackRequest.pb(spanner.RollbackRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = spanner.RollbackRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.rollback(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_rollback_rest_bad_request(
+    transport: str = "rest", request_type=spanner.RollbackRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rollback(request)
+
+
+def test_rollback_rest_flattened():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            session="session_value",
+            transaction_id=b"transaction_id_blob",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.rollback(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rollback_rest_flattened_error(transport: str = "rest"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rollback(
+            spanner.RollbackRequest(),
+            session="session_value",
+            transaction_id=b"transaction_id_blob",
+        )
+
+
+def test_rollback_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.PartitionQueryRequest,
+        dict,
+    ],
+)
+def test_partition_query_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.PartitionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.PartitionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.partition_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.PartitionResponse)
+
+
+def test_partition_query_rest_required_fields(
+    request_type=spanner.PartitionQueryRequest,
+):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["sql"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).partition_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["sql"] = "sql_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).partition_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "sql" in jsonified_request
+    assert jsonified_request["sql"] == "sql_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner.PartitionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = spanner.PartitionResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.partition_query(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_partition_query_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.partition_query._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "sql",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_partition_query_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_partition_query"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_partition_query"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.PartitionQueryRequest.pb(spanner.PartitionQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = spanner.PartitionResponse.to_json(
+            spanner.PartitionResponse()
+        )
+
+        request = spanner.PartitionQueryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.PartitionResponse()
+
+        client.partition_query(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_partition_query_rest_bad_request(
+    transport: str = "rest", request_type=spanner.PartitionQueryRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.partition_query(request)
+
+
+def test_partition_query_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.PartitionReadRequest,
+        dict,
+    ],
+)
+def test_partition_read_rest(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.PartitionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = spanner.PartitionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.partition_read(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.PartitionResponse)
+
+
+def test_partition_read_rest_required_fields(request_type=spanner.PartitionReadRequest):
+    transport_class = transports.SpannerRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request_init["table"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).partition_read._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+    jsonified_request["table"] = "table_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).partition_read._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+    assert "table" in jsonified_request
+    assert jsonified_request["table"] == "table_value"
+
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner.PartitionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = spanner.PartitionResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.partition_read(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_partition_read_rest_unset_required_fields():
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.partition_read._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "table",
+                "keySet",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_partition_read_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_partition_read"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_partition_read"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.PartitionReadRequest.pb(spanner.PartitionReadRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = spanner.PartitionResponse.to_json(
+            spanner.PartitionResponse()
+        )
+
+        request = spanner.PartitionReadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.PartitionResponse()
+
+        client.partition_read(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_partition_read_rest_bad_request(
+    transport: str = "rest", request_type=spanner.PartitionReadRequest
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.partition_read(request)
+
+
+def test_partition_read_rest_error():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SpannerGrpcTransport(
@@ -3912,6 +7774,7 @@ def test_transport_get_channel():
     [
         transports.SpannerGrpcTransport,
         transports.SpannerGrpcAsyncIOTransport,
+        transports.SpannerRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3926,6 +7789,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -4078,6 +7942,7 @@ def test_spanner_transport_auth_adc(transport_class):
     [
         transports.SpannerGrpcTransport,
         transports.SpannerGrpcAsyncIOTransport,
+        transports.SpannerRestTransport,
     ],
 )
 def test_spanner_transport_auth_gdch_credentials(transport_class):
@@ -4175,11 +8040,23 @@ def test_spanner_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_spanner_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.SpannerRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_spanner_host_no_port(transport_name):
@@ -4190,7 +8067,11 @@ def test_spanner_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("spanner.googleapis.com:443")
+    assert client.transport._host == (
+        "spanner.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://spanner.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -4198,6 +8079,7 @@ def test_spanner_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_spanner_host_with_port(transport_name):
@@ -4208,7 +8090,75 @@ def test_spanner_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("spanner.googleapis.com:8000")
+    assert client.transport._host == (
+        "spanner.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://spanner.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_spanner_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = SpannerClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = SpannerClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_session._session
+    session2 = client2.transport.create_session._session
+    assert session1 != session2
+    session1 = client1.transport.batch_create_sessions._session
+    session2 = client2.transport.batch_create_sessions._session
+    assert session1 != session2
+    session1 = client1.transport.get_session._session
+    session2 = client2.transport.get_session._session
+    assert session1 != session2
+    session1 = client1.transport.list_sessions._session
+    session2 = client2.transport.list_sessions._session
+    assert session1 != session2
+    session1 = client1.transport.delete_session._session
+    session2 = client2.transport.delete_session._session
+    assert session1 != session2
+    session1 = client1.transport.execute_sql._session
+    session2 = client2.transport.execute_sql._session
+    assert session1 != session2
+    session1 = client1.transport.execute_streaming_sql._session
+    session2 = client2.transport.execute_streaming_sql._session
+    assert session1 != session2
+    session1 = client1.transport.execute_batch_dml._session
+    session2 = client2.transport.execute_batch_dml._session
+    assert session1 != session2
+    session1 = client1.transport.read._session
+    session2 = client2.transport.read._session
+    assert session1 != session2
+    session1 = client1.transport.streaming_read._session
+    session2 = client2.transport.streaming_read._session
+    assert session1 != session2
+    session1 = client1.transport.begin_transaction._session
+    session2 = client2.transport.begin_transaction._session
+    assert session1 != session2
+    session1 = client1.transport.commit._session
+    session2 = client2.transport.commit._session
+    assert session1 != session2
+    session1 = client1.transport.rollback._session
+    session2 = client2.transport.rollback._session
+    assert session1 != session2
+    session1 = client1.transport.partition_query._session
+    session2 = client2.transport.partition_query._session
+    assert session1 != session2
+    session1 = client1.transport.partition_read._session
+    session2 = client2.transport.partition_read._session
+    assert session1 != session2
 
 
 def test_spanner_grpc_transport_channel():
@@ -4526,6 +8476,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4543,6 +8494,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
