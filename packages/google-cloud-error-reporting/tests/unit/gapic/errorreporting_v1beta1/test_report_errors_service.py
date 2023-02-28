@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -103,6 +110,7 @@ def test__get_default_mtls_endpoint():
     [
         (ReportErrorsServiceClient, "grpc"),
         (ReportErrorsServiceAsyncClient, "grpc_asyncio"),
+        (ReportErrorsServiceClient, "rest"),
     ],
 )
 def test_report_errors_service_client_from_service_account_info(
@@ -118,7 +126,11 @@ def test_report_errors_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+        assert client.transport._host == (
+            "clouderrorreporting.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouderrorreporting.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -126,6 +138,7 @@ def test_report_errors_service_client_from_service_account_info(
     [
         (transports.ReportErrorsServiceGrpcTransport, "grpc"),
         (transports.ReportErrorsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ReportErrorsServiceRestTransport, "rest"),
     ],
 )
 def test_report_errors_service_client_service_account_always_use_jwt(
@@ -151,6 +164,7 @@ def test_report_errors_service_client_service_account_always_use_jwt(
     [
         (ReportErrorsServiceClient, "grpc"),
         (ReportErrorsServiceAsyncClient, "grpc_asyncio"),
+        (ReportErrorsServiceClient, "rest"),
     ],
 )
 def test_report_errors_service_client_from_service_account_file(
@@ -173,13 +187,18 @@ def test_report_errors_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+        assert client.transport._host == (
+            "clouderrorreporting.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouderrorreporting.googleapis.com"
+        )
 
 
 def test_report_errors_service_client_get_transport_class():
     transport = ReportErrorsServiceClient.get_transport_class()
     available_transports = [
         transports.ReportErrorsServiceGrpcTransport,
+        transports.ReportErrorsServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -199,6 +218,11 @@ def test_report_errors_service_client_get_transport_class():
             ReportErrorsServiceAsyncClient,
             transports.ReportErrorsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            ReportErrorsServiceClient,
+            transports.ReportErrorsServiceRestTransport,
+            "rest",
         ),
     ],
 )
@@ -353,6 +377,18 @@ def test_report_errors_service_client_client_options(
             ReportErrorsServiceAsyncClient,
             transports.ReportErrorsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ReportErrorsServiceClient,
+            transports.ReportErrorsServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ReportErrorsServiceClient,
+            transports.ReportErrorsServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -558,6 +594,11 @@ def test_report_errors_service_client_get_mtls_endpoint_and_cert_source(client_c
             transports.ReportErrorsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            ReportErrorsServiceClient,
+            transports.ReportErrorsServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_report_errors_service_client_client_options_scopes(
@@ -597,6 +638,12 @@ def test_report_errors_service_client_client_options_scopes(
             transports.ReportErrorsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ReportErrorsServiceClient,
+            transports.ReportErrorsServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -973,6 +1020,344 @@ async def test_report_error_event_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        report_errors_service.ReportErrorEventRequest,
+        dict,
+    ],
+)
+def test_report_error_event_rest(request_type):
+    client = ReportErrorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request_init["event"] = {
+        "event_time": {"seconds": 751, "nanos": 543},
+        "service_context": {
+            "service": "service_value",
+            "version": "version_value",
+            "resource_type": "resource_type_value",
+        },
+        "message": "message_value",
+        "context": {
+            "http_request": {
+                "method": "method_value",
+                "url": "url_value",
+                "user_agent": "user_agent_value",
+                "referrer": "referrer_value",
+                "response_status_code": 2156,
+                "remote_ip": "remote_ip_value",
+            },
+            "user": "user_value",
+            "report_location": {
+                "file_path": "file_path_value",
+                "line_number": 1168,
+                "function_name": "function_name_value",
+            },
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_errors_service.ReportErrorEventResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = report_errors_service.ReportErrorEventResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.report_error_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, report_errors_service.ReportErrorEventResponse)
+
+
+def test_report_error_event_rest_required_fields(
+    request_type=report_errors_service.ReportErrorEventRequest,
+):
+    transport_class = transports.ReportErrorsServiceRestTransport
+
+    request_init = {}
+    request_init["project_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).report_error_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectName"] = "project_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).report_error_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectName" in jsonified_request
+    assert jsonified_request["projectName"] == "project_name_value"
+
+    client = ReportErrorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = report_errors_service.ReportErrorEventResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = report_errors_service.ReportErrorEventResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.report_error_event(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_report_error_event_rest_unset_required_fields():
+    transport = transports.ReportErrorsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.report_error_event._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "projectName",
+                "event",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_report_error_event_rest_interceptors(null_interceptor):
+    transport = transports.ReportErrorsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReportErrorsServiceRestInterceptor(),
+    )
+    client = ReportErrorsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReportErrorsServiceRestInterceptor, "post_report_error_event"
+    ) as post, mock.patch.object(
+        transports.ReportErrorsServiceRestInterceptor, "pre_report_error_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = report_errors_service.ReportErrorEventRequest.pb(
+            report_errors_service.ReportErrorEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            report_errors_service.ReportErrorEventResponse.to_json(
+                report_errors_service.ReportErrorEventResponse()
+            )
+        )
+
+        request = report_errors_service.ReportErrorEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = report_errors_service.ReportErrorEventResponse()
+
+        client.report_error_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_report_error_event_rest_bad_request(
+    transport: str = "rest", request_type=report_errors_service.ReportErrorEventRequest
+):
+    client = ReportErrorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request_init["event"] = {
+        "event_time": {"seconds": 751, "nanos": 543},
+        "service_context": {
+            "service": "service_value",
+            "version": "version_value",
+            "resource_type": "resource_type_value",
+        },
+        "message": "message_value",
+        "context": {
+            "http_request": {
+                "method": "method_value",
+                "url": "url_value",
+                "user_agent": "user_agent_value",
+                "referrer": "referrer_value",
+                "response_status_code": 2156,
+                "remote_ip": "remote_ip_value",
+            },
+            "user": "user_value",
+            "report_location": {
+                "file_path": "file_path_value",
+                "line_number": 1168,
+                "function_name": "function_name_value",
+            },
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.report_error_event(request)
+
+
+def test_report_error_event_rest_flattened():
+    client = ReportErrorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_errors_service.ReportErrorEventResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_name": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_name="project_name_value",
+            event=report_errors_service.ReportedErrorEvent(
+                event_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = report_errors_service.ReportErrorEventResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.report_error_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{project_name=projects/*}/events:report"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_report_error_event_rest_flattened_error(transport: str = "rest"):
+    client = ReportErrorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.report_error_event(
+            report_errors_service.ReportErrorEventRequest(),
+            project_name="project_name_value",
+            event=report_errors_service.ReportedErrorEvent(
+                event_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+
+
+def test_report_error_event_rest_error():
+    client = ReportErrorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ReportErrorsServiceGrpcTransport(
@@ -1054,6 +1439,7 @@ def test_transport_get_channel():
     [
         transports.ReportErrorsServiceGrpcTransport,
         transports.ReportErrorsServiceGrpcAsyncIOTransport,
+        transports.ReportErrorsServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1068,6 +1454,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1195,6 +1582,7 @@ def test_report_errors_service_transport_auth_adc(transport_class):
     [
         transports.ReportErrorsServiceGrpcTransport,
         transports.ReportErrorsServiceGrpcAsyncIOTransport,
+        transports.ReportErrorsServiceRestTransport,
     ],
 )
 def test_report_errors_service_transport_auth_gdch_credentials(transport_class):
@@ -1294,11 +1682,23 @@ def test_report_errors_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_report_errors_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ReportErrorsServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_report_errors_service_host_no_port(transport_name):
@@ -1309,7 +1709,11 @@ def test_report_errors_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+    assert client.transport._host == (
+        "clouderrorreporting.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouderrorreporting.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1317,6 +1721,7 @@ def test_report_errors_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_report_errors_service_host_with_port(transport_name):
@@ -1327,7 +1732,33 @@ def test_report_errors_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouderrorreporting.googleapis.com:8000")
+    assert client.transport._host == (
+        "clouderrorreporting.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouderrorreporting.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_report_errors_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ReportErrorsServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ReportErrorsServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.report_error_event._session
+    session2 = client2.transport.report_error_event._session
+    assert session1 != session2
 
 
 def test_report_errors_service_grpc_transport_channel():
@@ -1598,6 +2029,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1615,6 +2047,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -103,6 +110,7 @@ def test__get_default_mtls_endpoint():
     [
         (ErrorStatsServiceClient, "grpc"),
         (ErrorStatsServiceAsyncClient, "grpc_asyncio"),
+        (ErrorStatsServiceClient, "rest"),
     ],
 )
 def test_error_stats_service_client_from_service_account_info(
@@ -118,7 +126,11 @@ def test_error_stats_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+        assert client.transport._host == (
+            "clouderrorreporting.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouderrorreporting.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -126,6 +138,7 @@ def test_error_stats_service_client_from_service_account_info(
     [
         (transports.ErrorStatsServiceGrpcTransport, "grpc"),
         (transports.ErrorStatsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ErrorStatsServiceRestTransport, "rest"),
     ],
 )
 def test_error_stats_service_client_service_account_always_use_jwt(
@@ -151,6 +164,7 @@ def test_error_stats_service_client_service_account_always_use_jwt(
     [
         (ErrorStatsServiceClient, "grpc"),
         (ErrorStatsServiceAsyncClient, "grpc_asyncio"),
+        (ErrorStatsServiceClient, "rest"),
     ],
 )
 def test_error_stats_service_client_from_service_account_file(
@@ -173,13 +187,18 @@ def test_error_stats_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+        assert client.transport._host == (
+            "clouderrorreporting.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouderrorreporting.googleapis.com"
+        )
 
 
 def test_error_stats_service_client_get_transport_class():
     transport = ErrorStatsServiceClient.get_transport_class()
     available_transports = [
         transports.ErrorStatsServiceGrpcTransport,
+        transports.ErrorStatsServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -196,6 +215,7 @@ def test_error_stats_service_client_get_transport_class():
             transports.ErrorStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ErrorStatsServiceClient, transports.ErrorStatsServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -349,6 +369,18 @@ def test_error_stats_service_client_client_options(
             ErrorStatsServiceAsyncClient,
             transports.ErrorStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ErrorStatsServiceClient,
+            transports.ErrorStatsServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ErrorStatsServiceClient,
+            transports.ErrorStatsServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -550,6 +582,7 @@ def test_error_stats_service_client_get_mtls_endpoint_and_cert_source(client_cla
             transports.ErrorStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ErrorStatsServiceClient, transports.ErrorStatsServiceRestTransport, "rest"),
     ],
 )
 def test_error_stats_service_client_client_options_scopes(
@@ -589,6 +622,12 @@ def test_error_stats_service_client_client_options_scopes(
             transports.ErrorStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ErrorStatsServiceClient,
+            transports.ErrorStatsServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -1804,6 +1843,996 @@ async def test_delete_events_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_stats_service.ListGroupStatsRequest,
+        dict,
+    ],
+)
+def test_list_group_stats_rest(request_type):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = error_stats_service.ListGroupStatsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = error_stats_service.ListGroupStatsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_group_stats(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGroupStatsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_group_stats_rest_required_fields(
+    request_type=error_stats_service.ListGroupStatsRequest,
+):
+    transport_class = transports.ErrorStatsServiceRestTransport
+
+    request_init = {}
+    request_init["project_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_group_stats._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectName"] = "project_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_group_stats._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "alignment",
+            "alignment_time",
+            "group_id",
+            "order",
+            "page_size",
+            "page_token",
+            "service_filter",
+            "time_range",
+            "timed_count_duration",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectName" in jsonified_request
+    assert jsonified_request["projectName"] == "project_name_value"
+
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = error_stats_service.ListGroupStatsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = error_stats_service.ListGroupStatsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_group_stats(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_group_stats_rest_unset_required_fields():
+    transport = transports.ErrorStatsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_group_stats._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "alignment",
+                "alignmentTime",
+                "groupId",
+                "order",
+                "pageSize",
+                "pageToken",
+                "serviceFilter",
+                "timeRange",
+                "timedCountDuration",
+            )
+        )
+        & set(("projectName",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_group_stats_rest_interceptors(null_interceptor):
+    transport = transports.ErrorStatsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ErrorStatsServiceRestInterceptor(),
+    )
+    client = ErrorStatsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ErrorStatsServiceRestInterceptor, "post_list_group_stats"
+    ) as post, mock.patch.object(
+        transports.ErrorStatsServiceRestInterceptor, "pre_list_group_stats"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = error_stats_service.ListGroupStatsRequest.pb(
+            error_stats_service.ListGroupStatsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = error_stats_service.ListGroupStatsResponse.to_json(
+            error_stats_service.ListGroupStatsResponse()
+        )
+
+        request = error_stats_service.ListGroupStatsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = error_stats_service.ListGroupStatsResponse()
+
+        client.list_group_stats(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_group_stats_rest_bad_request(
+    transport: str = "rest", request_type=error_stats_service.ListGroupStatsRequest
+):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_group_stats(request)
+
+
+def test_list_group_stats_rest_flattened():
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = error_stats_service.ListGroupStatsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_name": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_name="project_name_value",
+            time_range=error_stats_service.QueryTimeRange(
+                period=error_stats_service.QueryTimeRange.Period.PERIOD_1_HOUR
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = error_stats_service.ListGroupStatsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_group_stats(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{project_name=projects/*}/groupStats" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_group_stats_rest_flattened_error(transport: str = "rest"):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_group_stats(
+            error_stats_service.ListGroupStatsRequest(),
+            project_name="project_name_value",
+            time_range=error_stats_service.QueryTimeRange(
+                period=error_stats_service.QueryTimeRange.Period.PERIOD_1_HOUR
+            ),
+        )
+
+
+def test_list_group_stats_rest_pager(transport: str = "rest"):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            error_stats_service.ListGroupStatsResponse(
+                error_group_stats=[
+                    error_stats_service.ErrorGroupStats(),
+                    error_stats_service.ErrorGroupStats(),
+                    error_stats_service.ErrorGroupStats(),
+                ],
+                next_page_token="abc",
+            ),
+            error_stats_service.ListGroupStatsResponse(
+                error_group_stats=[],
+                next_page_token="def",
+            ),
+            error_stats_service.ListGroupStatsResponse(
+                error_group_stats=[
+                    error_stats_service.ErrorGroupStats(),
+                ],
+                next_page_token="ghi",
+            ),
+            error_stats_service.ListGroupStatsResponse(
+                error_group_stats=[
+                    error_stats_service.ErrorGroupStats(),
+                    error_stats_service.ErrorGroupStats(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            error_stats_service.ListGroupStatsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project_name": "projects/sample1"}
+
+        pager = client.list_group_stats(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, error_stats_service.ErrorGroupStats) for i in results)
+
+        pages = list(client.list_group_stats(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_stats_service.ListEventsRequest,
+        dict,
+    ],
+)
+def test_list_events_rest(request_type):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = error_stats_service.ListEventsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = error_stats_service.ListEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_events_rest_required_fields(
+    request_type=error_stats_service.ListEventsRequest,
+):
+    transport_class = transports.ErrorStatsServiceRestTransport
+
+    request_init = {}
+    request_init["project_name"] = ""
+    request_init["group_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "groupId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "groupId" in jsonified_request
+    assert jsonified_request["groupId"] == request_init["group_id"]
+
+    jsonified_request["projectName"] = "project_name_value"
+    jsonified_request["groupId"] = "group_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_events._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "group_id",
+            "page_size",
+            "page_token",
+            "service_filter",
+            "time_range",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectName" in jsonified_request
+    assert jsonified_request["projectName"] == "project_name_value"
+    assert "groupId" in jsonified_request
+    assert jsonified_request["groupId"] == "group_id_value"
+
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = error_stats_service.ListEventsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = error_stats_service.ListEventsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_events(request)
+
+            expected_params = [
+                (
+                    "groupId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_events_rest_unset_required_fields():
+    transport = transports.ErrorStatsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_events._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "groupId",
+                "pageSize",
+                "pageToken",
+                "serviceFilter",
+                "timeRange",
+            )
+        )
+        & set(
+            (
+                "projectName",
+                "groupId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_events_rest_interceptors(null_interceptor):
+    transport = transports.ErrorStatsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ErrorStatsServiceRestInterceptor(),
+    )
+    client = ErrorStatsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ErrorStatsServiceRestInterceptor, "post_list_events"
+    ) as post, mock.patch.object(
+        transports.ErrorStatsServiceRestInterceptor, "pre_list_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = error_stats_service.ListEventsRequest.pb(
+            error_stats_service.ListEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = error_stats_service.ListEventsResponse.to_json(
+            error_stats_service.ListEventsResponse()
+        )
+
+        request = error_stats_service.ListEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = error_stats_service.ListEventsResponse()
+
+        client.list_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_events_rest_bad_request(
+    transport: str = "rest", request_type=error_stats_service.ListEventsRequest
+):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_events(request)
+
+
+def test_list_events_rest_flattened():
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = error_stats_service.ListEventsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_name": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_name="project_name_value",
+            group_id="group_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = error_stats_service.ListEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_events(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{project_name=projects/*}/events" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_events_rest_flattened_error(transport: str = "rest"):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_events(
+            error_stats_service.ListEventsRequest(),
+            project_name="project_name_value",
+            group_id="group_id_value",
+        )
+
+
+def test_list_events_rest_pager(transport: str = "rest"):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            error_stats_service.ListEventsResponse(
+                error_events=[
+                    common.ErrorEvent(),
+                    common.ErrorEvent(),
+                    common.ErrorEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            error_stats_service.ListEventsResponse(
+                error_events=[],
+                next_page_token="def",
+            ),
+            error_stats_service.ListEventsResponse(
+                error_events=[
+                    common.ErrorEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            error_stats_service.ListEventsResponse(
+                error_events=[
+                    common.ErrorEvent(),
+                    common.ErrorEvent(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            error_stats_service.ListEventsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project_name": "projects/sample1"}
+
+        pager = client.list_events(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, common.ErrorEvent) for i in results)
+
+        pages = list(client.list_events(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_stats_service.DeleteEventsRequest,
+        dict,
+    ],
+)
+def test_delete_events_rest(request_type):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = error_stats_service.DeleteEventsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = error_stats_service.DeleteEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, error_stats_service.DeleteEventsResponse)
+
+
+def test_delete_events_rest_required_fields(
+    request_type=error_stats_service.DeleteEventsRequest,
+):
+    transport_class = transports.ErrorStatsServiceRestTransport
+
+    request_init = {}
+    request_init["project_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["projectName"] = "project_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "projectName" in jsonified_request
+    assert jsonified_request["projectName"] == "project_name_value"
+
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = error_stats_service.DeleteEventsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = error_stats_service.DeleteEventsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_events(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_events_rest_unset_required_fields():
+    transport = transports.ErrorStatsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_events._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("projectName",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_events_rest_interceptors(null_interceptor):
+    transport = transports.ErrorStatsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ErrorStatsServiceRestInterceptor(),
+    )
+    client = ErrorStatsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ErrorStatsServiceRestInterceptor, "post_delete_events"
+    ) as post, mock.patch.object(
+        transports.ErrorStatsServiceRestInterceptor, "pre_delete_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = error_stats_service.DeleteEventsRequest.pb(
+            error_stats_service.DeleteEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = error_stats_service.DeleteEventsResponse.to_json(
+            error_stats_service.DeleteEventsResponse()
+        )
+
+        request = error_stats_service.DeleteEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = error_stats_service.DeleteEventsResponse()
+
+        client.delete_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_events_rest_bad_request(
+    transport: str = "rest", request_type=error_stats_service.DeleteEventsRequest
+):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_name": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_events(request)
+
+
+def test_delete_events_rest_flattened():
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = error_stats_service.DeleteEventsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project_name": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project_name="project_name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = error_stats_service.DeleteEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_events(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{project_name=projects/*}/events" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_events_rest_flattened_error(transport: str = "rest"):
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_events(
+            error_stats_service.DeleteEventsRequest(),
+            project_name="project_name_value",
+        )
+
+
+def test_delete_events_rest_error():
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ErrorStatsServiceGrpcTransport(
@@ -1885,6 +2914,7 @@ def test_transport_get_channel():
     [
         transports.ErrorStatsServiceGrpcTransport,
         transports.ErrorStatsServiceGrpcAsyncIOTransport,
+        transports.ErrorStatsServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1899,6 +2929,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2030,6 +3061,7 @@ def test_error_stats_service_transport_auth_adc(transport_class):
     [
         transports.ErrorStatsServiceGrpcTransport,
         transports.ErrorStatsServiceGrpcAsyncIOTransport,
+        transports.ErrorStatsServiceRestTransport,
     ],
 )
 def test_error_stats_service_transport_auth_gdch_credentials(transport_class):
@@ -2129,11 +3161,23 @@ def test_error_stats_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_error_stats_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ErrorStatsServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_error_stats_service_host_no_port(transport_name):
@@ -2144,7 +3188,11 @@ def test_error_stats_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+    assert client.transport._host == (
+        "clouderrorreporting.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouderrorreporting.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2152,6 +3200,7 @@ def test_error_stats_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_error_stats_service_host_with_port(transport_name):
@@ -2162,7 +3211,39 @@ def test_error_stats_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouderrorreporting.googleapis.com:8000")
+    assert client.transport._host == (
+        "clouderrorreporting.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouderrorreporting.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_error_stats_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ErrorStatsServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ErrorStatsServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_group_stats._session
+    session2 = client2.transport.list_group_stats._session
+    assert session1 != session2
+    session1 = client1.transport.list_events._session
+    session2 = client2.transport.list_events._session
+    assert session1 != session2
+    session1 = client1.transport.delete_events._session
+    session2 = client2.transport.delete_events._session
+    assert session1 != session2
 
 
 def test_error_stats_service_grpc_transport_channel():
@@ -2456,6 +3537,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2473,6 +3555,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

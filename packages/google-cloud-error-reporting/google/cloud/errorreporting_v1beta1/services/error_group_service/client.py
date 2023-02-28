@@ -51,6 +51,7 @@ from google.cloud.errorreporting_v1beta1.types import error_group_service
 from .transports.base import ErrorGroupServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ErrorGroupServiceGrpcTransport
 from .transports.grpc_asyncio import ErrorGroupServiceGrpcAsyncIOTransport
+from .transports.rest import ErrorGroupServiceRestTransport
 
 
 class ErrorGroupServiceClientMeta(type):
@@ -66,6 +67,7 @@ class ErrorGroupServiceClientMeta(type):
     )  # type: Dict[str, Type[ErrorGroupServiceTransport]]
     _transport_registry["grpc"] = ErrorGroupServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ErrorGroupServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ErrorGroupServiceRestTransport
 
     def get_transport_class(
         cls,

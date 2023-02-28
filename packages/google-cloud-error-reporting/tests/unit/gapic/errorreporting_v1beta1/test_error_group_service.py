@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -100,6 +107,7 @@ def test__get_default_mtls_endpoint():
     [
         (ErrorGroupServiceClient, "grpc"),
         (ErrorGroupServiceAsyncClient, "grpc_asyncio"),
+        (ErrorGroupServiceClient, "rest"),
     ],
 )
 def test_error_group_service_client_from_service_account_info(
@@ -115,7 +123,11 @@ def test_error_group_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+        assert client.transport._host == (
+            "clouderrorreporting.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouderrorreporting.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -123,6 +135,7 @@ def test_error_group_service_client_from_service_account_info(
     [
         (transports.ErrorGroupServiceGrpcTransport, "grpc"),
         (transports.ErrorGroupServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ErrorGroupServiceRestTransport, "rest"),
     ],
 )
 def test_error_group_service_client_service_account_always_use_jwt(
@@ -148,6 +161,7 @@ def test_error_group_service_client_service_account_always_use_jwt(
     [
         (ErrorGroupServiceClient, "grpc"),
         (ErrorGroupServiceAsyncClient, "grpc_asyncio"),
+        (ErrorGroupServiceClient, "rest"),
     ],
 )
 def test_error_group_service_client_from_service_account_file(
@@ -170,13 +184,18 @@ def test_error_group_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+        assert client.transport._host == (
+            "clouderrorreporting.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://clouderrorreporting.googleapis.com"
+        )
 
 
 def test_error_group_service_client_get_transport_class():
     transport = ErrorGroupServiceClient.get_transport_class()
     available_transports = [
         transports.ErrorGroupServiceGrpcTransport,
+        transports.ErrorGroupServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -193,6 +212,7 @@ def test_error_group_service_client_get_transport_class():
             transports.ErrorGroupServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ErrorGroupServiceClient, transports.ErrorGroupServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -346,6 +366,18 @@ def test_error_group_service_client_client_options(
             ErrorGroupServiceAsyncClient,
             transports.ErrorGroupServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            ErrorGroupServiceClient,
+            transports.ErrorGroupServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ErrorGroupServiceClient,
+            transports.ErrorGroupServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -547,6 +579,7 @@ def test_error_group_service_client_get_mtls_endpoint_and_cert_source(client_cla
             transports.ErrorGroupServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ErrorGroupServiceClient, transports.ErrorGroupServiceRestTransport, "rest"),
     ],
 )
 def test_error_group_service_client_client_options_scopes(
@@ -586,6 +619,12 @@ def test_error_group_service_client_client_options_scopes(
             transports.ErrorGroupServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            ErrorGroupServiceClient,
+            transports.ErrorGroupServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -1171,6 +1210,552 @@ async def test_update_group_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_group_service.GetGroupRequest,
+        dict,
+    ],
+)
+def test_get_group_rest(request_type):
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group_name": "projects/sample1/groups/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.ErrorGroup(
+            name="name_value",
+            group_id="group_id_value",
+            resolution_status=common.ResolutionStatus.OPEN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = common.ErrorGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.ErrorGroup)
+    assert response.name == "name_value"
+    assert response.group_id == "group_id_value"
+    assert response.resolution_status == common.ResolutionStatus.OPEN
+
+
+def test_get_group_rest_required_fields(
+    request_type=error_group_service.GetGroupRequest,
+):
+    transport_class = transports.ErrorGroupServiceRestTransport
+
+    request_init = {}
+    request_init["group_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["groupName"] = "group_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "groupName" in jsonified_request
+    assert jsonified_request["groupName"] == "group_name_value"
+
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = common.ErrorGroup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = common.ErrorGroup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_group_rest_unset_required_fields():
+    transport = transports.ErrorGroupServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_group._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("groupName",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_group_rest_interceptors(null_interceptor):
+    transport = transports.ErrorGroupServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ErrorGroupServiceRestInterceptor(),
+    )
+    client = ErrorGroupServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ErrorGroupServiceRestInterceptor, "post_get_group"
+    ) as post, mock.patch.object(
+        transports.ErrorGroupServiceRestInterceptor, "pre_get_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = error_group_service.GetGroupRequest.pb(
+            error_group_service.GetGroupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = common.ErrorGroup.to_json(common.ErrorGroup())
+
+        request = error_group_service.GetGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.ErrorGroup()
+
+        client.get_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_group_rest_bad_request(
+    transport: str = "rest", request_type=error_group_service.GetGroupRequest
+):
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group_name": "projects/sample1/groups/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_group(request)
+
+
+def test_get_group_rest_flattened():
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.ErrorGroup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"group_name": "projects/sample1/groups/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            group_name="group_name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = common.ErrorGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{group_name=projects/*/groups/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_group_rest_flattened_error(transport: str = "rest"):
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_group(
+            error_group_service.GetGroupRequest(),
+            group_name="group_name_value",
+        )
+
+
+def test_get_group_rest_error():
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_group_service.UpdateGroupRequest,
+        dict,
+    ],
+)
+def test_update_group_rest(request_type):
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group": {"name": "projects/sample1/groups/sample2"}}
+    request_init["group"] = {
+        "name": "projects/sample1/groups/sample2",
+        "group_id": "group_id_value",
+        "tracking_issues": [{"url": "url_value"}],
+        "resolution_status": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.ErrorGroup(
+            name="name_value",
+            group_id="group_id_value",
+            resolution_status=common.ResolutionStatus.OPEN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = common.ErrorGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.ErrorGroup)
+    assert response.name == "name_value"
+    assert response.group_id == "group_id_value"
+    assert response.resolution_status == common.ResolutionStatus.OPEN
+
+
+def test_update_group_rest_required_fields(
+    request_type=error_group_service.UpdateGroupRequest,
+):
+    transport_class = transports.ErrorGroupServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = common.ErrorGroup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = common.ErrorGroup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_group_rest_unset_required_fields():
+    transport = transports.ErrorGroupServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_group._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("group",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_group_rest_interceptors(null_interceptor):
+    transport = transports.ErrorGroupServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ErrorGroupServiceRestInterceptor(),
+    )
+    client = ErrorGroupServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ErrorGroupServiceRestInterceptor, "post_update_group"
+    ) as post, mock.patch.object(
+        transports.ErrorGroupServiceRestInterceptor, "pre_update_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = error_group_service.UpdateGroupRequest.pb(
+            error_group_service.UpdateGroupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = common.ErrorGroup.to_json(common.ErrorGroup())
+
+        request = error_group_service.UpdateGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.ErrorGroup()
+
+        client.update_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_group_rest_bad_request(
+    transport: str = "rest", request_type=error_group_service.UpdateGroupRequest
+):
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"group": {"name": "projects/sample1/groups/sample2"}}
+    request_init["group"] = {
+        "name": "projects/sample1/groups/sample2",
+        "group_id": "group_id_value",
+        "tracking_issues": [{"url": "url_value"}],
+        "resolution_status": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_group(request)
+
+
+def test_update_group_rest_flattened():
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.ErrorGroup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"group": {"name": "projects/sample1/groups/sample2"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            group=common.ErrorGroup(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = common.ErrorGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{group.name=projects/*/groups/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_group_rest_flattened_error(transport: str = "rest"):
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_group(
+            error_group_service.UpdateGroupRequest(),
+            group=common.ErrorGroup(name="name_value"),
+        )
+
+
+def test_update_group_rest_error():
+    client = ErrorGroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ErrorGroupServiceGrpcTransport(
@@ -1252,6 +1837,7 @@ def test_transport_get_channel():
     [
         transports.ErrorGroupServiceGrpcTransport,
         transports.ErrorGroupServiceGrpcAsyncIOTransport,
+        transports.ErrorGroupServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1266,6 +1852,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1396,6 +1983,7 @@ def test_error_group_service_transport_auth_adc(transport_class):
     [
         transports.ErrorGroupServiceGrpcTransport,
         transports.ErrorGroupServiceGrpcAsyncIOTransport,
+        transports.ErrorGroupServiceRestTransport,
     ],
 )
 def test_error_group_service_transport_auth_gdch_credentials(transport_class):
@@ -1495,11 +2083,23 @@ def test_error_group_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_error_group_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ErrorGroupServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_error_group_service_host_no_port(transport_name):
@@ -1510,7 +2110,11 @@ def test_error_group_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouderrorreporting.googleapis.com:443")
+    assert client.transport._host == (
+        "clouderrorreporting.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouderrorreporting.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1518,6 +2122,7 @@ def test_error_group_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_error_group_service_host_with_port(transport_name):
@@ -1528,7 +2133,36 @@ def test_error_group_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("clouderrorreporting.googleapis.com:8000")
+    assert client.transport._host == (
+        "clouderrorreporting.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://clouderrorreporting.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_error_group_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ErrorGroupServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ErrorGroupServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.get_group._session
+    session2 = client2.transport.get_group._session
+    assert session1 != session2
+    session1 = client1.transport.update_group._session
+    session2 = client2.transport.update_group._session
+    assert session1 != session2
 
 
 def test_error_group_service_grpc_transport_channel():
@@ -1822,6 +2456,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1839,6 +2474,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

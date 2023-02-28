@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ErrorGroupServiceClient",
+          "rpcs": {
+            "GetGroup": {
+              "methods": [
+                "get_group"
+              ]
+            },
+            "UpdateGroup": {
+              "methods": [
+                "update_group"
+              ]
+            }
+          }
         }
       }
     },
@@ -80,6 +95,26 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ErrorStatsServiceClient",
+          "rpcs": {
+            "DeleteEvents": {
+              "methods": [
+                "delete_events"
+              ]
+            },
+            "ListEvents": {
+              "methods": [
+                "list_events"
+              ]
+            },
+            "ListGroupStats": {
+              "methods": [
+                "list_group_stats"
+              ]
+            }
+          }
         }
       }
     },
@@ -97,6 +132,16 @@
         },
         "grpc-async": {
           "libraryClient": "ReportErrorsServiceAsyncClient",
+          "rpcs": {
+            "ReportErrorEvent": {
+              "methods": [
+                "report_error_event"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ReportErrorsServiceClient",
           "rpcs": {
             "ReportErrorEvent": {
               "methods": [
