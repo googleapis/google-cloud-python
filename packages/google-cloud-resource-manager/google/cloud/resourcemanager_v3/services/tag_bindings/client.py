@@ -56,6 +56,7 @@ from google.cloud.resourcemanager_v3.types import tag_bindings
 from .transports.base import DEFAULT_CLIENT_INFO, TagBindingsTransport
 from .transports.grpc import TagBindingsGrpcTransport
 from .transports.grpc_asyncio import TagBindingsGrpcAsyncIOTransport
+from .transports.rest import TagBindingsRestTransport
 
 
 class TagBindingsClientMeta(type):
@@ -69,6 +70,7 @@ class TagBindingsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[TagBindingsTransport]]
     _transport_registry["grpc"] = TagBindingsGrpcTransport
     _transport_registry["grpc_asyncio"] = TagBindingsGrpcAsyncIOTransport
+    _transport_registry["rest"] = TagBindingsRestTransport
 
     def get_transport_class(
         cls,

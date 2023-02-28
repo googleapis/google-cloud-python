@@ -59,6 +59,7 @@ from google.cloud.resourcemanager_v3.types import folders
 from .transports.base import DEFAULT_CLIENT_INFO, FoldersTransport
 from .transports.grpc import FoldersGrpcTransport
 from .transports.grpc_asyncio import FoldersGrpcAsyncIOTransport
+from .transports.rest import FoldersRestTransport
 
 
 class FoldersClientMeta(type):
@@ -72,6 +73,7 @@ class FoldersClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[FoldersTransport]]
     _transport_registry["grpc"] = FoldersGrpcTransport
     _transport_registry["grpc_asyncio"] = FoldersGrpcAsyncIOTransport
+    _transport_registry["rest"] = FoldersRestTransport
 
     def get_transport_class(
         cls,

@@ -59,6 +59,7 @@ from google.cloud.resourcemanager_v3.types import tag_keys
 from .transports.base import DEFAULT_CLIENT_INFO, TagKeysTransport
 from .transports.grpc import TagKeysGrpcTransport
 from .transports.grpc_asyncio import TagKeysGrpcAsyncIOTransport
+from .transports.rest import TagKeysRestTransport
 
 
 class TagKeysClientMeta(type):
@@ -72,6 +73,7 @@ class TagKeysClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[TagKeysTransport]]
     _transport_registry["grpc"] = TagKeysGrpcTransport
     _transport_registry["grpc_asyncio"] = TagKeysGrpcAsyncIOTransport
+    _transport_registry["rest"] = TagKeysRestTransport
 
     def get_transport_class(
         cls,

@@ -59,6 +59,7 @@ from google.cloud.resourcemanager_v3.types import projects
 from .transports.base import DEFAULT_CLIENT_INFO, ProjectsTransport
 from .transports.grpc import ProjectsGrpcTransport
 from .transports.grpc_asyncio import ProjectsGrpcAsyncIOTransport
+from .transports.rest import ProjectsRestTransport
 
 
 class ProjectsClientMeta(type):
@@ -72,6 +73,7 @@ class ProjectsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ProjectsTransport]]
     _transport_registry["grpc"] = ProjectsGrpcTransport
     _transport_registry["grpc_asyncio"] = ProjectsGrpcAsyncIOTransport
+    _transport_registry["rest"] = ProjectsRestTransport
 
     def get_transport_class(
         cls,

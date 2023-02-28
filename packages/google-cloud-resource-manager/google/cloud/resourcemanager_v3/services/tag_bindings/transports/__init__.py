@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import TagBindingsTransport
 from .grpc import TagBindingsGrpcTransport
 from .grpc_asyncio import TagBindingsGrpcAsyncIOTransport
+from .rest import TagBindingsRestInterceptor, TagBindingsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TagBindingsTransport]]
 _transport_registry["grpc"] = TagBindingsGrpcTransport
 _transport_registry["grpc_asyncio"] = TagBindingsGrpcAsyncIOTransport
+_transport_registry["rest"] = TagBindingsRestTransport
 
 __all__ = (
     "TagBindingsTransport",
     "TagBindingsGrpcTransport",
     "TagBindingsGrpcAsyncIOTransport",
+    "TagBindingsRestTransport",
+    "TagBindingsRestInterceptor",
 )
