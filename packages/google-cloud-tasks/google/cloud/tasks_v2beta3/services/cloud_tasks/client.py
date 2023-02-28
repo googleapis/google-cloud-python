@@ -63,6 +63,7 @@ from google.cloud.tasks_v2beta3.types import task as gct_task
 from .transports.base import DEFAULT_CLIENT_INFO, CloudTasksTransport
 from .transports.grpc import CloudTasksGrpcTransport
 from .transports.grpc_asyncio import CloudTasksGrpcAsyncIOTransport
+from .transports.rest import CloudTasksRestTransport
 
 
 class CloudTasksClientMeta(type):
@@ -76,6 +77,7 @@ class CloudTasksClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudTasksTransport]]
     _transport_registry["grpc"] = CloudTasksGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudTasksGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudTasksRestTransport
 
     def get_transport_class(
         cls,
