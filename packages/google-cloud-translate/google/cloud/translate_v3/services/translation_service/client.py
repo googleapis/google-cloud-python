@@ -54,6 +54,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import TranslationServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import TranslationServiceGrpcTransport
 from .transports.grpc_asyncio import TranslationServiceGrpcAsyncIOTransport
+from .transports.rest import TranslationServiceRestTransport
 
 
 class TranslationServiceClientMeta(type):
@@ -69,6 +70,7 @@ class TranslationServiceClientMeta(type):
     )  # type: Dict[str, Type[TranslationServiceTransport]]
     _transport_registry["grpc"] = TranslationServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = TranslationServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = TranslationServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -513,10 +515,10 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target_language_code (str):
-                Required. The BCP-47 language code to
-                use for translation of the input text,
-                set to one of the language codes listed
-                in Language Support.
+                Required. The ISO-639 language code
+                to use for translation of the input
+                text, set to one of the language codes
+                listed in Language Support.
 
                 This corresponds to the ``target_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -524,8 +526,8 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
             contents (MutableSequence[str]):
                 Required. The content of the input in
                 string format. We recommend the total
-                content be less than 30k codepoints. The
-                max length of this field is 1024.
+                content be less than 30,000 codepoints.
+                The max length of this field is 1024.
                 Use BatchTranslateText for larger text.
 
                 This corresponds to the ``contents`` field
@@ -563,8 +565,8 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source_language_code (str):
-                Optional. The BCP-47 language code of
-                the input text if known, for example,
+                Optional. The ISO-639 language code
+                of the input text if known, for example,
                 "en-US" or "sr-Latn". Supported language
                 codes are listed in Language Support. If
                 the source language isn't specified, the
@@ -1245,19 +1247,17 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source_language_code (str):
-                Required. The BCP-47 language code of
-                the input document if known, for
-                example, "en-US" or "sr-Latn". Supported
-                language codes are listed in Language
-                Support
-                (https://cloud.google.com/translate/docs/languages).
+                Required. The ISO-639 language code of the input
+                document if known, for example, "en-US" or "sr-Latn".
+                Supported language codes are listed in `Language
+                Support <https://cloud.google.com/translate/docs/languages>`__.
 
                 This corresponds to the ``source_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target_language_codes (MutableSequence[str]):
-                Required. The BCP-47 language code to
-                use for translation of the input
+                Required. The ISO-639 language code
+                to use for translation of the input
                 document. Specify up to 10 language
                 codes here.
 
@@ -1441,7 +1441,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
 
                 The result type for the operation will be
                 :class:`google.cloud.translate_v3.types.Glossary`
-                Represents a glossary built from user provided data.
+                Represents a glossary built from user-provided data.
 
         """
         # Create or coerce a protobuf request object.
@@ -1669,8 +1669,8 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
 
         Returns:
             google.cloud.translate_v3.types.Glossary:
-                Represents a glossary built from user
-                provided data.
+                Represents a glossary built from
+                user-provided data.
 
         """
         # Create or coerce a protobuf request object.

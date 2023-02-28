@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -73,14 +75,13 @@ class TranslateTextGlossaryConfig(proto.Message):
             Required. The ``glossary`` to be applied for this
             translation.
 
-            The format depends on glossary:
+            The format depends on the glossary:
 
-            -  User provided custom glossary:
+            -  User-provided custom glossary:
                ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
         ignore_case (bool):
-            Optional. Indicates match is
-            case-insensitive. Default value is false if
-            missing.
+            Optional. Indicates match is case insensitive. The default
+            value is ``false`` if missing.
     """
 
     glossary: str = proto.Field(
@@ -100,15 +101,15 @@ class TranslateTextRequest(proto.Message):
         contents (MutableSequence[str]):
             Required. The content of the input in string
             format. We recommend the total content be less
-            than 30k codepoints. The max length of this
-            field is 1024.
-            Use BatchTranslateText for larger text.
+            than 30,000 codepoints. The max length of this
+            field is 1024. Use BatchTranslateText for larger
+            text.
         mime_type (str):
             Optional. The format of the source text, for
             example, "text/html",  "text/plain". If left
             blank, the MIME type defaults to "text/html".
         source_language_code (str):
-            Optional. The BCP-47 language code of the
+            Optional. The ISO-639 language code of the
             input text if known, for example, "en-US" or
             "sr-Latn". Supported language codes are listed
             in Language Support. If the source language
@@ -116,9 +117,9 @@ class TranslateTextRequest(proto.Message):
             the source language automatically and returns
             the source language within the response.
         target_language_code (str):
-            Required. The BCP-47 language code to use for
-            translation of the input text, set to one of the
-            language codes listed in Language Support.
+            Required. The ISO-639 language code to use
+            for translation of the input text, set to one of
+            the language codes listed in Language Support.
         parent (str):
             Required. Project or location to make a call. Must refer to
             a caller's project.
@@ -254,7 +255,7 @@ class Translation(proto.Message):
             then ``model`` here would be normalized to
             ``projects/{project-number}/locations/{location-id}/models/general/nmt``.
         detected_language_code (str):
-            The BCP-47 language code of source text in
+            The ISO-639 language code of source text in
             the initial request, detected automatically, if
             no source language was passed within the initial
             request. If the source language was passed,
@@ -365,8 +366,8 @@ class DetectedLanguage(proto.Message):
 
     Attributes:
         language_code (str):
-            The BCP-47 language code of source content in
-            the request, detected automatically.
+            The ISO-639 language code of the source
+            content in the request, detected automatically.
         confidence (float):
             The confidence of the detection result for
             this language.
@@ -480,17 +481,17 @@ class SupportedLanguage(proto.Message):
         language_code (str):
             Supported language code, generally consisting
             of its ISO 639-1 identifier, for example, 'en',
-            'ja'. In certain cases, BCP-47 codes including
+            'ja'. In certain cases, ISO-639 codes including
             language and region identifiers are returned
-            (for example, 'zh-TW' and 'zh-CN')
+            (for example, 'zh-TW' and 'zh-CN').
         display_name (str):
-            Human readable name of the language localized
+            Human-readable name of the language localized
             in the display language specified in the
             request.
         support_source (bool):
-            Can be used as source language.
+            Can be used as a source language.
         support_target (bool):
-            Can be used as target language.
+            Can be used as a target language.
     """
 
     language_code: str = proto.Field(
@@ -637,7 +638,7 @@ class OutputConfig(proto.Message):
             Since index.csv will be keeping updated during the process,
             please make sure there is no custom retention policy applied
             on the output bucket that may avoid file updating.
-            (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)
+            (https://cloud.google.com/storage/docs/bucket-lock#retention-policy)
 
             The format of translations_file (for target language code
             'trg') is:
@@ -842,7 +843,7 @@ class TranslateDocumentRequest(proto.Message):
             the same location-id), otherwise an INVALID_ARGUMENT (400)
             error is returned.
         source_language_code (str):
-            Optional. The BCP-47 language code of the
+            Optional. The ISO-639 language code of the
             input document if known, for example, "en-US" or
             "sr-Latn". Supported language codes are listed
             in Language Support. If the source language
@@ -852,9 +853,10 @@ class TranslateDocumentRequest(proto.Message):
             language must be specified if the request
             contains a glossary or a custom model.
         target_language_code (str):
-            Required. The BCP-47 language code to use for
-            translation of the input document, set to one of
-            the language codes listed in Language Support.
+            Required. The ISO-639 language code to use
+            for translation of the input document, set to
+            one of the language codes listed in Language
+            Support.
         document_input_config (google.cloud.translate_v3.types.DocumentInputConfig):
             Required. Input configurations.
         document_output_config (google.cloud.translate_v3.types.DocumentOutputConfig):
@@ -895,6 +897,21 @@ class TranslateDocumentRequest(proto.Message):
             See
             https://cloud.google.com/translate/docs/advanced/labels
             for more information.
+        customized_attribution (str):
+            Optional. This flag is to support user customized
+            attribution. If not provided, the default is
+            ``Machine Translated by Google``. Customized attribution
+            should follow rules in
+            https://cloud.google.com/translate/attribution#attribution_and_logos
+        is_translate_native_pdf_only (bool):
+            Optional. If true, the page limit of online
+            native pdf translation is 300 and only native
+            pdf pages will be translated.
+        enable_shadow_removal_native_pdf (bool):
+            Optional. If true, use the text removal to remove the shadow
+            text on background image for native pdf translation. Shadow
+            removal feature can only be enabled when
+            is_translate_native_pdf_only is false
     """
 
     parent: str = proto.Field(
@@ -932,6 +949,18 @@ class TranslateDocumentRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=8,
+    )
+    customized_attribution: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    is_translate_native_pdf_only: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    enable_shadow_removal_native_pdf: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
 
 
@@ -1262,11 +1291,10 @@ class GlossaryInputConfig(proto.Message):
 
             For unidirectional glossaries:
 
-            -  TSV/CSV (``.tsv``/``.csv``): 2 column file, tab- or
+            -  TSV/CSV (``.tsv``/``.csv``): Two column file, tab- or
                comma-separated. The first column is source text. The
-               second column is target text. The file must not contain
-               headers. That is, the first row is data, not column
-               names.
+               second column is target text. No headers in this file.
+               The first row contains data and not column names.
 
             -  TMX (``.tmx``): TMX file with parallel data defining
                source/target term pairs.
@@ -1290,7 +1318,7 @@ class GlossaryInputConfig(proto.Message):
 
 
 class Glossary(proto.Message):
-    r"""Represents a glossary built from user provided data.
+    r"""Represents a glossary built from user-provided data.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1324,6 +1352,8 @@ class Glossary(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the glossary creation was
             finished.
+        display_name (str):
+            Optional. The display name of the glossary.
     """
 
     class LanguageCodePair(proto.Message):
@@ -1331,11 +1361,11 @@ class Glossary(proto.Message):
 
         Attributes:
             source_language_code (str):
-                Required. The BCP-47 language code of the input text, for
+                Required. The ISO-639 language code of the input text, for
                 example, "en-US". Expected to be an exact match for
                 GlossaryTerm.language_code.
             target_language_code (str):
-                Required. The BCP-47 language code for translation output,
+                Required. The ISO-639 language code for translation output,
                 for example, "zh-CN". Expected to be an exact match for
                 GlossaryTerm.language_code.
         """
@@ -1354,7 +1384,7 @@ class Glossary(proto.Message):
 
         Attributes:
             language_codes (MutableSequence[str]):
-                The BCP-47 language code(s) for terms defined in the
+                The ISO-639 language code(s) for terms defined in the
                 glossary. All entries are unique. The list contains at least
                 two entries. Expected to be an exact match for
                 GlossaryTerm.language_code.
@@ -1399,6 +1429,10 @@ class Glossary(proto.Message):
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 
@@ -1717,15 +1751,14 @@ class BatchTranslateDocumentRequest(proto.Message):
             region (have the same location-id) can be used, otherwise an
             INVALID_ARGUMENT (400) error is returned.
         source_language_code (str):
-            Required. The BCP-47 language code of the
-            input document if known, for example, "en-US" or
-            "sr-Latn". Supported language codes are listed
-            in Language Support
-            (https://cloud.google.com/translate/docs/languages).
+            Required. The ISO-639 language code of the input document if
+            known, for example, "en-US" or "sr-Latn". Supported language
+            codes are listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
         target_language_codes (MutableSequence[str]):
-            Required. The BCP-47 language code to use for
-            translation of the input document. Specify up to
-            10 language codes here.
+            Required. The ISO-639 language code to use
+            for translation of the input document. Specify
+            up to 10 language codes here.
         input_configs (MutableSequence[google.cloud.translate_v3.types.BatchDocumentInputConfig]):
             Required. Input configurations.
             The total number of files matched should be <=
@@ -1768,6 +1801,12 @@ class BatchTranslateDocumentRequest(proto.Message):
 
             If nothing specified, output files will be in the same
             format as the original file.
+        customized_attribution (str):
+            Optional. This flag is to support user customized
+            attribution. If not provided, the default is
+            ``Machine Translated by Google``. Customized attribution
+            should follow rules in
+            https://cloud.google.com/translate/attribution#attribution_and_logos
     """
 
     parent: str = proto.Field(
@@ -1807,6 +1846,10 @@ class BatchTranslateDocumentRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=8,
+    )
+    customized_attribution: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
@@ -1892,7 +1935,7 @@ class BatchDocumentOutputConfig(proto.Message):
             Since index.csv will be keeping updated during the process,
             please make sure there is no custom retention policy applied
             on the output bucket that may avoid file updating.
-            (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)
+            (https://cloud.google.com/storage/docs/bucket-lock#retention-policy)
 
             The naming format of translation output files follows (for
             target language code [trg]): ``translation_output``:
