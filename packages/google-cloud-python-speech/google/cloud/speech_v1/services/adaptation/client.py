@@ -54,6 +54,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import AdaptationTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AdaptationGrpcTransport
 from .transports.grpc_asyncio import AdaptationGrpcAsyncIOTransport
+from .transports.rest import AdaptationRestTransport
 
 
 class AdaptationClientMeta(type):
@@ -67,6 +68,7 @@ class AdaptationClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AdaptationTransport]]
     _transport_registry["grpc"] = AdaptationGrpcTransport
     _transport_registry["grpc_asyncio"] = AdaptationGrpcAsyncIOTransport
+    _transport_registry["rest"] = AdaptationRestTransport
 
     def get_transport_class(
         cls,
