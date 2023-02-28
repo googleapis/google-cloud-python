@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.9.0](https://github.com/googleapis/python-resource-manager/compare/v1.8.1...v1.9.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([c146fa0](https://github.com/googleapis/python-resource-manager/commit/c146fa03ee5b062507c951209081b0755ff4f2e2))
+
 ## [1.8.1](https://github.com/googleapis/python-resource-manager/compare/v1.8.0...v1.8.1) (2023-01-20)
 
 
