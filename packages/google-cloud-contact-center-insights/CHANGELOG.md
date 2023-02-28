@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.7.0...v1.8.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#291](https://github.com/googleapis/python-contact-center-insights/issues/291)) ([5698695](https://github.com/googleapis/python-contact-center-insights/commit/569869572a8f3d2d4c88511c156e30e05243ecaf))
+
 ## [1.7.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.6.1...v1.7.0) (2023-02-04)
 
 
