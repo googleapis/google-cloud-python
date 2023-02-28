@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.10.0](https://github.com/googleapis/python-scheduler/compare/v2.9.1...v2.10.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([3de2adb](https://github.com/googleapis/python-scheduler/commit/3de2adbc753902bdfa72085567da4e45a520416e))
+
 ## [2.9.1](https://github.com/googleapis/python-scheduler/compare/v2.9.0...v2.9.1) (2023-01-20)
 
 
