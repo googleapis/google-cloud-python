@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.4.0](https://github.com/googleapis/python-vision/compare/v3.3.1...v3.4.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#520](https://github.com/googleapis/python-vision/issues/520)) ([faf6d6b](https://github.com/googleapis/python-vision/commit/faf6d6b7d564fb18c21438d58a8122d085db8908))
+
 ## [3.3.1](https://github.com/googleapis/python-vision/compare/v3.3.0...v3.3.1) (2023-01-23)
 
 
