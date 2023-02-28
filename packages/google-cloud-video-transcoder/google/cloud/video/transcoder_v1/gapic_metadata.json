@@ -96,6 +96,51 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "TranscoderServiceClient",
+          "rpcs": {
+            "CreateJob": {
+              "methods": [
+                "create_job"
+              ]
+            },
+            "CreateJobTemplate": {
+              "methods": [
+                "create_job_template"
+              ]
+            },
+            "DeleteJob": {
+              "methods": [
+                "delete_job"
+              ]
+            },
+            "DeleteJobTemplate": {
+              "methods": [
+                "delete_job_template"
+              ]
+            },
+            "GetJob": {
+              "methods": [
+                "get_job"
+              ]
+            },
+            "GetJobTemplate": {
+              "methods": [
+                "get_job_template"
+              ]
+            },
+            "ListJobTemplates": {
+              "methods": [
+                "list_job_templates"
+              ]
+            },
+            "ListJobs": {
+              "methods": [
+                "list_jobs"
+              ]
+            }
+          }
         }
       }
     }

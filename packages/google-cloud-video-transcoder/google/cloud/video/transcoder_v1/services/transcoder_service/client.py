@@ -55,6 +55,7 @@ from google.cloud.video.transcoder_v1.types import resources, services
 from .transports.base import DEFAULT_CLIENT_INFO, TranscoderServiceTransport
 from .transports.grpc import TranscoderServiceGrpcTransport
 from .transports.grpc_asyncio import TranscoderServiceGrpcAsyncIOTransport
+from .transports.rest import TranscoderServiceRestTransport
 
 
 class TranscoderServiceClientMeta(type):
@@ -70,6 +71,7 @@ class TranscoderServiceClientMeta(type):
     )  # type: Dict[str, Type[TranscoderServiceTransport]]
     _transport_registry["grpc"] = TranscoderServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = TranscoderServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = TranscoderServiceRestTransport
 
     def get_transport_class(
         cls,

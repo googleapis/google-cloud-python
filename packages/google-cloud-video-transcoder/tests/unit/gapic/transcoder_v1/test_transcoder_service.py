@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,6 +35,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
@@ -40,6 +43,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.video.transcoder_v1.services.transcoder_service import (
     TranscoderServiceAsyncClient,
@@ -100,6 +105,7 @@ def test__get_default_mtls_endpoint():
     [
         (TranscoderServiceClient, "grpc"),
         (TranscoderServiceAsyncClient, "grpc_asyncio"),
+        (TranscoderServiceClient, "rest"),
     ],
 )
 def test_transcoder_service_client_from_service_account_info(
@@ -115,7 +121,11 @@ def test_transcoder_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("transcoder.googleapis.com:443")
+        assert client.transport._host == (
+            "transcoder.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://transcoder.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -123,6 +133,7 @@ def test_transcoder_service_client_from_service_account_info(
     [
         (transports.TranscoderServiceGrpcTransport, "grpc"),
         (transports.TranscoderServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.TranscoderServiceRestTransport, "rest"),
     ],
 )
 def test_transcoder_service_client_service_account_always_use_jwt(
@@ -148,6 +159,7 @@ def test_transcoder_service_client_service_account_always_use_jwt(
     [
         (TranscoderServiceClient, "grpc"),
         (TranscoderServiceAsyncClient, "grpc_asyncio"),
+        (TranscoderServiceClient, "rest"),
     ],
 )
 def test_transcoder_service_client_from_service_account_file(
@@ -170,13 +182,18 @@ def test_transcoder_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("transcoder.googleapis.com:443")
+        assert client.transport._host == (
+            "transcoder.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://transcoder.googleapis.com"
+        )
 
 
 def test_transcoder_service_client_get_transport_class():
     transport = TranscoderServiceClient.get_transport_class()
     available_transports = [
         transports.TranscoderServiceGrpcTransport,
+        transports.TranscoderServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -193,6 +210,7 @@ def test_transcoder_service_client_get_transport_class():
             transports.TranscoderServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (TranscoderServiceClient, transports.TranscoderServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -346,6 +364,18 @@ def test_transcoder_service_client_client_options(
             TranscoderServiceAsyncClient,
             transports.TranscoderServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            TranscoderServiceClient,
+            transports.TranscoderServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            TranscoderServiceClient,
+            transports.TranscoderServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -547,6 +577,7 @@ def test_transcoder_service_client_get_mtls_endpoint_and_cert_source(client_clas
             transports.TranscoderServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (TranscoderServiceClient, transports.TranscoderServiceRestTransport, "rest"),
     ],
 )
 def test_transcoder_service_client_client_options_scopes(
@@ -586,6 +617,12 @@ def test_transcoder_service_client_client_options_scopes(
             transports.TranscoderServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            TranscoderServiceClient,
+            transports.TranscoderServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -3021,6 +3058,3180 @@ async def test_delete_job_template_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.CreateJobRequest,
+        dict,
+    ],
+)
+def test_create_job_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["job"] = {
+        "name": "name_value",
+        "input_uri": "input_uri_value",
+        "output_uri": "output_uri_value",
+        "template_id": "template_id_value",
+        "config": {
+            "inputs": [
+                {
+                    "key": "key_value",
+                    "uri": "uri_value",
+                    "preprocessing_config": {
+                        "color": {
+                            "saturation": 0.10980000000000001,
+                            "contrast": 0.878,
+                            "brightness": 0.1081,
+                        },
+                        "denoise": {"strength": 0.879, "tune": "tune_value"},
+                        "deblock": {"strength": 0.879, "enabled": True},
+                        "audio": {"lufs": 0.442, "high_boost": True, "low_boost": True},
+                        "crop": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "pad": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "deinterlace": {
+                            "yadif": {
+                                "mode": "mode_value",
+                                "disable_spatial_interlacing": True,
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                            "bwdif": {
+                                "mode": "mode_value",
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                        },
+                    },
+                }
+            ],
+            "edit_list": [
+                {
+                    "key": "key_value",
+                    "inputs": ["inputs_value1", "inputs_value2"],
+                    "end_time_offset": {"seconds": 751, "nanos": 543},
+                    "start_time_offset": {},
+                }
+            ],
+            "elementary_streams": [
+                {
+                    "key": "key_value",
+                    "video_stream": {
+                        "h264": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "entropy_coder": "entropy_coder_value",
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "h265": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "vp9": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "profile": "profile_value",
+                        },
+                    },
+                    "audio_stream": {
+                        "codec": "codec_value",
+                        "bitrate_bps": 1167,
+                        "channel_count": 1377,
+                        "channel_layout": [
+                            "channel_layout_value1",
+                            "channel_layout_value2",
+                        ],
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                                "input_channel": 1384,
+                                "output_channel": 1513,
+                                "gain_db": 0.708,
+                            }
+                        ],
+                        "sample_rate_hertz": 1817,
+                    },
+                    "text_stream": {
+                        "codec": "codec_value",
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                            }
+                        ],
+                    },
+                }
+            ],
+            "mux_streams": [
+                {
+                    "key": "key_value",
+                    "file_name": "file_name_value",
+                    "container": "container_value",
+                    "elementary_streams": [
+                        "elementary_streams_value1",
+                        "elementary_streams_value2",
+                    ],
+                    "segment_settings": {
+                        "segment_duration": {},
+                        "individual_segments": True,
+                    },
+                }
+            ],
+            "manifests": [
+                {
+                    "file_name": "file_name_value",
+                    "type_": 1,
+                    "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                }
+            ],
+            "output": {"uri": "uri_value"},
+            "ad_breaks": [{"start_time_offset": {}}],
+            "pubsub_destination": {"topic": "topic_value"},
+            "sprite_sheets": [
+                {
+                    "format_": "format__value",
+                    "file_prefix": "file_prefix_value",
+                    "sprite_width_pixels": 2058,
+                    "sprite_height_pixels": 2147,
+                    "column_count": 1302,
+                    "row_count": 992,
+                    "start_time_offset": {},
+                    "end_time_offset": {},
+                    "total_count": 1196,
+                    "interval": {},
+                    "quality": 777,
+                }
+            ],
+            "overlays": [
+                {
+                    "image": {
+                        "uri": "uri_value",
+                        "resolution": {"x": 0.12, "y": 0.121},
+                        "alpha": 0.518,
+                    },
+                    "animations": [
+                        {
+                            "animation_static": {"xy": {}, "start_time_offset": {}},
+                            "animation_fade": {
+                                "fade_type": 1,
+                                "xy": {},
+                                "start_time_offset": {},
+                                "end_time_offset": {},
+                            },
+                            "animation_end": {"start_time_offset": {}},
+                        }
+                    ],
+                }
+            ],
+        },
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "start_time": {},
+        "end_time": {},
+        "ttl_after_completion_days": 2670,
+        "labels": {},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Job(
+            name="name_value",
+            input_uri="input_uri_value",
+            output_uri="output_uri_value",
+            state=resources.Job.ProcessingState.PENDING,
+            ttl_after_completion_days=2670,
+            template_id="template_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Job)
+    assert response.name == "name_value"
+    assert response.input_uri == "input_uri_value"
+    assert response.output_uri == "output_uri_value"
+    assert response.state == resources.Job.ProcessingState.PENDING
+    assert response.ttl_after_completion_days == 2670
+
+
+def test_create_job_rest_required_fields(request_type=services.CreateJobRequest):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_job_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "job",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_job_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_create_job"
+    ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_create_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = services.CreateJobRequest.pb(services.CreateJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Job.to_json(resources.Job())
+
+        request = services.CreateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Job()
+
+        client.create_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_job_rest_bad_request(
+    transport: str = "rest", request_type=services.CreateJobRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["job"] = {
+        "name": "name_value",
+        "input_uri": "input_uri_value",
+        "output_uri": "output_uri_value",
+        "template_id": "template_id_value",
+        "config": {
+            "inputs": [
+                {
+                    "key": "key_value",
+                    "uri": "uri_value",
+                    "preprocessing_config": {
+                        "color": {
+                            "saturation": 0.10980000000000001,
+                            "contrast": 0.878,
+                            "brightness": 0.1081,
+                        },
+                        "denoise": {"strength": 0.879, "tune": "tune_value"},
+                        "deblock": {"strength": 0.879, "enabled": True},
+                        "audio": {"lufs": 0.442, "high_boost": True, "low_boost": True},
+                        "crop": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "pad": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "deinterlace": {
+                            "yadif": {
+                                "mode": "mode_value",
+                                "disable_spatial_interlacing": True,
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                            "bwdif": {
+                                "mode": "mode_value",
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                        },
+                    },
+                }
+            ],
+            "edit_list": [
+                {
+                    "key": "key_value",
+                    "inputs": ["inputs_value1", "inputs_value2"],
+                    "end_time_offset": {"seconds": 751, "nanos": 543},
+                    "start_time_offset": {},
+                }
+            ],
+            "elementary_streams": [
+                {
+                    "key": "key_value",
+                    "video_stream": {
+                        "h264": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "entropy_coder": "entropy_coder_value",
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "h265": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "vp9": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "profile": "profile_value",
+                        },
+                    },
+                    "audio_stream": {
+                        "codec": "codec_value",
+                        "bitrate_bps": 1167,
+                        "channel_count": 1377,
+                        "channel_layout": [
+                            "channel_layout_value1",
+                            "channel_layout_value2",
+                        ],
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                                "input_channel": 1384,
+                                "output_channel": 1513,
+                                "gain_db": 0.708,
+                            }
+                        ],
+                        "sample_rate_hertz": 1817,
+                    },
+                    "text_stream": {
+                        "codec": "codec_value",
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                            }
+                        ],
+                    },
+                }
+            ],
+            "mux_streams": [
+                {
+                    "key": "key_value",
+                    "file_name": "file_name_value",
+                    "container": "container_value",
+                    "elementary_streams": [
+                        "elementary_streams_value1",
+                        "elementary_streams_value2",
+                    ],
+                    "segment_settings": {
+                        "segment_duration": {},
+                        "individual_segments": True,
+                    },
+                }
+            ],
+            "manifests": [
+                {
+                    "file_name": "file_name_value",
+                    "type_": 1,
+                    "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                }
+            ],
+            "output": {"uri": "uri_value"},
+            "ad_breaks": [{"start_time_offset": {}}],
+            "pubsub_destination": {"topic": "topic_value"},
+            "sprite_sheets": [
+                {
+                    "format_": "format__value",
+                    "file_prefix": "file_prefix_value",
+                    "sprite_width_pixels": 2058,
+                    "sprite_height_pixels": 2147,
+                    "column_count": 1302,
+                    "row_count": 992,
+                    "start_time_offset": {},
+                    "end_time_offset": {},
+                    "total_count": 1196,
+                    "interval": {},
+                    "quality": 777,
+                }
+            ],
+            "overlays": [
+                {
+                    "image": {
+                        "uri": "uri_value",
+                        "resolution": {"x": 0.12, "y": 0.121},
+                        "alpha": 0.518,
+                    },
+                    "animations": [
+                        {
+                            "animation_static": {"xy": {}, "start_time_offset": {}},
+                            "animation_fade": {
+                                "fade_type": 1,
+                                "xy": {},
+                                "start_time_offset": {},
+                                "end_time_offset": {},
+                            },
+                            "animation_end": {"start_time_offset": {}},
+                        }
+                    ],
+                }
+            ],
+        },
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "start_time": {},
+        "end_time": {},
+        "ttl_after_completion_days": 2670,
+        "labels": {},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_job(request)
+
+
+def test_create_job_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            job=resources.Job(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/jobs" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_job_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_job(
+            services.CreateJobRequest(),
+            parent="parent_value",
+            job=resources.Job(name="name_value"),
+        )
+
+
+def test_create_job_rest_error():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.ListJobsRequest,
+        dict,
+    ],
+)
+def test_list_jobs_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = services.ListJobsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = services.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_jobs_rest_required_fields(request_type=services.ListJobsRequest):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_jobs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = services.ListJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = services.ListJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_jobs_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_jobs_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_list_jobs"
+    ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_list_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = services.ListJobsRequest.pb(services.ListJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = services.ListJobsResponse.to_json(
+            services.ListJobsResponse()
+        )
+
+        request = services.ListJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = services.ListJobsResponse()
+
+        client.list_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_jobs_rest_bad_request(
+    transport: str = "rest", request_type=services.ListJobsRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_jobs(request)
+
+
+def test_list_jobs_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = services.ListJobsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = services.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/jobs" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_jobs_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_jobs(
+            services.ListJobsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_jobs_rest_pager(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                    resources.Job(),
+                ],
+                next_page_token="abc",
+            ),
+            services.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(services.ListJobsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Job) for i in results)
+
+        pages = list(client.list_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.GetJobRequest,
+        dict,
+    ],
+)
+def test_get_job_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Job(
+            name="name_value",
+            input_uri="input_uri_value",
+            output_uri="output_uri_value",
+            state=resources.Job.ProcessingState.PENDING,
+            ttl_after_completion_days=2670,
+            template_id="template_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Job)
+    assert response.name == "name_value"
+    assert response.input_uri == "input_uri_value"
+    assert response.output_uri == "output_uri_value"
+    assert response.state == resources.Job.ProcessingState.PENDING
+    assert response.ttl_after_completion_days == 2670
+
+
+def test_get_job_rest_required_fields(request_type=services.GetJobRequest):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_job_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_get_job"
+    ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_get_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = services.GetJobRequest.pb(services.GetJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Job.to_json(resources.Job())
+
+        request = services.GetJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Job()
+
+        client.get_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_rest_bad_request(
+    transport: str = "rest", request_type=services.GetJobRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job(request)
+
+
+def test_get_job_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobs/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_job_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_job(
+            services.GetJobRequest(),
+            name="name_value",
+        )
+
+
+def test_get_job_rest_error():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.DeleteJobRequest,
+        dict,
+    ],
+)
+def test_delete_job_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_job_rest_required_fields(request_type=services.DeleteJobRequest):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("allow_missing",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_job_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("allowMissing",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_job_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_delete_job"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = services.DeleteJobRequest.pb(services.DeleteJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = services.DeleteJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_job_rest_bad_request(
+    transport: str = "rest", request_type=services.DeleteJobRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_job(request)
+
+
+def test_delete_job_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobs/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_job_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_job(
+            services.DeleteJobRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_job_rest_error():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.CreateJobTemplateRequest,
+        dict,
+    ],
+)
+def test_create_job_template_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["job_template"] = {
+        "name": "name_value",
+        "config": {
+            "inputs": [
+                {
+                    "key": "key_value",
+                    "uri": "uri_value",
+                    "preprocessing_config": {
+                        "color": {
+                            "saturation": 0.10980000000000001,
+                            "contrast": 0.878,
+                            "brightness": 0.1081,
+                        },
+                        "denoise": {"strength": 0.879, "tune": "tune_value"},
+                        "deblock": {"strength": 0.879, "enabled": True},
+                        "audio": {"lufs": 0.442, "high_boost": True, "low_boost": True},
+                        "crop": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "pad": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "deinterlace": {
+                            "yadif": {
+                                "mode": "mode_value",
+                                "disable_spatial_interlacing": True,
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                            "bwdif": {
+                                "mode": "mode_value",
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                        },
+                    },
+                }
+            ],
+            "edit_list": [
+                {
+                    "key": "key_value",
+                    "inputs": ["inputs_value1", "inputs_value2"],
+                    "end_time_offset": {"seconds": 751, "nanos": 543},
+                    "start_time_offset": {},
+                }
+            ],
+            "elementary_streams": [
+                {
+                    "key": "key_value",
+                    "video_stream": {
+                        "h264": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "entropy_coder": "entropy_coder_value",
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "h265": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "vp9": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "profile": "profile_value",
+                        },
+                    },
+                    "audio_stream": {
+                        "codec": "codec_value",
+                        "bitrate_bps": 1167,
+                        "channel_count": 1377,
+                        "channel_layout": [
+                            "channel_layout_value1",
+                            "channel_layout_value2",
+                        ],
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                                "input_channel": 1384,
+                                "output_channel": 1513,
+                                "gain_db": 0.708,
+                            }
+                        ],
+                        "sample_rate_hertz": 1817,
+                    },
+                    "text_stream": {
+                        "codec": "codec_value",
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                            }
+                        ],
+                    },
+                }
+            ],
+            "mux_streams": [
+                {
+                    "key": "key_value",
+                    "file_name": "file_name_value",
+                    "container": "container_value",
+                    "elementary_streams": [
+                        "elementary_streams_value1",
+                        "elementary_streams_value2",
+                    ],
+                    "segment_settings": {
+                        "segment_duration": {},
+                        "individual_segments": True,
+                    },
+                }
+            ],
+            "manifests": [
+                {
+                    "file_name": "file_name_value",
+                    "type_": 1,
+                    "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                }
+            ],
+            "output": {"uri": "uri_value"},
+            "ad_breaks": [{"start_time_offset": {}}],
+            "pubsub_destination": {"topic": "topic_value"},
+            "sprite_sheets": [
+                {
+                    "format_": "format__value",
+                    "file_prefix": "file_prefix_value",
+                    "sprite_width_pixels": 2058,
+                    "sprite_height_pixels": 2147,
+                    "column_count": 1302,
+                    "row_count": 992,
+                    "start_time_offset": {},
+                    "end_time_offset": {},
+                    "total_count": 1196,
+                    "interval": {},
+                    "quality": 777,
+                }
+            ],
+            "overlays": [
+                {
+                    "image": {
+                        "uri": "uri_value",
+                        "resolution": {"x": 0.12, "y": 0.121},
+                        "alpha": 0.518,
+                    },
+                    "animations": [
+                        {
+                            "animation_static": {"xy": {}, "start_time_offset": {}},
+                            "animation_fade": {
+                                "fade_type": 1,
+                                "xy": {},
+                                "start_time_offset": {},
+                                "end_time_offset": {},
+                            },
+                            "animation_end": {"start_time_offset": {}},
+                        }
+                    ],
+                }
+            ],
+        },
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.JobTemplate(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.JobTemplate)
+    assert response.name == "name_value"
+
+
+def test_create_job_template_rest_required_fields(
+    request_type=services.CreateJobTemplateRequest,
+):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["job_template_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "jobTemplateId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "jobTemplateId" in jsonified_request
+    assert jsonified_request["jobTemplateId"] == request_init["job_template_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["jobTemplateId"] = "job_template_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_job_template._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("job_template_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "jobTemplateId" in jsonified_request
+    assert jsonified_request["jobTemplateId"] == "job_template_id_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.JobTemplate()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.JobTemplate.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_job_template(request)
+
+            expected_params = [
+                (
+                    "jobTemplateId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_job_template_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_job_template._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("jobTemplateId",))
+        & set(
+            (
+                "parent",
+                "jobTemplate",
+                "jobTemplateId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_job_template_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_create_job_template"
+    ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_create_job_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = services.CreateJobTemplateRequest.pb(
+            services.CreateJobTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.JobTemplate.to_json(
+            resources.JobTemplate()
+        )
+
+        request = services.CreateJobTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.JobTemplate()
+
+        client.create_job_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_job_template_rest_bad_request(
+    transport: str = "rest", request_type=services.CreateJobTemplateRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["job_template"] = {
+        "name": "name_value",
+        "config": {
+            "inputs": [
+                {
+                    "key": "key_value",
+                    "uri": "uri_value",
+                    "preprocessing_config": {
+                        "color": {
+                            "saturation": 0.10980000000000001,
+                            "contrast": 0.878,
+                            "brightness": 0.1081,
+                        },
+                        "denoise": {"strength": 0.879, "tune": "tune_value"},
+                        "deblock": {"strength": 0.879, "enabled": True},
+                        "audio": {"lufs": 0.442, "high_boost": True, "low_boost": True},
+                        "crop": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "pad": {
+                            "top_pixels": 1095,
+                            "bottom_pixels": 1417,
+                            "left_pixels": 1183,
+                            "right_pixels": 1298,
+                        },
+                        "deinterlace": {
+                            "yadif": {
+                                "mode": "mode_value",
+                                "disable_spatial_interlacing": True,
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                            "bwdif": {
+                                "mode": "mode_value",
+                                "parity": "parity_value",
+                                "deinterlace_all_frames": True,
+                            },
+                        },
+                    },
+                }
+            ],
+            "edit_list": [
+                {
+                    "key": "key_value",
+                    "inputs": ["inputs_value1", "inputs_value2"],
+                    "end_time_offset": {"seconds": 751, "nanos": 543},
+                    "start_time_offset": {},
+                }
+            ],
+            "elementary_streams": [
+                {
+                    "key": "key_value",
+                    "video_stream": {
+                        "h264": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "entropy_coder": "entropy_coder_value",
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "h265": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "allow_open_gop": True,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "enable_two_pass": True,
+                            "vbv_size_bits": 1401,
+                            "vbv_fullness_bits": 1834,
+                            "b_pyramid": True,
+                            "b_frame_count": 1364,
+                            "aq_strength": 0.1184,
+                            "profile": "profile_value",
+                            "tune": "tune_value",
+                            "preset": "preset_value",
+                        },
+                        "vp9": {
+                            "width_pixels": 1300,
+                            "height_pixels": 1389,
+                            "frame_rate": 0.1046,
+                            "bitrate_bps": 1167,
+                            "pixel_format": "pixel_format_value",
+                            "rate_control_mode": "rate_control_mode_value",
+                            "crf_level": 946,
+                            "gop_frame_count": 1592,
+                            "gop_duration": {},
+                            "profile": "profile_value",
+                        },
+                    },
+                    "audio_stream": {
+                        "codec": "codec_value",
+                        "bitrate_bps": 1167,
+                        "channel_count": 1377,
+                        "channel_layout": [
+                            "channel_layout_value1",
+                            "channel_layout_value2",
+                        ],
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                                "input_channel": 1384,
+                                "output_channel": 1513,
+                                "gain_db": 0.708,
+                            }
+                        ],
+                        "sample_rate_hertz": 1817,
+                    },
+                    "text_stream": {
+                        "codec": "codec_value",
+                        "mapping_": [
+                            {
+                                "atom_key": "atom_key_value",
+                                "input_key": "input_key_value",
+                                "input_track": 1188,
+                            }
+                        ],
+                    },
+                }
+            ],
+            "mux_streams": [
+                {
+                    "key": "key_value",
+                    "file_name": "file_name_value",
+                    "container": "container_value",
+                    "elementary_streams": [
+                        "elementary_streams_value1",
+                        "elementary_streams_value2",
+                    ],
+                    "segment_settings": {
+                        "segment_duration": {},
+                        "individual_segments": True,
+                    },
+                }
+            ],
+            "manifests": [
+                {
+                    "file_name": "file_name_value",
+                    "type_": 1,
+                    "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                }
+            ],
+            "output": {"uri": "uri_value"},
+            "ad_breaks": [{"start_time_offset": {}}],
+            "pubsub_destination": {"topic": "topic_value"},
+            "sprite_sheets": [
+                {
+                    "format_": "format__value",
+                    "file_prefix": "file_prefix_value",
+                    "sprite_width_pixels": 2058,
+                    "sprite_height_pixels": 2147,
+                    "column_count": 1302,
+                    "row_count": 992,
+                    "start_time_offset": {},
+                    "end_time_offset": {},
+                    "total_count": 1196,
+                    "interval": {},
+                    "quality": 777,
+                }
+            ],
+            "overlays": [
+                {
+                    "image": {
+                        "uri": "uri_value",
+                        "resolution": {"x": 0.12, "y": 0.121},
+                        "alpha": 0.518,
+                    },
+                    "animations": [
+                        {
+                            "animation_static": {"xy": {}, "start_time_offset": {}},
+                            "animation_fade": {
+                                "fade_type": 1,
+                                "xy": {},
+                                "start_time_offset": {},
+                                "end_time_offset": {},
+                            },
+                            "animation_end": {"start_time_offset": {}},
+                        }
+                    ],
+                }
+            ],
+        },
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_job_template(request)
+
+
+def test_create_job_template_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.JobTemplate()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            job_template=resources.JobTemplate(name="name_value"),
+            job_template_id="job_template_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_job_template(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/jobTemplates"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_job_template_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_job_template(
+            services.CreateJobTemplateRequest(),
+            parent="parent_value",
+            job_template=resources.JobTemplate(name="name_value"),
+            job_template_id="job_template_id_value",
+        )
+
+
+def test_create_job_template_rest_error():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.ListJobTemplatesRequest,
+        dict,
+    ],
+)
+def test_list_job_templates_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = services.ListJobTemplatesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = services.ListJobTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_job_templates(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobTemplatesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_job_templates_rest_required_fields(
+    request_type=services.ListJobTemplatesRequest,
+):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_job_templates._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_job_templates._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = services.ListJobTemplatesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = services.ListJobTemplatesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_job_templates(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_job_templates_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_job_templates._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_job_templates_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_list_job_templates"
+    ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_list_job_templates"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = services.ListJobTemplatesRequest.pb(
+            services.ListJobTemplatesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = services.ListJobTemplatesResponse.to_json(
+            services.ListJobTemplatesResponse()
+        )
+
+        request = services.ListJobTemplatesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = services.ListJobTemplatesResponse()
+
+        client.list_job_templates(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_job_templates_rest_bad_request(
+    transport: str = "rest", request_type=services.ListJobTemplatesRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_job_templates(request)
+
+
+def test_list_job_templates_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = services.ListJobTemplatesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = services.ListJobTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_job_templates(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/jobTemplates"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_job_templates_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_job_templates(
+            services.ListJobTemplatesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_job_templates_rest_pager(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            services.ListJobTemplatesResponse(
+                job_templates=[
+                    resources.JobTemplate(),
+                    resources.JobTemplate(),
+                    resources.JobTemplate(),
+                ],
+                next_page_token="abc",
+            ),
+            services.ListJobTemplatesResponse(
+                job_templates=[],
+                next_page_token="def",
+            ),
+            services.ListJobTemplatesResponse(
+                job_templates=[
+                    resources.JobTemplate(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobTemplatesResponse(
+                job_templates=[
+                    resources.JobTemplate(),
+                    resources.JobTemplate(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(services.ListJobTemplatesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_job_templates(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.JobTemplate) for i in results)
+
+        pages = list(client.list_job_templates(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.GetJobTemplateRequest,
+        dict,
+    ],
+)
+def test_get_job_template_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobTemplates/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.JobTemplate(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.JobTemplate)
+    assert response.name == "name_value"
+
+
+def test_get_job_template_rest_required_fields(
+    request_type=services.GetJobTemplateRequest,
+):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_job_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.JobTemplate()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.JobTemplate.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_job_template(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_job_template_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_job_template._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_template_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_get_job_template"
+    ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_get_job_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = services.GetJobTemplateRequest.pb(services.GetJobTemplateRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.JobTemplate.to_json(
+            resources.JobTemplate()
+        )
+
+        request = services.GetJobTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.JobTemplate()
+
+        client.get_job_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_template_rest_bad_request(
+    transport: str = "rest", request_type=services.GetJobTemplateRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobTemplates/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job_template(request)
+
+
+def test_get_job_template_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.JobTemplate()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/jobTemplates/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_job_template(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobTemplates/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_job_template_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_job_template(
+            services.GetJobTemplateRequest(),
+            name="name_value",
+        )
+
+
+def test_get_job_template_rest_error():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.DeleteJobTemplateRequest,
+        dict,
+    ],
+)
+def test_delete_job_template_rest(request_type):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobTemplates/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_job_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_job_template_rest_required_fields(
+    request_type=services.DeleteJobTemplateRequest,
+):
+    transport_class = transports.TranscoderServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_job_template._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("allow_missing",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_job_template(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_job_template_rest_unset_required_fields():
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_job_template._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("allowMissing",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_job_template_rest_interceptors(null_interceptor):
+    transport = transports.TranscoderServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranscoderServiceRestInterceptor(),
+    )
+    client = TranscoderServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "pre_delete_job_template"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = services.DeleteJobTemplateRequest.pb(
+            services.DeleteJobTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = services.DeleteJobTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_job_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_job_template_rest_bad_request(
+    transport: str = "rest", request_type=services.DeleteJobTemplateRequest
+):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobTemplates/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_job_template(request)
+
+
+def test_delete_job_template_rest_flattened():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/jobTemplates/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_job_template(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/jobTemplates/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_job_template_rest_flattened_error(transport: str = "rest"):
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_job_template(
+            services.DeleteJobTemplateRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_job_template_rest_error():
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TranscoderServiceGrpcTransport(
@@ -3102,6 +6313,7 @@ def test_transport_get_channel():
     [
         transports.TranscoderServiceGrpcTransport,
         transports.TranscoderServiceGrpcAsyncIOTransport,
+        transports.TranscoderServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3116,6 +6328,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3252,6 +6465,7 @@ def test_transcoder_service_transport_auth_adc(transport_class):
     [
         transports.TranscoderServiceGrpcTransport,
         transports.TranscoderServiceGrpcAsyncIOTransport,
+        transports.TranscoderServiceRestTransport,
     ],
 )
 def test_transcoder_service_transport_auth_gdch_credentials(transport_class):
@@ -3349,11 +6563,23 @@ def test_transcoder_service_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
+def test_transcoder_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.TranscoderServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_transcoder_service_host_no_port(transport_name):
@@ -3364,7 +6590,11 @@ def test_transcoder_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("transcoder.googleapis.com:443")
+    assert client.transport._host == (
+        "transcoder.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://transcoder.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3372,6 +6602,7 @@ def test_transcoder_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_transcoder_service_host_with_port(transport_name):
@@ -3382,7 +6613,54 @@ def test_transcoder_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("transcoder.googleapis.com:8000")
+    assert client.transport._host == (
+        "transcoder.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://transcoder.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_transcoder_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = TranscoderServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = TranscoderServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_job._session
+    session2 = client2.transport.create_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_jobs._session
+    session2 = client2.transport.list_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.get_job._session
+    session2 = client2.transport.get_job._session
+    assert session1 != session2
+    session1 = client1.transport.delete_job._session
+    session2 = client2.transport.delete_job._session
+    assert session1 != session2
+    session1 = client1.transport.create_job_template._session
+    session2 = client2.transport.create_job_template._session
+    assert session1 != session2
+    session1 = client1.transport.list_job_templates._session
+    session2 = client2.transport.list_job_templates._session
+    assert session1 != session2
+    session1 = client1.transport.get_job_template._session
+    session2 = client2.transport.get_job_template._session
+    assert session1 != session2
+    session1 = client1.transport.delete_job_template._session
+    session2 = client2.transport.delete_job_template._session
+    assert session1 != session2
 
 
 def test_transcoder_service_grpc_transport_channel():
@@ -3707,6 +6985,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3724,6 +7003,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
