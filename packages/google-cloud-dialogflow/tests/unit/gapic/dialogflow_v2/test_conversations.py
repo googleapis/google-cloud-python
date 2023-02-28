@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,12 +35,15 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.dialogflow_v2.services.conversations import (
     ConversationsAsyncClient,
@@ -100,6 +105,7 @@ def test__get_default_mtls_endpoint():
     [
         (ConversationsClient, "grpc"),
         (ConversationsAsyncClient, "grpc_asyncio"),
+        (ConversationsClient, "rest"),
     ],
 )
 def test_conversations_client_from_service_account_info(client_class, transport_name):
@@ -113,7 +119,11 @@ def test_conversations_client_from_service_account_info(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dialogflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dialogflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dialogflow.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -121,6 +131,7 @@ def test_conversations_client_from_service_account_info(client_class, transport_
     [
         (transports.ConversationsGrpcTransport, "grpc"),
         (transports.ConversationsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ConversationsRestTransport, "rest"),
     ],
 )
 def test_conversations_client_service_account_always_use_jwt(
@@ -146,6 +157,7 @@ def test_conversations_client_service_account_always_use_jwt(
     [
         (ConversationsClient, "grpc"),
         (ConversationsAsyncClient, "grpc_asyncio"),
+        (ConversationsClient, "rest"),
     ],
 )
 def test_conversations_client_from_service_account_file(client_class, transport_name):
@@ -166,13 +178,18 @@ def test_conversations_client_from_service_account_file(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dialogflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dialogflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dialogflow.googleapis.com"
+        )
 
 
 def test_conversations_client_get_transport_class():
     transport = ConversationsClient.get_transport_class()
     available_transports = [
         transports.ConversationsGrpcTransport,
+        transports.ConversationsRestTransport,
     ]
     assert transport in available_transports
 
@@ -189,6 +206,7 @@ def test_conversations_client_get_transport_class():
             transports.ConversationsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ConversationsClient, transports.ConversationsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -334,6 +352,8 @@ def test_conversations_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (ConversationsClient, transports.ConversationsRestTransport, "rest", "true"),
+        (ConversationsClient, transports.ConversationsRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -533,6 +553,7 @@ def test_conversations_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.ConversationsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (ConversationsClient, transports.ConversationsRestTransport, "rest"),
     ],
 )
 def test_conversations_client_client_options_scopes(
@@ -573,6 +594,7 @@ def test_conversations_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (ConversationsClient, transports.ConversationsRestTransport, "rest", None),
     ],
 )
 def test_conversations_client_client_options_credentials_file(
@@ -2605,6 +2627,1831 @@ async def test_suggest_conversation_summary_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.CreateConversationRequest,
+        dict,
+    ],
+)
+def test_create_conversation_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["conversation"] = {
+        "name": "name_value",
+        "lifecycle_state": 1,
+        "conversation_profile": "conversation_profile_value",
+        "phone_number": {"phone_number": "phone_number_value"},
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "conversation_stage": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_conversation.Conversation(
+            name="name_value",
+            lifecycle_state=gcd_conversation.Conversation.LifecycleState.IN_PROGRESS,
+            conversation_profile="conversation_profile_value",
+            conversation_stage=gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_conversation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_conversation.Conversation)
+    assert response.name == "name_value"
+    assert (
+        response.lifecycle_state
+        == gcd_conversation.Conversation.LifecycleState.IN_PROGRESS
+    )
+    assert response.conversation_profile == "conversation_profile_value"
+    assert (
+        response.conversation_stage
+        == gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
+    )
+
+
+def test_create_conversation_rest_required_fields(
+    request_type=gcd_conversation.CreateConversationRequest,
+):
+    transport_class = transports.ConversationsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_conversation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_conversation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("conversation_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcd_conversation.Conversation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcd_conversation.Conversation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_conversation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_conversation_rest_unset_required_fields():
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_conversation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("conversationId",))
+        & set(
+            (
+                "parent",
+                "conversation",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_conversation_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_create_conversation"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_create_conversation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_conversation.CreateConversationRequest.pb(
+            gcd_conversation.CreateConversationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcd_conversation.Conversation.to_json(
+            gcd_conversation.Conversation()
+        )
+
+        request = gcd_conversation.CreateConversationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_conversation.Conversation()
+
+        client.create_conversation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_conversation_rest_bad_request(
+    transport: str = "rest", request_type=gcd_conversation.CreateConversationRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["conversation"] = {
+        "name": "name_value",
+        "lifecycle_state": 1,
+        "conversation_profile": "conversation_profile_value",
+        "phone_number": {"phone_number": "phone_number_value"},
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "conversation_stage": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_conversation(request)
+
+
+def test_create_conversation_rest_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_conversation.Conversation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            conversation=gcd_conversation.Conversation(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_conversation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*}/conversations" % client.transport._host, args[1]
+        )
+
+
+def test_create_conversation_rest_flattened_error(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_conversation(
+            gcd_conversation.CreateConversationRequest(),
+            parent="parent_value",
+            conversation=gcd_conversation.Conversation(name="name_value"),
+        )
+
+
+def test_create_conversation_rest_error():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.ListConversationsRequest,
+        dict,
+    ],
+)
+def test_list_conversations_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.ListConversationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.ListConversationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_conversations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListConversationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_conversations_rest_required_fields(
+    request_type=conversation.ListConversationsRequest,
+):
+    transport_class = transports.ConversationsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_conversations._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_conversations._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = conversation.ListConversationsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = conversation.ListConversationsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_conversations(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_conversations_rest_unset_required_fields():
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_conversations._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_conversations_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_list_conversations"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_list_conversations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.ListConversationsRequest.pb(
+            conversation.ListConversationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = conversation.ListConversationsResponse.to_json(
+            conversation.ListConversationsResponse()
+        )
+
+        request = conversation.ListConversationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.ListConversationsResponse()
+
+        client.list_conversations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_conversations_rest_bad_request(
+    transport: str = "rest", request_type=conversation.ListConversationsRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_conversations(request)
+
+
+def test_list_conversations_rest_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.ListConversationsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.ListConversationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_conversations(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*}/conversations" % client.transport._host, args[1]
+        )
+
+
+def test_list_conversations_rest_flattened_error(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_conversations(
+            conversation.ListConversationsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_conversations_rest_pager(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            conversation.ListConversationsResponse(
+                conversations=[
+                    conversation.Conversation(),
+                    conversation.Conversation(),
+                    conversation.Conversation(),
+                ],
+                next_page_token="abc",
+            ),
+            conversation.ListConversationsResponse(
+                conversations=[],
+                next_page_token="def",
+            ),
+            conversation.ListConversationsResponse(
+                conversations=[
+                    conversation.Conversation(),
+                ],
+                next_page_token="ghi",
+            ),
+            conversation.ListConversationsResponse(
+                conversations=[
+                    conversation.Conversation(),
+                    conversation.Conversation(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            conversation.ListConversationsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1"}
+
+        pager = client.list_conversations(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, conversation.Conversation) for i in results)
+
+        pages = list(client.list_conversations(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GetConversationRequest,
+        dict,
+    ],
+)
+def test_get_conversation_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.Conversation(
+            name="name_value",
+            lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
+            conversation_profile="conversation_profile_value",
+            conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_conversation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.Conversation)
+    assert response.name == "name_value"
+    assert (
+        response.lifecycle_state == conversation.Conversation.LifecycleState.IN_PROGRESS
+    )
+    assert response.conversation_profile == "conversation_profile_value"
+    assert (
+        response.conversation_stage
+        == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
+    )
+
+
+def test_get_conversation_rest_required_fields(
+    request_type=conversation.GetConversationRequest,
+):
+    transport_class = transports.ConversationsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_conversation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_conversation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = conversation.Conversation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = conversation.Conversation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_conversation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_conversation_rest_unset_required_fields():
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_conversation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_conversation_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_get_conversation"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_get_conversation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.GetConversationRequest.pb(
+            conversation.GetConversationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = conversation.Conversation.to_json(
+            conversation.Conversation()
+        )
+
+        request = conversation.GetConversationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.Conversation()
+
+        client.get_conversation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_conversation_rest_bad_request(
+    transport: str = "rest", request_type=conversation.GetConversationRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_conversation(request)
+
+
+def test_get_conversation_rest_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.Conversation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/conversations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_conversation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/conversations/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_conversation_rest_flattened_error(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_conversation(
+            conversation.GetConversationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_conversation_rest_error():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.CompleteConversationRequest,
+        dict,
+    ],
+)
+def test_complete_conversation_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.Conversation(
+            name="name_value",
+            lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
+            conversation_profile="conversation_profile_value",
+            conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.complete_conversation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.Conversation)
+    assert response.name == "name_value"
+    assert (
+        response.lifecycle_state == conversation.Conversation.LifecycleState.IN_PROGRESS
+    )
+    assert response.conversation_profile == "conversation_profile_value"
+    assert (
+        response.conversation_stage
+        == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
+    )
+
+
+def test_complete_conversation_rest_required_fields(
+    request_type=conversation.CompleteConversationRequest,
+):
+    transport_class = transports.ConversationsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).complete_conversation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).complete_conversation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = conversation.Conversation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = conversation.Conversation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.complete_conversation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_complete_conversation_rest_unset_required_fields():
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.complete_conversation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_complete_conversation_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_complete_conversation"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_complete_conversation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.CompleteConversationRequest.pb(
+            conversation.CompleteConversationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = conversation.Conversation.to_json(
+            conversation.Conversation()
+        )
+
+        request = conversation.CompleteConversationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.Conversation()
+
+        client.complete_conversation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_complete_conversation_rest_bad_request(
+    transport: str = "rest", request_type=conversation.CompleteConversationRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.complete_conversation(request)
+
+
+def test_complete_conversation_rest_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.Conversation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/conversations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.complete_conversation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/conversations/*}:complete" % client.transport._host,
+            args[1],
+        )
+
+
+def test_complete_conversation_rest_flattened_error(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.complete_conversation(
+            conversation.CompleteConversationRequest(),
+            name="name_value",
+        )
+
+
+def test_complete_conversation_rest_error():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.ListMessagesRequest,
+        dict,
+    ],
+)
+def test_list_messages_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.ListMessagesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.ListMessagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_messages(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMessagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_messages_rest_required_fields(
+    request_type=conversation.ListMessagesRequest,
+):
+    transport_class = transports.ConversationsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_messages._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_messages._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = conversation.ListMessagesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = conversation.ListMessagesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_messages(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_messages_rest_unset_required_fields():
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_messages._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_messages_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_list_messages"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_list_messages"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.ListMessagesRequest.pb(
+            conversation.ListMessagesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = conversation.ListMessagesResponse.to_json(
+            conversation.ListMessagesResponse()
+        )
+
+        request = conversation.ListMessagesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.ListMessagesResponse()
+
+        client.list_messages(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_messages_rest_bad_request(
+    transport: str = "rest", request_type=conversation.ListMessagesRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_messages(request)
+
+
+def test_list_messages_rest_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.ListMessagesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/conversations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.ListMessagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_messages(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/conversations/*}/messages"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_messages_rest_flattened_error(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_messages(
+            conversation.ListMessagesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_messages_rest_pager(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            conversation.ListMessagesResponse(
+                messages=[
+                    participant.Message(),
+                    participant.Message(),
+                    participant.Message(),
+                ],
+                next_page_token="abc",
+            ),
+            conversation.ListMessagesResponse(
+                messages=[],
+                next_page_token="def",
+            ),
+            conversation.ListMessagesResponse(
+                messages=[
+                    participant.Message(),
+                ],
+                next_page_token="ghi",
+            ),
+            conversation.ListMessagesResponse(
+                messages=[
+                    participant.Message(),
+                    participant.Message(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(conversation.ListMessagesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/conversations/sample2"}
+
+        pager = client.list_messages(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, participant.Message) for i in results)
+
+        pages = list(client.list_messages(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.SuggestConversationSummaryRequest,
+        dict,
+    ],
+)
+def test_suggest_conversation_summary_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"conversation": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_conversation.SuggestConversationSummaryResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_conversation.SuggestConversationSummaryResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.suggest_conversation_summary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_conversation.SuggestConversationSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+def test_suggest_conversation_summary_rest_required_fields(
+    request_type=gcd_conversation.SuggestConversationSummaryRequest,
+):
+    transport_class = transports.ConversationsRestTransport
+
+    request_init = {}
+    request_init["conversation"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).suggest_conversation_summary._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["conversation"] = "conversation_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).suggest_conversation_summary._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "conversation" in jsonified_request
+    assert jsonified_request["conversation"] == "conversation_value"
+
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcd_conversation.SuggestConversationSummaryResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcd_conversation.SuggestConversationSummaryResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.suggest_conversation_summary(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_suggest_conversation_summary_rest_unset_required_fields():
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.suggest_conversation_summary._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("conversation",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_suggest_conversation_summary_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_suggest_conversation_summary"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_suggest_conversation_summary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_conversation.SuggestConversationSummaryRequest.pb(
+            gcd_conversation.SuggestConversationSummaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            gcd_conversation.SuggestConversationSummaryResponse.to_json(
+                gcd_conversation.SuggestConversationSummaryResponse()
+            )
+        )
+
+        request = gcd_conversation.SuggestConversationSummaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_conversation.SuggestConversationSummaryResponse()
+
+        client.suggest_conversation_summary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_suggest_conversation_summary_rest_bad_request(
+    transport: str = "rest",
+    request_type=gcd_conversation.SuggestConversationSummaryRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"conversation": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.suggest_conversation_summary(request)
+
+
+def test_suggest_conversation_summary_rest_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_conversation.SuggestConversationSummaryResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"conversation": "projects/sample1/conversations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            conversation="conversation_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_conversation.SuggestConversationSummaryResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.suggest_conversation_summary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{conversation=projects/*/conversations/*}/suggestions:suggestConversationSummary"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_suggest_conversation_summary_rest_flattened_error(transport: str = "rest"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.suggest_conversation_summary(
+            gcd_conversation.SuggestConversationSummaryRequest(),
+            conversation="conversation_value",
+        )
+
+
+def test_suggest_conversation_summary_rest_error():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConversationsGrpcTransport(
@@ -2686,6 +4533,7 @@ def test_transport_get_channel():
     [
         transports.ConversationsGrpcTransport,
         transports.ConversationsGrpcAsyncIOTransport,
+        transports.ConversationsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2700,6 +4548,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2848,6 +4697,7 @@ def test_conversations_transport_auth_adc(transport_class):
     [
         transports.ConversationsGrpcTransport,
         transports.ConversationsGrpcAsyncIOTransport,
+        transports.ConversationsRestTransport,
     ],
 )
 def test_conversations_transport_auth_gdch_credentials(transport_class):
@@ -2948,11 +4798,23 @@ def test_conversations_grpc_transport_client_cert_source_for_mtls(transport_clas
             )
 
 
+def test_conversations_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.ConversationsRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_conversations_host_no_port(transport_name):
@@ -2963,7 +4825,11 @@ def test_conversations_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dialogflow.googleapis.com:443")
+    assert client.transport._host == (
+        "dialogflow.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dialogflow.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2971,6 +4837,7 @@ def test_conversations_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_conversations_host_with_port(transport_name):
@@ -2981,7 +4848,48 @@ def test_conversations_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dialogflow.googleapis.com:8000")
+    assert client.transport._host == (
+        "dialogflow.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dialogflow.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_conversations_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ConversationsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ConversationsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_conversation._session
+    session2 = client2.transport.create_conversation._session
+    assert session1 != session2
+    session1 = client1.transport.list_conversations._session
+    session2 = client2.transport.list_conversations._session
+    assert session1 != session2
+    session1 = client1.transport.get_conversation._session
+    session2 = client2.transport.get_conversation._session
+    assert session1 != session2
+    session1 = client1.transport.complete_conversation._session
+    session2 = client2.transport.complete_conversation._session
+    assert session1 != session2
+    session1 = client1.transport.list_messages._session
+    session2 = client2.transport.list_messages._session
+    assert session1 != session2
+    session1 = client1.transport.suggest_conversation_summary._session
+    session2 = client2.transport.suggest_conversation_summary._session
+    assert session1 != session2
 
 
 def test_conversations_grpc_transport_channel():
@@ -3345,6 +5253,292 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_cancel_operation(transport: str = "grpc"):
@@ -4064,6 +6258,7 @@ async def test_get_location_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4081,6 +6276,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

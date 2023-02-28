@@ -61,6 +61,7 @@ from google.cloud.dialogflow_v2beta1.types import session
 from .transports.base import DEFAULT_CLIENT_INFO, ParticipantsTransport
 from .transports.grpc import ParticipantsGrpcTransport
 from .transports.grpc_asyncio import ParticipantsGrpcAsyncIOTransport
+from .transports.rest import ParticipantsRestTransport
 
 
 class ParticipantsClientMeta(type):
@@ -74,6 +75,7 @@ class ParticipantsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ParticipantsTransport]]
     _transport_registry["grpc"] = ParticipantsGrpcTransport
     _transport_registry["grpc_asyncio"] = ParticipantsGrpcAsyncIOTransport
+    _transport_registry["rest"] = ParticipantsRestTransport
 
     def get_transport_class(
         cls,

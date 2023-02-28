@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -430,6 +432,8 @@ class SuggestConversationSummaryRequest(proto.Message):
             Max number of messages prior to and including
             [latest_message] to use as context when compiling the
             suggestion. By default 500 and at most 1000.
+        assist_query_params (google.cloud.dialogflow_v2.types.AssistQueryParameters):
+            Parameters for a human assist query.
     """
 
     conversation: str = proto.Field(
@@ -443,6 +447,11 @@ class SuggestConversationSummaryRequest(proto.Message):
     context_size: int = proto.Field(
         proto.INT32,
         number=4,
+    )
+    assist_query_params: participant.AssistQueryParameters = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=participant.AssistQueryParameters,
     )
 
 

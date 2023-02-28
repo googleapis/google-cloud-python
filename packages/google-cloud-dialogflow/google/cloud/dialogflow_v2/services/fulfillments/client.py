@@ -56,6 +56,7 @@ from google.cloud.dialogflow_v2.types import fulfillment as gcd_fulfillment
 from .transports.base import DEFAULT_CLIENT_INFO, FulfillmentsTransport
 from .transports.grpc import FulfillmentsGrpcTransport
 from .transports.grpc_asyncio import FulfillmentsGrpcAsyncIOTransport
+from .transports.rest import FulfillmentsRestTransport
 
 
 class FulfillmentsClientMeta(type):
@@ -69,6 +70,7 @@ class FulfillmentsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[FulfillmentsTransport]]
     _transport_registry["grpc"] = FulfillmentsGrpcTransport
     _transport_registry["grpc_asyncio"] = FulfillmentsGrpcAsyncIOTransport
+    _transport_registry["rest"] = FulfillmentsRestTransport
 
     def get_transport_class(
         cls,

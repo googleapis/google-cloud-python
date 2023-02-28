@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import ConversationModelsTransport
 from .grpc import ConversationModelsGrpcTransport
 from .grpc_asyncio import ConversationModelsGrpcAsyncIOTransport
+from .rest import ConversationModelsRestInterceptor, ConversationModelsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[ConversationModelsTransport]]
 _transport_registry["grpc"] = ConversationModelsGrpcTransport
 _transport_registry["grpc_asyncio"] = ConversationModelsGrpcAsyncIOTransport
+_transport_registry["rest"] = ConversationModelsRestTransport
 
 __all__ = (
     "ConversationModelsTransport",
     "ConversationModelsGrpcTransport",
     "ConversationModelsGrpcAsyncIOTransport",
+    "ConversationModelsRestTransport",
+    "ConversationModelsRestInterceptor",
 )

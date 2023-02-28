@@ -62,6 +62,7 @@ from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
 from .transports.base import DEFAULT_CLIENT_INFO, IntentsTransport
 from .transports.grpc import IntentsGrpcTransport
 from .transports.grpc_asyncio import IntentsGrpcAsyncIOTransport
+from .transports.rest import IntentsRestTransport
 
 
 class IntentsClientMeta(type):
@@ -75,6 +76,7 @@ class IntentsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[IntentsTransport]]
     _transport_registry["grpc"] = IntentsGrpcTransport
     _transport_registry["grpc_asyncio"] = IntentsGrpcAsyncIOTransport
+    _transport_registry["rest"] = IntentsRestTransport
 
     def get_transport_class(
         cls,

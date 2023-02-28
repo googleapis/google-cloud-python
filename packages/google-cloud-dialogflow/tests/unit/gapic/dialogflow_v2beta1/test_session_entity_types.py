@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -34,11 +36,14 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.dialogflow_v2beta1.services.session_entity_types import (
     SessionEntityTypesAsyncClient,
@@ -103,6 +108,7 @@ def test__get_default_mtls_endpoint():
     [
         (SessionEntityTypesClient, "grpc"),
         (SessionEntityTypesAsyncClient, "grpc_asyncio"),
+        (SessionEntityTypesClient, "rest"),
     ],
 )
 def test_session_entity_types_client_from_service_account_info(
@@ -118,7 +124,11 @@ def test_session_entity_types_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dialogflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dialogflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dialogflow.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -126,6 +136,7 @@ def test_session_entity_types_client_from_service_account_info(
     [
         (transports.SessionEntityTypesGrpcTransport, "grpc"),
         (transports.SessionEntityTypesGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.SessionEntityTypesRestTransport, "rest"),
     ],
 )
 def test_session_entity_types_client_service_account_always_use_jwt(
@@ -151,6 +162,7 @@ def test_session_entity_types_client_service_account_always_use_jwt(
     [
         (SessionEntityTypesClient, "grpc"),
         (SessionEntityTypesAsyncClient, "grpc_asyncio"),
+        (SessionEntityTypesClient, "rest"),
     ],
 )
 def test_session_entity_types_client_from_service_account_file(
@@ -173,13 +185,18 @@ def test_session_entity_types_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dialogflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dialogflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dialogflow.googleapis.com"
+        )
 
 
 def test_session_entity_types_client_get_transport_class():
     transport = SessionEntityTypesClient.get_transport_class()
     available_transports = [
         transports.SessionEntityTypesGrpcTransport,
+        transports.SessionEntityTypesRestTransport,
     ]
     assert transport in available_transports
 
@@ -196,6 +213,7 @@ def test_session_entity_types_client_get_transport_class():
             transports.SessionEntityTypesGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (SessionEntityTypesClient, transports.SessionEntityTypesRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -349,6 +367,18 @@ def test_session_entity_types_client_client_options(
             SessionEntityTypesAsyncClient,
             transports.SessionEntityTypesGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            SessionEntityTypesClient,
+            transports.SessionEntityTypesRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            SessionEntityTypesClient,
+            transports.SessionEntityTypesRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -550,6 +580,7 @@ def test_session_entity_types_client_get_mtls_endpoint_and_cert_source(client_cl
             transports.SessionEntityTypesGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (SessionEntityTypesClient, transports.SessionEntityTypesRestTransport, "rest"),
     ],
 )
 def test_session_entity_types_client_client_options_scopes(
@@ -589,6 +620,12 @@ def test_session_entity_types_client_client_options_scopes(
             transports.SessionEntityTypesGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            SessionEntityTypesClient,
+            transports.SessionEntityTypesRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2194,6 +2231,1505 @@ async def test_delete_session_entity_type_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_entity_type.ListSessionEntityTypesRequest,
+        dict,
+    ],
+)
+def test_list_session_entity_types_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/sessions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session_entity_type.ListSessionEntityTypesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = session_entity_type.ListSessionEntityTypesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_session_entity_types(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSessionEntityTypesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_session_entity_types_rest_required_fields(
+    request_type=session_entity_type.ListSessionEntityTypesRequest,
+):
+    transport_class = transports.SessionEntityTypesRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_session_entity_types._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_session_entity_types._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = session_entity_type.ListSessionEntityTypesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = session_entity_type.ListSessionEntityTypesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_session_entity_types(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_session_entity_types_rest_unset_required_fields():
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_session_entity_types._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_session_entity_types_rest_interceptors(null_interceptor):
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SessionEntityTypesRestInterceptor(),
+    )
+    client = SessionEntityTypesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "post_list_session_entity_types"
+    ) as post, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "pre_list_session_entity_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = session_entity_type.ListSessionEntityTypesRequest.pb(
+            session_entity_type.ListSessionEntityTypesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            session_entity_type.ListSessionEntityTypesResponse.to_json(
+                session_entity_type.ListSessionEntityTypesResponse()
+            )
+        )
+
+        request = session_entity_type.ListSessionEntityTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = session_entity_type.ListSessionEntityTypesResponse()
+
+        client.list_session_entity_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_session_entity_types_rest_bad_request(
+    transport: str = "rest",
+    request_type=session_entity_type.ListSessionEntityTypesRequest,
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/sessions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_session_entity_types(request)
+
+
+def test_list_session_entity_types_rest_flattened():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session_entity_type.ListSessionEntityTypesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/agent/sessions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = session_entity_type.ListSessionEntityTypesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_session_entity_types(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2beta1/{parent=projects/*/agent/sessions/*}/entityTypes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_session_entity_types_rest_flattened_error(transport: str = "rest"):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_session_entity_types(
+            session_entity_type.ListSessionEntityTypesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_session_entity_types_rest_pager(transport: str = "rest"):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            session_entity_type.ListSessionEntityTypesResponse(
+                session_entity_types=[
+                    session_entity_type.SessionEntityType(),
+                    session_entity_type.SessionEntityType(),
+                    session_entity_type.SessionEntityType(),
+                ],
+                next_page_token="abc",
+            ),
+            session_entity_type.ListSessionEntityTypesResponse(
+                session_entity_types=[],
+                next_page_token="def",
+            ),
+            session_entity_type.ListSessionEntityTypesResponse(
+                session_entity_types=[
+                    session_entity_type.SessionEntityType(),
+                ],
+                next_page_token="ghi",
+            ),
+            session_entity_type.ListSessionEntityTypesResponse(
+                session_entity_types=[
+                    session_entity_type.SessionEntityType(),
+                    session_entity_type.SessionEntityType(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            session_entity_type.ListSessionEntityTypesResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/agent/sessions/sample2"}
+
+        pager = client.list_session_entity_types(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, session_entity_type.SessionEntityType) for i in results
+        )
+
+        pages = list(client.list_session_entity_types(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_entity_type.GetSessionEntityTypeRequest,
+        dict,
+    ],
+)
+def test_get_session_entity_type_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session_entity_type.SessionEntityType(
+            name="name_value",
+            entity_override_mode=session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = session_entity_type.SessionEntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_session_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, session_entity_type.SessionEntityType)
+    assert response.name == "name_value"
+    assert (
+        response.entity_override_mode
+        == session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE
+    )
+
+
+def test_get_session_entity_type_rest_required_fields(
+    request_type=session_entity_type.GetSessionEntityTypeRequest,
+):
+    transport_class = transports.SessionEntityTypesRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_session_entity_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_session_entity_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = session_entity_type.SessionEntityType()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = session_entity_type.SessionEntityType.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_session_entity_type(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_session_entity_type_rest_unset_required_fields():
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_session_entity_type._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_session_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SessionEntityTypesRestInterceptor(),
+    )
+    client = SessionEntityTypesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "post_get_session_entity_type"
+    ) as post, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "pre_get_session_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = session_entity_type.GetSessionEntityTypeRequest.pb(
+            session_entity_type.GetSessionEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = session_entity_type.SessionEntityType.to_json(
+            session_entity_type.SessionEntityType()
+        )
+
+        request = session_entity_type.GetSessionEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = session_entity_type.SessionEntityType()
+
+        client.get_session_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_session_entity_type_rest_bad_request(
+    transport: str = "rest",
+    request_type=session_entity_type.GetSessionEntityTypeRequest,
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_session_entity_type(request)
+
+
+def test_get_session_entity_type_rest_flattened():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session_entity_type.SessionEntityType()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = session_entity_type.SessionEntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_session_entity_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2beta1/{name=projects/*/agent/sessions/*/entityTypes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_session_entity_type_rest_flattened_error(transport: str = "rest"):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_session_entity_type(
+            session_entity_type.GetSessionEntityTypeRequest(),
+            name="name_value",
+        )
+
+
+def test_get_session_entity_type_rest_error():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_session_entity_type.CreateSessionEntityTypeRequest,
+        dict,
+    ],
+)
+def test_create_session_entity_type_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/sessions/sample2"}
+    request_init["session_entity_type"] = {
+        "name": "name_value",
+        "entity_override_mode": 1,
+        "entities": [
+            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session_entity_type.SessionEntityType(
+            name="name_value",
+            entity_override_mode=gcd_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_session_entity_type.SessionEntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_session_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session_entity_type.SessionEntityType)
+    assert response.name == "name_value"
+    assert (
+        response.entity_override_mode
+        == gcd_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE
+    )
+
+
+def test_create_session_entity_type_rest_required_fields(
+    request_type=gcd_session_entity_type.CreateSessionEntityTypeRequest,
+):
+    transport_class = transports.SessionEntityTypesRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_session_entity_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_session_entity_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcd_session_entity_type.SessionEntityType()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcd_session_entity_type.SessionEntityType.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_session_entity_type(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_session_entity_type_rest_unset_required_fields():
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_session_entity_type._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "sessionEntityType",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_session_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SessionEntityTypesRestInterceptor(),
+    )
+    client = SessionEntityTypesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "post_create_session_entity_type"
+    ) as post, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "pre_create_session_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_session_entity_type.CreateSessionEntityTypeRequest.pb(
+            gcd_session_entity_type.CreateSessionEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcd_session_entity_type.SessionEntityType.to_json(
+            gcd_session_entity_type.SessionEntityType()
+        )
+
+        request = gcd_session_entity_type.CreateSessionEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_session_entity_type.SessionEntityType()
+
+        client.create_session_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_session_entity_type_rest_bad_request(
+    transport: str = "rest",
+    request_type=gcd_session_entity_type.CreateSessionEntityTypeRequest,
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/sessions/sample2"}
+    request_init["session_entity_type"] = {
+        "name": "name_value",
+        "entity_override_mode": 1,
+        "entities": [
+            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_session_entity_type(request)
+
+
+def test_create_session_entity_type_rest_flattened():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session_entity_type.SessionEntityType()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/agent/sessions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            session_entity_type=gcd_session_entity_type.SessionEntityType(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_session_entity_type.SessionEntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_session_entity_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2beta1/{parent=projects/*/agent/sessions/*}/entityTypes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_session_entity_type_rest_flattened_error(transport: str = "rest"):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_session_entity_type(
+            gcd_session_entity_type.CreateSessionEntityTypeRequest(),
+            parent="parent_value",
+            session_entity_type=gcd_session_entity_type.SessionEntityType(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_session_entity_type_rest_error():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_session_entity_type.UpdateSessionEntityTypeRequest,
+        dict,
+    ],
+)
+def test_update_session_entity_type_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session_entity_type": {
+            "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+        }
+    }
+    request_init["session_entity_type"] = {
+        "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3",
+        "entity_override_mode": 1,
+        "entities": [
+            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session_entity_type.SessionEntityType(
+            name="name_value",
+            entity_override_mode=gcd_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_session_entity_type.SessionEntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_session_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session_entity_type.SessionEntityType)
+    assert response.name == "name_value"
+    assert (
+        response.entity_override_mode
+        == gcd_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE
+    )
+
+
+def test_update_session_entity_type_rest_required_fields(
+    request_type=gcd_session_entity_type.UpdateSessionEntityTypeRequest,
+):
+    transport_class = transports.SessionEntityTypesRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_session_entity_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_session_entity_type._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcd_session_entity_type.SessionEntityType()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcd_session_entity_type.SessionEntityType.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_session_entity_type(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_session_entity_type_rest_unset_required_fields():
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_session_entity_type._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("sessionEntityType",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_session_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SessionEntityTypesRestInterceptor(),
+    )
+    client = SessionEntityTypesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "post_update_session_entity_type"
+    ) as post, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "pre_update_session_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_session_entity_type.UpdateSessionEntityTypeRequest.pb(
+            gcd_session_entity_type.UpdateSessionEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcd_session_entity_type.SessionEntityType.to_json(
+            gcd_session_entity_type.SessionEntityType()
+        )
+
+        request = gcd_session_entity_type.UpdateSessionEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_session_entity_type.SessionEntityType()
+
+        client.update_session_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_session_entity_type_rest_bad_request(
+    transport: str = "rest",
+    request_type=gcd_session_entity_type.UpdateSessionEntityTypeRequest,
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session_entity_type": {
+            "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+        }
+    }
+    request_init["session_entity_type"] = {
+        "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3",
+        "entity_override_mode": 1,
+        "entities": [
+            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_session_entity_type(request)
+
+
+def test_update_session_entity_type_rest_flattened():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session_entity_type.SessionEntityType()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "session_entity_type": {
+                "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            session_entity_type=gcd_session_entity_type.SessionEntityType(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcd_session_entity_type.SessionEntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_session_entity_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2beta1/{session_entity_type.name=projects/*/agent/sessions/*/entityTypes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_session_entity_type_rest_flattened_error(transport: str = "rest"):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_session_entity_type(
+            gcd_session_entity_type.UpdateSessionEntityTypeRequest(),
+            session_entity_type=gcd_session_entity_type.SessionEntityType(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_session_entity_type_rest_error():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_entity_type.DeleteSessionEntityTypeRequest,
+        dict,
+    ],
+)
+def test_delete_session_entity_type_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_session_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_session_entity_type_rest_required_fields(
+    request_type=session_entity_type.DeleteSessionEntityTypeRequest,
+):
+    transport_class = transports.SessionEntityTypesRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session_entity_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session_entity_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_session_entity_type(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_session_entity_type_rest_unset_required_fields():
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_session_entity_type._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_session_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.SessionEntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SessionEntityTypesRestInterceptor(),
+    )
+    client = SessionEntityTypesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SessionEntityTypesRestInterceptor, "pre_delete_session_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = session_entity_type.DeleteSessionEntityTypeRequest.pb(
+            session_entity_type.DeleteSessionEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = session_entity_type.DeleteSessionEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_session_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_session_entity_type_rest_bad_request(
+    transport: str = "rest",
+    request_type=session_entity_type.DeleteSessionEntityTypeRequest,
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_session_entity_type(request)
+
+
+def test_delete_session_entity_type_rest_flattened():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/agent/sessions/sample2/entityTypes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_session_entity_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2beta1/{name=projects/*/agent/sessions/*/entityTypes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_session_entity_type_rest_flattened_error(transport: str = "rest"):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_session_entity_type(
+            session_entity_type.DeleteSessionEntityTypeRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_session_entity_type_rest_error():
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SessionEntityTypesGrpcTransport(
@@ -2275,6 +3811,7 @@ def test_transport_get_channel():
     [
         transports.SessionEntityTypesGrpcTransport,
         transports.SessionEntityTypesGrpcAsyncIOTransport,
+        transports.SessionEntityTypesRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2289,6 +3826,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2436,6 +3974,7 @@ def test_session_entity_types_transport_auth_adc(transport_class):
     [
         transports.SessionEntityTypesGrpcTransport,
         transports.SessionEntityTypesGrpcAsyncIOTransport,
+        transports.SessionEntityTypesRestTransport,
     ],
 )
 def test_session_entity_types_transport_auth_gdch_credentials(transport_class):
@@ -2538,11 +4077,23 @@ def test_session_entity_types_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_session_entity_types_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.SessionEntityTypesRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_session_entity_types_host_no_port(transport_name):
@@ -2553,7 +4104,11 @@ def test_session_entity_types_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dialogflow.googleapis.com:443")
+    assert client.transport._host == (
+        "dialogflow.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dialogflow.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2561,6 +4116,7 @@ def test_session_entity_types_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_session_entity_types_host_with_port(transport_name):
@@ -2571,7 +4127,45 @@ def test_session_entity_types_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dialogflow.googleapis.com:8000")
+    assert client.transport._host == (
+        "dialogflow.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dialogflow.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_session_entity_types_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = SessionEntityTypesClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = SessionEntityTypesClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_session_entity_types._session
+    session2 = client2.transport.list_session_entity_types._session
+    assert session1 != session2
+    session1 = client1.transport.get_session_entity_type._session
+    session2 = client2.transport.get_session_entity_type._session
+    assert session1 != session2
+    session1 = client1.transport.create_session_entity_type._session
+    session2 = client2.transport.create_session_entity_type._session
+    assert session1 != session2
+    session1 = client1.transport.update_session_entity_type._session
+    session2 = client2.transport.update_session_entity_type._session
+    assert session1 != session2
+    session1 = client1.transport.delete_session_entity_type._session
+    session2 = client2.transport.delete_session_entity_type._session
+    assert session1 != session2
 
 
 def test_session_entity_types_grpc_transport_channel():
@@ -2868,6 +4462,292 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_cancel_operation(transport: str = "grpc"):
@@ -3589,6 +5469,7 @@ async def test_get_location_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3606,6 +5487,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -34,12 +36,15 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.dialogflow_v2beta1.services.environments import (
     EnvironmentsAsyncClient,
@@ -96,6 +101,7 @@ def test__get_default_mtls_endpoint():
     [
         (EnvironmentsClient, "grpc"),
         (EnvironmentsAsyncClient, "grpc_asyncio"),
+        (EnvironmentsClient, "rest"),
     ],
 )
 def test_environments_client_from_service_account_info(client_class, transport_name):
@@ -109,7 +115,11 @@ def test_environments_client_from_service_account_info(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dialogflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dialogflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dialogflow.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -117,6 +127,7 @@ def test_environments_client_from_service_account_info(client_class, transport_n
     [
         (transports.EnvironmentsGrpcTransport, "grpc"),
         (transports.EnvironmentsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.EnvironmentsRestTransport, "rest"),
     ],
 )
 def test_environments_client_service_account_always_use_jwt(
@@ -142,6 +153,7 @@ def test_environments_client_service_account_always_use_jwt(
     [
         (EnvironmentsClient, "grpc"),
         (EnvironmentsAsyncClient, "grpc_asyncio"),
+        (EnvironmentsClient, "rest"),
     ],
 )
 def test_environments_client_from_service_account_file(client_class, transport_name):
@@ -162,13 +174,18 @@ def test_environments_client_from_service_account_file(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dialogflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dialogflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dialogflow.googleapis.com"
+        )
 
 
 def test_environments_client_get_transport_class():
     transport = EnvironmentsClient.get_transport_class()
     available_transports = [
         transports.EnvironmentsGrpcTransport,
+        transports.EnvironmentsRestTransport,
     ]
     assert transport in available_transports
 
@@ -185,6 +202,7 @@ def test_environments_client_get_transport_class():
             transports.EnvironmentsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (EnvironmentsClient, transports.EnvironmentsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -328,6 +346,8 @@ def test_environments_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (EnvironmentsClient, transports.EnvironmentsRestTransport, "rest", "true"),
+        (EnvironmentsClient, transports.EnvironmentsRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -521,6 +541,7 @@ def test_environments_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.EnvironmentsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (EnvironmentsClient, transports.EnvironmentsRestTransport, "rest"),
     ],
 )
 def test_environments_client_client_options_scopes(
@@ -561,6 +582,7 @@ def test_environments_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (EnvironmentsClient, transports.EnvironmentsRestTransport, "rest", None),
     ],
 )
 def test_environments_client_client_options_credentials_file(
@@ -2135,6 +2157,1631 @@ async def test_get_environment_history_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.ListEnvironmentsRequest,
+        dict,
+    ],
+)
+def test_list_environments_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environment.ListEnvironmentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environment.ListEnvironmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_environments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEnvironmentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_environments_rest_required_fields(
+    request_type=environment.ListEnvironmentsRequest,
+):
+    transport_class = transports.EnvironmentsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_environments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_environments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = environment.ListEnvironmentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = environment.ListEnvironmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_environments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_environments_rest_unset_required_fields():
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_environments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_environments_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_list_environments"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_list_environments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environment.ListEnvironmentsRequest.pb(
+            environment.ListEnvironmentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environment.ListEnvironmentsResponse.to_json(
+            environment.ListEnvironmentsResponse()
+        )
+
+        request = environment.ListEnvironmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environment.ListEnvironmentsResponse()
+
+        client.list_environments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_environments_rest_bad_request(
+    transport: str = "rest", request_type=environment.ListEnvironmentsRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_environments(request)
+
+
+def test_list_environments_rest_flattened():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environment.ListEnvironmentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/agent"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environment.ListEnvironmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_environments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2beta1/{parent=projects/*/agent}/environments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_environments_rest_flattened_error(transport: str = "rest"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_environments(
+            environment.ListEnvironmentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_environments_rest_pager(transport: str = "rest"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            environment.ListEnvironmentsResponse(
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
+                next_page_token="abc",
+            ),
+            environment.ListEnvironmentsResponse(
+                environments=[],
+                next_page_token="def",
+            ),
+            environment.ListEnvironmentsResponse(
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
+            ),
+            environment.ListEnvironmentsResponse(
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            environment.ListEnvironmentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/agent"}
+
+        pager = client.list_environments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, environment.Environment) for i in results)
+
+        pages = list(client.list_environments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.GetEnvironmentRequest,
+        dict,
+    ],
+)
+def test_get_environment_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/environments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environment.Environment(
+            name="name_value",
+            description="description_value",
+            agent_version="agent_version_value",
+            state=environment.Environment.State.STOPPED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environment.Environment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_environment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environment.Environment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.agent_version == "agent_version_value"
+    assert response.state == environment.Environment.State.STOPPED
+
+
+def test_get_environment_rest_required_fields(
+    request_type=environment.GetEnvironmentRequest,
+):
+    transport_class = transports.EnvironmentsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_environment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_environment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = environment.Environment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = environment.Environment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_environment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_environment_rest_unset_required_fields():
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_environment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_environment_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_get_environment"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_get_environment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environment.GetEnvironmentRequest.pb(
+            environment.GetEnvironmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environment.Environment.to_json(
+            environment.Environment()
+        )
+
+        request = environment.GetEnvironmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environment.Environment()
+
+        client.get_environment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_environment_rest_bad_request(
+    transport: str = "rest", request_type=environment.GetEnvironmentRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/environments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_environment(request)
+
+
+def test_get_environment_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.CreateEnvironmentRequest,
+        dict,
+    ],
+)
+def test_create_environment_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request_init["environment"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "agent_version": "agent_version_value",
+        "state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "text_to_speech_settings": {
+            "enable_text_to_speech": True,
+            "output_audio_encoding": 1,
+            "sample_rate_hertz": 1817,
+            "synthesize_speech_configs": {},
+        },
+        "fulfillment": {
+            "name": "name_value",
+            "display_name": "display_name_value",
+            "generic_web_service": {
+                "uri": "uri_value",
+                "username": "username_value",
+                "password": "password_value",
+                "request_headers": {},
+                "is_cloud_function": True,
+            },
+            "enabled": True,
+            "features": [{"type_": 1}],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environment.Environment(
+            name="name_value",
+            description="description_value",
+            agent_version="agent_version_value",
+            state=environment.Environment.State.STOPPED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environment.Environment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_environment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environment.Environment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.agent_version == "agent_version_value"
+    assert response.state == environment.Environment.State.STOPPED
+
+
+def test_create_environment_rest_required_fields(
+    request_type=environment.CreateEnvironmentRequest,
+):
+    transport_class = transports.EnvironmentsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["environment_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "environmentId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_environment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "environmentId" in jsonified_request
+    assert jsonified_request["environmentId"] == request_init["environment_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["environmentId"] = "environment_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_environment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("environment_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "environmentId" in jsonified_request
+    assert jsonified_request["environmentId"] == "environment_id_value"
+
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = environment.Environment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = environment.Environment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_environment(request)
+
+            expected_params = [
+                (
+                    "environmentId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_environment_rest_unset_required_fields():
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_environment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("environmentId",))
+        & set(
+            (
+                "parent",
+                "environment",
+                "environmentId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_environment_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_create_environment"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_create_environment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environment.CreateEnvironmentRequest.pb(
+            environment.CreateEnvironmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environment.Environment.to_json(
+            environment.Environment()
+        )
+
+        request = environment.CreateEnvironmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environment.Environment()
+
+        client.create_environment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_environment_rest_bad_request(
+    transport: str = "rest", request_type=environment.CreateEnvironmentRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request_init["environment"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "agent_version": "agent_version_value",
+        "state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "text_to_speech_settings": {
+            "enable_text_to_speech": True,
+            "output_audio_encoding": 1,
+            "sample_rate_hertz": 1817,
+            "synthesize_speech_configs": {},
+        },
+        "fulfillment": {
+            "name": "name_value",
+            "display_name": "display_name_value",
+            "generic_web_service": {
+                "uri": "uri_value",
+                "username": "username_value",
+                "password": "password_value",
+                "request_headers": {},
+                "is_cloud_function": True,
+            },
+            "enabled": True,
+            "features": [{"type_": 1}],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_environment(request)
+
+
+def test_create_environment_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.UpdateEnvironmentRequest,
+        dict,
+    ],
+)
+def test_update_environment_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": {"name": "projects/sample1/agent/environments/sample2"}
+    }
+    request_init["environment"] = {
+        "name": "projects/sample1/agent/environments/sample2",
+        "description": "description_value",
+        "agent_version": "agent_version_value",
+        "state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "text_to_speech_settings": {
+            "enable_text_to_speech": True,
+            "output_audio_encoding": 1,
+            "sample_rate_hertz": 1817,
+            "synthesize_speech_configs": {},
+        },
+        "fulfillment": {
+            "name": "name_value",
+            "display_name": "display_name_value",
+            "generic_web_service": {
+                "uri": "uri_value",
+                "username": "username_value",
+                "password": "password_value",
+                "request_headers": {},
+                "is_cloud_function": True,
+            },
+            "enabled": True,
+            "features": [{"type_": 1}],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environment.Environment(
+            name="name_value",
+            description="description_value",
+            agent_version="agent_version_value",
+            state=environment.Environment.State.STOPPED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environment.Environment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_environment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environment.Environment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.agent_version == "agent_version_value"
+    assert response.state == environment.Environment.State.STOPPED
+
+
+def test_update_environment_rest_required_fields(
+    request_type=environment.UpdateEnvironmentRequest,
+):
+    transport_class = transports.EnvironmentsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_environment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_environment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_load_to_draft_and_discard_changes",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = environment.Environment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = environment.Environment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_environment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_environment_rest_unset_required_fields():
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_environment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowLoadToDraftAndDiscardChanges",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "environment",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_environment_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_update_environment"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_update_environment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environment.UpdateEnvironmentRequest.pb(
+            environment.UpdateEnvironmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environment.Environment.to_json(
+            environment.Environment()
+        )
+
+        request = environment.UpdateEnvironmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environment.Environment()
+
+        client.update_environment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_environment_rest_bad_request(
+    transport: str = "rest", request_type=environment.UpdateEnvironmentRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": {"name": "projects/sample1/agent/environments/sample2"}
+    }
+    request_init["environment"] = {
+        "name": "projects/sample1/agent/environments/sample2",
+        "description": "description_value",
+        "agent_version": "agent_version_value",
+        "state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "text_to_speech_settings": {
+            "enable_text_to_speech": True,
+            "output_audio_encoding": 1,
+            "sample_rate_hertz": 1817,
+            "synthesize_speech_configs": {},
+        },
+        "fulfillment": {
+            "name": "name_value",
+            "display_name": "display_name_value",
+            "generic_web_service": {
+                "uri": "uri_value",
+                "username": "username_value",
+                "password": "password_value",
+                "request_headers": {},
+                "is_cloud_function": True,
+            },
+            "enabled": True,
+            "features": [{"type_": 1}],
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_environment(request)
+
+
+def test_update_environment_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.DeleteEnvironmentRequest,
+        dict,
+    ],
+)
+def test_delete_environment_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/environments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_environment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_environment_rest_required_fields(
+    request_type=environment.DeleteEnvironmentRequest,
+):
+    transport_class = transports.EnvironmentsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_environment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_environment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_environment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_environment_rest_unset_required_fields():
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_environment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_environment_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_delete_environment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = environment.DeleteEnvironmentRequest.pb(
+            environment.DeleteEnvironmentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = environment.DeleteEnvironmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_environment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_environment_rest_bad_request(
+    transport: str = "rest", request_type=environment.DeleteEnvironmentRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/environments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_environment(request)
+
+
+def test_delete_environment_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.GetEnvironmentHistoryRequest,
+        dict,
+    ],
+)
+def test_get_environment_history_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/environments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environment.EnvironmentHistory(
+            parent="parent_value",
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environment.EnvironmentHistory.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_environment_history(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.GetEnvironmentHistoryPager)
+    assert response.parent == "parent_value"
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_get_environment_history_rest_required_fields(
+    request_type=environment.GetEnvironmentHistoryRequest,
+):
+    transport_class = transports.EnvironmentsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_environment_history._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_environment_history._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = environment.EnvironmentHistory()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = environment.EnvironmentHistory.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_environment_history(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_environment_history_rest_unset_required_fields():
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_environment_history._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_environment_history_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_get_environment_history"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_get_environment_history"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environment.GetEnvironmentHistoryRequest.pb(
+            environment.GetEnvironmentHistoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environment.EnvironmentHistory.to_json(
+            environment.EnvironmentHistory()
+        )
+
+        request = environment.GetEnvironmentHistoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environment.EnvironmentHistory()
+
+        client.get_environment_history(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_environment_history_rest_bad_request(
+    transport: str = "rest", request_type=environment.GetEnvironmentHistoryRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/environments/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_environment_history(request)
+
+
+def test_get_environment_history_rest_pager(transport: str = "rest"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            environment.EnvironmentHistory(
+                entries=[
+                    environment.EnvironmentHistory.Entry(),
+                    environment.EnvironmentHistory.Entry(),
+                    environment.EnvironmentHistory.Entry(),
+                ],
+                next_page_token="abc",
+            ),
+            environment.EnvironmentHistory(
+                entries=[],
+                next_page_token="def",
+            ),
+            environment.EnvironmentHistory(
+                entries=[
+                    environment.EnvironmentHistory.Entry(),
+                ],
+                next_page_token="ghi",
+            ),
+            environment.EnvironmentHistory(
+                entries=[
+                    environment.EnvironmentHistory.Entry(),
+                    environment.EnvironmentHistory.Entry(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(environment.EnvironmentHistory.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/agent/environments/sample2"}
+
+        pager = client.get_environment_history(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, environment.EnvironmentHistory.Entry) for i in results)
+
+        pages = list(client.get_environment_history(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EnvironmentsGrpcTransport(
@@ -2216,6 +3863,7 @@ def test_transport_get_channel():
     [
         transports.EnvironmentsGrpcTransport,
         transports.EnvironmentsGrpcAsyncIOTransport,
+        transports.EnvironmentsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2230,6 +3878,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2378,6 +4027,7 @@ def test_environments_transport_auth_adc(transport_class):
     [
         transports.EnvironmentsGrpcTransport,
         transports.EnvironmentsGrpcAsyncIOTransport,
+        transports.EnvironmentsRestTransport,
     ],
 )
 def test_environments_transport_auth_gdch_credentials(transport_class):
@@ -2475,11 +4125,23 @@ def test_environments_grpc_transport_client_cert_source_for_mtls(transport_class
             )
 
 
+def test_environments_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.EnvironmentsRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_environments_host_no_port(transport_name):
@@ -2490,7 +4152,11 @@ def test_environments_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dialogflow.googleapis.com:443")
+    assert client.transport._host == (
+        "dialogflow.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dialogflow.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2498,6 +4164,7 @@ def test_environments_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_environments_host_with_port(transport_name):
@@ -2508,7 +4175,48 @@ def test_environments_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dialogflow.googleapis.com:8000")
+    assert client.transport._host == (
+        "dialogflow.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dialogflow.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_environments_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = EnvironmentsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = EnvironmentsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_environments._session
+    session2 = client2.transport.list_environments._session
+    assert session1 != session2
+    session1 = client1.transport.get_environment._session
+    session2 = client2.transport.get_environment._session
+    assert session1 != session2
+    session1 = client1.transport.create_environment._session
+    session2 = client2.transport.create_environment._session
+    assert session1 != session2
+    session1 = client1.transport.update_environment._session
+    session2 = client2.transport.update_environment._session
+    assert session1 != session2
+    session1 = client1.transport.delete_environment._session
+    session2 = client2.transport.delete_environment._session
+    assert session1 != session2
+    session1 = client1.transport.get_environment_history._session
+    session2 = client2.transport.get_environment_history._session
+    assert session1 != session2
 
 
 def test_environments_grpc_transport_channel():
@@ -2833,6 +4541,292 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_cancel_operation(transport: str = "grpc"):
@@ -3552,6 +5546,7 @@ async def test_get_location_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3569,6 +5564,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

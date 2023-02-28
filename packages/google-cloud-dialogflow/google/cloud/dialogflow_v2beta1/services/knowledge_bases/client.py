@@ -57,6 +57,7 @@ from google.cloud.dialogflow_v2beta1.types import knowledge_base
 from .transports.base import DEFAULT_CLIENT_INFO, KnowledgeBasesTransport
 from .transports.grpc import KnowledgeBasesGrpcTransport
 from .transports.grpc_asyncio import KnowledgeBasesGrpcAsyncIOTransport
+from .transports.rest import KnowledgeBasesRestTransport
 
 
 class KnowledgeBasesClientMeta(type):
@@ -72,6 +73,7 @@ class KnowledgeBasesClientMeta(type):
     )  # type: Dict[str, Type[KnowledgeBasesTransport]]
     _transport_registry["grpc"] = KnowledgeBasesGrpcTransport
     _transport_registry["grpc_asyncio"] = KnowledgeBasesGrpcAsyncIOTransport
+    _transport_registry["rest"] = KnowledgeBasesRestTransport
 
     def get_transport_class(
         cls,

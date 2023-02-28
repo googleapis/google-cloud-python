@@ -62,6 +62,7 @@ from google.cloud.dialogflow_v2.types import conversation_model
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
 from .transports.grpc import ConversationModelsGrpcTransport
 from .transports.grpc_asyncio import ConversationModelsGrpcAsyncIOTransport
+from .transports.rest import ConversationModelsRestTransport
 
 
 class ConversationModelsClientMeta(type):
@@ -77,6 +78,7 @@ class ConversationModelsClientMeta(type):
     )  # type: Dict[str, Type[ConversationModelsTransport]]
     _transport_registry["grpc"] = ConversationModelsGrpcTransport
     _transport_registry["grpc_asyncio"] = ConversationModelsGrpcAsyncIOTransport
+    _transport_registry["rest"] = ConversationModelsRestTransport
 
     def get_transport_class(
         cls,

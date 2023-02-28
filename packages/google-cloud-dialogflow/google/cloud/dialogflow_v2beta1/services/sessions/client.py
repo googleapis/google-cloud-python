@@ -59,6 +59,7 @@ from google.cloud.dialogflow_v2beta1.types import session as gcd_session
 from .transports.base import DEFAULT_CLIENT_INFO, SessionsTransport
 from .transports.grpc import SessionsGrpcTransport
 from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
+from .transports.rest import SessionsRestTransport
 
 
 class SessionsClientMeta(type):
@@ -72,6 +73,7 @@ class SessionsClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionsTransport]]
     _transport_registry["grpc"] = SessionsGrpcTransport
     _transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
+    _transport_registry["rest"] = SessionsRestTransport
 
     def get_transport_class(
         cls,

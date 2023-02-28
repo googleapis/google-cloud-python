@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -100,6 +102,13 @@ class ConversationProfile(proto.Message):
             Name of the CX SecuritySettings reference for the agent.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+        tts_config (google.cloud.dialogflow_v2.types.SynthesizeSpeechConfig):
+            Configuration for Text-to-Speech
+            synthesization.
+            Used by Phone Gateway to specify synthesization
+            options. If agent defines synthesization options
+            as well, agent settings overrides the option
+            here.
     """
 
     name: str = proto.Field(
@@ -166,6 +175,11 @@ class ConversationProfile(proto.Message):
     security_settings: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    tts_config: audio_config.SynthesizeSpeechConfig = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=audio_config.SynthesizeSpeechConfig,
     )
 
 

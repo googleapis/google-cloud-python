@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import EnvironmentsTransport
 from .grpc import EnvironmentsGrpcTransport
 from .grpc_asyncio import EnvironmentsGrpcAsyncIOTransport
+from .rest import EnvironmentsRestInterceptor, EnvironmentsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[EnvironmentsTransport]]
 _transport_registry["grpc"] = EnvironmentsGrpcTransport
 _transport_registry["grpc_asyncio"] = EnvironmentsGrpcAsyncIOTransport
+_transport_registry["rest"] = EnvironmentsRestTransport
 
 __all__ = (
     "EnvironmentsTransport",
     "EnvironmentsGrpcTransport",
     "EnvironmentsGrpcAsyncIOTransport",
+    "EnvironmentsRestTransport",
+    "EnvironmentsRestInterceptor",
 )

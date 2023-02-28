@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import KnowledgeBasesTransport
 from .grpc import KnowledgeBasesGrpcTransport
 from .grpc_asyncio import KnowledgeBasesGrpcAsyncIOTransport
+from .rest import KnowledgeBasesRestInterceptor, KnowledgeBasesRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[KnowledgeBasesTransport]]
 _transport_registry["grpc"] = KnowledgeBasesGrpcTransport
 _transport_registry["grpc_asyncio"] = KnowledgeBasesGrpcAsyncIOTransport
+_transport_registry["rest"] = KnowledgeBasesRestTransport
 
 __all__ = (
     "KnowledgeBasesTransport",
     "KnowledgeBasesGrpcTransport",
     "KnowledgeBasesGrpcAsyncIOTransport",
+    "KnowledgeBasesRestTransport",
+    "KnowledgeBasesRestInterceptor",
 )

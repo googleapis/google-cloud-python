@@ -62,6 +62,7 @@ from google.cloud.dialogflow_v2.types import conversation_dataset
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationDatasetsTransport
 from .transports.grpc import ConversationDatasetsGrpcTransport
 from .transports.grpc_asyncio import ConversationDatasetsGrpcAsyncIOTransport
+from .transports.rest import ConversationDatasetsRestTransport
 
 
 class ConversationDatasetsClientMeta(type):
@@ -77,6 +78,7 @@ class ConversationDatasetsClientMeta(type):
     )  # type: Dict[str, Type[ConversationDatasetsTransport]]
     _transport_registry["grpc"] = ConversationDatasetsGrpcTransport
     _transport_registry["grpc_asyncio"] = ConversationDatasetsGrpcAsyncIOTransport
+    _transport_registry["rest"] = ConversationDatasetsRestTransport
 
     def get_transport_class(
         cls,
