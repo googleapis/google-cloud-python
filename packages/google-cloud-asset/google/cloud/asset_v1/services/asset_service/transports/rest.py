@@ -32,7 +32,7 @@ from google.longrunning import operations_pb2
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -764,7 +764,7 @@ class AssetServiceRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -773,7 +773,7 @@ class AssetServiceRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -919,7 +919,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "analysisQuery": {},
         }
 
@@ -1013,7 +1013,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeIamPolicyLongrunning")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1114,7 +1114,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeMove")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "destinationParent": "",
         }
 
@@ -1206,7 +1206,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeOrgPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "constraint": "",
         }
 
@@ -1300,7 +1300,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeOrgPolicyGovernedAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "constraint": "",
         }
 
@@ -1398,7 +1398,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("AnalyzeOrgPolicyGovernedContainers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "constraint": "",
         }
 
@@ -1498,7 +1498,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("BatchGetAssetsHistory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1586,7 +1586,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("BatchGetEffectiveIamPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "names": "",
         }
 
@@ -1681,7 +1681,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("CreateFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1783,7 +1783,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("CreateSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "savedQueryId": "",
         }
 
@@ -1884,7 +1884,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("DeleteFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1958,7 +1958,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("DeleteSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2034,7 +2034,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("ExportAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2130,7 +2130,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("GetFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2223,7 +2223,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("GetSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2311,7 +2311,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("ListAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2397,7 +2397,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("ListFeeds")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2483,7 +2483,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("ListSavedQueries")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2571,7 +2571,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("QueryAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2666,7 +2666,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("SearchAllIamPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2754,7 +2754,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("SearchAllResources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2842,7 +2842,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("UpdateFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2944,7 +2944,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):
             return hash("UpdateSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
