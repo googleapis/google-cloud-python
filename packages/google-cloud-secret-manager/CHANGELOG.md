@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.16.0](https://github.com/googleapis/python-secret-manager/compare/v2.15.1...v2.16.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([10c02e5](https://github.com/googleapis/python-secret-manager/commit/10c02e52e99182886f2e96b2834aefb41436b28b))
+
 ## [2.15.1](https://github.com/googleapis/python-secret-manager/compare/v2.15.0...v2.15.1) (2023-01-20)
 
 
