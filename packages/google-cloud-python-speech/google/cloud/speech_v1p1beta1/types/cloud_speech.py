@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -223,7 +225,38 @@ class StreamingRecognitionConfig(proto.Message):
             returned as they become available (these interim results are
             indicated with the ``is_final=false`` flag). If ``false`` or
             omitted, only ``is_final=true`` result(s) are returned.
+        enable_voice_activity_events (bool):
+            If ``true``, responses with voice activity speech events
+            will be returned as they are detected.
+        voice_activity_timeout (google.cloud.speech_v1p1beta1.types.StreamingRecognitionConfig.VoiceActivityTimeout):
+            If set, the server will automatically close the stream after
+            the specified duration has elapsed after the last
+            VOICE_ACTIVITY speech event has been sent. The field
+            ``voice_activity_events`` must also be set to true.
     """
+
+    class VoiceActivityTimeout(proto.Message):
+        r"""Events that a timeout can be set on for voice activity.
+
+        Attributes:
+            speech_start_timeout (google.protobuf.duration_pb2.Duration):
+                Duration to timeout the stream if no speech
+                begins.
+            speech_end_timeout (google.protobuf.duration_pb2.Duration):
+                Duration to timeout the stream after speech
+                ends.
+        """
+
+        speech_start_timeout: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+        speech_end_timeout: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
+        )
 
     config: "RecognitionConfig" = proto.Field(
         proto.MESSAGE,
@@ -237,6 +270,15 @@ class StreamingRecognitionConfig(proto.Message):
     interim_results: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    enable_voice_activity_events: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    voice_activity_timeout: VoiceActivityTimeout = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=VoiceActivityTimeout,
     )
 
 
@@ -1200,6 +1242,9 @@ class StreamingRecognizeResponse(proto.Message):
             ``is_final=false`` results (the interim results).
         speech_event_type (google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse.SpeechEventType):
             Indicates the type of speech event.
+        speech_event_time (google.protobuf.duration_pb2.Duration):
+            Time offset between the beginning of the
+            audio and event emission.
         total_billed_time (google.protobuf.duration_pb2.Duration):
             When available, billed audio seconds for the
             stream. Set only if this is the last response in
@@ -1228,9 +1273,30 @@ class StreamingRecognizeResponse(proto.Message):
                 additional results until the server closes the gRPC
                 connection. This event is only sent if ``single_utterance``
                 was set to ``true``, and is not used otherwise.
+            SPEECH_ACTIVITY_BEGIN (2):
+                This event indicates that the server has detected the
+                beginning of human voice activity in the stream. This event
+                can be returned multiple times if speech starts and stops
+                repeatedly throughout the stream. This event is only sent if
+                ``voice_activity_events`` is set to true.
+            SPEECH_ACTIVITY_END (3):
+                This event indicates that the server has detected the end of
+                human voice activity in the stream. This event can be
+                returned multiple times if speech starts and stops
+                repeatedly throughout the stream. This event is only sent if
+                ``voice_activity_events`` is set to true.
+            SPEECH_ACTIVITY_TIMEOUT (4):
+                This event indicates that the user-set
+                timeout for speech activity begin or end has
+                exceeded. Upon receiving this event, the client
+                is expected to send a half close. Further audio
+                will not be processed.
         """
         SPEECH_EVENT_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
+        SPEECH_ACTIVITY_BEGIN = 2
+        SPEECH_ACTIVITY_END = 3
+        SPEECH_ACTIVITY_TIMEOUT = 4
 
     error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
@@ -1246,6 +1312,11 @@ class StreamingRecognizeResponse(proto.Message):
         proto.ENUM,
         number=4,
         enum=SpeechEventType,
+    )
+    speech_event_time: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
     )
     total_billed_time: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,

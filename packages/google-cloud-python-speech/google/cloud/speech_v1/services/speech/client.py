@@ -57,6 +57,7 @@ from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpeechTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SpeechGrpcTransport
 from .transports.grpc_asyncio import SpeechGrpcAsyncIOTransport
+from .transports.rest import SpeechRestTransport
 
 
 class SpeechClientMeta(type):
@@ -70,6 +71,7 @@ class SpeechClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[SpeechTransport]]
     _transport_registry["grpc"] = SpeechGrpcTransport
     _transport_registry["grpc_asyncio"] = SpeechGrpcAsyncIOTransport
+    _transport_registry["rest"] = SpeechRestTransport
 
     def get_transport_class(
         cls,
