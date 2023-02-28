@@ -376,6 +376,191 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "SecurityCenterClient",
+          "rpcs": {
+            "BulkMuteFindings": {
+              "methods": [
+                "bulk_mute_findings"
+              ]
+            },
+            "CreateBigQueryExport": {
+              "methods": [
+                "create_big_query_export"
+              ]
+            },
+            "CreateFinding": {
+              "methods": [
+                "create_finding"
+              ]
+            },
+            "CreateMuteConfig": {
+              "methods": [
+                "create_mute_config"
+              ]
+            },
+            "CreateNotificationConfig": {
+              "methods": [
+                "create_notification_config"
+              ]
+            },
+            "CreateSource": {
+              "methods": [
+                "create_source"
+              ]
+            },
+            "DeleteBigQueryExport": {
+              "methods": [
+                "delete_big_query_export"
+              ]
+            },
+            "DeleteMuteConfig": {
+              "methods": [
+                "delete_mute_config"
+              ]
+            },
+            "DeleteNotificationConfig": {
+              "methods": [
+                "delete_notification_config"
+              ]
+            },
+            "GetBigQueryExport": {
+              "methods": [
+                "get_big_query_export"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetMuteConfig": {
+              "methods": [
+                "get_mute_config"
+              ]
+            },
+            "GetNotificationConfig": {
+              "methods": [
+                "get_notification_config"
+              ]
+            },
+            "GetOrganizationSettings": {
+              "methods": [
+                "get_organization_settings"
+              ]
+            },
+            "GetSource": {
+              "methods": [
+                "get_source"
+              ]
+            },
+            "GroupAssets": {
+              "methods": [
+                "group_assets"
+              ]
+            },
+            "GroupFindings": {
+              "methods": [
+                "group_findings"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
+              ]
+            },
+            "ListBigQueryExports": {
+              "methods": [
+                "list_big_query_exports"
+              ]
+            },
+            "ListFindings": {
+              "methods": [
+                "list_findings"
+              ]
+            },
+            "ListMuteConfigs": {
+              "methods": [
+                "list_mute_configs"
+              ]
+            },
+            "ListNotificationConfigs": {
+              "methods": [
+                "list_notification_configs"
+              ]
+            },
+            "ListSources": {
+              "methods": [
+                "list_sources"
+              ]
+            },
+            "RunAssetDiscovery": {
+              "methods": [
+                "run_asset_discovery"
+              ]
+            },
+            "SetFindingState": {
+              "methods": [
+                "set_finding_state"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "SetMute": {
+              "methods": [
+                "set_mute"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
+            "UpdateBigQueryExport": {
+              "methods": [
+                "update_big_query_export"
+              ]
+            },
+            "UpdateExternalSystem": {
+              "methods": [
+                "update_external_system"
+              ]
+            },
+            "UpdateFinding": {
+              "methods": [
+                "update_finding"
+              ]
+            },
+            "UpdateMuteConfig": {
+              "methods": [
+                "update_mute_config"
+              ]
+            },
+            "UpdateNotificationConfig": {
+              "methods": [
+                "update_notification_config"
+              ]
+            },
+            "UpdateOrganizationSettings": {
+              "methods": [
+                "update_organization_settings"
+              ]
+            },
+            "UpdateSecurityMarks": {
+              "methods": [
+                "update_security_marks"
+              ]
+            },
+            "UpdateSource": {
+              "methods": [
+                "update_source"
+              ]
+            }
+          }
         }
       }
     }
