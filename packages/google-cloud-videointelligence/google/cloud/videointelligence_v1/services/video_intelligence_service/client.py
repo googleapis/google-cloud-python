@@ -54,6 +54,7 @@ from google.cloud.videointelligence_v1.types import video_intelligence
 from .transports.base import DEFAULT_CLIENT_INFO, VideoIntelligenceServiceTransport
 from .transports.grpc import VideoIntelligenceServiceGrpcTransport
 from .transports.grpc_asyncio import VideoIntelligenceServiceGrpcAsyncIOTransport
+from .transports.rest import VideoIntelligenceServiceRestTransport
 
 
 class VideoIntelligenceServiceClientMeta(type):
@@ -69,6 +70,7 @@ class VideoIntelligenceServiceClientMeta(type):
     )  # type: Dict[str, Type[VideoIntelligenceServiceTransport]]
     _transport_registry["grpc"] = VideoIntelligenceServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = VideoIntelligenceServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = VideoIntelligenceServiceRestTransport
 
     def get_transport_class(
         cls,

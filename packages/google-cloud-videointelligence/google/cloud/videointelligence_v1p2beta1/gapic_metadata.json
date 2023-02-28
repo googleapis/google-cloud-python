@@ -26,6 +26,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "VideoIntelligenceServiceClient",
+          "rpcs": {
+            "AnnotateVideo": {
+              "methods": [
+                "annotate_video"
+              ]
+            }
+          }
         }
       }
     }
