@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -359,7 +359,7 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
         def __hash__(self):
             return hash("AnalyzeEntities")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -456,7 +456,7 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
         def __hash__(self):
             return hash("AnalyzeEntitySentiment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -557,7 +557,7 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
         def __hash__(self):
             return hash("AnalyzeSentiment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -658,7 +658,7 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
         def __hash__(self):
             return hash("AnalyzeSyntax")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -753,7 +753,7 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
         def __hash__(self):
             return hash("AnnotateText")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -854,7 +854,7 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
         def __hash__(self):
             return hash("ClassifyText")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
