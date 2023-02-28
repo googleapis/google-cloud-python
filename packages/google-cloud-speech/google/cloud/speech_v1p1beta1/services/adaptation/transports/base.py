@@ -28,6 +28,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
 from google.cloud.speech_v1p1beta1.types import resource
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -279,6 +280,27 @@ class AdaptationTransport(abc.ABC):
     ) -> Callable[
         [cloud_speech_adaptation.DeleteCustomClassRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
