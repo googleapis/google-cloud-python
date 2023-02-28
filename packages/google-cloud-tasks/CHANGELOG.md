@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.13.0](https://github.com/googleapis/python-tasks/compare/v2.12.1...v2.13.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([0fb917e](https://github.com/googleapis/python-tasks/commit/0fb917e507fdcc5f7f532f3d6fcaf6a13cf0620b))
+
 ## [2.12.1](https://github.com/googleapis/python-tasks/compare/v2.12.0...v2.12.1) (2023-01-20)
 
 
