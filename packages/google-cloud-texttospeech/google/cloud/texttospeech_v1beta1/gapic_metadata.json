@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "TextToSpeechClient",
+          "rpcs": {
+            "ListVoices": {
+              "methods": [
+                "list_voices"
+              ]
+            },
+            "SynthesizeSpeech": {
+              "methods": [
+                "synthesize_speech"
+              ]
+            }
+          }
         }
       }
     },
@@ -53,6 +68,16 @@
         },
         "grpc-async": {
           "libraryClient": "TextToSpeechLongAudioSynthesizeAsyncClient",
+          "rpcs": {
+            "SynthesizeLongAudio": {
+              "methods": [
+                "synthesize_long_audio"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "TextToSpeechLongAudioSynthesizeClient",
           "rpcs": {
             "SynthesizeLongAudio": {
               "methods": [

@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -32,11 +34,14 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.texttospeech_v1.services.text_to_speech import (
     TextToSpeechAsyncClient,
@@ -92,6 +97,7 @@ def test__get_default_mtls_endpoint():
     [
         (TextToSpeechClient, "grpc"),
         (TextToSpeechAsyncClient, "grpc_asyncio"),
+        (TextToSpeechClient, "rest"),
     ],
 )
 def test_text_to_speech_client_from_service_account_info(client_class, transport_name):
@@ -105,7 +111,11 @@ def test_text_to_speech_client_from_service_account_info(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("texttospeech.googleapis.com:443")
+        assert client.transport._host == (
+            "texttospeech.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://texttospeech.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -113,6 +123,7 @@ def test_text_to_speech_client_from_service_account_info(client_class, transport
     [
         (transports.TextToSpeechGrpcTransport, "grpc"),
         (transports.TextToSpeechGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.TextToSpeechRestTransport, "rest"),
     ],
 )
 def test_text_to_speech_client_service_account_always_use_jwt(
@@ -138,6 +149,7 @@ def test_text_to_speech_client_service_account_always_use_jwt(
     [
         (TextToSpeechClient, "grpc"),
         (TextToSpeechAsyncClient, "grpc_asyncio"),
+        (TextToSpeechClient, "rest"),
     ],
 )
 def test_text_to_speech_client_from_service_account_file(client_class, transport_name):
@@ -158,13 +170,18 @@ def test_text_to_speech_client_from_service_account_file(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("texttospeech.googleapis.com:443")
+        assert client.transport._host == (
+            "texttospeech.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://texttospeech.googleapis.com"
+        )
 
 
 def test_text_to_speech_client_get_transport_class():
     transport = TextToSpeechClient.get_transport_class()
     available_transports = [
         transports.TextToSpeechGrpcTransport,
+        transports.TextToSpeechRestTransport,
     ]
     assert transport in available_transports
 
@@ -181,6 +198,7 @@ def test_text_to_speech_client_get_transport_class():
             transports.TextToSpeechGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (TextToSpeechClient, transports.TextToSpeechRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -324,6 +342,8 @@ def test_text_to_speech_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (TextToSpeechClient, transports.TextToSpeechRestTransport, "rest", "true"),
+        (TextToSpeechClient, transports.TextToSpeechRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -517,6 +537,7 @@ def test_text_to_speech_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.TextToSpeechGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (TextToSpeechClient, transports.TextToSpeechRestTransport, "rest"),
     ],
 )
 def test_text_to_speech_client_client_options_scopes(
@@ -557,6 +578,7 @@ def test_text_to_speech_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (TextToSpeechClient, transports.TextToSpeechRestTransport, "rest", None),
     ],
 )
 def test_text_to_speech_client_client_options_credentials_file(
@@ -1045,6 +1067,458 @@ async def test_synthesize_speech_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tts.ListVoicesRequest,
+        dict,
+    ],
+)
+def test_list_voices_rest(request_type):
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_tts.ListVoicesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_tts.ListVoicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_voices(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_tts.ListVoicesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_voices_rest_interceptors(null_interceptor):
+    transport = transports.TextToSpeechRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TextToSpeechRestInterceptor(),
+    )
+    client = TextToSpeechClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TextToSpeechRestInterceptor, "post_list_voices"
+    ) as post, mock.patch.object(
+        transports.TextToSpeechRestInterceptor, "pre_list_voices"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_tts.ListVoicesRequest.pb(cloud_tts.ListVoicesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_tts.ListVoicesResponse.to_json(
+            cloud_tts.ListVoicesResponse()
+        )
+
+        request = cloud_tts.ListVoicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_tts.ListVoicesResponse()
+
+        client.list_voices(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_voices_rest_bad_request(
+    transport: str = "rest", request_type=cloud_tts.ListVoicesRequest
+):
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_voices(request)
+
+
+def test_list_voices_rest_flattened():
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_tts.ListVoicesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            language_code="language_code_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_tts.ListVoicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_voices(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/voices" % client.transport._host, args[1])
+
+
+def test_list_voices_rest_flattened_error(transport: str = "rest"):
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_voices(
+            cloud_tts.ListVoicesRequest(),
+            language_code="language_code_value",
+        )
+
+
+def test_list_voices_rest_error():
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tts.SynthesizeSpeechRequest,
+        dict,
+    ],
+)
+def test_synthesize_speech_rest(request_type):
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_tts.SynthesizeSpeechResponse(
+            audio_content=b"audio_content_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_tts.SynthesizeSpeechResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.synthesize_speech(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_tts.SynthesizeSpeechResponse)
+    assert response.audio_content == b"audio_content_blob"
+
+
+def test_synthesize_speech_rest_required_fields(
+    request_type=cloud_tts.SynthesizeSpeechRequest,
+):
+    transport_class = transports.TextToSpeechRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).synthesize_speech._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).synthesize_speech._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_tts.SynthesizeSpeechResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_tts.SynthesizeSpeechResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.synthesize_speech(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_synthesize_speech_rest_unset_required_fields():
+    transport = transports.TextToSpeechRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.synthesize_speech._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "input",
+                "voice",
+                "audioConfig",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_synthesize_speech_rest_interceptors(null_interceptor):
+    transport = transports.TextToSpeechRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TextToSpeechRestInterceptor(),
+    )
+    client = TextToSpeechClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TextToSpeechRestInterceptor, "post_synthesize_speech"
+    ) as post, mock.patch.object(
+        transports.TextToSpeechRestInterceptor, "pre_synthesize_speech"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_tts.SynthesizeSpeechRequest.pb(
+            cloud_tts.SynthesizeSpeechRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_tts.SynthesizeSpeechResponse.to_json(
+            cloud_tts.SynthesizeSpeechResponse()
+        )
+
+        request = cloud_tts.SynthesizeSpeechRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_tts.SynthesizeSpeechResponse()
+
+        client.synthesize_speech(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_synthesize_speech_rest_bad_request(
+    transport: str = "rest", request_type=cloud_tts.SynthesizeSpeechRequest
+):
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.synthesize_speech(request)
+
+
+def test_synthesize_speech_rest_flattened():
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_tts.SynthesizeSpeechResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            input=cloud_tts.SynthesisInput(text="text_value"),
+            voice=cloud_tts.VoiceSelectionParams(language_code="language_code_value"),
+            audio_config=cloud_tts.AudioConfig(
+                audio_encoding=cloud_tts.AudioEncoding.LINEAR16
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_tts.SynthesizeSpeechResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.synthesize_speech(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/text:synthesize" % client.transport._host, args[1]
+        )
+
+
+def test_synthesize_speech_rest_flattened_error(transport: str = "rest"):
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.synthesize_speech(
+            cloud_tts.SynthesizeSpeechRequest(),
+            input=cloud_tts.SynthesisInput(text="text_value"),
+            voice=cloud_tts.VoiceSelectionParams(language_code="language_code_value"),
+            audio_config=cloud_tts.AudioConfig(
+                audio_encoding=cloud_tts.AudioEncoding.LINEAR16
+            ),
+        )
+
+
+def test_synthesize_speech_rest_error():
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TextToSpeechGrpcTransport(
@@ -1126,6 +1600,7 @@ def test_transport_get_channel():
     [
         transports.TextToSpeechGrpcTransport,
         transports.TextToSpeechGrpcAsyncIOTransport,
+        transports.TextToSpeechRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1140,6 +1615,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1270,6 +1746,7 @@ def test_text_to_speech_transport_auth_adc(transport_class):
     [
         transports.TextToSpeechGrpcTransport,
         transports.TextToSpeechGrpcAsyncIOTransport,
+        transports.TextToSpeechRestTransport,
     ],
 )
 def test_text_to_speech_transport_auth_gdch_credentials(transport_class):
@@ -1364,11 +1841,23 @@ def test_text_to_speech_grpc_transport_client_cert_source_for_mtls(transport_cla
             )
 
 
+def test_text_to_speech_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.TextToSpeechRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_text_to_speech_host_no_port(transport_name):
@@ -1379,7 +1868,11 @@ def test_text_to_speech_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("texttospeech.googleapis.com:443")
+    assert client.transport._host == (
+        "texttospeech.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://texttospeech.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1387,6 +1880,7 @@ def test_text_to_speech_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_text_to_speech_host_with_port(transport_name):
@@ -1397,7 +1891,36 @@ def test_text_to_speech_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("texttospeech.googleapis.com:8000")
+    assert client.transport._host == (
+        "texttospeech.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://texttospeech.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_text_to_speech_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = TextToSpeechClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = TextToSpeechClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_voices._session
+    session2 = client2.transport.list_voices._session
+    assert session1 != session2
+    session1 = client1.transport.synthesize_speech._session
+    session2 = client2.transport.synthesize_speech._session
+    assert session1 != session2
 
 
 def test_text_to_speech_grpc_transport_channel():
@@ -1686,6 +2209,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1703,6 +2227,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

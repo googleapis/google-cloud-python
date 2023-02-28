@@ -53,6 +53,7 @@ from google.cloud.texttospeech_v1.types import cloud_tts
 from .transports.base import DEFAULT_CLIENT_INFO, TextToSpeechTransport
 from .transports.grpc import TextToSpeechGrpcTransport
 from .transports.grpc_asyncio import TextToSpeechGrpcAsyncIOTransport
+from .transports.rest import TextToSpeechRestTransport
 
 
 class TextToSpeechClientMeta(type):
@@ -66,6 +67,7 @@ class TextToSpeechClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[TextToSpeechTransport]]
     _transport_registry["grpc"] = TextToSpeechGrpcTransport
     _transport_registry["grpc_asyncio"] = TextToSpeechGrpcAsyncIOTransport
+    _transport_registry["rest"] = TextToSpeechRestTransport
 
     def get_transport_class(
         cls,
@@ -359,6 +361,9 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             transport (Union[str, TextToSpeechTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

@@ -58,6 +58,7 @@ from .transports.base import (
 )
 from .transports.grpc import TextToSpeechLongAudioSynthesizeGrpcTransport
 from .transports.grpc_asyncio import TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
+from .transports.rest import TextToSpeechLongAudioSynthesizeRestTransport
 
 
 class TextToSpeechLongAudioSynthesizeClientMeta(type):
@@ -75,6 +76,7 @@ class TextToSpeechLongAudioSynthesizeClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
+    _transport_registry["rest"] = TextToSpeechLongAudioSynthesizeRestTransport
 
     def get_transport_class(
         cls,
@@ -372,6 +374,9 @@ class TextToSpeechLongAudioSynthesizeClient(
             transport (Union[str, TextToSpeechLongAudioSynthesizeTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
