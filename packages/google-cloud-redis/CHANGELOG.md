@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.12.0](https://github.com/googleapis/python-redis/compare/v2.11.1...v2.12.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#251](https://github.com/googleapis/python-redis/issues/251)) ([6d3c767](https://github.com/googleapis/python-redis/commit/6d3c767114b59173b2966aaaa9a4570efda99c7c))
+
 ## [2.11.1](https://github.com/googleapis/python-redis/compare/v2.11.0...v2.11.1) (2023-01-20)
 
 
