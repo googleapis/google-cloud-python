@@ -46,6 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -55,6 +56,7 @@ from google.cloud.dlp_v2.types import dlp
 from .transports.base import DEFAULT_CLIENT_INFO, DlpServiceTransport
 from .transports.grpc import DlpServiceGrpcTransport
 from .transports.grpc_asyncio import DlpServiceGrpcAsyncIOTransport
+from .transports.rest import DlpServiceRestTransport
 
 
 class DlpServiceClientMeta(type):
@@ -68,6 +70,7 @@ class DlpServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[DlpServiceTransport]]
     _transport_registry["grpc"] = DlpServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DlpServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DlpServiceRestTransport
 
     def get_transport_class(
         cls,
