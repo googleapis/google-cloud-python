@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.19.0](https://github.com/googleapis/python-securitycenter/compare/v1.18.2...v1.19.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#439](https://github.com/googleapis/python-securitycenter/issues/439)) ([1e85d04](https://github.com/googleapis/python-securitycenter/commit/1e85d04f789a0e623f410952bae1185f0d0e87ba))
+
 ## [1.18.2](https://github.com/googleapis/python-securitycenter/compare/v1.18.1...v1.18.2) (2023-01-20)
 
 
