@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.18.0](https://github.com/googleapis/python-speech/compare/v2.17.3...v2.18.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([a20d0f1](https://github.com/googleapis/python-speech/commit/a20d0f15a81e0ad9190f48cb4bc21b3580b7e1f0))
+* Voice Activity Detection - adding speech event time and speech event type ([a20d0f1](https://github.com/googleapis/python-speech/commit/a20d0f15a81e0ad9190f48cb4bc21b3580b7e1f0))
+
 ## [2.17.3](https://github.com/googleapis/python-speech/compare/v2.17.2...v2.17.3) (2023-02-02)
 
 
