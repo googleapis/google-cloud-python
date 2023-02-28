@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.11.0](https://github.com/googleapis/python-videointelligence/compare/v2.10.1...v2.11.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([c1e2400](https://github.com/googleapis/python-videointelligence/commit/c1e2400e2f22d80fc256aba41310e2ec524cdf07))
+
 ## [2.10.1](https://github.com/googleapis/python-videointelligence/compare/v2.10.0...v2.10.1) (2023-01-23)
 
 
