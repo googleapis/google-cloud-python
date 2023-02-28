@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -777,7 +777,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("CreateCdnKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "cdnKeyId": "",
         }
 
@@ -880,7 +880,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("CreateLiveSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -979,7 +979,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("CreateSlate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "slateId": "",
         }
 
@@ -1078,7 +1078,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("CreateVodSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1177,7 +1177,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("DeleteCdnKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1253,7 +1253,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("DeleteSlate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1329,7 +1329,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("GetCdnKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1421,7 +1421,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("GetLiveAdTagDetail")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1513,7 +1513,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("GetLiveSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1603,7 +1603,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("GetSlate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1691,7 +1691,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("GetVodAdTagDetail")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1783,7 +1783,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("GetVodSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1871,7 +1871,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("GetVodStitchDetail")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1963,7 +1963,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("ListCdnKeys")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2053,7 +2053,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("ListLiveAdTagDetails")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2145,7 +2145,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("ListSlates")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2235,7 +2235,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("ListVodAdTagDetails")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2327,7 +2327,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("ListVodStitchDetails")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2419,7 +2419,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("UpdateCdnKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -2522,7 +2522,7 @@ class VideoStitcherServiceRestTransport(VideoStitcherServiceTransport):
         def __hash__(self):
             return hash("UpdateSlate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
