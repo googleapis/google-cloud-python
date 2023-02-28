@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-video-transcoder/compare/v1.6.1...v1.7.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#283](https://github.com/googleapis/python-video-transcoder/issues/283)) ([3c36813](https://github.com/googleapis/python-video-transcoder/commit/3c368135a0874f76909e0f9b92f12fea32617acd))
+
 ## [1.6.1](https://github.com/googleapis/python-video-transcoder/compare/v1.6.0...v1.6.1) (2023-01-23)
 
 
