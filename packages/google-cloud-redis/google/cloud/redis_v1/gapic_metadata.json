@@ -126,6 +126,66 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "CloudRedisClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "ExportInstance": {
+              "methods": [
+                "export_instance"
+              ]
+            },
+            "FailoverInstance": {
+              "methods": [
+                "failover_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetInstanceAuthString": {
+              "methods": [
+                "get_instance_auth_string"
+              ]
+            },
+            "ImportInstance": {
+              "methods": [
+                "import_instance"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "RescheduleMaintenance": {
+              "methods": [
+                "reschedule_maintenance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            },
+            "UpgradeInstance": {
+              "methods": [
+                "upgrade_instance"
+              ]
+            }
+          }
         }
       }
     }

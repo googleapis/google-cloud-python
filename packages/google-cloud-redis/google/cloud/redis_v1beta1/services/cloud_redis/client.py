@@ -59,6 +59,7 @@ from google.cloud.redis_v1beta1.types import cloud_redis
 from .transports.base import DEFAULT_CLIENT_INFO, CloudRedisTransport
 from .transports.grpc import CloudRedisGrpcTransport
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
+from .transports.rest import CloudRedisRestTransport
 
 
 class CloudRedisClientMeta(type):
@@ -72,6 +73,7 @@ class CloudRedisClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudRedisTransport]]
     _transport_registry["grpc"] = CloudRedisGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudRedisRestTransport
 
     def get_transport_class(
         cls,

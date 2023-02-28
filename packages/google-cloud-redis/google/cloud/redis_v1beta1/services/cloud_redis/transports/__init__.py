@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import CloudRedisTransport
 from .grpc import CloudRedisGrpcTransport
 from .grpc_asyncio import CloudRedisGrpcAsyncIOTransport
+from .rest import CloudRedisRestInterceptor, CloudRedisRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudRedisTransport]]
 _transport_registry["grpc"] = CloudRedisGrpcTransport
 _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
+_transport_registry["rest"] = CloudRedisRestTransport
 
 __all__ = (
     "CloudRedisTransport",
     "CloudRedisGrpcTransport",
     "CloudRedisGrpcAsyncIOTransport",
+    "CloudRedisRestTransport",
+    "CloudRedisRestInterceptor",
 )
