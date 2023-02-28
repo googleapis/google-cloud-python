@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-data-fusion/compare/v1.7.1...v1.8.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#165](https://github.com/googleapis/python-data-fusion/issues/165)) ([c39e35c](https://github.com/googleapis/python-data-fusion/commit/c39e35cdc22380fddc7424cddce7e1d1590d8248))
+
 ## [1.7.1](https://github.com/googleapis/python-data-fusion/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
