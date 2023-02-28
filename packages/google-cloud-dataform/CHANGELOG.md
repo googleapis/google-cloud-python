@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-dataform/compare/v0.4.1...v0.5.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#49](https://github.com/googleapis/python-dataform/issues/49)) ([403b246](https://github.com/googleapis/python-dataform/commit/403b2463a9ebeec2e03c9a9a27435c60dceedb41))
+
 ## [0.4.1](https://github.com/googleapis/python-dataform/compare/v0.4.0...v0.4.1) (2023-01-20)
 
 
