@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -310,10 +312,11 @@ class CloudSqlProperties(proto.Message):
         service_account_id (str):
             Output only. The account ID of the service
             used for the purpose of this connection.
+
             When the connection is used in the context of an
             operation in BigQuery, this service account will
-            serve as identity being used for connecting to
-            the CloudSQL instance specified in this
+            serve as the identity being used for connecting
+            to the CloudSQL instance specified in this
             connection.
     """
 
@@ -386,6 +389,30 @@ class CloudSpannerProperties(proto.Message):
         use_parallelism (bool):
             If parallelism should be used when reading
             from Cloud Spanner
+        use_serverless_analytics (bool):
+            If the serverless analytics service should be used to read
+            data from Cloud Spanner. Note: ``use_parallelism`` must be
+            set when using serverless analytics.
+        database_role (str):
+            Optional. Cloud Spanner database role for
+            fine-grained access control. A database role is
+            a collection of fine-grained access privileges.
+            Example: Admin predefines roles that provides
+            user a set of permissions (SELECT, INSERT, ..).
+            The user can then specify a predefined role on a
+            connection to execute their Cloud Spanner query.
+            The role is passthrough here. If the user is not
+            authorized to use the specified role, they get
+            an error. This validation happens on Cloud
+            Spanner.
+
+            See
+            https://cloud.google.com/spanner/docs/fgac-about
+            for more details.
+            REQUIRES: database role name must start with
+            uppercase/lowercase letter and only contain
+            uppercase/lowercase letters, numbers, and
+            underscores.
     """
 
     database: str = proto.Field(
@@ -395,6 +422,14 @@ class CloudSpannerProperties(proto.Message):
     use_parallelism: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    use_serverless_analytics: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    database_role: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -514,7 +549,7 @@ class AzureProperties(proto.Message):
             The URL user will be redirected to after
             granting consent during connection setup.
         federated_application_client_id (str):
-            The client id of the user's Azure Active
+            The client ID of the user's Azure Active
             Directory Application used for a federated
             connection.
         identity (str):
@@ -562,6 +597,7 @@ class CloudResourceProperties(proto.Message):
         service_account_id (str):
             Output only. The account ID of the service
             created for the purpose of this connection.
+
             The service account does not have any
             permissions associated with it when it is
             created. After creation, customers delegate

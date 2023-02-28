@@ -733,7 +733,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         Returns:
             google.cloud.bigquery_connection_v1.services.connection_service.pagers.ListConnectionsPager:
                 The response for
-                [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
+                   [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
