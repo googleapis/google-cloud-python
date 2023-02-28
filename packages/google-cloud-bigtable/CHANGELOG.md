@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.16.0](https://github.com/googleapis/python-bigtable/compare/v2.15.0...v2.16.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([c5116e0](https://github.com/googleapis/python-bigtable/commit/c5116e097aacf9ddae249de57fab1849aff10d86))
+* Publish the Cloud Bigtable Change Streams ([c5116e0](https://github.com/googleapis/python-bigtable/commit/c5116e097aacf9ddae249de57fab1849aff10d86))
+
+
+### Bug Fixes
+
+* Add context manager return types ([beb5bf3](https://github.com/googleapis/python-bigtable/commit/beb5bf3bca4b517d095de3faa17d20e4d89fb295))
+* **deps:** Require google-api-core&gt;=1.34.0,>=2.11.0 ([c5116e0](https://github.com/googleapis/python-bigtable/commit/c5116e097aacf9ddae249de57fab1849aff10d86))
+
+
+### Documentation
+
+* Add documentation for enums ([beb5bf3](https://github.com/googleapis/python-bigtable/commit/beb5bf3bca4b517d095de3faa17d20e4d89fb295))
+
 ## [2.15.0](https://github.com/googleapis/python-bigtable/compare/v2.14.1...v2.15.0) (2023-01-10)
 
 
