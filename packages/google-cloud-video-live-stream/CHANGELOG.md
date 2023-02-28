@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-video-live-stream/compare/v1.2.1...v1.3.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#145](https://github.com/googleapis/python-video-live-stream/issues/145)) ([f0cb14c](https://github.com/googleapis/python-video-live-stream/commit/f0cb14c02276e10720da178ff05d63287f39b90e))
+
 ## [1.2.1](https://github.com/googleapis/python-video-live-stream/compare/v1.2.0...v1.2.1) (2023-01-23)
 
 
