@@ -531,7 +531,7 @@ class CreateTransferConfigRequest(proto.Message):
             ``service_account_name`` is used to create the transfer
             config.
         service_account_name (str):
-            Optional service account name. If this field is set, the
+            Optional service account email. If this field is set, the
             transfer config will be created with this service account's
             credentials. It requires that the requesting user calling
             this API has permissions to act as this service account.
@@ -621,7 +621,7 @@ class UpdateTransferConfigRequest(proto.Message):
             ``service_account_name`` is used to update the transfer
             config.
         service_account_name (str):
-            Optional service account name. If this field is set, the
+            Optional service account email. If this field is set, the
             transfer config will be created with this service account's
             credentials. It requires that the requesting user calling
             this API has permissions to act as this service account.
