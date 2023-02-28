@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.9.0](https://github.com/googleapis/python-error-reporting/compare/v1.8.2...v1.9.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#418](https://github.com/googleapis/python-error-reporting/issues/418)) ([b2b9eab](https://github.com/googleapis/python-error-reporting/commit/b2b9eab649f413d7ad8a47fd660f9e2bcc32a820))
+
 ## [1.8.2](https://github.com/googleapis/python-error-reporting/compare/v1.8.1...v1.8.2) (2023-02-04)
 
 
