@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "TraceServiceClient",
+          "rpcs": {
+            "BatchWriteSpans": {
+              "methods": [
+                "batch_write_spans"
+              ]
+            },
+            "CreateSpan": {
+              "methods": [
+                "create_span"
+              ]
+            }
+          }
         }
       }
     }

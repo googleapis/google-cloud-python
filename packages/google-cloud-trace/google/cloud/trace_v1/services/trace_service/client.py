@@ -52,6 +52,7 @@ from google.cloud.trace_v1.types import trace
 from .transports.base import DEFAULT_CLIENT_INFO, TraceServiceTransport
 from .transports.grpc import TraceServiceGrpcTransport
 from .transports.grpc_asyncio import TraceServiceGrpcAsyncIOTransport
+from .transports.rest import TraceServiceRestTransport
 
 
 class TraceServiceClientMeta(type):
@@ -65,6 +66,7 @@ class TraceServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[TraceServiceTransport]]
     _transport_registry["grpc"] = TraceServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = TraceServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = TraceServiceRestTransport
 
     def get_transport_class(
         cls,
