@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.11.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.10.1...v3.11.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#439](https://github.com/googleapis/python-bigquery-datatransfer/issues/439)) ([b77f671](https://github.com/googleapis/python-bigquery-datatransfer/commit/b77f6716a47ba5bda4e50919e37b41fbc7cb3e20))
+
+
+### Documentation
+
+* Minor comment update ([#445](https://github.com/googleapis/python-bigquery-datatransfer/issues/445)) ([27b3271](https://github.com/googleapis/python-bigquery-datatransfer/commit/27b3271682fae002d29c65e057190c01f4f24ed4))
+
 ## [3.10.1](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.10.0...v3.10.1) (2023-01-20)
 
 
