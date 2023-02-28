@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -855,7 +855,7 @@ class KeyManagementServiceRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -864,7 +864,7 @@ class KeyManagementServiceRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -878,7 +878,7 @@ class KeyManagementServiceRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -887,7 +887,7 @@ class KeyManagementServiceRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -901,7 +901,7 @@ class KeyManagementServiceRestInterceptor:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -909,9 +909,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iam_policy(
-        self, response: iam_policy_pb2.GetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the response
@@ -924,7 +922,7 @@ class KeyManagementServiceRestInterceptor:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -932,9 +930,7 @@ class KeyManagementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_iam_policy(
-        self, response: iam_policy_pb2.SetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
@@ -947,7 +943,7 @@ class KeyManagementServiceRestInterceptor:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -956,7 +952,7 @@ class KeyManagementServiceRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsRequest
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -1078,7 +1074,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("AsymmetricDecrypt")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1179,7 +1175,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("AsymmetricSign")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1278,7 +1274,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("CreateCryptoKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "cryptoKeyId": "",
         }
 
@@ -1388,7 +1384,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("CreateCryptoKeyVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1502,7 +1498,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("CreateImportJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "importJobId": "",
         }
 
@@ -1648,7 +1644,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("CreateKeyRing")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "keyRingId": "",
         }
 
@@ -1750,7 +1746,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("Decrypt")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1849,7 +1845,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("DestroyCryptoKeyVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1964,7 +1960,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("Encrypt")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2153,7 +2149,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("GetCryptoKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2250,7 +2246,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("GetCryptoKeyVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2355,7 +2351,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("GetImportJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2488,7 +2484,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("GetKeyRing")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2579,7 +2575,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("GetPublicKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2671,7 +2667,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("ImportCryptoKeyVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2785,7 +2781,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("ListCryptoKeys")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2877,7 +2873,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("ListCryptoKeyVersions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2969,7 +2965,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("ListImportJobs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3061,7 +3057,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("ListKeyRings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3151,7 +3147,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("MacSign")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3250,7 +3246,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("MacVerify")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3349,7 +3345,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("RestoreCryptoKeyVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3464,7 +3460,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("UpdateCryptoKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -3574,7 +3570,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("UpdateCryptoKeyPrimaryVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3683,7 +3679,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
         def __hash__(self):
             return hash("UpdateCryptoKeyVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 

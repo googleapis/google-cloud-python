@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -203,7 +203,7 @@ class EkmServiceRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -212,7 +212,7 @@ class EkmServiceRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -226,7 +226,7 @@ class EkmServiceRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -235,7 +235,7 @@ class EkmServiceRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -249,7 +249,7 @@ class EkmServiceRestInterceptor:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +257,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iam_policy(
-        self, response: iam_policy_pb2.GetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the response
@@ -272,7 +270,7 @@ class EkmServiceRestInterceptor:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -280,9 +278,7 @@ class EkmServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_iam_policy(
-        self, response: iam_policy_pb2.SetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
@@ -295,7 +291,7 @@ class EkmServiceRestInterceptor:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -304,7 +300,7 @@ class EkmServiceRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsRequest
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -420,7 +416,7 @@ class EkmServiceRestTransport(EkmServiceTransport):
         def __hash__(self):
             return hash("CreateEkmConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "ekmConnectionId": "",
         }
 
@@ -533,7 +529,7 @@ class EkmServiceRestTransport(EkmServiceTransport):
         def __hash__(self):
             return hash("GetEkmConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -635,7 +631,7 @@ class EkmServiceRestTransport(EkmServiceTransport):
         def __hash__(self):
             return hash("ListEkmConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -727,7 +723,7 @@ class EkmServiceRestTransport(EkmServiceTransport):
         def __hash__(self):
             return hash("UpdateEkmConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
