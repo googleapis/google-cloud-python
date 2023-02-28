@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.11.0](https://github.com/googleapis/python-automl/compare/v2.10.1...v2.11.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#472](https://github.com/googleapis/python-automl/issues/472)) ([8d76d92](https://github.com/googleapis/python-automl/commit/8d76d922c48430cb0709cc35e9c10b92536f57c4))
+
 ## [2.10.1](https://github.com/googleapis/python-automl/compare/v2.10.0...v2.10.1) (2023-01-20)
 
 
