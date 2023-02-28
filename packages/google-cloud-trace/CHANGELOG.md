@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.11.0](https://github.com/googleapis/python-trace/compare/v1.10.0...v1.11.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([7d854a6](https://github.com/googleapis/python-trace/commit/7d854a6c497135656fbcab5c36f70d8b623b0585))
+
 ## [1.10.0](https://github.com/googleapis/python-trace/compare/v1.9.1...v1.10.0) (2023-01-24)
 
 
