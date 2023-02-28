@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -1524,7 +1524,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("AcknowledgeUserDataCollection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1628,7 +1628,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ArchiveCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1715,7 +1715,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ArchiveCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1802,7 +1802,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateConversionEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1903,7 +1903,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2002,7 +2002,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2101,7 +2101,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2202,7 +2202,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateFirebaseLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2303,7 +2303,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateGoogleAdsLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2404,7 +2404,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateMeasurementProtocolSecret")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2511,7 +2511,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("CreateProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2610,7 +2610,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("DeleteAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2686,7 +2686,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("DeleteConversionEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2764,7 +2764,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("DeleteDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2842,7 +2842,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("DeleteFirebaseLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2920,7 +2920,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("DeleteGoogleAdsLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2998,7 +2998,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("DeleteMeasurementProtocolSecret")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3082,7 +3082,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("DeleteProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3172,7 +3172,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3260,7 +3260,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetConversionEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3352,7 +3352,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3442,7 +3442,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3532,7 +3532,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetDataRetentionSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3625,7 +3625,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetDataSharingSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3718,7 +3718,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3808,7 +3808,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetMeasurementProtocolSecret")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3901,7 +3901,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("GetProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4145,7 +4145,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListConversionEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4237,7 +4237,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListCustomDimensions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4329,7 +4329,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListCustomMetrics")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4421,7 +4421,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListDataStreams")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4513,7 +4513,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListFirebaseLinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4605,7 +4605,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListGoogleAdsLinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4697,7 +4697,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListMeasurementProtocolSecrets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -4792,7 +4792,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("ListProperties")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "filter": "",
         }
 
@@ -4974,7 +4974,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("SearchChangeHistoryEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5076,7 +5076,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -5177,7 +5177,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -5278,7 +5278,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -5379,7 +5379,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateDataRetentionSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -5483,7 +5483,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -5586,7 +5586,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateGoogleAdsLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -5689,7 +5689,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateMeasurementProtocolSecret")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -5796,7 +5796,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
