@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-appengine-admin/compare/v1.8.1...v1.9.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#224](https://github.com/googleapis/python-appengine-admin/issues/224)) ([819631a](https://github.com/googleapis/python-appengine-admin/commit/819631abc6b95d3d40d1772f74dac62300f4616f))
+
 ## [1.8.1](https://github.com/googleapis/python-appengine-admin/compare/v1.8.0...v1.8.1) (2023-01-20)
 
 
