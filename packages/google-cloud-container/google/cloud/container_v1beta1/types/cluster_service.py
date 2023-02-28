@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -1174,7 +1176,7 @@ class ReservationAffinity(proto.Message):
 
 
 class NodeTaint(proto.Message):
-    r"""Kubernetes taint is comprised of three fields: key, value, and
+    r"""Kubernetes taint is composed of three fields: key, value, and
     effect. Effect can only be one of three types: NoSchedule,
     PreferNoSchedule or NoExecute.
 
