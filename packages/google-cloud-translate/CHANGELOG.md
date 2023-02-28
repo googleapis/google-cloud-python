@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.11.0](https://github.com/googleapis/python-translate/compare/v3.10.1...v3.11.0) (2023-02-28)
+
+
+### Features
+
+* Add supported fields in document translation request and refresh translation v3 GA service proto documentation ([cb63888](https://github.com/googleapis/python-translate/commit/cb6388840e59fdcef8c0d45978acfe20d88002c4))
+* Enable "rest" transport in Python for services supporting numeric enums ([cb63888](https://github.com/googleapis/python-translate/commit/cb6388840e59fdcef8c0d45978acfe20d88002c4))
+
 ## [3.10.1](https://github.com/googleapis/python-translate/compare/v3.10.0...v3.10.1) (2023-01-23)
 
 
