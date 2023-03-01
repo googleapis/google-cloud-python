@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.19.0...v1.20.0) (2023-03-01)
+
+
+### Features
+
+* Added persist_parameter_changes field from `query_params` to MatchIntentRequest ([#506](https://github.com/googleapis/python-dialogflow-cx/issues/506)) ([27f6020](https://github.com/googleapis/python-dialogflow-cx/commit/27f60205a3068df1a1576f120c97d45bb3501b2a))
+
 ## [1.19.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.18.0...v1.19.0) (2023-02-28)
 
 
