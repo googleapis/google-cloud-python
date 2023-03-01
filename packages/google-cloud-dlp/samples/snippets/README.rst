@@ -1,0 +1,2 @@
+The DLP samples have moved to a new repository (https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/dlp/snippets) in PR: https://github.com/GoogleCloudPlatform/python-docs-samples/pull/9091
+Moving forward, all DLP samples will be added/ updated in the python-docs-samples repository.
