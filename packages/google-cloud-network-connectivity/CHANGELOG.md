@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/googleapis/python-network-connectivity/compare/v1.6.1...v2.0.0) (2023-02-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove policy based routing API ([#228](https://github.com/googleapis/python-network-connectivity/issues/228))
+
+### Bug Fixes
+
+* Remove policy based routing API ([#228](https://github.com/googleapis/python-network-connectivity/issues/228)) ([03f9adb](https://github.com/googleapis/python-network-connectivity/commit/03f9adb55ff9396b0d52dc90ed165a6e0606d15b))
+
 ## [1.6.1](https://github.com/googleapis/python-network-connectivity/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
