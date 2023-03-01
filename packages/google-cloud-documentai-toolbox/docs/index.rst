@@ -6,6 +6,7 @@ API Reference
   :maxdepth: 2
 
   documentai_toolbox/wrappers
+  documentai_toolbox/utilities
 
 Changelog
 ---------
