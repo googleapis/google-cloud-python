@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.17.4](https://github.com/googleapis/python-container/compare/v2.17.3...v2.17.4) (2023-02-28)
+
+
+### Documentation
+
+* Minor grammar improvements ([#351](https://github.com/googleapis/python-container/issues/351)) ([2a0eeae](https://github.com/googleapis/python-container/commit/2a0eeae897e7f2312690eed1e52119a6a572c667))
+
 ## [2.17.3](https://github.com/googleapis/python-container/compare/v2.17.2...v2.17.3) (2023-02-03)
 
 
