@@ -1363,7 +1363,7 @@ class CertificateMapEntry(proto.Message):
             This field is a member of `oneof`_ ``match``.
         certificates (MutableSequence[str]):
             A set of Certificates defines for the given ``hostname``.
-            There can be defined up to fifteen certificates in each
+            There can be defined up to four certificates in each
             Certificate Map Entry. Each certificate must match pattern
             ``projects/*/locations/*/certificates/*``.
         state (google.cloud.certificate_manager_v1.types.ServingState):
