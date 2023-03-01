@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.15.0](https://github.com/googleapis/python-analytics-admin/compare/v0.14.1...v0.15.0) (2023-02-28)
+
+
+### Features
+
+* Add `BigQueryLink`, `SearchAds360Link` resource types to the Admin API v1alpha ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* Add `EXPANDED_DATA_SET`, `CHANNEL_GROUP` values to `ChangeHistoryResourceType` enum ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* Add `GetBigQueryLink`, `ListBigQueryLinks` methods to the Admin API v1alpha ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* Add `search_ads_360_link`, `expanded_data_set`, `bigquery_link` values to ChangeHistoryResource.resource oneof field ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* Add `SetAutomatedGa4ConfigurationOptOut`, `FetchAutomatedGa4ConfigurationOptOut` methods to the Admin API v1alpha ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* Add `tokens_per_project_per_hour` field to `AccessQuota` type ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* Add GetSearchAds360Link, ListSearchAds360Links, CreateSearchAds360Link, DeleteSearchAds360Link, UpdateSearchAds360Link methods to the Admin API v1alpha ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* **v1alpha:** Add `AccessBinding`, `ExpandedDataSet`, `ExpandedDataSetFilter`, `ExpandedDataSetFilterExpression`, `ExpandedDataSetFilterExpressionList` resource types ([1d2897e](https://github.com/googleapis/python-analytics-admin/commit/1d2897e0f29cec3101835a9955a79d773aeece52))
+* **v1alpha:** Add `CreateAccessBinding`, `GetAccessBinding`, `UpdateAccessBinding`, `DeleteAccessBinding`, `ListAccessBindings`, `BatchCreateAccessBindings`, `BatchGetAccessBindings`, `BatchUpdateAccessBindings`, `BatchDeleteAccessBindings` methods ([1d2897e](https://github.com/googleapis/python-analytics-admin/commit/1d2897e0f29cec3101835a9955a79d773aeece52))
+* **v1alpha:** Add `GetExpandedDataSet`, `ListExpandedDataSets`, `CreateExpandedDataSet`, `UpdateExpandedDataSet`, `DeleteExpandedDataSet` methods ([1d2897e](https://github.com/googleapis/python-analytics-admin/commit/1d2897e0f29cec3101835a9955a79d773aeece52))
+
+
+### Bug Fixes
+
+* Remove `LESS_THAN_OR_EQUAL`, `GREATER_THAN_OR_EQUAL` values from NumericFilter.Operation enum ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+* Remove `PARTIAL_REGEXP` value from StringFilter.MatchType enum ([efd4b20](https://github.com/googleapis/python-analytics-admin/commit/efd4b20ba5f49c38668f3b8c9c4ff365b44752da))
+
 ## [0.14.1](https://github.com/googleapis/python-analytics-admin/compare/v0.14.0...v0.14.1) (2023-01-20)
 
 
