@@ -3207,9 +3207,12 @@ def test_create_job_rest(request_type):
                             }
                         ],
                         "sample_rate_hertz": 1817,
+                        "language_code": "language_code_value",
+                        "display_name": "display_name_value",
                     },
                     "text_stream": {
                         "codec": "codec_value",
+                        "language_code": "language_code_value",
                         "mapping_": [
                             {
                                 "atom_key": "atom_key_value",
@@ -3217,6 +3220,7 @@ def test_create_job_rest(request_type):
                                 "input_track": 1188,
                             }
                         ],
+                        "display_name": "display_name_value",
                     },
                 }
             ],
@@ -3622,9 +3626,12 @@ def test_create_job_rest_bad_request(
                             }
                         ],
                         "sample_rate_hertz": 1817,
+                        "language_code": "language_code_value",
+                        "display_name": "display_name_value",
                     },
                     "text_stream": {
                         "codec": "codec_value",
+                        "language_code": "language_code_value",
                         "mapping_": [
                             {
                                 "atom_key": "atom_key_value",
@@ -3632,6 +3639,7 @@ def test_create_job_rest_bad_request(
                                 "input_track": 1188,
                             }
                         ],
+                        "display_name": "display_name_value",
                     },
                 }
             ],
@@ -4796,9 +4804,12 @@ def test_create_job_template_rest(request_type):
                             }
                         ],
                         "sample_rate_hertz": 1817,
+                        "language_code": "language_code_value",
+                        "display_name": "display_name_value",
                     },
                     "text_stream": {
                         "codec": "codec_value",
+                        "language_code": "language_code_value",
                         "mapping_": [
                             {
                                 "atom_key": "atom_key_value",
@@ -4806,6 +4817,7 @@ def test_create_job_template_rest(request_type):
                                 "input_track": 1188,
                             }
                         ],
+                        "display_name": "display_name_value",
                     },
                 }
             ],
@@ -5206,9 +5218,12 @@ def test_create_job_template_rest_bad_request(
                             }
                         ],
                         "sample_rate_hertz": 1817,
+                        "language_code": "language_code_value",
+                        "display_name": "display_name_value",
                     },
                     "text_stream": {
                         "codec": "codec_value",
+                        "language_code": "language_code_value",
                         "mapping_": [
                             {
                                 "atom_key": "atom_key_value",
@@ -5216,6 +5231,7 @@ def test_create_job_template_rest_bad_request(
                                 "input_track": 1188,
                             }
                         ],
+                        "display_name": "display_name_value",
                     },
                 }
             ],

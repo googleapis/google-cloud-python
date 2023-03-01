@@ -2043,6 +2043,13 @@ class AudioStream(proto.Message):
         sample_rate_hertz (int):
             The audio sample rate in Hertz. The default
             is 48000 Hertz.
+        language_code (str):
+            The BCP-47 language code, such as ``en-US`` or ``sr-Latn``.
+            For more information, see
+            https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        display_name (str):
+            The name for this particular audio stream
+            that will be added to the HLS/DASH manifest.
     """
 
     class AudioMapping(proto.Message):
@@ -2120,6 +2127,14 @@ class AudioStream(proto.Message):
         proto.INT32,
         number=6,
     )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class TextStream(proto.Message):
@@ -2137,9 +2152,16 @@ class TextStream(proto.Message):
             -  ``cea608``
             -  ``cea708``
             -  ``webvtt``
+        language_code (str):
+            The BCP-47 language code, such as ``en-US`` or ``sr-Latn``.
+            For more information, see
+            https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         mapping_ (MutableSequence[google.cloud.video.transcoder_v1.types.TextStream.TextMapping]):
             The mapping for the ``Job.edit_list`` atoms with text
             ``EditAtom.inputs``.
+        display_name (str):
+            The name for this particular text stream that
+            will be added to the HLS/DASH manifest.
     """
 
     class TextMapping(proto.Message):
@@ -2174,10 +2196,18 @@ class TextStream(proto.Message):
         proto.STRING,
         number=1,
     )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     mapping_: MutableSequence[TextMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=TextMapping,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
