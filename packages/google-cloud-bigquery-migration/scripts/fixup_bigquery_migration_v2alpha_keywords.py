@@ -46,6 +46,7 @@ class bigquery_migrationCallTransformer(cst.CSTTransformer):
         'list_migration_subtasks': ('parent', 'read_mask', 'page_size', 'page_token', 'filter', ),
         'list_migration_workflows': ('parent', 'read_mask', 'page_size', 'page_token', ),
         'start_migration_workflow': ('name', ),
+        'translate_query': ('parent', 'source_dialect', 'query', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

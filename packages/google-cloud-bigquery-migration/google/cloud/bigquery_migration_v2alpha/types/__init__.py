@@ -33,6 +33,13 @@ from .migration_service import (
     ListMigrationWorkflowsResponse,
     StartMigrationWorkflowRequest,
 )
+from .translation_service import (
+    SqlTranslationError,
+    SqlTranslationErrorDetail,
+    SqlTranslationWarning,
+    TranslateQueryRequest,
+    TranslateQueryResponse,
+)
 from .translation_task import (
     BteqOptions,
     DatasetReference,
@@ -66,6 +73,11 @@ __all__ = (
     "ListMigrationWorkflowsRequest",
     "ListMigrationWorkflowsResponse",
     "StartMigrationWorkflowRequest",
+    "SqlTranslationError",
+    "SqlTranslationErrorDetail",
+    "SqlTranslationWarning",
+    "TranslateQueryRequest",
+    "TranslateQueryResponse",
     "BteqOptions",
     "DatasetReference",
     "Filter",

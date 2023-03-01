@@ -4,3 +4,4 @@ Services for Google Cloud Bigquery Migration v2alpha API
     :maxdepth: 2
 
     migration_service
+    sql_translation_service

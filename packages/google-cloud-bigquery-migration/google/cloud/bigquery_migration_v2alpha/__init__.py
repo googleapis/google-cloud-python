@@ -22,6 +22,10 @@ from .services.migration_service import (
     MigrationServiceAsyncClient,
     MigrationServiceClient,
 )
+from .services.sql_translation_service import (
+    SqlTranslationServiceAsyncClient,
+    SqlTranslationServiceClient,
+)
 from .types.assessment_task import (
     AssessmentOrchestrationResultDetails,
     AssessmentTaskDetails,
@@ -49,6 +53,13 @@ from .types.migration_service import (
     ListMigrationWorkflowsResponse,
     StartMigrationWorkflowRequest,
 )
+from .types.translation_service import (
+    SqlTranslationError,
+    SqlTranslationErrorDetail,
+    SqlTranslationWarning,
+    TranslateQueryRequest,
+    TranslateQueryResponse,
+)
 from .types.translation_task import (
     BteqOptions,
     DatasetReference,
@@ -61,6 +72,7 @@ from .types.translation_task import (
 
 __all__ = (
     "MigrationServiceAsyncClient",
+    "SqlTranslationServiceAsyncClient",
     "AssessmentOrchestrationResultDetails",
     "AssessmentTaskDetails",
     "BteqOptions",
@@ -84,10 +96,16 @@ __all__ = (
     "MigrationWorkflow",
     "Point",
     "ResourceErrorDetail",
+    "SqlTranslationError",
+    "SqlTranslationErrorDetail",
+    "SqlTranslationServiceClient",
+    "SqlTranslationWarning",
     "StartMigrationWorkflowRequest",
     "TeradataOptions",
     "TimeInterval",
     "TimeSeries",
+    "TranslateQueryRequest",
+    "TranslateQueryResponse",
     "TranslationFileMapping",
     "TranslationTaskDetails",
     "TypedValue",
