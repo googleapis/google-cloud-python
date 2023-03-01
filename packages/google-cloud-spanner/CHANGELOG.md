@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.28.0](https://github.com/googleapis/python-spanner/compare/v3.27.1...v3.28.0) (2023-02-28)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#897](https://github.com/googleapis/python-spanner/issues/897)) ([c21a0d5](https://github.com/googleapis/python-spanner/commit/c21a0d5f4600818ca79cd4e199a2245683c33467))
+
 ## [3.27.1](https://github.com/googleapis/python-spanner/compare/v3.27.0...v3.27.1) (2023-01-30)
 
 
