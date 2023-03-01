@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.9.1...v0.10.0) (2023-03-01)
+
+
+### Features
+
+* **v2alpha:** Add SQL translation service ([#170](https://github.com/googleapis/python-bigquery-migration/issues/170)) ([533d1d8](https://github.com/googleapis/python-bigquery-migration/commit/533d1d87e3bfb917488550a979b35994ebe293ed))
+
 ## [0.9.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.9.0...v0.9.1) (2023-01-20)
 
 
