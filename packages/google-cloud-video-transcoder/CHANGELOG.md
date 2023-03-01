@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-video-transcoder/compare/v1.7.0...v1.8.0) (2023-03-01)
+
+
+### Features
+
+* Specifying language code and display name for text and audio streams is now supported ([#288](https://github.com/googleapis/python-video-transcoder/issues/288)) ([9a47aa7](https://github.com/googleapis/python-video-transcoder/commit/9a47aa7d8549d0317af910d0d18bef897fcb7708))
+
 ## [1.7.0](https://github.com/googleapis/python-video-transcoder/compare/v1.6.1...v1.7.0) (2023-02-28)
 
 
