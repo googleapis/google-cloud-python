@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Constants used across google.cloud.storage modules."""
+"""Constants used across google.cloud.storage modules.
+
+See [Python Storage Client Constants Page](https://github.com/googleapis/python-storage/blob/main/google/cloud/storage/constants.py)
+for constants used across storage classes, location types, public access prevention, etc.
+
+"""
 
 # Storage classes
 

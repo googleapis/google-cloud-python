@@ -45,6 +45,7 @@ s.move(
         "docs/multiprocessing.rst",
         "noxfile.py",
         "CONTRIBUTING.rst",
+        "README.rst",
         ".kokoro/samples/python3.6", # remove python 3.6 support
         ".github/workflows", # exclude gh actions as credentials are needed for tests
         ".github/release-please.yml", # special support for a python2 branch in this repo
