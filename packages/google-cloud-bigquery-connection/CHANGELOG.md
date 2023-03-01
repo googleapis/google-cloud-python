@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.10.0...v1.11.0) (2023-03-01)
+
+
+### Features
+
+* Add cloud spanner connection properties - database role ([181685a](https://github.com/googleapis/python-bigquery-connection/commit/181685a1a82d4d932b4108580328f5ee09718513))
+* Add cloud spanner connection properties - serverless analytics ([181685a](https://github.com/googleapis/python-bigquery-connection/commit/181685a1a82d4d932b4108580328f5ee09718513))
+
 ## [1.10.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.9.1...v1.10.0) (2023-02-27)
 
 
