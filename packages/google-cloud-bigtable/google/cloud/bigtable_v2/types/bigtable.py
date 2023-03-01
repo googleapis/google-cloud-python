@@ -1052,19 +1052,28 @@ class ReadChangeStreamResponse(proto.Message):
 
     class CloseStream(proto.Message):
         r"""A message indicating that the client should stop reading from the
-        stream. If status is OK and ``continuation_tokens`` is empty, the
-        stream has finished (for example if there was an ``end_time``
-        specified). If ``continuation_tokens`` is present, then a change in
-        partitioning requires the client to open a new stream for each token
-        to resume reading.
+        stream. If status is OK and ``continuation_tokens`` &
+        ``new_partitions`` are empty, the stream has finished (for example
+        if there was an ``end_time`` specified). If ``continuation_tokens``
+        & ``new_partitions`` are present, then a change in partitioning
+        requires the client to open a new stream for each token to resume
+        reading. Example: [B, D) ends \| v new_partitions: [A, C) [C, E)
+        continuation_tokens.partitions: [B,C) [C,D) ^---^ ^---^ ^ ^ \| \| \|
+        StreamContinuationToken 2 \| StreamContinuationToken 1 To read the
+        new partition [A,C), supply the continuation tokens whose ranges
+        cover the new partition, for example ContinuationToken[A,B) &
+        ContinuationToken[B,C).
 
         Attributes:
             status (google.rpc.status_pb2.Status):
                 The status of the stream.
             continuation_tokens (MutableSequence[google.cloud.bigtable_v2.types.StreamContinuationToken]):
                 If non-empty, contains the information needed
-                to start reading the new partition(s) that
-                contain segments of this partition's row range.
+                to resume reading their associated partitions.
+            new_partitions (MutableSequence[google.cloud.bigtable_v2.types.StreamPartition]):
+                If non-empty, contains the new partitions to start reading
+                from, which are related to but not necessarily identical to
+                the partitions for the above ``continuation_tokens``.
         """
 
         status: status_pb2.Status = proto.Field(
@@ -1078,6 +1087,11 @@ class ReadChangeStreamResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message=data.StreamContinuationToken,
+        )
+        new_partitions: MutableSequence[data.StreamPartition] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=data.StreamPartition,
         )
 
     data_change: DataChange = proto.Field(
