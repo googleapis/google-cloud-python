@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.17.0](https://github.com/googleapis/python-bigtable/compare/v2.16.0...v2.17.0) (2023-03-01)
+
+
+### Features
+
+* Add new_partitions field for CloseStream for Cloud Bigtable ChangeStream ([#740](https://github.com/googleapis/python-bigtable/issues/740)) ([1adcad4](https://github.com/googleapis/python-bigtable/commit/1adcad440368f6d7df6710a013e7fab076461aed))
+
 ## [2.16.0](https://github.com/googleapis/python-bigtable/compare/v2.15.0...v2.16.0) (2023-02-27)
 
 
