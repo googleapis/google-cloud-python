@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-certificate-manager/compare/v1.4.0...v1.4.1) (2023-03-01)
+
+
+### Documentation
+
+* Corrected information about the limit of certificates that can be attached to a Certificate Map Entry ([#113](https://github.com/googleapis/python-certificate-manager/issues/113)) ([415b36a](https://github.com/googleapis/python-certificate-manager/commit/415b36a2ef7ae9311db75d0b4fd36e6997b9cc27))
+
 ## [1.4.0](https://github.com/googleapis/python-certificate-manager/compare/v1.3.1...v1.4.0) (2023-02-27)
 
 
