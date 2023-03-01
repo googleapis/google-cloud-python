@@ -94,7 +94,14 @@ def test__can_retry_message(response_data):
     assert _client._can_retry(http_client.OK, response_data)
 
 
-@pytest.mark.parametrize("response_data", [{"error": "invalid_scope"}])
+@pytest.mark.parametrize(
+    "response_data",
+    [
+        {"error": "invalid_scope"},
+        {"error": {"foo": "bar"}},
+        {"error_description": {"foo", "bar"}},
+    ],
+)
 def test__can_retry_no_retry_message(response_data):
     assert not _client._can_retry(http_client.OK, response_data)
 
