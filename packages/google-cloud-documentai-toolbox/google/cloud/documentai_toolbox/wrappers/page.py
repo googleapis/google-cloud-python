@@ -326,11 +326,14 @@ class Page:
             Required. The original google.cloud.documentai.Document.Page object.
         text: (str):
             Required. The full text of the Document containing the Page.
-        lines (List[str]):
+        form_fields (List[FormField]):
+            Required. A list of visually detected form fields on the
+            page.
+        lines (List[Line]):
             Required. A list of visually detected text lines on the
             page. A collection of tokens that a human would
             perceive as a line.
-        paragraphs (List[str]):
+        paragraphs (List[Paragraph]):
             Required. A list of visually detected text paragraphs
             on the page. A collection of lines that a human
             would perceive as a paragraph.

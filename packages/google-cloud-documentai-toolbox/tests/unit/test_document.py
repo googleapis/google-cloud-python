@@ -57,6 +57,13 @@ def get_bytes_multiple_files_mock():
 
 
 @pytest.fixture
+def get_bytes_unordered_files_mock():
+    with mock.patch.object(document, "_get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes("tests/unit/resources/unordered_shards")
+        yield byte_factory
+
+
+@pytest.fixture
 def get_bytes_form_parser_mock():
     with mock.patch.object(document, "_get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/form_parser")
@@ -113,6 +120,9 @@ def test_pages_from_shards():
     actual = document._pages_from_shards(shards=shards)
     assert len(actual[0].paragraphs) == 31
 
+    for page_index, page in enumerate(actual):
+        assert page.documentai_page.page_number == page_index + 1
+
 
 def test_entities_from_shard():
     shards = []
@@ -161,6 +171,24 @@ def test_document_from_gcs_with_multiple_shards(get_bytes_multiple_files_mock):
     get_bytes_multiple_files_mock.assert_called_once()
 
     assert len(actual.pages) == 48
+
+
+def test_document_from_gcs_with_unordered_shards(get_bytes_unordered_files_mock):
+    actual = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/2/"
+    )
+    get_bytes_unordered_files_mock.assert_called_once()
+
+    expected_shard_count = len(actual.shards)
+    current_text_offset = 0
+    for expected_shard_index, shard in enumerate(actual.shards):
+        assert int(shard.shard_info.shard_index) == expected_shard_index
+        assert int(shard.shard_info.shard_count) == expected_shard_count
+        assert int(shard.shard_info.text_offset) == current_text_offset
+        current_text_offset += len(shard.text)
+
+    for page_index, page in enumerate(actual.pages):
+        assert page.documentai_page.page_number == page_index + 1
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")

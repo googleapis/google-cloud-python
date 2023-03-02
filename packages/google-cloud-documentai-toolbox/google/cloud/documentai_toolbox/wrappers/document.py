@@ -106,11 +106,11 @@ def _get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
         gcs_bucket_name (str):
             Required. The name of the gcs bucket.
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_bucket_name=`bucket`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
         gcs_prefix (str):
             Required. The prefix of the json files in the target_folder
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_prefix=`optional_folder/target_folder`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
     Returns:
         List[bytes]:
             A list of bytes.
@@ -138,11 +138,11 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
         gcs_bucket_name (str):
             Required. The name of the gcs bucket.
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_bucket_name=`bucket`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
         gcs_prefix (str):
             Required. The prefix of the json files in the target_folder.
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_prefix=`optional_folder/target_folder`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
     Returns:
         List[google.cloud.documentai.Document]:
             A list of documentai.Documents.
@@ -160,6 +160,8 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
     for byte in byte_array:
         shards.append(documentai.Document.from_json(byte, ignore_unknown_fields=True))
 
+    if len(shards) > 1:
+        shards.sort(key=lambda x: int(x.shard_info.shard_index))
     return shards
 
 
@@ -181,11 +183,11 @@ def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
         gcs_bucket_name (str):
             Required. The name of the gcs bucket.
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_bucket_name=`bucket`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
         gcs_prefix (str):
             Required. The prefix of the json files in the target_folder.
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_prefix=`optional_folder/target_folder`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
     Returns:
         None.
 
@@ -240,11 +242,11 @@ class Document:
         gcs_bucket_name (Optional[str]):
             Optional. The name of the gcs bucket.
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_bucket_name=`bucket`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
         gcs_prefix (Optional[str]):
             Optional. The prefix of the json files in the target_folder.
 
-            Format: `gs://bucket/optional_folder/target_folder/` where gcs_prefix=`optional_folder/target_folder`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
 
             For more information please take a look at https://cloud.google.com/storage/docs/json_api/v1/objects/list .
         pages: (List[Page]):
@@ -315,7 +317,7 @@ class Document:
             gcs_prefix (str):
                 Required. The prefix to the location of the target folder.
 
-                Format: Given `gs://{bucket_name}/optional_folder/target_folder` where gcs_prefix=`{optional_folder}/{target_folder}`.
+                Format: Given `gs://{bucket_name}/{optional_folder}/{target_folder}` where gcs_prefix=`{optional_folder}/{target_folder}`.
         Returns:
             Document:
                 A document from gcs.
