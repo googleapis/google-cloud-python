@@ -136,6 +136,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-cloud-alloydb": {
+            "component": "google-cloud-alloydb",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/alloydb/gapic_version.py"
+            ]
         }
     }
 }
