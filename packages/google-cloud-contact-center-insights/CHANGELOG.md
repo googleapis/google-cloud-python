@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.8.0...v1.9.0) (2023-03-02)
+
+
+### Features
+
+* Add a way to specify the conversation automatic analysis percentage for the UploadConversation API when creating Analyses in Insights ([#296](https://github.com/googleapis/python-contact-center-insights/issues/296)) ([f299378](https://github.com/googleapis/python-contact-center-insights/commit/f299378905d84e1dea7d98379f94fecbd9bd74e3))
+
 ## [1.8.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.7.0...v1.8.0) (2023-02-27)
 
 
