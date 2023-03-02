@@ -24,7 +24,7 @@ from typing import (
     Tuple,
 )
 
-from google.cloud.kms.v1 import resources_pb2  # type: ignore
+from google.cloud.kms_v1.types import resources
 
 from google.cloud.kms.inventory_v1.types import key_dashboard_service
 
@@ -83,7 +83,7 @@ class ListCryptoKeysPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[resources_pb2.CryptoKey]:
+    def __iter__(self) -> Iterator[resources.CryptoKey]:
         for page in self.pages:
             yield from page.crypto_keys
 
@@ -147,7 +147,7 @@ class ListCryptoKeysAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[resources_pb2.CryptoKey]:
+    def __aiter__(self) -> AsyncIterator[resources.CryptoKey]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.crypto_keys:
