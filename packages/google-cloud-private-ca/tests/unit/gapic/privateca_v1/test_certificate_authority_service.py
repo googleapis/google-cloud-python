@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import (
@@ -39,11 +41,16 @@ from google.api_core import operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import options_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import grpc
@@ -51,6 +58,8 @@ from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.security.privateca_v1.services.certificate_authority_service import (
     CertificateAuthorityServiceAsyncClient,
@@ -113,6 +122,7 @@ def test__get_default_mtls_endpoint():
     [
         (CertificateAuthorityServiceClient, "grpc"),
         (CertificateAuthorityServiceAsyncClient, "grpc_asyncio"),
+        (CertificateAuthorityServiceClient, "rest"),
     ],
 )
 def test_certificate_authority_service_client_from_service_account_info(
@@ -128,7 +138,11 @@ def test_certificate_authority_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("privateca.googleapis.com:443")
+        assert client.transport._host == (
+            "privateca.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://privateca.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -136,6 +150,7 @@ def test_certificate_authority_service_client_from_service_account_info(
     [
         (transports.CertificateAuthorityServiceGrpcTransport, "grpc"),
         (transports.CertificateAuthorityServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CertificateAuthorityServiceRestTransport, "rest"),
     ],
 )
 def test_certificate_authority_service_client_service_account_always_use_jwt(
@@ -161,6 +176,7 @@ def test_certificate_authority_service_client_service_account_always_use_jwt(
     [
         (CertificateAuthorityServiceClient, "grpc"),
         (CertificateAuthorityServiceAsyncClient, "grpc_asyncio"),
+        (CertificateAuthorityServiceClient, "rest"),
     ],
 )
 def test_certificate_authority_service_client_from_service_account_file(
@@ -183,13 +199,18 @@ def test_certificate_authority_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("privateca.googleapis.com:443")
+        assert client.transport._host == (
+            "privateca.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://privateca.googleapis.com"
+        )
 
 
 def test_certificate_authority_service_client_get_transport_class():
     transport = CertificateAuthorityServiceClient.get_transport_class()
     available_transports = [
         transports.CertificateAuthorityServiceGrpcTransport,
+        transports.CertificateAuthorityServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -209,6 +230,11 @@ def test_certificate_authority_service_client_get_transport_class():
             CertificateAuthorityServiceAsyncClient,
             transports.CertificateAuthorityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            CertificateAuthorityServiceClient,
+            transports.CertificateAuthorityServiceRestTransport,
+            "rest",
         ),
     ],
 )
@@ -367,6 +393,18 @@ def test_certificate_authority_service_client_client_options(
             CertificateAuthorityServiceAsyncClient,
             transports.CertificateAuthorityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            CertificateAuthorityServiceClient,
+            transports.CertificateAuthorityServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            CertificateAuthorityServiceClient,
+            transports.CertificateAuthorityServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -575,6 +613,11 @@ def test_certificate_authority_service_client_get_mtls_endpoint_and_cert_source(
             transports.CertificateAuthorityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            CertificateAuthorityServiceClient,
+            transports.CertificateAuthorityServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_certificate_authority_service_client_client_options_scopes(
@@ -614,6 +657,12 @@ def test_certificate_authority_service_client_client_options_scopes(
             transports.CertificateAuthorityServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            CertificateAuthorityServiceClient,
+            transports.CertificateAuthorityServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -8949,6 +8998,10549 @@ async def test_update_certificate_template_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCertificateRequest,
+        dict,
+    ],
+)
+def test_create_certificate_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request_init["certificate"] = {
+        "name": "name_value",
+        "pem_csr": "pem_csr_value",
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "issuer_certificate_authority": "issuer_certificate_authority_value",
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "certificate_template": "certificate_template_value",
+        "subject_mode": 1,
+        "revocation_details": {
+            "revocation_state": 1,
+            "revocation_time": {"seconds": 751, "nanos": 543},
+        },
+        "pem_certificate": "pem_certificate_value",
+        "certificate_description": {
+            "subject_description": {
+                "subject": {},
+                "subject_alt_name": {},
+                "hex_serial_number": "hex_serial_number_value",
+                "lifetime": {},
+                "not_before_time": {},
+                "not_after_time": {},
+            },
+            "x509_description": {},
+            "public_key": {},
+            "subject_key_id": {"key_id": "key_id_value"},
+            "authority_key_id": {},
+            "crl_distribution_points": [
+                "crl_distribution_points_value1",
+                "crl_distribution_points_value2",
+            ],
+            "aia_issuing_certificate_urls": [
+                "aia_issuing_certificate_urls_value1",
+                "aia_issuing_certificate_urls_value2",
+            ],
+            "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+        },
+        "pem_certificate_chain": [
+            "pem_certificate_chain_value1",
+            "pem_certificate_chain_value2",
+        ],
+        "create_time": {},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate(
+            name="name_value",
+            issuer_certificate_authority="issuer_certificate_authority_value",
+            certificate_template="certificate_template_value",
+            subject_mode=resources.SubjectRequestMode.DEFAULT,
+            pem_certificate="pem_certificate_value",
+            pem_certificate_chain=["pem_certificate_chain_value"],
+            pem_csr="pem_csr_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Certificate)
+    assert response.name == "name_value"
+    assert response.issuer_certificate_authority == "issuer_certificate_authority_value"
+    assert response.certificate_template == "certificate_template_value"
+    assert response.subject_mode == resources.SubjectRequestMode.DEFAULT
+    assert response.pem_certificate == "pem_certificate_value"
+    assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
+
+
+def test_create_certificate_rest_required_fields(
+    request_type=service.CreateCertificateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_certificate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_certificate._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "certificate_id",
+            "issuing_certificate_authority_id",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Certificate()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_certificate(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_certificate_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_certificate._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "certificateId",
+                "issuingCertificateAuthorityId",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "certificate",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_certificate_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_create_certificate"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_create_certificate"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateCertificateRequest.pb(
+            service.CreateCertificateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Certificate.to_json(
+            resources.Certificate()
+        )
+
+        request = service.CreateCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Certificate()
+
+        client.create_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_certificate_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateCertificateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request_init["certificate"] = {
+        "name": "name_value",
+        "pem_csr": "pem_csr_value",
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "issuer_certificate_authority": "issuer_certificate_authority_value",
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "certificate_template": "certificate_template_value",
+        "subject_mode": 1,
+        "revocation_details": {
+            "revocation_state": 1,
+            "revocation_time": {"seconds": 751, "nanos": 543},
+        },
+        "pem_certificate": "pem_certificate_value",
+        "certificate_description": {
+            "subject_description": {
+                "subject": {},
+                "subject_alt_name": {},
+                "hex_serial_number": "hex_serial_number_value",
+                "lifetime": {},
+                "not_before_time": {},
+                "not_after_time": {},
+            },
+            "x509_description": {},
+            "public_key": {},
+            "subject_key_id": {"key_id": "key_id_value"},
+            "authority_key_id": {},
+            "crl_distribution_points": [
+                "crl_distribution_points_value1",
+                "crl_distribution_points_value2",
+            ],
+            "aia_issuing_certificate_urls": [
+                "aia_issuing_certificate_urls_value1",
+                "aia_issuing_certificate_urls_value2",
+            ],
+            "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+        },
+        "pem_certificate_chain": [
+            "pem_certificate_chain_value1",
+            "pem_certificate_chain_value2",
+        ],
+        "create_time": {},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_certificate(request)
+
+
+def test_create_certificate_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            certificate=resources.Certificate(name="name_value"),
+            certificate_id="certificate_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_certificate(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/caPools/*}/certificates"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_certificate_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_certificate(
+            service.CreateCertificateRequest(),
+            parent="parent_value",
+            certificate=resources.Certificate(name="name_value"),
+            certificate_id="certificate_id_value",
+        )
+
+
+def test_create_certificate_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCertificateRequest,
+        dict,
+    ],
+)
+def test_get_certificate_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate(
+            name="name_value",
+            issuer_certificate_authority="issuer_certificate_authority_value",
+            certificate_template="certificate_template_value",
+            subject_mode=resources.SubjectRequestMode.DEFAULT,
+            pem_certificate="pem_certificate_value",
+            pem_certificate_chain=["pem_certificate_chain_value"],
+            pem_csr="pem_csr_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Certificate)
+    assert response.name == "name_value"
+    assert response.issuer_certificate_authority == "issuer_certificate_authority_value"
+    assert response.certificate_template == "certificate_template_value"
+    assert response.subject_mode == resources.SubjectRequestMode.DEFAULT
+    assert response.pem_certificate == "pem_certificate_value"
+    assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
+
+
+def test_get_certificate_rest_required_fields(
+    request_type=service.GetCertificateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Certificate()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_certificate(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_certificate_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_certificate._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_certificate_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_get_certificate"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_get_certificate"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetCertificateRequest.pb(service.GetCertificateRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Certificate.to_json(
+            resources.Certificate()
+        )
+
+        request = service.GetCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Certificate()
+
+        client.get_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_certificate_rest_bad_request(
+    transport: str = "rest", request_type=service.GetCertificateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_certificate(request)
+
+
+def test_get_certificate_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_certificate(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificates/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_certificate_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_certificate(
+            service.GetCertificateRequest(),
+            name="name_value",
+        )
+
+
+def test_get_certificate_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCertificatesRequest,
+        dict,
+    ],
+)
+def test_list_certificates_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificatesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_certificates(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCertificatesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_certificates_rest_required_fields(
+    request_type=service.ListCertificatesRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificates._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificates._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListCertificatesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListCertificatesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_certificates(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_certificates_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_certificates._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_certificates_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_list_certificates"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_list_certificates"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListCertificatesRequest.pb(
+            service.ListCertificatesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListCertificatesResponse.to_json(
+            service.ListCertificatesResponse()
+        )
+
+        request = service.ListCertificatesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListCertificatesResponse()
+
+        client.list_certificates(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_certificates_rest_bad_request(
+    transport: str = "rest", request_type=service.ListCertificatesRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_certificates(request)
+
+
+def test_list_certificates_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificatesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_certificates(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/caPools/*}/certificates"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_certificates_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_certificates(
+            service.ListCertificatesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_certificates_rest_pager(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListCertificatesResponse(
+                certificates=[
+                    resources.Certificate(),
+                    resources.Certificate(),
+                    resources.Certificate(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCertificatesResponse(
+                certificates=[],
+                next_page_token="def",
+            ),
+            service.ListCertificatesResponse(
+                certificates=[
+                    resources.Certificate(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCertificatesResponse(
+                certificates=[
+                    resources.Certificate(),
+                    resources.Certificate(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListCertificatesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3"
+        }
+
+        pager = client.list_certificates(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Certificate) for i in results)
+
+        pages = list(client.list_certificates(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RevokeCertificateRequest,
+        dict,
+    ],
+)
+def test_revoke_certificate_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate(
+            name="name_value",
+            issuer_certificate_authority="issuer_certificate_authority_value",
+            certificate_template="certificate_template_value",
+            subject_mode=resources.SubjectRequestMode.DEFAULT,
+            pem_certificate="pem_certificate_value",
+            pem_certificate_chain=["pem_certificate_chain_value"],
+            pem_csr="pem_csr_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.revoke_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Certificate)
+    assert response.name == "name_value"
+    assert response.issuer_certificate_authority == "issuer_certificate_authority_value"
+    assert response.certificate_template == "certificate_template_value"
+    assert response.subject_mode == resources.SubjectRequestMode.DEFAULT
+    assert response.pem_certificate == "pem_certificate_value"
+    assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
+
+
+def test_revoke_certificate_rest_required_fields(
+    request_type=service.RevokeCertificateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).revoke_certificate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).revoke_certificate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Certificate()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.revoke_certificate(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_revoke_certificate_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.revoke_certificate._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "reason",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_revoke_certificate_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_revoke_certificate"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_revoke_certificate"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.RevokeCertificateRequest.pb(
+            service.RevokeCertificateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Certificate.to_json(
+            resources.Certificate()
+        )
+
+        request = service.RevokeCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Certificate()
+
+        client.revoke_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_revoke_certificate_rest_bad_request(
+    transport: str = "rest", request_type=service.RevokeCertificateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.revoke_certificate(request)
+
+
+def test_revoke_certificate_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.revoke_certificate(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificates/*}:revoke"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_revoke_certificate_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.revoke_certificate(
+            service.RevokeCertificateRequest(),
+            name="name_value",
+        )
+
+
+def test_revoke_certificate_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCertificateRequest,
+        dict,
+    ],
+)
+def test_update_certificate_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate": {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+        }
+    }
+    request_init["certificate"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4",
+        "pem_csr": "pem_csr_value",
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "issuer_certificate_authority": "issuer_certificate_authority_value",
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "certificate_template": "certificate_template_value",
+        "subject_mode": 1,
+        "revocation_details": {
+            "revocation_state": 1,
+            "revocation_time": {"seconds": 751, "nanos": 543},
+        },
+        "pem_certificate": "pem_certificate_value",
+        "certificate_description": {
+            "subject_description": {
+                "subject": {},
+                "subject_alt_name": {},
+                "hex_serial_number": "hex_serial_number_value",
+                "lifetime": {},
+                "not_before_time": {},
+                "not_after_time": {},
+            },
+            "x509_description": {},
+            "public_key": {},
+            "subject_key_id": {"key_id": "key_id_value"},
+            "authority_key_id": {},
+            "crl_distribution_points": [
+                "crl_distribution_points_value1",
+                "crl_distribution_points_value2",
+            ],
+            "aia_issuing_certificate_urls": [
+                "aia_issuing_certificate_urls_value1",
+                "aia_issuing_certificate_urls_value2",
+            ],
+            "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+        },
+        "pem_certificate_chain": [
+            "pem_certificate_chain_value1",
+            "pem_certificate_chain_value2",
+        ],
+        "create_time": {},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate(
+            name="name_value",
+            issuer_certificate_authority="issuer_certificate_authority_value",
+            certificate_template="certificate_template_value",
+            subject_mode=resources.SubjectRequestMode.DEFAULT,
+            pem_certificate="pem_certificate_value",
+            pem_certificate_chain=["pem_certificate_chain_value"],
+            pem_csr="pem_csr_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_certificate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Certificate)
+    assert response.name == "name_value"
+    assert response.issuer_certificate_authority == "issuer_certificate_authority_value"
+    assert response.certificate_template == "certificate_template_value"
+    assert response.subject_mode == resources.SubjectRequestMode.DEFAULT
+    assert response.pem_certificate == "pem_certificate_value"
+    assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
+
+
+def test_update_certificate_rest_required_fields(
+    request_type=service.UpdateCertificateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Certificate()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_certificate(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_certificate_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_certificate._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "certificate",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_certificate_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_update_certificate"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_update_certificate"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateCertificateRequest.pb(
+            service.UpdateCertificateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Certificate.to_json(
+            resources.Certificate()
+        )
+
+        request = service.UpdateCertificateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Certificate()
+
+        client.update_certificate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_certificate_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateCertificateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate": {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+        }
+    }
+    request_init["certificate"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4",
+        "pem_csr": "pem_csr_value",
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "issuer_certificate_authority": "issuer_certificate_authority_value",
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "certificate_template": "certificate_template_value",
+        "subject_mode": 1,
+        "revocation_details": {
+            "revocation_state": 1,
+            "revocation_time": {"seconds": 751, "nanos": 543},
+        },
+        "pem_certificate": "pem_certificate_value",
+        "certificate_description": {
+            "subject_description": {
+                "subject": {},
+                "subject_alt_name": {},
+                "hex_serial_number": "hex_serial_number_value",
+                "lifetime": {},
+                "not_before_time": {},
+                "not_after_time": {},
+            },
+            "x509_description": {},
+            "public_key": {},
+            "subject_key_id": {"key_id": "key_id_value"},
+            "authority_key_id": {},
+            "crl_distribution_points": [
+                "crl_distribution_points_value1",
+                "crl_distribution_points_value2",
+            ],
+            "aia_issuing_certificate_urls": [
+                "aia_issuing_certificate_urls_value1",
+                "aia_issuing_certificate_urls_value2",
+            ],
+            "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+        },
+        "pem_certificate_chain": [
+            "pem_certificate_chain_value1",
+            "pem_certificate_chain_value2",
+        ],
+        "create_time": {},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_certificate(request)
+
+
+def test_update_certificate_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Certificate()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "certificate": {
+                "name": "projects/sample1/locations/sample2/caPools/sample3/certificates/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            certificate=resources.Certificate(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_certificate(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{certificate.name=projects/*/locations/*/caPools/*/certificates/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_certificate_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_certificate(
+            service.UpdateCertificateRequest(),
+            certificate=resources.Certificate(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_certificate_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ActivateCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_activate_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.activate_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_activate_certificate_authority_rest_required_fields(
+    request_type=service.ActivateCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["pem_ca_certificate"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).activate_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["pemCaCertificate"] = "pem_ca_certificate_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).activate_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "pemCaCertificate" in jsonified_request
+    assert jsonified_request["pemCaCertificate"] == "pem_ca_certificate_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.activate_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_activate_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.activate_certificate_authority._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "pemCaCertificate",
+                "subordinateConfig",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_activate_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_activate_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_activate_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ActivateCertificateAuthorityRequest.pb(
+            service.ActivateCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.ActivateCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.activate_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_activate_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.ActivateCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.activate_certificate_authority(request)
+
+
+def test_activate_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.activate_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*}:activate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_activate_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.activate_certificate_authority(
+            service.ActivateCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+def test_activate_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_create_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request_init["certificate_authority"] = {
+        "name": "name_value",
+        "type_": 1,
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "key_spec": {
+            "cloud_kms_key_version": "cloud_kms_key_version_value",
+            "algorithm": 1,
+        },
+        "subordinate_config": {
+            "certificate_authority": "certificate_authority_value",
+            "pem_issuer_chain": {
+                "pem_certificates": [
+                    "pem_certificates_value1",
+                    "pem_certificates_value2",
+                ]
+            },
+        },
+        "tier": 1,
+        "state": 1,
+        "pem_ca_certificates": [
+            "pem_ca_certificates_value1",
+            "pem_ca_certificates_value2",
+        ],
+        "ca_certificate_descriptions": [
+            {
+                "subject_description": {
+                    "subject": {},
+                    "subject_alt_name": {},
+                    "hex_serial_number": "hex_serial_number_value",
+                    "lifetime": {},
+                    "not_before_time": {"seconds": 751, "nanos": 543},
+                    "not_after_time": {},
+                },
+                "x509_description": {},
+                "public_key": {},
+                "subject_key_id": {"key_id": "key_id_value"},
+                "authority_key_id": {},
+                "crl_distribution_points": [
+                    "crl_distribution_points_value1",
+                    "crl_distribution_points_value2",
+                ],
+                "aia_issuing_certificate_urls": [
+                    "aia_issuing_certificate_urls_value1",
+                    "aia_issuing_certificate_urls_value2",
+                ],
+                "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+            }
+        ],
+        "gcs_bucket": "gcs_bucket_value",
+        "access_urls": {
+            "ca_certificate_access_url": "ca_certificate_access_url_value",
+            "crl_access_urls": ["crl_access_urls_value1", "crl_access_urls_value2"],
+        },
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "expire_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_certificate_authority_rest_required_fields(
+    request_type=service.CreateCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["certificate_authority_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "certificateAuthorityId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "certificateAuthorityId" in jsonified_request
+    assert (
+        jsonified_request["certificateAuthorityId"]
+        == request_init["certificate_authority_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["certificateAuthorityId"] = "certificate_authority_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_certificate_authority._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "certificate_authority_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "certificateAuthorityId" in jsonified_request
+    assert (
+        jsonified_request["certificateAuthorityId"] == "certificate_authority_id_value"
+    )
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_certificate_authority(request)
+
+            expected_params = [
+                (
+                    "certificateAuthorityId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_certificate_authority._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "certificateAuthorityId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "certificateAuthorityId",
+                "certificateAuthority",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_create_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_create_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateCertificateAuthorityRequest.pb(
+            service.CreateCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request_init["certificate_authority"] = {
+        "name": "name_value",
+        "type_": 1,
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "key_spec": {
+            "cloud_kms_key_version": "cloud_kms_key_version_value",
+            "algorithm": 1,
+        },
+        "subordinate_config": {
+            "certificate_authority": "certificate_authority_value",
+            "pem_issuer_chain": {
+                "pem_certificates": [
+                    "pem_certificates_value1",
+                    "pem_certificates_value2",
+                ]
+            },
+        },
+        "tier": 1,
+        "state": 1,
+        "pem_ca_certificates": [
+            "pem_ca_certificates_value1",
+            "pem_ca_certificates_value2",
+        ],
+        "ca_certificate_descriptions": [
+            {
+                "subject_description": {
+                    "subject": {},
+                    "subject_alt_name": {},
+                    "hex_serial_number": "hex_serial_number_value",
+                    "lifetime": {},
+                    "not_before_time": {"seconds": 751, "nanos": 543},
+                    "not_after_time": {},
+                },
+                "x509_description": {},
+                "public_key": {},
+                "subject_key_id": {"key_id": "key_id_value"},
+                "authority_key_id": {},
+                "crl_distribution_points": [
+                    "crl_distribution_points_value1",
+                    "crl_distribution_points_value2",
+                ],
+                "aia_issuing_certificate_urls": [
+                    "aia_issuing_certificate_urls_value1",
+                    "aia_issuing_certificate_urls_value2",
+                ],
+                "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+            }
+        ],
+        "gcs_bucket": "gcs_bucket_value",
+        "access_urls": {
+            "ca_certificate_access_url": "ca_certificate_access_url_value",
+            "crl_access_urls": ["crl_access_urls_value1", "crl_access_urls_value2"],
+        },
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "expire_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_certificate_authority(request)
+
+
+def test_create_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            certificate_authority=resources.CertificateAuthority(name="name_value"),
+            certificate_authority_id="certificate_authority_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/caPools/*}/certificateAuthorities"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_certificate_authority(
+            service.CreateCertificateAuthorityRequest(),
+            parent="parent_value",
+            certificate_authority=resources.CertificateAuthority(name="name_value"),
+            certificate_authority_id="certificate_authority_id_value",
+        )
+
+
+def test_create_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DisableCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_disable_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.disable_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_disable_certificate_authority_rest_required_fields(
+    request_type=service.DisableCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).disable_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).disable_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.disable_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_disable_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.disable_certificate_authority._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_disable_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_disable_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_disable_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DisableCertificateAuthorityRequest.pb(
+            service.DisableCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DisableCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.disable_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_disable_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.DisableCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.disable_certificate_authority(request)
+
+
+def test_disable_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.disable_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*}:disable"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_disable_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.disable_certificate_authority(
+            service.DisableCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+def test_disable_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_enable_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.enable_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_enable_certificate_authority_rest_required_fields(
+    request_type=service.EnableCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.enable_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_enable_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.enable_certificate_authority._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enable_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_enable_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_enable_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.EnableCertificateAuthorityRequest.pb(
+            service.EnableCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.EnableCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.enable_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_enable_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.EnableCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.enable_certificate_authority(request)
+
+
+def test_enable_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.enable_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*}:enable"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_enable_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.enable_certificate_authority(
+            service.EnableCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+def test_enable_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.FetchCertificateAuthorityCsrRequest,
+        dict,
+    ],
+)
+def test_fetch_certificate_authority_csr_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.FetchCertificateAuthorityCsrResponse(
+            pem_csr="pem_csr_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.FetchCertificateAuthorityCsrResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_certificate_authority_csr(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.FetchCertificateAuthorityCsrResponse)
+    assert response.pem_csr == "pem_csr_value"
+
+
+def test_fetch_certificate_authority_csr_rest_required_fields(
+    request_type=service.FetchCertificateAuthorityCsrRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_certificate_authority_csr._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_certificate_authority_csr._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.FetchCertificateAuthorityCsrResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.FetchCertificateAuthorityCsrResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_certificate_authority_csr(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_certificate_authority_csr_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_certificate_authority_csr._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_certificate_authority_csr_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_fetch_certificate_authority_csr",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_fetch_certificate_authority_csr",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.FetchCertificateAuthorityCsrRequest.pb(
+            service.FetchCertificateAuthorityCsrRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            service.FetchCertificateAuthorityCsrResponse.to_json(
+                service.FetchCertificateAuthorityCsrResponse()
+            )
+        )
+
+        request = service.FetchCertificateAuthorityCsrRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.FetchCertificateAuthorityCsrResponse()
+
+        client.fetch_certificate_authority_csr(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_certificate_authority_csr_rest_bad_request(
+    transport: str = "rest", request_type=service.FetchCertificateAuthorityCsrRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_certificate_authority_csr(request)
+
+
+def test_fetch_certificate_authority_csr_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.FetchCertificateAuthorityCsrResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.FetchCertificateAuthorityCsrResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.fetch_certificate_authority_csr(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*}:fetch"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_fetch_certificate_authority_csr_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_certificate_authority_csr(
+            service.FetchCertificateAuthorityCsrRequest(),
+            name="name_value",
+        )
+
+
+def test_fetch_certificate_authority_csr_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_get_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CertificateAuthority(
+            name="name_value",
+            type_=resources.CertificateAuthority.Type.SELF_SIGNED,
+            tier=resources.CaPool.Tier.ENTERPRISE,
+            state=resources.CertificateAuthority.State.ENABLED,
+            pem_ca_certificates=["pem_ca_certificates_value"],
+            gcs_bucket="gcs_bucket_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CertificateAuthority.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CertificateAuthority)
+    assert response.name == "name_value"
+    assert response.type_ == resources.CertificateAuthority.Type.SELF_SIGNED
+    assert response.tier == resources.CaPool.Tier.ENTERPRISE
+    assert response.state == resources.CertificateAuthority.State.ENABLED
+    assert response.pem_ca_certificates == ["pem_ca_certificates_value"]
+    assert response.gcs_bucket == "gcs_bucket_value"
+
+
+def test_get_certificate_authority_rest_required_fields(
+    request_type=service.GetCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CertificateAuthority()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CertificateAuthority.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_certificate_authority._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_get_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_get_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetCertificateAuthorityRequest.pb(
+            service.GetCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CertificateAuthority.to_json(
+            resources.CertificateAuthority()
+        )
+
+        request = service.GetCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CertificateAuthority()
+
+        client.get_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.GetCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_certificate_authority(request)
+
+
+def test_get_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CertificateAuthority()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CertificateAuthority.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_certificate_authority(
+            service.GetCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+def test_get_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCertificateAuthoritiesRequest,
+        dict,
+    ],
+)
+def test_list_certificate_authorities_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificateAuthoritiesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificateAuthoritiesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_certificate_authorities(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCertificateAuthoritiesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_certificate_authorities_rest_required_fields(
+    request_type=service.ListCertificateAuthoritiesRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificate_authorities._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificate_authorities._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListCertificateAuthoritiesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListCertificateAuthoritiesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_certificate_authorities(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_certificate_authorities_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_certificate_authorities._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_certificate_authorities_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_list_certificate_authorities",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_list_certificate_authorities",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListCertificateAuthoritiesRequest.pb(
+            service.ListCertificateAuthoritiesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListCertificateAuthoritiesResponse.to_json(
+            service.ListCertificateAuthoritiesResponse()
+        )
+
+        request = service.ListCertificateAuthoritiesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListCertificateAuthoritiesResponse()
+
+        client.list_certificate_authorities(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_certificate_authorities_rest_bad_request(
+    transport: str = "rest", request_type=service.ListCertificateAuthoritiesRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_certificate_authorities(request)
+
+
+def test_list_certificate_authorities_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificateAuthoritiesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificateAuthoritiesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_certificate_authorities(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/caPools/*}/certificateAuthorities"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_certificate_authorities_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_certificate_authorities(
+            service.ListCertificateAuthoritiesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_certificate_authorities_rest_pager(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListCertificateAuthoritiesResponse(
+                certificate_authorities=[
+                    resources.CertificateAuthority(),
+                    resources.CertificateAuthority(),
+                    resources.CertificateAuthority(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCertificateAuthoritiesResponse(
+                certificate_authorities=[],
+                next_page_token="def",
+            ),
+            service.ListCertificateAuthoritiesResponse(
+                certificate_authorities=[
+                    resources.CertificateAuthority(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCertificateAuthoritiesResponse(
+                certificate_authorities=[
+                    resources.CertificateAuthority(),
+                    resources.CertificateAuthority(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            service.ListCertificateAuthoritiesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3"
+        }
+
+        pager = client.list_certificate_authorities(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.CertificateAuthority) for i in results)
+
+        pages = list(client.list_certificate_authorities(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UndeleteCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_undelete_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.undelete_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_undelete_certificate_authority_rest_required_fields(
+    request_type=service.UndeleteCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).undelete_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).undelete_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.undelete_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_undelete_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.undelete_certificate_authority._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_undelete_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_undelete_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_undelete_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UndeleteCertificateAuthorityRequest.pb(
+            service.UndeleteCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UndeleteCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.undelete_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_undelete_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.UndeleteCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.undelete_certificate_authority(request)
+
+
+def test_undelete_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.undelete_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*}:undelete"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_undelete_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.undelete_certificate_authority(
+            service.UndeleteCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+def test_undelete_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_delete_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_certificate_authority_rest_required_fields(
+    request_type=service.DeleteCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_certificate_authority._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "ignore_active_certificates",
+            "request_id",
+            "skip_grace_period",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_certificate_authority._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "ignoreActiveCertificates",
+                "requestId",
+                "skipGracePeriod",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_delete_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_delete_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteCertificateAuthorityRequest.pb(
+            service.DeleteCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_certificate_authority(request)
+
+
+def test_delete_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_certificate_authority(
+            service.DeleteCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCertificateAuthorityRequest,
+        dict,
+    ],
+)
+def test_update_certificate_authority_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate_authority": {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+    }
+    request_init["certificate_authority"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4",
+        "type_": 1,
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "key_spec": {
+            "cloud_kms_key_version": "cloud_kms_key_version_value",
+            "algorithm": 1,
+        },
+        "subordinate_config": {
+            "certificate_authority": "certificate_authority_value",
+            "pem_issuer_chain": {
+                "pem_certificates": [
+                    "pem_certificates_value1",
+                    "pem_certificates_value2",
+                ]
+            },
+        },
+        "tier": 1,
+        "state": 1,
+        "pem_ca_certificates": [
+            "pem_ca_certificates_value1",
+            "pem_ca_certificates_value2",
+        ],
+        "ca_certificate_descriptions": [
+            {
+                "subject_description": {
+                    "subject": {},
+                    "subject_alt_name": {},
+                    "hex_serial_number": "hex_serial_number_value",
+                    "lifetime": {},
+                    "not_before_time": {"seconds": 751, "nanos": 543},
+                    "not_after_time": {},
+                },
+                "x509_description": {},
+                "public_key": {},
+                "subject_key_id": {"key_id": "key_id_value"},
+                "authority_key_id": {},
+                "crl_distribution_points": [
+                    "crl_distribution_points_value1",
+                    "crl_distribution_points_value2",
+                ],
+                "aia_issuing_certificate_urls": [
+                    "aia_issuing_certificate_urls_value1",
+                    "aia_issuing_certificate_urls_value2",
+                ],
+                "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+            }
+        ],
+        "gcs_bucket": "gcs_bucket_value",
+        "access_urls": {
+            "ca_certificate_access_url": "ca_certificate_access_url_value",
+            "crl_access_urls": ["crl_access_urls_value1", "crl_access_urls_value2"],
+        },
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "expire_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_certificate_authority(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_certificate_authority_rest_required_fields(
+    request_type=service.UpdateCertificateAuthorityRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate_authority._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate_authority._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_certificate_authority(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_certificate_authority_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_certificate_authority._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "certificateAuthority",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_certificate_authority_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_update_certificate_authority",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_update_certificate_authority",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateCertificateAuthorityRequest.pb(
+            service.UpdateCertificateAuthorityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateCertificateAuthorityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_certificate_authority_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateCertificateAuthorityRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate_authority": {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+    }
+    request_init["certificate_authority"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4",
+        "type_": 1,
+        "config": {
+            "subject_config": {
+                "subject": {
+                    "common_name": "common_name_value",
+                    "country_code": "country_code_value",
+                    "organization": "organization_value",
+                    "organizational_unit": "organizational_unit_value",
+                    "locality": "locality_value",
+                    "province": "province_value",
+                    "street_address": "street_address_value",
+                    "postal_code": "postal_code_value",
+                },
+                "subject_alt_name": {
+                    "dns_names": ["dns_names_value1", "dns_names_value2"],
+                    "uris": ["uris_value1", "uris_value2"],
+                    "email_addresses": [
+                        "email_addresses_value1",
+                        "email_addresses_value2",
+                    ],
+                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                    "custom_sans": [
+                        {
+                            "object_id": {"object_id_path": [1456, 1457]},
+                            "critical": True,
+                            "value": b"value_blob",
+                        }
+                    ],
+                },
+            },
+            "x509_config": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": {},
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": {},
+            },
+            "public_key": {"key": b"key_blob", "format_": 1},
+        },
+        "lifetime": {"seconds": 751, "nanos": 543},
+        "key_spec": {
+            "cloud_kms_key_version": "cloud_kms_key_version_value",
+            "algorithm": 1,
+        },
+        "subordinate_config": {
+            "certificate_authority": "certificate_authority_value",
+            "pem_issuer_chain": {
+                "pem_certificates": [
+                    "pem_certificates_value1",
+                    "pem_certificates_value2",
+                ]
+            },
+        },
+        "tier": 1,
+        "state": 1,
+        "pem_ca_certificates": [
+            "pem_ca_certificates_value1",
+            "pem_ca_certificates_value2",
+        ],
+        "ca_certificate_descriptions": [
+            {
+                "subject_description": {
+                    "subject": {},
+                    "subject_alt_name": {},
+                    "hex_serial_number": "hex_serial_number_value",
+                    "lifetime": {},
+                    "not_before_time": {"seconds": 751, "nanos": 543},
+                    "not_after_time": {},
+                },
+                "x509_description": {},
+                "public_key": {},
+                "subject_key_id": {"key_id": "key_id_value"},
+                "authority_key_id": {},
+                "crl_distribution_points": [
+                    "crl_distribution_points_value1",
+                    "crl_distribution_points_value2",
+                ],
+                "aia_issuing_certificate_urls": [
+                    "aia_issuing_certificate_urls_value1",
+                    "aia_issuing_certificate_urls_value2",
+                ],
+                "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+            }
+        ],
+        "gcs_bucket": "gcs_bucket_value",
+        "access_urls": {
+            "ca_certificate_access_url": "ca_certificate_access_url_value",
+            "crl_access_urls": ["crl_access_urls_value1", "crl_access_urls_value2"],
+        },
+        "create_time": {},
+        "update_time": {},
+        "delete_time": {},
+        "expire_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_certificate_authority(request)
+
+
+def test_update_certificate_authority_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "certificate_authority": {
+                "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            certificate_authority=resources.CertificateAuthority(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_certificate_authority(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{certificate_authority.name=projects/*/locations/*/caPools/*/certificateAuthorities/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_certificate_authority_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_certificate_authority(
+            service.UpdateCertificateAuthorityRequest(),
+            certificate_authority=resources.CertificateAuthority(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_certificate_authority_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCaPoolRequest,
+        dict,
+    ],
+)
+def test_create_ca_pool_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["ca_pool"] = {
+        "name": "name_value",
+        "tier": 1,
+        "issuance_policy": {
+            "allowed_key_types": [
+                {
+                    "rsa": {"min_modulus_size": 1734, "max_modulus_size": 1736},
+                    "elliptic_curve": {"signature_algorithm": 1},
+                }
+            ],
+            "maximum_lifetime": {"seconds": 751, "nanos": 543},
+            "allowed_issuance_modes": {
+                "allow_csr_based_issuance": True,
+                "allow_config_based_issuance": True,
+            },
+            "baseline_values": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": [
+                    {"object_id": {}, "critical": True, "value": b"value_blob"}
+                ],
+            },
+            "identity_constraints": {
+                "cel_expression": {
+                    "expression": "expression_value",
+                    "title": "title_value",
+                    "description": "description_value",
+                    "location": "location_value",
+                },
+                "allow_subject_passthrough": True,
+                "allow_subject_alt_names_passthrough": True,
+            },
+            "passthrough_extensions": {
+                "known_extensions": [1],
+                "additional_extensions": {},
+            },
+        },
+        "publishing_options": {"publish_ca_cert": True, "publish_crl": True},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_ca_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_ca_pool_rest_required_fields(request_type=service.CreateCaPoolRequest):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["ca_pool_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "caPoolId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_ca_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "caPoolId" in jsonified_request
+    assert jsonified_request["caPoolId"] == request_init["ca_pool_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["caPoolId"] = "ca_pool_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_ca_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "ca_pool_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "caPoolId" in jsonified_request
+    assert jsonified_request["caPoolId"] == "ca_pool_id_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_ca_pool(request)
+
+            expected_params = [
+                (
+                    "caPoolId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_ca_pool_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_ca_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "caPoolId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "caPoolId",
+                "caPool",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_ca_pool_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_create_ca_pool"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_create_ca_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateCaPoolRequest.pb(service.CreateCaPoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateCaPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_ca_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_ca_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateCaPoolRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["ca_pool"] = {
+        "name": "name_value",
+        "tier": 1,
+        "issuance_policy": {
+            "allowed_key_types": [
+                {
+                    "rsa": {"min_modulus_size": 1734, "max_modulus_size": 1736},
+                    "elliptic_curve": {"signature_algorithm": 1},
+                }
+            ],
+            "maximum_lifetime": {"seconds": 751, "nanos": 543},
+            "allowed_issuance_modes": {
+                "allow_csr_based_issuance": True,
+                "allow_config_based_issuance": True,
+            },
+            "baseline_values": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": [
+                    {"object_id": {}, "critical": True, "value": b"value_blob"}
+                ],
+            },
+            "identity_constraints": {
+                "cel_expression": {
+                    "expression": "expression_value",
+                    "title": "title_value",
+                    "description": "description_value",
+                    "location": "location_value",
+                },
+                "allow_subject_passthrough": True,
+                "allow_subject_alt_names_passthrough": True,
+            },
+            "passthrough_extensions": {
+                "known_extensions": [1],
+                "additional_extensions": {},
+            },
+        },
+        "publishing_options": {"publish_ca_cert": True, "publish_crl": True},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_ca_pool(request)
+
+
+def test_create_ca_pool_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            ca_pool=resources.CaPool(name="name_value"),
+            ca_pool_id="ca_pool_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_ca_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/caPools" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_ca_pool_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_ca_pool(
+            service.CreateCaPoolRequest(),
+            parent="parent_value",
+            ca_pool=resources.CaPool(name="name_value"),
+            ca_pool_id="ca_pool_id_value",
+        )
+
+
+def test_create_ca_pool_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCaPoolRequest,
+        dict,
+    ],
+)
+def test_update_ca_pool_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ca_pool": {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+    }
+    request_init["ca_pool"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3",
+        "tier": 1,
+        "issuance_policy": {
+            "allowed_key_types": [
+                {
+                    "rsa": {"min_modulus_size": 1734, "max_modulus_size": 1736},
+                    "elliptic_curve": {"signature_algorithm": 1},
+                }
+            ],
+            "maximum_lifetime": {"seconds": 751, "nanos": 543},
+            "allowed_issuance_modes": {
+                "allow_csr_based_issuance": True,
+                "allow_config_based_issuance": True,
+            },
+            "baseline_values": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": [
+                    {"object_id": {}, "critical": True, "value": b"value_blob"}
+                ],
+            },
+            "identity_constraints": {
+                "cel_expression": {
+                    "expression": "expression_value",
+                    "title": "title_value",
+                    "description": "description_value",
+                    "location": "location_value",
+                },
+                "allow_subject_passthrough": True,
+                "allow_subject_alt_names_passthrough": True,
+            },
+            "passthrough_extensions": {
+                "known_extensions": [1],
+                "additional_extensions": {},
+            },
+        },
+        "publishing_options": {"publish_ca_cert": True, "publish_crl": True},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_ca_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_ca_pool_rest_required_fields(request_type=service.UpdateCaPoolRequest):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_ca_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_ca_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_ca_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_ca_pool_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_ca_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "caPool",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_ca_pool_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_update_ca_pool"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_update_ca_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateCaPoolRequest.pb(service.UpdateCaPoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateCaPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_ca_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_ca_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateCaPoolRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "ca_pool": {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+    }
+    request_init["ca_pool"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3",
+        "tier": 1,
+        "issuance_policy": {
+            "allowed_key_types": [
+                {
+                    "rsa": {"min_modulus_size": 1734, "max_modulus_size": 1736},
+                    "elliptic_curve": {"signature_algorithm": 1},
+                }
+            ],
+            "maximum_lifetime": {"seconds": 751, "nanos": 543},
+            "allowed_issuance_modes": {
+                "allow_csr_based_issuance": True,
+                "allow_config_based_issuance": True,
+            },
+            "baseline_values": {
+                "key_usage": {
+                    "base_key_usage": {
+                        "digital_signature": True,
+                        "content_commitment": True,
+                        "key_encipherment": True,
+                        "data_encipherment": True,
+                        "key_agreement": True,
+                        "cert_sign": True,
+                        "crl_sign": True,
+                        "encipher_only": True,
+                        "decipher_only": True,
+                    },
+                    "extended_key_usage": {
+                        "server_auth": True,
+                        "client_auth": True,
+                        "code_signing": True,
+                        "email_protection": True,
+                        "time_stamping": True,
+                        "ocsp_signing": True,
+                    },
+                    "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+                },
+                "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+                "policy_ids": {},
+                "aia_ocsp_servers": [
+                    "aia_ocsp_servers_value1",
+                    "aia_ocsp_servers_value2",
+                ],
+                "name_constraints": {
+                    "critical": True,
+                    "permitted_dns_names": [
+                        "permitted_dns_names_value1",
+                        "permitted_dns_names_value2",
+                    ],
+                    "excluded_dns_names": [
+                        "excluded_dns_names_value1",
+                        "excluded_dns_names_value2",
+                    ],
+                    "permitted_ip_ranges": [
+                        "permitted_ip_ranges_value1",
+                        "permitted_ip_ranges_value2",
+                    ],
+                    "excluded_ip_ranges": [
+                        "excluded_ip_ranges_value1",
+                        "excluded_ip_ranges_value2",
+                    ],
+                    "permitted_email_addresses": [
+                        "permitted_email_addresses_value1",
+                        "permitted_email_addresses_value2",
+                    ],
+                    "excluded_email_addresses": [
+                        "excluded_email_addresses_value1",
+                        "excluded_email_addresses_value2",
+                    ],
+                    "permitted_uris": [
+                        "permitted_uris_value1",
+                        "permitted_uris_value2",
+                    ],
+                    "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+                },
+                "additional_extensions": [
+                    {"object_id": {}, "critical": True, "value": b"value_blob"}
+                ],
+            },
+            "identity_constraints": {
+                "cel_expression": {
+                    "expression": "expression_value",
+                    "title": "title_value",
+                    "description": "description_value",
+                    "location": "location_value",
+                },
+                "allow_subject_passthrough": True,
+                "allow_subject_alt_names_passthrough": True,
+            },
+            "passthrough_extensions": {
+                "known_extensions": [1],
+                "additional_extensions": {},
+            },
+        },
+        "publishing_options": {"publish_ca_cert": True, "publish_crl": True},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_ca_pool(request)
+
+
+def test_update_ca_pool_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "ca_pool": {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            ca_pool=resources.CaPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_ca_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{ca_pool.name=projects/*/locations/*/caPools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_ca_pool_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_ca_pool(
+            service.UpdateCaPoolRequest(),
+            ca_pool=resources.CaPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_ca_pool_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCaPoolRequest,
+        dict,
+    ],
+)
+def test_get_ca_pool_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CaPool(
+            name="name_value",
+            tier=resources.CaPool.Tier.ENTERPRISE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CaPool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_ca_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CaPool)
+    assert response.name == "name_value"
+    assert response.tier == resources.CaPool.Tier.ENTERPRISE
+
+
+def test_get_ca_pool_rest_required_fields(request_type=service.GetCaPoolRequest):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_ca_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_ca_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CaPool()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CaPool.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_ca_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_ca_pool_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_ca_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_ca_pool_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_get_ca_pool"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_get_ca_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetCaPoolRequest.pb(service.GetCaPoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CaPool.to_json(resources.CaPool())
+
+        request = service.GetCaPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CaPool()
+
+        client.get_ca_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_ca_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.GetCaPoolRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_ca_pool(request)
+
+
+def test_get_ca_pool_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CaPool()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CaPool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_ca_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_ca_pool_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_ca_pool(
+            service.GetCaPoolRequest(),
+            name="name_value",
+        )
+
+
+def test_get_ca_pool_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCaPoolsRequest,
+        dict,
+    ],
+)
+def test_list_ca_pools_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCaPoolsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCaPoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_ca_pools(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCaPoolsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_ca_pools_rest_required_fields(request_type=service.ListCaPoolsRequest):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_ca_pools._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_ca_pools._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListCaPoolsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListCaPoolsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_ca_pools(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_ca_pools_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_ca_pools._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_ca_pools_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_list_ca_pools"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_list_ca_pools"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListCaPoolsRequest.pb(service.ListCaPoolsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListCaPoolsResponse.to_json(
+            service.ListCaPoolsResponse()
+        )
+
+        request = service.ListCaPoolsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListCaPoolsResponse()
+
+        client.list_ca_pools(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_ca_pools_rest_bad_request(
+    transport: str = "rest", request_type=service.ListCaPoolsRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_ca_pools(request)
+
+
+def test_list_ca_pools_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCaPoolsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCaPoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_ca_pools(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/caPools" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_ca_pools_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_ca_pools(
+            service.ListCaPoolsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_ca_pools_rest_pager(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListCaPoolsResponse(
+                ca_pools=[
+                    resources.CaPool(),
+                    resources.CaPool(),
+                    resources.CaPool(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCaPoolsResponse(
+                ca_pools=[],
+                next_page_token="def",
+            ),
+            service.ListCaPoolsResponse(
+                ca_pools=[
+                    resources.CaPool(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCaPoolsResponse(
+                ca_pools=[
+                    resources.CaPool(),
+                    resources.CaPool(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListCaPoolsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_ca_pools(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.CaPool) for i in results)
+
+        pages = list(client.list_ca_pools(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteCaPoolRequest,
+        dict,
+    ],
+)
+def test_delete_ca_pool_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_ca_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_ca_pool_rest_required_fields(request_type=service.DeleteCaPoolRequest):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_ca_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_ca_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_ca_pool(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_ca_pool_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_ca_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_ca_pool_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_delete_ca_pool"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_delete_ca_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteCaPoolRequest.pb(service.DeleteCaPoolRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteCaPoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_ca_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_ca_pool_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteCaPoolRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_ca_pool(request)
+
+
+def test_delete_ca_pool_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/caPools/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_ca_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_ca_pool_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_ca_pool(
+            service.DeleteCaPoolRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_ca_pool_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.FetchCaCertsRequest,
+        dict,
+    ],
+)
+def test_fetch_ca_certs_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"ca_pool": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.FetchCaCertsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.FetchCaCertsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_ca_certs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.FetchCaCertsResponse)
+
+
+def test_fetch_ca_certs_rest_required_fields(request_type=service.FetchCaCertsRequest):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["ca_pool"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_ca_certs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["caPool"] = "ca_pool_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_ca_certs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "caPool" in jsonified_request
+    assert jsonified_request["caPool"] == "ca_pool_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.FetchCaCertsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.FetchCaCertsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_ca_certs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_ca_certs_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_ca_certs._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("caPool",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_ca_certs_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "post_fetch_ca_certs"
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor, "pre_fetch_ca_certs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.FetchCaCertsRequest.pb(service.FetchCaCertsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.FetchCaCertsResponse.to_json(
+            service.FetchCaCertsResponse()
+        )
+
+        request = service.FetchCaCertsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.FetchCaCertsResponse()
+
+        client.fetch_ca_certs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_ca_certs_rest_bad_request(
+    transport: str = "rest", request_type=service.FetchCaCertsRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"ca_pool": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_ca_certs(request)
+
+
+def test_fetch_ca_certs_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.FetchCaCertsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "ca_pool": "projects/sample1/locations/sample2/caPools/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            ca_pool="ca_pool_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.FetchCaCertsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.fetch_ca_certs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{ca_pool=projects/*/locations/*/caPools/*}:fetchCaCerts"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_fetch_ca_certs_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_ca_certs(
+            service.FetchCaCertsRequest(),
+            ca_pool="ca_pool_value",
+        )
+
+
+def test_fetch_ca_certs_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCertificateRevocationListRequest,
+        dict,
+    ],
+)
+def test_get_certificate_revocation_list_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CertificateRevocationList(
+            name="name_value",
+            sequence_number=1601,
+            pem_crl="pem_crl_value",
+            access_url="access_url_value",
+            state=resources.CertificateRevocationList.State.ACTIVE,
+            revision_id="revision_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CertificateRevocationList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_certificate_revocation_list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CertificateRevocationList)
+    assert response.name == "name_value"
+    assert response.sequence_number == 1601
+    assert response.pem_crl == "pem_crl_value"
+    assert response.access_url == "access_url_value"
+    assert response.state == resources.CertificateRevocationList.State.ACTIVE
+    assert response.revision_id == "revision_id_value"
+
+
+def test_get_certificate_revocation_list_rest_required_fields(
+    request_type=service.GetCertificateRevocationListRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate_revocation_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate_revocation_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CertificateRevocationList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CertificateRevocationList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_certificate_revocation_list(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_certificate_revocation_list_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_certificate_revocation_list._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_certificate_revocation_list_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_get_certificate_revocation_list",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_get_certificate_revocation_list",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetCertificateRevocationListRequest.pb(
+            service.GetCertificateRevocationListRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CertificateRevocationList.to_json(
+            resources.CertificateRevocationList()
+        )
+
+        request = service.GetCertificateRevocationListRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CertificateRevocationList()
+
+        client.get_certificate_revocation_list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_certificate_revocation_list_rest_bad_request(
+    transport: str = "rest", request_type=service.GetCertificateRevocationListRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_certificate_revocation_list(request)
+
+
+def test_get_certificate_revocation_list_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CertificateRevocationList()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CertificateRevocationList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_certificate_revocation_list(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/caPools/*/certificateAuthorities/*/certificateRevocationLists/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_certificate_revocation_list_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_certificate_revocation_list(
+            service.GetCertificateRevocationListRequest(),
+            name="name_value",
+        )
+
+
+def test_get_certificate_revocation_list_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCertificateRevocationListsRequest,
+        dict,
+    ],
+)
+def test_list_certificate_revocation_lists_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificateRevocationListsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificateRevocationListsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_certificate_revocation_lists(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCertificateRevocationListsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_certificate_revocation_lists_rest_required_fields(
+    request_type=service.ListCertificateRevocationListsRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificate_revocation_lists._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificate_revocation_lists._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListCertificateRevocationListsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListCertificateRevocationListsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_certificate_revocation_lists(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_certificate_revocation_lists_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_certificate_revocation_lists._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_certificate_revocation_lists_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_list_certificate_revocation_lists",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_list_certificate_revocation_lists",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListCertificateRevocationListsRequest.pb(
+            service.ListCertificateRevocationListsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            service.ListCertificateRevocationListsResponse.to_json(
+                service.ListCertificateRevocationListsResponse()
+            )
+        )
+
+        request = service.ListCertificateRevocationListsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListCertificateRevocationListsResponse()
+
+        client.list_certificate_revocation_lists(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_certificate_revocation_lists_rest_bad_request(
+    transport: str = "rest", request_type=service.ListCertificateRevocationListsRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_certificate_revocation_lists(request)
+
+
+def test_list_certificate_revocation_lists_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificateRevocationListsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificateRevocationListsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_certificate_revocation_lists(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/caPools/*/certificateAuthorities/*}/certificateRevocationLists"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_certificate_revocation_lists_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_certificate_revocation_lists(
+            service.ListCertificateRevocationListsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_certificate_revocation_lists_rest_pager(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListCertificateRevocationListsResponse(
+                certificate_revocation_lists=[
+                    resources.CertificateRevocationList(),
+                    resources.CertificateRevocationList(),
+                    resources.CertificateRevocationList(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCertificateRevocationListsResponse(
+                certificate_revocation_lists=[],
+                next_page_token="def",
+            ),
+            service.ListCertificateRevocationListsResponse(
+                certificate_revocation_lists=[
+                    resources.CertificateRevocationList(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCertificateRevocationListsResponse(
+                certificate_revocation_lists=[
+                    resources.CertificateRevocationList(),
+                    resources.CertificateRevocationList(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            service.ListCertificateRevocationListsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4"
+        }
+
+        pager = client.list_certificate_revocation_lists(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.CertificateRevocationList) for i in results)
+
+        pages = list(
+            client.list_certificate_revocation_lists(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCertificateRevocationListRequest,
+        dict,
+    ],
+)
+def test_update_certificate_revocation_list_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate_revocation_list": {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5"
+        }
+    }
+    request_init["certificate_revocation_list"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5",
+        "sequence_number": 1601,
+        "revoked_certificates": [
+            {
+                "certificate": "certificate_value",
+                "hex_serial_number": "hex_serial_number_value",
+                "revocation_reason": 1,
+            }
+        ],
+        "pem_crl": "pem_crl_value",
+        "access_url": "access_url_value",
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "revision_id": "revision_id_value",
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_certificate_revocation_list(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_certificate_revocation_list_rest_required_fields(
+    request_type=service.UpdateCertificateRevocationListRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate_revocation_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate_revocation_list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_certificate_revocation_list(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_certificate_revocation_list_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.update_certificate_revocation_list._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "certificateRevocationList",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_certificate_revocation_list_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_update_certificate_revocation_list",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_update_certificate_revocation_list",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateCertificateRevocationListRequest.pb(
+            service.UpdateCertificateRevocationListRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateCertificateRevocationListRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_certificate_revocation_list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_certificate_revocation_list_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateCertificateRevocationListRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate_revocation_list": {
+            "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5"
+        }
+    }
+    request_init["certificate_revocation_list"] = {
+        "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5",
+        "sequence_number": 1601,
+        "revoked_certificates": [
+            {
+                "certificate": "certificate_value",
+                "hex_serial_number": "hex_serial_number_value",
+                "revocation_reason": 1,
+            }
+        ],
+        "pem_crl": "pem_crl_value",
+        "access_url": "access_url_value",
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "revision_id": "revision_id_value",
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_certificate_revocation_list(request)
+
+
+def test_update_certificate_revocation_list_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "certificate_revocation_list": {
+                "name": "projects/sample1/locations/sample2/caPools/sample3/certificateAuthorities/sample4/certificateRevocationLists/sample5"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            certificate_revocation_list=resources.CertificateRevocationList(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_certificate_revocation_list(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{certificate_revocation_list.name=projects/*/locations/*/caPools/*/certificateAuthorities/*/certificateRevocationLists/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_certificate_revocation_list_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_certificate_revocation_list(
+            service.UpdateCertificateRevocationListRequest(),
+            certificate_revocation_list=resources.CertificateRevocationList(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_certificate_revocation_list_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCertificateTemplateRequest,
+        dict,
+    ],
+)
+def test_create_certificate_template_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["certificate_template"] = {
+        "name": "name_value",
+        "predefined_values": {
+            "key_usage": {
+                "base_key_usage": {
+                    "digital_signature": True,
+                    "content_commitment": True,
+                    "key_encipherment": True,
+                    "data_encipherment": True,
+                    "key_agreement": True,
+                    "cert_sign": True,
+                    "crl_sign": True,
+                    "encipher_only": True,
+                    "decipher_only": True,
+                },
+                "extended_key_usage": {
+                    "server_auth": True,
+                    "client_auth": True,
+                    "code_signing": True,
+                    "email_protection": True,
+                    "time_stamping": True,
+                    "ocsp_signing": True,
+                },
+                "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+            },
+            "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+            "policy_ids": {},
+            "aia_ocsp_servers": ["aia_ocsp_servers_value1", "aia_ocsp_servers_value2"],
+            "name_constraints": {
+                "critical": True,
+                "permitted_dns_names": [
+                    "permitted_dns_names_value1",
+                    "permitted_dns_names_value2",
+                ],
+                "excluded_dns_names": [
+                    "excluded_dns_names_value1",
+                    "excluded_dns_names_value2",
+                ],
+                "permitted_ip_ranges": [
+                    "permitted_ip_ranges_value1",
+                    "permitted_ip_ranges_value2",
+                ],
+                "excluded_ip_ranges": [
+                    "excluded_ip_ranges_value1",
+                    "excluded_ip_ranges_value2",
+                ],
+                "permitted_email_addresses": [
+                    "permitted_email_addresses_value1",
+                    "permitted_email_addresses_value2",
+                ],
+                "excluded_email_addresses": [
+                    "excluded_email_addresses_value1",
+                    "excluded_email_addresses_value2",
+                ],
+                "permitted_uris": ["permitted_uris_value1", "permitted_uris_value2"],
+                "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+            },
+            "additional_extensions": [
+                {"object_id": {}, "critical": True, "value": b"value_blob"}
+            ],
+        },
+        "identity_constraints": {
+            "cel_expression": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "allow_subject_passthrough": True,
+            "allow_subject_alt_names_passthrough": True,
+        },
+        "passthrough_extensions": {
+            "known_extensions": [1],
+            "additional_extensions": {},
+        },
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_certificate_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_certificate_template_rest_required_fields(
+    request_type=service.CreateCertificateTemplateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["certificate_template_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "certificateTemplateId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_certificate_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "certificateTemplateId" in jsonified_request
+    assert (
+        jsonified_request["certificateTemplateId"]
+        == request_init["certificate_template_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["certificateTemplateId"] = "certificate_template_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_certificate_template._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "certificate_template_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "certificateTemplateId" in jsonified_request
+    assert jsonified_request["certificateTemplateId"] == "certificate_template_id_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_certificate_template(request)
+
+            expected_params = [
+                (
+                    "certificateTemplateId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_certificate_template_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_certificate_template._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "certificateTemplateId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "certificateTemplateId",
+                "certificateTemplate",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_certificate_template_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_create_certificate_template",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_create_certificate_template",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateCertificateTemplateRequest.pb(
+            service.CreateCertificateTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.CreateCertificateTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_certificate_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_certificate_template_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateCertificateTemplateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["certificate_template"] = {
+        "name": "name_value",
+        "predefined_values": {
+            "key_usage": {
+                "base_key_usage": {
+                    "digital_signature": True,
+                    "content_commitment": True,
+                    "key_encipherment": True,
+                    "data_encipherment": True,
+                    "key_agreement": True,
+                    "cert_sign": True,
+                    "crl_sign": True,
+                    "encipher_only": True,
+                    "decipher_only": True,
+                },
+                "extended_key_usage": {
+                    "server_auth": True,
+                    "client_auth": True,
+                    "code_signing": True,
+                    "email_protection": True,
+                    "time_stamping": True,
+                    "ocsp_signing": True,
+                },
+                "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+            },
+            "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+            "policy_ids": {},
+            "aia_ocsp_servers": ["aia_ocsp_servers_value1", "aia_ocsp_servers_value2"],
+            "name_constraints": {
+                "critical": True,
+                "permitted_dns_names": [
+                    "permitted_dns_names_value1",
+                    "permitted_dns_names_value2",
+                ],
+                "excluded_dns_names": [
+                    "excluded_dns_names_value1",
+                    "excluded_dns_names_value2",
+                ],
+                "permitted_ip_ranges": [
+                    "permitted_ip_ranges_value1",
+                    "permitted_ip_ranges_value2",
+                ],
+                "excluded_ip_ranges": [
+                    "excluded_ip_ranges_value1",
+                    "excluded_ip_ranges_value2",
+                ],
+                "permitted_email_addresses": [
+                    "permitted_email_addresses_value1",
+                    "permitted_email_addresses_value2",
+                ],
+                "excluded_email_addresses": [
+                    "excluded_email_addresses_value1",
+                    "excluded_email_addresses_value2",
+                ],
+                "permitted_uris": ["permitted_uris_value1", "permitted_uris_value2"],
+                "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+            },
+            "additional_extensions": [
+                {"object_id": {}, "critical": True, "value": b"value_blob"}
+            ],
+        },
+        "identity_constraints": {
+            "cel_expression": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "allow_subject_passthrough": True,
+            "allow_subject_alt_names_passthrough": True,
+        },
+        "passthrough_extensions": {
+            "known_extensions": [1],
+            "additional_extensions": {},
+        },
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_certificate_template(request)
+
+
+def test_create_certificate_template_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            certificate_template=resources.CertificateTemplate(name="name_value"),
+            certificate_template_id="certificate_template_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_certificate_template(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/certificateTemplates"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_certificate_template_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_certificate_template(
+            service.CreateCertificateTemplateRequest(),
+            parent="parent_value",
+            certificate_template=resources.CertificateTemplate(name="name_value"),
+            certificate_template_id="certificate_template_id_value",
+        )
+
+
+def test_create_certificate_template_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteCertificateTemplateRequest,
+        dict,
+    ],
+)
+def test_delete_certificate_template_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_certificate_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_certificate_template_rest_required_fields(
+    request_type=service.DeleteCertificateTemplateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_certificate_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_certificate_template._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_certificate_template(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_certificate_template_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_certificate_template._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_certificate_template_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_delete_certificate_template",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_delete_certificate_template",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteCertificateTemplateRequest.pb(
+            service.DeleteCertificateTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.DeleteCertificateTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_certificate_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_certificate_template_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteCertificateTemplateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_certificate_template(request)
+
+
+def test_delete_certificate_template_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_certificate_template(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/certificateTemplates/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_certificate_template_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_certificate_template(
+            service.DeleteCertificateTemplateRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_certificate_template_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCertificateTemplateRequest,
+        dict,
+    ],
+)
+def test_get_certificate_template_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CertificateTemplate(
+            name="name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CertificateTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_certificate_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CertificateTemplate)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+
+
+def test_get_certificate_template_rest_required_fields(
+    request_type=service.GetCertificateTemplateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_certificate_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CertificateTemplate()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CertificateTemplate.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_certificate_template(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_certificate_template_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_certificate_template._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_certificate_template_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_get_certificate_template",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_get_certificate_template",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetCertificateTemplateRequest.pb(
+            service.GetCertificateTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CertificateTemplate.to_json(
+            resources.CertificateTemplate()
+        )
+
+        request = service.GetCertificateTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CertificateTemplate()
+
+        client.get_certificate_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_certificate_template_rest_bad_request(
+    transport: str = "rest", request_type=service.GetCertificateTemplateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_certificate_template(request)
+
+
+def test_get_certificate_template_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CertificateTemplate()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CertificateTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_certificate_template(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/certificateTemplates/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_certificate_template_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_certificate_template(
+            service.GetCertificateTemplateRequest(),
+            name="name_value",
+        )
+
+
+def test_get_certificate_template_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCertificateTemplatesRequest,
+        dict,
+    ],
+)
+def test_list_certificate_templates_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificateTemplatesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificateTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_certificate_templates(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCertificateTemplatesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_certificate_templates_rest_required_fields(
+    request_type=service.ListCertificateTemplatesRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificate_templates._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_certificate_templates._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListCertificateTemplatesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListCertificateTemplatesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_certificate_templates(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_certificate_templates_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_certificate_templates._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_certificate_templates_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_list_certificate_templates",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_list_certificate_templates",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListCertificateTemplatesRequest.pb(
+            service.ListCertificateTemplatesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListCertificateTemplatesResponse.to_json(
+            service.ListCertificateTemplatesResponse()
+        )
+
+        request = service.ListCertificateTemplatesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListCertificateTemplatesResponse()
+
+        client.list_certificate_templates(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_certificate_templates_rest_bad_request(
+    transport: str = "rest", request_type=service.ListCertificateTemplatesRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_certificate_templates(request)
+
+
+def test_list_certificate_templates_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListCertificateTemplatesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListCertificateTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_certificate_templates(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/certificateTemplates"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_certificate_templates_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_certificate_templates(
+            service.ListCertificateTemplatesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_certificate_templates_rest_pager(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListCertificateTemplatesResponse(
+                certificate_templates=[
+                    resources.CertificateTemplate(),
+                    resources.CertificateTemplate(),
+                    resources.CertificateTemplate(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCertificateTemplatesResponse(
+                certificate_templates=[],
+                next_page_token="def",
+            ),
+            service.ListCertificateTemplatesResponse(
+                certificate_templates=[
+                    resources.CertificateTemplate(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCertificateTemplatesResponse(
+                certificate_templates=[
+                    resources.CertificateTemplate(),
+                    resources.CertificateTemplate(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            service.ListCertificateTemplatesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_certificate_templates(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.CertificateTemplate) for i in results)
+
+        pages = list(client.list_certificate_templates(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCertificateTemplateRequest,
+        dict,
+    ],
+)
+def test_update_certificate_template_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate_template": {
+            "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+        }
+    }
+    request_init["certificate_template"] = {
+        "name": "projects/sample1/locations/sample2/certificateTemplates/sample3",
+        "predefined_values": {
+            "key_usage": {
+                "base_key_usage": {
+                    "digital_signature": True,
+                    "content_commitment": True,
+                    "key_encipherment": True,
+                    "data_encipherment": True,
+                    "key_agreement": True,
+                    "cert_sign": True,
+                    "crl_sign": True,
+                    "encipher_only": True,
+                    "decipher_only": True,
+                },
+                "extended_key_usage": {
+                    "server_auth": True,
+                    "client_auth": True,
+                    "code_signing": True,
+                    "email_protection": True,
+                    "time_stamping": True,
+                    "ocsp_signing": True,
+                },
+                "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+            },
+            "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+            "policy_ids": {},
+            "aia_ocsp_servers": ["aia_ocsp_servers_value1", "aia_ocsp_servers_value2"],
+            "name_constraints": {
+                "critical": True,
+                "permitted_dns_names": [
+                    "permitted_dns_names_value1",
+                    "permitted_dns_names_value2",
+                ],
+                "excluded_dns_names": [
+                    "excluded_dns_names_value1",
+                    "excluded_dns_names_value2",
+                ],
+                "permitted_ip_ranges": [
+                    "permitted_ip_ranges_value1",
+                    "permitted_ip_ranges_value2",
+                ],
+                "excluded_ip_ranges": [
+                    "excluded_ip_ranges_value1",
+                    "excluded_ip_ranges_value2",
+                ],
+                "permitted_email_addresses": [
+                    "permitted_email_addresses_value1",
+                    "permitted_email_addresses_value2",
+                ],
+                "excluded_email_addresses": [
+                    "excluded_email_addresses_value1",
+                    "excluded_email_addresses_value2",
+                ],
+                "permitted_uris": ["permitted_uris_value1", "permitted_uris_value2"],
+                "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+            },
+            "additional_extensions": [
+                {"object_id": {}, "critical": True, "value": b"value_blob"}
+            ],
+        },
+        "identity_constraints": {
+            "cel_expression": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "allow_subject_passthrough": True,
+            "allow_subject_alt_names_passthrough": True,
+        },
+        "passthrough_extensions": {
+            "known_extensions": [1],
+            "additional_extensions": {},
+        },
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_certificate_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_certificate_template_rest_required_fields(
+    request_type=service.UpdateCertificateTemplateRequest,
+):
+    transport_class = transports.CertificateAuthorityServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate_template._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_certificate_template._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_certificate_template(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_certificate_template_rest_unset_required_fields():
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_certificate_template._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "certificateTemplate",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_certificate_template_rest_interceptors(null_interceptor):
+    transport = transports.CertificateAuthorityServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CertificateAuthorityServiceRestInterceptor(),
+    )
+    client = CertificateAuthorityServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "post_update_certificate_template",
+    ) as post, mock.patch.object(
+        transports.CertificateAuthorityServiceRestInterceptor,
+        "pre_update_certificate_template",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateCertificateTemplateRequest.pb(
+            service.UpdateCertificateTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.UpdateCertificateTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_certificate_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_certificate_template_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateCertificateTemplateRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "certificate_template": {
+            "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+        }
+    }
+    request_init["certificate_template"] = {
+        "name": "projects/sample1/locations/sample2/certificateTemplates/sample3",
+        "predefined_values": {
+            "key_usage": {
+                "base_key_usage": {
+                    "digital_signature": True,
+                    "content_commitment": True,
+                    "key_encipherment": True,
+                    "data_encipherment": True,
+                    "key_agreement": True,
+                    "cert_sign": True,
+                    "crl_sign": True,
+                    "encipher_only": True,
+                    "decipher_only": True,
+                },
+                "extended_key_usage": {
+                    "server_auth": True,
+                    "client_auth": True,
+                    "code_signing": True,
+                    "email_protection": True,
+                    "time_stamping": True,
+                    "ocsp_signing": True,
+                },
+                "unknown_extended_key_usages": [{"object_id_path": [1456, 1457]}],
+            },
+            "ca_options": {"is_ca": True, "max_issuer_path_length": 2349},
+            "policy_ids": {},
+            "aia_ocsp_servers": ["aia_ocsp_servers_value1", "aia_ocsp_servers_value2"],
+            "name_constraints": {
+                "critical": True,
+                "permitted_dns_names": [
+                    "permitted_dns_names_value1",
+                    "permitted_dns_names_value2",
+                ],
+                "excluded_dns_names": [
+                    "excluded_dns_names_value1",
+                    "excluded_dns_names_value2",
+                ],
+                "permitted_ip_ranges": [
+                    "permitted_ip_ranges_value1",
+                    "permitted_ip_ranges_value2",
+                ],
+                "excluded_ip_ranges": [
+                    "excluded_ip_ranges_value1",
+                    "excluded_ip_ranges_value2",
+                ],
+                "permitted_email_addresses": [
+                    "permitted_email_addresses_value1",
+                    "permitted_email_addresses_value2",
+                ],
+                "excluded_email_addresses": [
+                    "excluded_email_addresses_value1",
+                    "excluded_email_addresses_value2",
+                ],
+                "permitted_uris": ["permitted_uris_value1", "permitted_uris_value2"],
+                "excluded_uris": ["excluded_uris_value1", "excluded_uris_value2"],
+            },
+            "additional_extensions": [
+                {"object_id": {}, "critical": True, "value": b"value_blob"}
+            ],
+        },
+        "identity_constraints": {
+            "cel_expression": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "allow_subject_passthrough": True,
+            "allow_subject_alt_names_passthrough": True,
+        },
+        "passthrough_extensions": {
+            "known_extensions": [1],
+            "additional_extensions": {},
+        },
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_certificate_template(request)
+
+
+def test_update_certificate_template_rest_flattened():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "certificate_template": {
+                "name": "projects/sample1/locations/sample2/certificateTemplates/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            certificate_template=resources.CertificateTemplate(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_certificate_template(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{certificate_template.name=projects/*/locations/*/certificateTemplates/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_certificate_template_rest_flattened_error(transport: str = "rest"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_certificate_template(
+            service.UpdateCertificateTemplateRequest(),
+            certificate_template=resources.CertificateTemplate(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_certificate_template_rest_error():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CertificateAuthorityServiceGrpcTransport(
@@ -9030,6 +19622,7 @@ def test_transport_get_channel():
     [
         transports.CertificateAuthorityServiceGrpcTransport,
         transports.CertificateAuthorityServiceGrpcAsyncIOTransport,
+        transports.CertificateAuthorityServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -9044,6 +19637,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -9115,6 +19709,15 @@ def test_certificate_authority_service_base_transport():
         "get_certificate_template",
         "list_certificate_templates",
         "update_certificate_template",
+        "set_iam_policy",
+        "get_iam_policy",
+        "test_iam_permissions",
+        "get_location",
+        "list_locations",
+        "get_operation",
+        "cancel_operation",
+        "delete_operation",
+        "list_operations",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -9206,6 +19809,7 @@ def test_certificate_authority_service_transport_auth_adc(transport_class):
     [
         transports.CertificateAuthorityServiceGrpcTransport,
         transports.CertificateAuthorityServiceGrpcAsyncIOTransport,
+        transports.CertificateAuthorityServiceRestTransport,
     ],
 )
 def test_certificate_authority_service_transport_auth_gdch_credentials(transport_class):
@@ -9310,11 +19914,40 @@ def test_certificate_authority_service_grpc_transport_client_cert_source_for_mtl
             )
 
 
+def test_certificate_authority_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.CertificateAuthorityServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_certificate_authority_service_rest_lro_client():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_certificate_authority_service_host_no_port(transport_name):
@@ -9325,7 +19958,11 @@ def test_certificate_authority_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("privateca.googleapis.com:443")
+    assert client.transport._host == (
+        "privateca.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://privateca.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -9333,6 +19970,7 @@ def test_certificate_authority_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_certificate_authority_service_host_with_port(transport_name):
@@ -9343,7 +19981,119 @@ def test_certificate_authority_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("privateca.googleapis.com:8000")
+    assert client.transport._host == (
+        "privateca.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://privateca.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_certificate_authority_service_client_transport_session_collision(
+    transport_name,
+):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = CertificateAuthorityServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = CertificateAuthorityServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_certificate._session
+    session2 = client2.transport.create_certificate._session
+    assert session1 != session2
+    session1 = client1.transport.get_certificate._session
+    session2 = client2.transport.get_certificate._session
+    assert session1 != session2
+    session1 = client1.transport.list_certificates._session
+    session2 = client2.transport.list_certificates._session
+    assert session1 != session2
+    session1 = client1.transport.revoke_certificate._session
+    session2 = client2.transport.revoke_certificate._session
+    assert session1 != session2
+    session1 = client1.transport.update_certificate._session
+    session2 = client2.transport.update_certificate._session
+    assert session1 != session2
+    session1 = client1.transport.activate_certificate_authority._session
+    session2 = client2.transport.activate_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.create_certificate_authority._session
+    session2 = client2.transport.create_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.disable_certificate_authority._session
+    session2 = client2.transport.disable_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.enable_certificate_authority._session
+    session2 = client2.transport.enable_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_certificate_authority_csr._session
+    session2 = client2.transport.fetch_certificate_authority_csr._session
+    assert session1 != session2
+    session1 = client1.transport.get_certificate_authority._session
+    session2 = client2.transport.get_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.list_certificate_authorities._session
+    session2 = client2.transport.list_certificate_authorities._session
+    assert session1 != session2
+    session1 = client1.transport.undelete_certificate_authority._session
+    session2 = client2.transport.undelete_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.delete_certificate_authority._session
+    session2 = client2.transport.delete_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.update_certificate_authority._session
+    session2 = client2.transport.update_certificate_authority._session
+    assert session1 != session2
+    session1 = client1.transport.create_ca_pool._session
+    session2 = client2.transport.create_ca_pool._session
+    assert session1 != session2
+    session1 = client1.transport.update_ca_pool._session
+    session2 = client2.transport.update_ca_pool._session
+    assert session1 != session2
+    session1 = client1.transport.get_ca_pool._session
+    session2 = client2.transport.get_ca_pool._session
+    assert session1 != session2
+    session1 = client1.transport.list_ca_pools._session
+    session2 = client2.transport.list_ca_pools._session
+    assert session1 != session2
+    session1 = client1.transport.delete_ca_pool._session
+    session2 = client2.transport.delete_ca_pool._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_ca_certs._session
+    session2 = client2.transport.fetch_ca_certs._session
+    assert session1 != session2
+    session1 = client1.transport.get_certificate_revocation_list._session
+    session2 = client2.transport.get_certificate_revocation_list._session
+    assert session1 != session2
+    session1 = client1.transport.list_certificate_revocation_lists._session
+    session2 = client2.transport.list_certificate_revocation_lists._session
+    assert session1 != session2
+    session1 = client1.transport.update_certificate_revocation_list._session
+    session2 = client2.transport.update_certificate_revocation_list._session
+    assert session1 != session2
+    session1 = client1.transport.create_certificate_template._session
+    session2 = client2.transport.create_certificate_template._session
+    assert session1 != session2
+    session1 = client1.transport.delete_certificate_template._session
+    session2 = client2.transport.delete_certificate_template._session
+    assert session1 != session2
+    session1 = client1.transport.get_certificate_template._session
+    session2 = client2.transport.get_certificate_template._session
+    assert session1 != session2
+    session1 = client1.transport.list_certificate_templates._session
+    session2 = client2.transport.list_certificate_templates._session
+    assert session1 != session2
+    session1 = client1.transport.update_certificate_template._session
+    session2 = client2.transport.update_certificate_template._session
+    assert session1 != session2
 
 
 def test_certificate_authority_service_grpc_transport_channel():
@@ -9802,8 +20552,1895 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/caPools/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/caPools/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/caPools/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/locations/sample2/caPools/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_delete_operation(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.DeleteOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_async(transport: str = "grpc"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.DeleteOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.DeleteOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        call.return_value = None
+
+        client.delete_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.DeleteOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_delete_operation_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.delete_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_cancel_operation(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_async(transport: str = "grpc"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_cancel_operation_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = None
+
+        client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_cancel_operation_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_list_operations(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.ListOperationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+        response = client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_operations_async(transport: str = "grpc"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.ListOperationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        response = await client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_list_operations_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.ListOperationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_operations_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.ListOperationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_list_operations_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        response = client.list_operations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        response = await client.list_operations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_list_locations(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+        response = client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_locations_async(transport: str = "grpc"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_list_locations_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_locations_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_list_locations_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        response = client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_get_location(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+        response = client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+@pytest.mark.asyncio
+async def test_get_location_async(transport: str = "grpc_asyncio"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_get_location_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = locations_pb2.Location()
+
+        client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_location_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+def test_get_location_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        response = client.get_location(
+            request={
+                "name": "locations/abc",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_location_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_set_iam_policy(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+        response = client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_set_iam_policy_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_set_iam_policy_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+def test_get_iam_policy(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        response = client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+
+        response = await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_get_iam_policy_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_get_iam_policy_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+def test_test_iam_permissions(transport: str = "grpc"):
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        response = client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+
+        response = await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_field_headers():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_field_headers_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_test_iam_permissions_from_dict():
+    client = CertificateAuthorityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        response = client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_from_dict_async():
+    client = CertificateAuthorityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        response = await client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
+        )
+        call.assert_called()
+
+
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -9821,6 +22458,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

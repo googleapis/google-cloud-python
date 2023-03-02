@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -1325,6 +1327,9 @@ class X509Parameters(proto.Message):
             Protocol (OCSP) endpoint addresses that appear
             in the "Authority Information Access" extension
             in the certificate.
+        name_constraints (google.cloud.security.privateca_v1.types.X509Parameters.NameConstraints):
+            Optional. Describes the X.509 name
+            constraints extension.
         additional_extensions (MutableSequence[google.cloud.security.privateca_v1.types.X509Extension]):
             Optional. Describes custom X.509 extensions.
     """
@@ -1365,6 +1370,99 @@ class X509Parameters(proto.Message):
             optional=True,
         )
 
+    class NameConstraints(proto.Message):
+        r"""Describes the X.509 name constraints extension, per
+        https://tools.ietf.org/html/rfc5280#section-4.2.1.10
+
+        Attributes:
+            critical (bool):
+                Indicates whether or not the name constraints
+                are marked critical.
+            permitted_dns_names (MutableSequence[str]):
+                Contains permitted DNS names. Any DNS name that can be
+                constructed by simply adding zero or more labels to the
+                left-hand side of the name satisfies the name constraint.
+                For example, ``example.com``, ``www.example.com``,
+                ``www.sub.example.com`` would satisfy ``example.com`` while
+                ``example1.com`` does not.
+            excluded_dns_names (MutableSequence[str]):
+                Contains excluded DNS names. Any DNS name that can be
+                constructed by simply adding zero or more labels to the
+                left-hand side of the name satisfies the name constraint.
+                For example, ``example.com``, ``www.example.com``,
+                ``www.sub.example.com`` would satisfy ``example.com`` while
+                ``example1.com`` does not.
+            permitted_ip_ranges (MutableSequence[str]):
+                Contains the permitted IP ranges. For IPv4
+                addresses, the ranges are expressed using CIDR
+                notation as specified in RFC 4632. For IPv6
+                addresses, the ranges are expressed in similar
+                encoding as IPv4 addresses.
+            excluded_ip_ranges (MutableSequence[str]):
+                Contains the excluded IP ranges. For IPv4
+                addresses, the ranges are expressed using CIDR
+                notation as specified in RFC 4632. For IPv6
+                addresses, the ranges are expressed in similar
+                encoding as IPv4 addresses.
+            permitted_email_addresses (MutableSequence[str]):
+                Contains the permitted email addresses. The value can be a
+                particular email address, a hostname to indicate all email
+                addresses on that host or a domain with a leading period
+                (e.g. ``.example.com``) to indicate all email addresses in
+                that domain.
+            excluded_email_addresses (MutableSequence[str]):
+                Contains the excluded email addresses. The value can be a
+                particular email address, a hostname to indicate all email
+                addresses on that host or a domain with a leading period
+                (e.g. ``.example.com``) to indicate all email addresses in
+                that domain.
+            permitted_uris (MutableSequence[str]):
+                Contains the permitted URIs that apply to the host part of
+                the name. The value can be a hostname or a domain with a
+                leading period (like ``.example.com``)
+            excluded_uris (MutableSequence[str]):
+                Contains the excluded URIs that apply to the host part of
+                the name. The value can be a hostname or a domain with a
+                leading period (like ``.example.com``)
+        """
+
+        critical: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        permitted_dns_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        excluded_dns_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        permitted_ip_ranges: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
+        excluded_ip_ranges: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
+        permitted_email_addresses: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=6,
+        )
+        excluded_email_addresses: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=7,
+        )
+        permitted_uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=8,
+        )
+        excluded_uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=9,
+        )
+
     key_usage: "KeyUsage" = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -1383,6 +1481,11 @@ class X509Parameters(proto.Message):
     aia_ocsp_servers: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
+    )
+    name_constraints: NameConstraints = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=NameConstraints,
     )
     additional_extensions: MutableSequence["X509Extension"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -2166,6 +2269,10 @@ class CertificateExtensionConstraints(proto.Message):
                 This corresponds to the
                 [X509Parameters.aia_ocsp_servers][google.cloud.security.privateca.v1.X509Parameters.aia_ocsp_servers]
                 field.
+            NAME_CONSTRAINTS (6):
+                Refers to Name Constraints extension as described in `RFC
+                5280 section
+                4.2.1.10 <https://tools.ietf.org/html/rfc5280#section-4.2.1.10>`__
         """
         KNOWN_CERTIFICATE_EXTENSION_UNSPECIFIED = 0
         BASE_KEY_USAGE = 1
@@ -2173,6 +2280,7 @@ class CertificateExtensionConstraints(proto.Message):
         CA_OPTIONS = 3
         POLICY_IDS = 4
         AIA_OCSP_SERVERS = 5
+        NAME_CONSTRAINTS = 6
 
     known_extensions: MutableSequence[KnownCertificateExtension] = proto.RepeatedField(
         proto.ENUM,

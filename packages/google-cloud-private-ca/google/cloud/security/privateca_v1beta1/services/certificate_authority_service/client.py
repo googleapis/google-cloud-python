@@ -60,6 +60,7 @@ from google.cloud.security.privateca_v1beta1.types import resources, service
 from .transports.base import DEFAULT_CLIENT_INFO, CertificateAuthorityServiceTransport
 from .transports.grpc import CertificateAuthorityServiceGrpcTransport
 from .transports.grpc_asyncio import CertificateAuthorityServiceGrpcAsyncIOTransport
+from .transports.rest import CertificateAuthorityServiceRestTransport
 
 
 class CertificateAuthorityServiceClientMeta(type):
@@ -77,6 +78,7 @@ class CertificateAuthorityServiceClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = CertificateAuthorityServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CertificateAuthorityServiceRestTransport
 
     def get_transport_class(
         cls,
