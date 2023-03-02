@@ -476,6 +476,14 @@ class ExecuteSqlRequest(proto.Message):
             given query.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
+        data_boost_enabled (bool):
+            If this is for a partitioned read and this field is set to
+            ``true``, the request will be executed via Spanner
+            independent compute resources.
+
+            If the field is set to ``true`` but the request does not set
+            ``partition_token``, the API will return an
+            ``INVALID_ARGUMENT`` error.
     """
 
     class QueryMode(proto.Enum):
@@ -614,6 +622,10 @@ class ExecuteSqlRequest(proto.Message):
         proto.MESSAGE,
         number=11,
         message="RequestOptions",
+    )
+    data_boost_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=15,
     )
 
 
@@ -1125,6 +1137,14 @@ class ReadRequest(proto.Message):
             create this partition_token.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
+        data_boost_enabled (bool):
+            If this is for a partitioned query and this field is set to
+            ``true``, the request will be executed via Spanner
+            independent compute resources.
+
+            If the field is set to ``true`` but the request does not set
+            ``partition_token``, the API will return an
+            ``INVALID_ARGUMENT`` error.
     """
 
     session: str = proto.Field(
@@ -1169,6 +1189,10 @@ class ReadRequest(proto.Message):
         proto.MESSAGE,
         number=11,
         message="RequestOptions",
+    )
+    data_boost_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=16,
     )
 
 
