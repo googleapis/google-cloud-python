@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.9.1...v1.10.0) (2023-03-02)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#205](https://github.com/googleapis/python-dataproc-metastore/issues/205)) ([b053c20](https://github.com/googleapis/python-dataproc-metastore/commit/b053c201953bacc4b15f03ef2e8fd925006e5e75))
+
+
+### Bug Fixes
+
+* Add service_yaml parameters to `metastore_py_gapic` ([#209](https://github.com/googleapis/python-dataproc-metastore/issues/209)) ([a395340](https://github.com/googleapis/python-dataproc-metastore/commit/a395340353c569d2ef135fe9e60dd8c5a64728df))
+
 ## [1.9.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.9.0...v1.9.1) (2023-01-20)
 
 
