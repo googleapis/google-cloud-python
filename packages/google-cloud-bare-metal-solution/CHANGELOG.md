@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-bare-metal-solution/compare/v1.3.1...v1.4.0) (2023-03-02)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#85](https://github.com/googleapis/python-bare-metal-solution/issues/85)) ([b371b5d](https://github.com/googleapis/python-bare-metal-solution/commit/b371b5db375c7bfecb412fbc0b369fe5d7430d83))
+
+
+### Bug Fixes
+
+* Add service_yaml parameters to `baremetalsolution_py_gapic` ([#89](https://github.com/googleapis/python-bare-metal-solution/issues/89)) ([70dd2b4](https://github.com/googleapis/python-bare-metal-solution/commit/70dd2b444a7472dcfc5e4e407cbc5b56093af68e))
+
 ## [1.3.1](https://github.com/googleapis/python-bare-metal-solution/compare/v1.3.0...v1.3.1) (2023-01-20)
 
 
