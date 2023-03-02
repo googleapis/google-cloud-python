@@ -1697,6 +1697,10 @@ class Settings(proto.Message):
             runtime_integration_analysis_percentage (float):
                 Percentage of conversations created using Dialogflow runtime
                 integration to analyze automatically, between [0, 100].
+            upload_conversation_analysis_percentage (float):
+                Percentage of conversations created using the
+                UploadConversation endpoint to analyze automatically,
+                between [0, 100].
             annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
                 To select the annotators to run and the
                 phrase matchers to use (if any). If not
@@ -1706,6 +1710,10 @@ class Settings(proto.Message):
         runtime_integration_analysis_percentage: float = proto.Field(
             proto.DOUBLE,
             number=1,
+        )
+        upload_conversation_analysis_percentage: float = proto.Field(
+            proto.DOUBLE,
+            number=6,
         )
         annotator_selector: "AnnotatorSelector" = proto.Field(
             proto.MESSAGE,

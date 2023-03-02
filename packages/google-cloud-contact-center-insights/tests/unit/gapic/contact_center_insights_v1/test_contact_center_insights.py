@@ -20413,6 +20413,7 @@ def test_update_settings_rest(request_type):
         "pubsub_notification_settings": {},
         "analysis_config": {
             "runtime_integration_analysis_percentage": 0.4167,
+            "upload_conversation_analysis_percentage": 0.41590000000000005,
             "annotator_selector": {
                 "run_interruption_annotator": True,
                 "run_silence_annotator": True,
@@ -20618,6 +20619,7 @@ def test_update_settings_rest_bad_request(
         "pubsub_notification_settings": {},
         "analysis_config": {
             "runtime_integration_analysis_percentage": 0.4167,
+            "upload_conversation_analysis_percentage": 0.41590000000000005,
             "annotator_selector": {
                 "run_interruption_annotator": True,
                 "run_silence_annotator": True,
