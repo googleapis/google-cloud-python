@@ -68,7 +68,7 @@ class PollingFuture(base.Future):
     The :meth:`done` method should be implemented by subclasses. The polling
     behavior will repeatedly call ``done`` until it returns True.
 
-    The actuall polling logic is encapsulated in :meth:`result` method. See
+    The actual polling logic is encapsulated in :meth:`result` method. See
     documentation for that method for details on how polling works.
 
     .. note::
@@ -82,7 +82,7 @@ class PollingFuture(base.Future):
             ``timeout`` argument is specified in :meth:`result` method it will
             override the ``polling.timeout`` property.
         retry (google.api_core.retry.Retry): DEPRECATED use ``polling`` instead.
-            If set, it will override ``polling`` paremeter for backward
+            If set, it will override ``polling`` parameter for backward
             compatibility.
     """
 
@@ -224,8 +224,8 @@ class PollingFuture(base.Future):
         to set this parameter explicitly.
 
         If ``polling`` is provided (i.e. ``polling is not None``), it will be used
-        to controll the overall polling behavior and ``polling.timeout`` will
-        controll Polling Timeout unless it is overridden by ``timeout`` parameter
+        to control the overall polling behavior and ``polling.timeout`` will
+        control Polling Timeout unless it is overridden by ``timeout`` parameter
         as described above. If not provided, the``polling`` parameter specified
         during construction of this future (the ``polling`` argument in the
         constructor) will be used instead. Note: since the ``timeout`` argument may

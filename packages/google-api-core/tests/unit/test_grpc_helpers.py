@@ -222,7 +222,7 @@ def test_wrap_stream_prefetch_disabled():
     callable_.assert_called_once_with(1, 2, three="four")
 
 
-def test_wrap_stream_iterable_iterface():
+def test_wrap_stream_iterable_interface():
     response_iter = mock.create_autospec(grpc.Call, instance=True)
     callable_ = mock.Mock(spec=["__call__"], return_value=response_iter)
 
@@ -352,7 +352,7 @@ def test_wrap_errors_streaming(wrap_stream_errors):
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.secure_channel")
 def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_call):
@@ -410,7 +410,7 @@ def test_create_channel_implicit_with_default_host(
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.secure_channel")
 def test_create_channel_implicit_with_ssl_creds(
@@ -437,7 +437,7 @@ def test_create_channel_implicit_with_ssl_creds(
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.secure_channel")
 def test_create_channel_implicit_with_scopes(
@@ -462,7 +462,7 @@ def test_create_channel_implicit_with_scopes(
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.secure_channel")
 def test_create_channel_implicit_with_default_scopes(

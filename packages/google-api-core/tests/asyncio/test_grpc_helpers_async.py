@@ -280,7 +280,7 @@ def test_wrap_errors_streaming(wrap_stream_errors):
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_call):
@@ -305,7 +305,7 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_default_host(
@@ -329,7 +329,7 @@ def test_create_channel_implicit_with_default_host(
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch(
     "google.auth.default",
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_ssl_creds(
@@ -351,7 +351,7 @@ def test_create_channel_implicit_with_ssl_creds(
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_scopes(
@@ -372,7 +372,7 @@ def test_create_channel_implicit_with_scopes(
 @mock.patch(
     "google.auth.default",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_default_scopes(
@@ -492,7 +492,7 @@ def test_create_channel_explicit_with_quota_project(
     autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
-def test_create_channnel_with_credentials_file(
+def test_create_channel_with_credentials_file(
     load_credentials_from_file, grpc_secure_channel, composite_creds_call
 ):
     target = "example.com:443"

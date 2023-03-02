@@ -16,7 +16,7 @@
 
 The :class:`Retry` decorator can be used to retry functions that raise
 exceptions using exponential backoff. Because a exponential sleep algorithm is
-used, the retry is limited by a `deadline`. The deadline is the maxmimum amount
+used, the retry is limited by a `deadline`. The deadline is the maximum amount
 of time a method can block. This is used instead of total number of retries
 because it is difficult to ascertain the amount of time a function can block
 when using total number of retries and exponential backoff.
@@ -265,7 +265,7 @@ class Retry(object):
 
     RPC Timeout: a value supplied by the client to the server so
     that the server side knows the maximum amount of time it is expected to
-    spend handling that specifc RPC. For example, in the case of gRPC transport,
+    spend handling that specific RPC. For example, in the case of gRPC transport,
     RPC Timeout is represented by setting "grpc-timeout" header in the HTTP2
     request. The `timeout` property of this class normally never represents the
     RPC Timeout as it is handled separately by the ``google.api_core.timeout``
@@ -285,7 +285,7 @@ class Retry(object):
 
     With the actual timeout types being defined above, the client libraries
     often refer to just Timeout without clarifying which type specifically
-    that is. In that case the actual timeout type (sometimes also refered to as
+    that is. In that case the actual timeout type (sometimes also referred to as
     Logical Timeout) can be determined from the context. If it is a unary rpc
     call (i.e. a regular one) Timeout usually stands for the RPC Timeout (if
     provided directly as a standalone value) or Retry Timeout (if provided as

@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This import for backward compatibiltiy only.
+# This import for backward compatibility only.
 from functools import wraps  # noqa: F401 pragma: NO COVER

@@ -121,7 +121,7 @@ def test_invoke_wrapped_method_with_metadata_as_none():
 
 
 @mock.patch("time.sleep")
-def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
+def test_wrap_method_with_default_retry_and_timeout(unused_sleep):
     method = mock.Mock(
         spec=["__call__"], side_effect=[exceptions.InternalServerError(None), 42]
     )
@@ -139,7 +139,7 @@ def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
 
 
 @mock.patch("time.sleep")
-def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unusued_sleep):
+def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unused_sleep):
     method = mock.Mock(
         spec=["__call__"], side_effect=[exceptions.InternalServerError(None), 42]
     )
@@ -160,7 +160,7 @@ def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unusued_sleep
 
 
 @mock.patch("time.sleep")
-def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
+def test_wrap_method_with_overriding_retry_and_timeout(unused_sleep):
     method = mock.Mock(spec=["__call__"], side_effect=[exceptions.NotFound(None), 42])
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)

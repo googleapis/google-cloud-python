@@ -468,7 +468,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
         Returns:
             google.longrunning.operations_pb2.Operation:
                 This resource represents a long-
-                unning operation that is the result of a
+                running operation that is the result of a
                 network API call.
 
         """

@@ -14,7 +14,7 @@
 
 """Google API Core.
 
-This package contains common code and utilties used by Google client libraries.
+This package contains common code and utilities used by Google client libraries.
 """
 
 from google.api_core import version as api_core_version

@@ -73,7 +73,7 @@ class RetryError(GoogleAPIError):
 
     Args:
         message (str): The exception message.
-        cause (Exception): The last exception raised when retring the
+        cause (Exception): The last exception raised when retrying the
             function.
     """
 

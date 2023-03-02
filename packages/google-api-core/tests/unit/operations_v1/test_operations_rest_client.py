@@ -592,7 +592,7 @@ def test_get_operation_rest_failure():
         response_value.request = mock_request
         req.return_value = response_value
         with pytest.raises(core_exceptions.GoogleAPIError):
-            client.get_operation("sammple0/operations/sample1")
+            client.get_operation("sample0/operations/sample1")
 
 
 def test_delete_operation_rest(

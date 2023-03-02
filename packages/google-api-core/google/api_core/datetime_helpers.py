@@ -170,7 +170,7 @@ def to_rfc3339(value, ignore_zone=True):
             datetime object is ignored and the datetime is treated as UTC.
 
     Returns:
-        str: The RFC3339 formated string representing the datetime.
+        str: The RFC3339 formatted string representing the datetime.
     """
     if not ignore_zone and value.tzinfo is not None:
         # Convert to UTC and remove the time zone info.

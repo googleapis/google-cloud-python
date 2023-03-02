@@ -101,7 +101,7 @@ class ExtendedOperation(polling.PollingFuture):
     #     optional http_error_code = proto.Field(proto.INT32, number=3)
     #     optional http_error_msg = proto.Field(proto.STRING, number=4)
     #
-    # the ExtendedOperation subclass would provide property overrrides that map
+    # the ExtendedOperation subclass would provide property overrides that map
     # to these (poorly named) fields.
     @property
     def name(self):

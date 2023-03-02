@@ -288,10 +288,10 @@ def field_mask(original, modified):
 
     Args:
         original (~google.protobuf.message.Message): the original message.
-            If set to None, this field will be interpretted as an empty
+            If set to None, this field will be interpreted as an empty
             message.
         modified (~google.protobuf.message.Message): the modified message.
-            If set to None, this field will be interpretted as an empty
+            If set to None, this field will be interpreted as an empty
             message.
 
     Returns:

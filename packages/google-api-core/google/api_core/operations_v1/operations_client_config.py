@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""gapic configuration for the googe.longrunning.operations client."""
+"""gapic configuration for the google.longrunning.operations client."""
 
 # DEPRECATED: retry and timeout classes are instantiated directly
 config = {

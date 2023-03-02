@@ -169,7 +169,7 @@ class AsyncRetry:
             if the given exception is retryable.
         initial (float): The minimum a,out of time to delay in seconds. This
             must be greater than 0.
-        maximum (float): The maximum amout of time to delay in seconds.
+        maximum (float): The maximum amount of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
         timeout (float): How long to keep retrying in seconds.
         on_error (Callable[Exception]): A function to call while processing
@@ -287,9 +287,9 @@ class AsyncRetry:
         """Return a copy of this retry with the given delay options.
 
         Args:
-            initial (float): The minimum amout of time to delay. This must
+            initial (float): The minimum amount of time to delay. This must
                 be greater than 0.
-            maximum (float): The maximum amout of time to delay.
+            maximum (float): The maximum amount of time to delay.
             multiplier (float): The multiplier applied to the delay.
 
         Returns:

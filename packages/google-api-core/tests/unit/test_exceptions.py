@@ -355,7 +355,7 @@ def test_error_details_from_grpc_response():
     status.details.append(status_br_detail)
     status.details.append(status_ei_detail)
 
-    # Actualy error doesn't matter as long as its grpc.Call,
+    # The actual error doesn't matter as long as its grpc.Call,
     # because from_call is mocked.
     error = mock.create_autospec(grpc.Call, instance=True)
     with mock.patch("grpc_status.rpc_status.from_call") as m:
