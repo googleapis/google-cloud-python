@@ -266,6 +266,17 @@ class Client(ClientWithProject):
         """Default location for jobs / datasets / tables."""
         return self._location
 
+    @property
+    def default_query_job_config(self):
+        """Default ``QueryJobConfig``.
+        Will be merged into job configs passed into the ``query`` method.
+        """
+        return self._default_query_job_config
+
+    @default_query_job_config.setter
+    def default_query_job_config(self, value: QueryJobConfig):
+        self._default_query_job_config = copy.deepcopy(value)
+
     def close(self):
         """Close the underlying transport objects, releasing system resources.
 

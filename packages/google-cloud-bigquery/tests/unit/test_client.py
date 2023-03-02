@@ -413,6 +413,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query_results.total_rows, 10)
         self.assertTrue(query_results.complete)
 
+    def test_default_query_job_config(self):
+        from google.cloud.bigquery import QueryJobConfig
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        self.assertIsNone(client.default_query_job_config)
+
+        job_config = QueryJobConfig()
+        job_config.dry_run = True
+        client.default_query_job_config = job_config
+        self.assertIsInstance(client.default_query_job_config, QueryJobConfig)
+
     def test_get_service_account_email(self):
         path = "/projects/%s/serviceAccount" % (self.PROJECT,)
         creds = _make_credentials()
