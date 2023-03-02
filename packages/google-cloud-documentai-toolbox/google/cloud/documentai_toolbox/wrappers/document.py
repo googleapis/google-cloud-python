@@ -176,56 +176,6 @@ def _text_from_shards(shards: List[documentai.Document]) -> str:
     return total_text
 
 
-def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
-    r"""Prints a tree of filenames in Cloud Storage folder.
-
-    Args:
-        gcs_bucket_name (str):
-            Required. The name of the gcs bucket.
-
-            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
-        gcs_prefix (str):
-            Required. The prefix of the json files in the target_folder.
-
-            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
-    Returns:
-        None.
-
-    """
-    FILENAME_TREE_MIDDLE = "├──"
-    FILENAME_TREE_LAST = "└──"
-    FILES_TO_DISPLAY = 4
-
-    file_check = re.match(constants.FILE_CHECK_REGEX, gcs_prefix)
-
-    if file_check is not None:
-        raise ValueError("gcs_prefix cannot contain file types")
-
-    storage_client = _get_storage_client()
-    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
-
-    path_list: Dict[str, List[str]] = {}
-
-    for blob in blob_list:
-        directory, file_name = os.path.split(blob.name)
-
-        if directory in path_list:
-            path_list[directory].append(file_name)
-        else:
-            path_list[directory] = [file_name]
-
-    for directory, files in path_list.items():
-        print(f"{directory}")
-        dir_size = len(files)
-        for idx, file_name in enumerate(files):
-            if idx == dir_size - 1:
-                if dir_size > FILES_TO_DISPLAY:
-                    print("│  ....")
-                print(f"{FILENAME_TREE_LAST}{file_name}\n")
-            elif idx <= FILES_TO_DISPLAY:
-                print(f"{FILENAME_TREE_MIDDLE}{file_name}")
-
-
 @dataclasses.dataclass
 class Document:
     r"""Represents a wrapped Document.

@@ -17,6 +17,7 @@
 # [START documentai_toolbox_quickstart]
 
 from google.cloud.documentai_toolbox import document
+from google.cloud.documentai_toolbox import utilities
 
 # TODO(developer): Uncomment these variables before running the sample.
 # Given a document.proto or sharded document.proto in path gs://bucket/path/to/folder
@@ -25,6 +26,9 @@ from google.cloud.documentai_toolbox import document
 
 
 def quickstart_sample(gcs_bucket_name: str, gcs_prefix: str) -> None:
+    print("Document structure in Cloud Storage")
+    utilities.print_gcs_document_tree(gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix)
+
     wrapped_document = document.Document.from_gcs(
         gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
     )

@@ -30,5 +30,6 @@ def test_quickstart_sample(capsys: pytest.CaptureFixture) -> None:
     )
     out, _ = capsys.readouterr()
 
+    assert "Document structure in Cloud Storage" in out
     assert "Number of Pages: 1" in out
     assert "Number of Entities: 35" in out
