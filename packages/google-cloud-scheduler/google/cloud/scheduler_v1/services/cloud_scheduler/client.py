@@ -46,6 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -529,7 +530,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         Returns:
             google.cloud.scheduler_v1.services.cloud_scheduler.pagers.ListJobsPager:
                 Response message for listing jobs using
-                [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].
+                   [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -644,7 +645,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             google.cloud.scheduler_v1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
-                100KB.
+                1MB.
 
         """
         # Create or coerce a protobuf request object.
@@ -761,7 +762,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             google.cloud.scheduler_v1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
-                100KB.
+                1MB.
 
         """
         # Create or coerce a protobuf request object.
@@ -889,7 +890,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             google.cloud.scheduler_v1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
-                100KB.
+                1MB.
 
         """
         # Create or coerce a protobuf request object.
@@ -1096,7 +1097,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             google.cloud.scheduler_v1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
-                100KB.
+                1MB.
 
         """
         # Create or coerce a protobuf request object.
@@ -1209,7 +1210,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             google.cloud.scheduler_v1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
-                100KB.
+                1MB.
 
         """
         # Create or coerce a protobuf request object.
@@ -1315,7 +1316,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             google.cloud.scheduler_v1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
-                100KB.
+                1MB.
 
         """
         # Create or coerce a protobuf request object.
@@ -1372,6 +1373,114 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def get_location(
+        self,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_locations(
+        self,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

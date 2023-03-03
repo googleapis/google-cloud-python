@@ -112,6 +112,13 @@ class HttpTarget(proto.Message):
                ``"Google-Cloud-Scheduler"``.
             -  ``X-Google-*``: Google internal use only.
             -  ``X-AppEngine-*``: Google internal use only.
+            -  ``X-CloudScheduler``: This header will be set to true.
+            -  ``X-CloudScheduler-JobName``: This header will contain
+               the job name.
+            -  ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
+               jobs specified in the unix-cron format, this header will
+               contain the job schedule time in RFC3339 UTC "Zulu"
+               format.
 
             The total size of headers must be less than 80KB.
         body (bytes):
@@ -215,6 +222,12 @@ class AppEngineHttpTarget(proto.Message):
                ``"AppEngine-Google; (+http://code.google.com/appengine)"``
                to the modified ``User-Agent``.
             -  ``X-CloudScheduler``: This header will be set to true.
+            -  ``X-CloudScheduler-JobName``: This header will contain
+               the job name.
+            -  ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
+               jobs specified in the unix-cron format, this header will
+               contain the job schedule time in RFC3339 UTC "Zulu"
+               format.
 
             If the job has an
             [body][google.cloud.scheduler.v1.AppEngineHttpTarget.body],
@@ -281,7 +294,7 @@ class PubsubTarget(proto.Message):
             Required. The name of the Cloud Pub/Sub topic to which
             messages will be published when a job is delivered. The
             topic name must be in the same format as required by
-            PubSub's
+            Pub/Sub's
             `PublishRequest.name <https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest>`__,
             for example ``projects/PROJECT_ID/topics/TOPIC_ID``.
 
@@ -344,7 +357,7 @@ class AppEngineRouting(proto.Message):
 
             Requests can only be sent to a specific instance if `manual
             scaling is used in App Engine
-            Standard <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes>`__.
+            Standard <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?#scaling_types_and_instance_classes>`__.
             App Engine Flex does not support instances. For more
             information, see `App Engine Standard request
             routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__
