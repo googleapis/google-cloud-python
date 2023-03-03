@@ -22,6 +22,7 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -452,6 +453,60 @@ class EdgeContainerTransport(abc.ABC):
     ) -> Callable[
         [service.DeleteVpnConnectionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
