@@ -2446,6 +2446,12 @@ def test_set_suggestion_feature_config_flattened():
         # using the keyword arguments to the method.
         client.set_suggestion_feature_config(
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_config=gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2454,6 +2460,18 @@ def test_set_suggestion_feature_config_flattened():
         _, args, _ = call.mock_calls[0]
         arg = args[0].conversation_profile
         mock_val = "conversation_profile_value"
+        assert arg == mock_val
+        arg = args[0].participant_role
+        mock_val = participant.Participant.Role.HUMAN_AGENT
+        assert arg == mock_val
+        arg = args[0].suggestion_feature_config
+        mock_val = (
+            gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            )
+        )
         assert arg == mock_val
 
 
@@ -2468,6 +2486,12 @@ def test_set_suggestion_feature_config_flattened_error():
         client.set_suggestion_feature_config(
             gcd_conversation_profile.SetSuggestionFeatureConfigRequest(),
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_config=gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            ),
         )
 
 
@@ -2491,6 +2515,12 @@ async def test_set_suggestion_feature_config_flattened_async():
         # using the keyword arguments to the method.
         response = await client.set_suggestion_feature_config(
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_config=gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2499,6 +2529,18 @@ async def test_set_suggestion_feature_config_flattened_async():
         _, args, _ = call.mock_calls[0]
         arg = args[0].conversation_profile
         mock_val = "conversation_profile_value"
+        assert arg == mock_val
+        arg = args[0].participant_role
+        mock_val = participant.Participant.Role.HUMAN_AGENT
+        assert arg == mock_val
+        arg = args[0].suggestion_feature_config
+        mock_val = (
+            gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            )
+        )
         assert arg == mock_val
 
 
@@ -2514,6 +2556,12 @@ async def test_set_suggestion_feature_config_flattened_error_async():
         await client.set_suggestion_feature_config(
             gcd_conversation_profile.SetSuggestionFeatureConfigRequest(),
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_config=gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            ),
         )
 
 
@@ -2687,6 +2735,8 @@ def test_clear_suggestion_feature_config_flattened():
         # using the keyword arguments to the method.
         client.clear_suggestion_feature_config(
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_type=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION,
         )
 
         # Establish that the underlying call was made with the expected
@@ -2695,6 +2745,12 @@ def test_clear_suggestion_feature_config_flattened():
         _, args, _ = call.mock_calls[0]
         arg = args[0].conversation_profile
         mock_val = "conversation_profile_value"
+        assert arg == mock_val
+        arg = args[0].participant_role
+        mock_val = participant.Participant.Role.HUMAN_AGENT
+        assert arg == mock_val
+        arg = args[0].suggestion_feature_type
+        mock_val = participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
         assert arg == mock_val
 
 
@@ -2709,6 +2765,8 @@ def test_clear_suggestion_feature_config_flattened_error():
         client.clear_suggestion_feature_config(
             gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(),
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_type=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION,
         )
 
 
@@ -2732,6 +2790,8 @@ async def test_clear_suggestion_feature_config_flattened_async():
         # using the keyword arguments to the method.
         response = await client.clear_suggestion_feature_config(
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_type=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION,
         )
 
         # Establish that the underlying call was made with the expected
@@ -2740,6 +2800,12 @@ async def test_clear_suggestion_feature_config_flattened_async():
         _, args, _ = call.mock_calls[0]
         arg = args[0].conversation_profile
         mock_val = "conversation_profile_value"
+        assert arg == mock_val
+        arg = args[0].participant_role
+        mock_val = participant.Participant.Role.HUMAN_AGENT
+        assert arg == mock_val
+        arg = args[0].suggestion_feature_type
+        mock_val = participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
         assert arg == mock_val
 
 
@@ -2755,6 +2821,8 @@ async def test_clear_suggestion_feature_config_flattened_error_async():
         await client.clear_suggestion_feature_config(
             gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(),
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_type=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION,
         )
 
 
@@ -3467,6 +3535,16 @@ def test_create_conversation_profile_rest(request_type):
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
+        "tts_config": {
+            "speaking_rate": 0.1373,
+            "pitch": 0.536,
+            "volume_gain_db": 0.1467,
+            "effects_profile_id": [
+                "effects_profile_id_value1",
+                "effects_profile_id_value2",
+            ],
+            "voice": {"name": "name_value", "ssml_gender": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -3733,6 +3811,16 @@ def test_create_conversation_profile_rest_bad_request(
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
+        "tts_config": {
+            "speaking_rate": 0.1373,
+            "pitch": 0.536,
+            "volume_gain_db": 0.1467,
+            "effects_profile_id": [
+                "effects_profile_id_value1",
+                "effects_profile_id_value2",
+            ],
+            "voice": {"name": "name_value", "ssml_gender": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -3899,6 +3987,16 @@ def test_update_conversation_profile_rest(request_type):
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
+        "tts_config": {
+            "speaking_rate": 0.1373,
+            "pitch": 0.536,
+            "volume_gain_db": 0.1467,
+            "effects_profile_id": [
+                "effects_profile_id_value1",
+                "effects_profile_id_value2",
+            ],
+            "voice": {"name": "name_value", "ssml_gender": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -4166,6 +4264,16 @@ def test_update_conversation_profile_rest_bad_request(
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
+        "tts_config": {
+            "speaking_rate": 0.1373,
+            "pitch": 0.536,
+            "volume_gain_db": 0.1467,
+            "effects_profile_id": [
+                "effects_profile_id_value1",
+                "effects_profile_id_value2",
+            ],
+            "voice": {"name": "name_value", "ssml_gender": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -4748,6 +4856,12 @@ def test_set_suggestion_feature_config_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_config=gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            ),
         )
         mock_args.update(sample_request)
 
@@ -4783,6 +4897,12 @@ def test_set_suggestion_feature_config_rest_flattened_error(transport: str = "re
         client.set_suggestion_feature_config(
             gcd_conversation_profile.SetSuggestionFeatureConfigRequest(),
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_config=gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig(
+                suggestion_feature=participant.SuggestionFeature(
+                    type_=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION
+                )
+            ),
         )
 
 
@@ -5032,6 +5152,8 @@ def test_clear_suggestion_feature_config_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_type=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION,
         )
         mock_args.update(sample_request)
 
@@ -5067,6 +5189,8 @@ def test_clear_suggestion_feature_config_rest_flattened_error(transport: str = "
         client.clear_suggestion_feature_config(
             gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(),
             conversation_profile="conversation_profile_value",
+            participant_role=participant.Participant.Role.HUMAN_AGENT,
+            suggestion_feature_type=participant.SuggestionFeature.Type.ARTICLE_SUGGESTION,
         )
 
 

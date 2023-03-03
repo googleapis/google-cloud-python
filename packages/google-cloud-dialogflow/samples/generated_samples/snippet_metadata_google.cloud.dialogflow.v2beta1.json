@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-dialogflow",
-    "version": "2.20.0"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -2910,6 +2910,14 @@
             "type": "str"
           },
           {
+            "name": "participant_role",
+            "type": "google.cloud.dialogflow_v2beta1.types.Participant.Role"
+          },
+          {
+            "name": "suggestion_feature_type",
+            "type": "google.cloud.dialogflow_v2beta1.types.SuggestionFeature.Type"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -2988,6 +2996,14 @@
           {
             "name": "conversation_profile",
             "type": "str"
+          },
+          {
+            "name": "participant_role",
+            "type": "google.cloud.dialogflow_v2beta1.types.Participant.Role"
+          },
+          {
+            "name": "suggestion_feature_type",
+            "type": "google.cloud.dialogflow_v2beta1.types.SuggestionFeature.Type"
           },
           {
             "name": "retry",
@@ -3717,6 +3733,14 @@
             "type": "str"
           },
           {
+            "name": "participant_role",
+            "type": "google.cloud.dialogflow_v2beta1.types.Participant.Role"
+          },
+          {
+            "name": "suggestion_feature_config",
+            "type": "google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionFeatureConfig"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -3795,6 +3819,14 @@
           {
             "name": "conversation_profile",
             "type": "str"
+          },
+          {
+            "name": "participant_role",
+            "type": "google.cloud.dialogflow_v2beta1.types.Participant.Role"
+          },
+          {
+            "name": "suggestion_feature_config",
+            "type": "google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionFeatureConfig"
           },
           {
             "name": "retry",

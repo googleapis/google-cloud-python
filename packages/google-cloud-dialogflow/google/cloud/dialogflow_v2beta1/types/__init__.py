@@ -40,6 +40,7 @@ from .answer_record import (
 )
 from .audio_config import (
     AudioEncoding,
+    BargeInConfig,
     InputAudioConfig,
     OutputAudioConfig,
     OutputAudioEncoding,
@@ -264,6 +265,7 @@ __all__ = (
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
     "UpdateAnswerRecordRequest",
+    "BargeInConfig",
     "InputAudioConfig",
     "OutputAudioConfig",
     "SpeechContext",

@@ -66,6 +66,7 @@ from .types.answer_record import (
 )
 from .types.audio_config import (
     AudioEncoding,
+    BargeInConfig,
     InputAudioConfig,
     OutputAudioConfig,
     OutputAudioEncoding,
@@ -304,6 +305,7 @@ __all__ = (
     "AudioInput",
     "AutomatedAgentConfig",
     "AutomatedAgentReply",
+    "BargeInConfig",
     "BatchCreateEntitiesRequest",
     "BatchCreateMessagesRequest",
     "BatchCreateMessagesResponse",

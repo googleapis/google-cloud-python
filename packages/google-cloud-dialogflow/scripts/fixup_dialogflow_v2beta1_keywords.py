@@ -115,7 +115,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', 'assist_query_params', 'cx_parameters', 'cx_current_page', 'enable_partial_automated_agent_reply', ),
         'streaming_detect_intent': ('session', 'query_input', 'query_params', 'single_utterance', 'output_audio_config', 'output_audio_config_mask', 'input_audio', ),
         'suggest_articles': ('parent', 'latest_message', 'context_size', 'assist_query_params', ),
-        'suggest_conversation_summary': ('conversation', 'latest_message', 'context_size', ),
+        'suggest_conversation_summary': ('conversation', 'latest_message', 'context_size', 'assist_query_params', ),
         'suggest_faq_answers': ('parent', 'latest_message', 'context_size', 'assist_query_params', ),
         'suggest_smart_replies': ('parent', 'current_text_input', 'latest_message', 'context_size', ),
         'train_agent': ('parent', ),

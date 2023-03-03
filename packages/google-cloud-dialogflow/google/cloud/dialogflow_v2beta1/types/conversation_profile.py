@@ -101,6 +101,13 @@ class ConversationProfile(proto.Message):
             Name of the CX SecuritySettings reference for the agent.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+        tts_config (google.cloud.dialogflow_v2beta1.types.SynthesizeSpeechConfig):
+            Configuration for Text-to-Speech
+            synthesization.
+            Used by Phone Gateway to specify synthesization
+            options. If agent defines synthesization options
+            as well, agent settings overrides the option
+            here.
     """
 
     name: str = proto.Field(
@@ -167,6 +174,11 @@ class ConversationProfile(proto.Message):
     security_settings: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    tts_config: audio_config.SynthesizeSpeechConfig = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=audio_config.SynthesizeSpeechConfig,
     )
 
 
@@ -729,9 +741,9 @@ class NotificationConfig(proto.Message):
             MESSAGE_FORMAT_UNSPECIFIED (0):
                 If it is unspecified, PROTO will be used.
             PROTO (1):
-                Pubsub message will be serialized proto.
+                Pub/Sub message will be serialized proto.
             JSON (2):
-                Pubsub message will be json.
+                Pub/Sub message will be json.
         """
         MESSAGE_FORMAT_UNSPECIFIED = 0
         PROTO = 1

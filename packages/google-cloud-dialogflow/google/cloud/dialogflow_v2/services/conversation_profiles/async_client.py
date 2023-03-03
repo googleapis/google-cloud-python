@@ -55,6 +55,7 @@ from google.cloud.dialogflow_v2.types import (
 )
 from google.cloud.dialogflow_v2.types import audio_config
 from google.cloud.dialogflow_v2.types import conversation_profile
+from google.cloud.dialogflow_v2.types import participant
 
 from .client import ConversationProfilesClient
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
@@ -832,6 +833,10 @@ class ConversationProfilesAsyncClient:
         ] = None,
         *,
         conversation_profile: Optional[str] = None,
+        participant_role: Optional[participant.Participant.Role] = None,
+        suggestion_feature_config: Optional[
+            gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -900,6 +905,21 @@ class ConversationProfilesAsyncClient:
                 This corresponds to the ``conversation_profile`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            participant_role (:class:`google.cloud.dialogflow_v2.types.Participant.Role`):
+                Required. The participant role to add or update the
+                suggestion feature config. Only HUMAN_AGENT or END_USER
+                can be used.
+
+                This corresponds to the ``participant_role`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            suggestion_feature_config (:class:`google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionFeatureConfig`):
+                Required. The suggestion feature
+                config to add or update.
+
+                This corresponds to the ``suggestion_feature_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -919,7 +939,9 @@ class ConversationProfilesAsyncClient:
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([conversation_profile])
+        has_flattened_params = any(
+            [conversation_profile, participant_role, suggestion_feature_config]
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -932,6 +954,10 @@ class ConversationProfilesAsyncClient:
         # request, apply these.
         if conversation_profile is not None:
             request.conversation_profile = conversation_profile
+        if participant_role is not None:
+            request.participant_role = participant_role
+        if suggestion_feature_config is not None:
+            request.suggestion_feature_config = suggestion_feature_config
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -975,6 +1001,10 @@ class ConversationProfilesAsyncClient:
         ] = None,
         *,
         conversation_profile: Optional[str] = None,
+        participant_role: Optional[participant.Participant.Role] = None,
+        suggestion_feature_type: Optional[
+            gcd_conversation_profile.SuggestionFeature.Type
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1036,6 +1066,21 @@ class ConversationProfilesAsyncClient:
                 This corresponds to the ``conversation_profile`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            participant_role (:class:`google.cloud.dialogflow_v2.types.Participant.Role`):
+                Required. The participant role to remove the suggestion
+                feature config. Only HUMAN_AGENT or END_USER can be
+                used.
+
+                This corresponds to the ``participant_role`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            suggestion_feature_type (:class:`google.cloud.dialogflow_v2.types.SuggestionFeature.Type`):
+                Required. The type of the suggestion
+                feature to remove.
+
+                This corresponds to the ``suggestion_feature_type`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1055,7 +1100,9 @@ class ConversationProfilesAsyncClient:
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([conversation_profile])
+        has_flattened_params = any(
+            [conversation_profile, participant_role, suggestion_feature_type]
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1068,6 +1115,10 @@ class ConversationProfilesAsyncClient:
         # request, apply these.
         if conversation_profile is not None:
             request.conversation_profile = conversation_profile
+        if participant_role is not None:
+            request.participant_role = participant_role
+        if suggestion_feature_type is not None:
+            request.suggestion_feature_type = suggestion_feature_type
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
