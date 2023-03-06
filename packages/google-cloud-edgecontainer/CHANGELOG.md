@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-edgecontainer/compare/v0.4.1...v0.5.0) (2023-03-03)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#24](https://github.com/googleapis/python-edgecontainer/issues/24)) ([945e4fa](https://github.com/googleapis/python-edgecontainer/commit/945e4faabc1267ede01875e60488d409b73ff638))
+
+
+### Bug Fixes
+
+* Add service_yaml parameters to edgecontainer GAPIC targets ([#28](https://github.com/googleapis/python-edgecontainer/issues/28)) ([5fd68bf](https://github.com/googleapis/python-edgecontainer/commit/5fd68bf24b50ff3c01bc0438c4d2c7592c5ba060))
+
 ## [0.4.1](https://github.com/googleapis/python-edgecontainer/compare/v0.4.0...v0.4.1) (2023-01-20)
 
 
