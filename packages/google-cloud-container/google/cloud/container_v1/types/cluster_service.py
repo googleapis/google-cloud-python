@@ -189,8 +189,8 @@ class PrivateIPv6GoogleAccess(proto.Enum):
             Enables private IPv6 access to Google
             Services from GKE
         PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL (3):
-            Enables priate IPv6 access to and from Google
-            Services
+            Enables private IPv6 access to and from
+            Google Services
     """
     PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 0
     PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED = 1
