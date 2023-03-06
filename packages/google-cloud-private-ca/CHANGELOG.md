@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-security-private-ca/compare/v1.6.1...v1.7.0) (2023-03-06)
+
+
+### Features
+
+* Add X.509 Name Constraints support ([423615c](https://github.com/googleapis/python-security-private-ca/commit/423615cc7b1c4b893e062e86e780e021475a7d0c))
+* Enable "rest" transport in Python for services supporting numeric enums ([423615c](https://github.com/googleapis/python-security-private-ca/commit/423615cc7b1c4b893e062e86e780e021475a7d0c))
+
+
+### Bug Fixes
+
+* Add service_yaml parameters to privateca_py_gapic ([423615c](https://github.com/googleapis/python-security-private-ca/commit/423615cc7b1c4b893e062e86e780e021475a7d0c))
+
 ## [1.6.1](https://github.com/googleapis/python-security-private-ca/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
