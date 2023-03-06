@@ -31,6 +31,7 @@ from .job import (
     JobNotification,
     JobStatus,
     LogsPolicy,
+    ResourceUsage,
     ServiceAccount,
     TaskGroup,
 )
@@ -42,6 +43,7 @@ from .task import (
     StatusEvent,
     Task,
     TaskExecution,
+    TaskResourceUsage,
     TaskSpec,
     TaskStatus,
 )
@@ -63,6 +65,7 @@ __all__ = (
     "JobNotification",
     "JobStatus",
     "LogsPolicy",
+    "ResourceUsage",
     "ServiceAccount",
     "TaskGroup",
     "ComputeResource",
@@ -72,6 +75,7 @@ __all__ = (
     "StatusEvent",
     "Task",
     "TaskExecution",
+    "TaskResourceUsage",
     "TaskSpec",
     "TaskStatus",
     "GCS",

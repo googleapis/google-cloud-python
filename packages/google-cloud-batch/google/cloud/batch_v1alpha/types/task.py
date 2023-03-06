@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "StatusEvent",
         "TaskExecution",
         "TaskStatus",
+        "TaskResourceUsage",
         "Runnable",
         "TaskSpec",
         "LifecyclePolicy",
@@ -84,6 +85,8 @@ class StatusEvent(proto.Message):
             The time this event occurred.
         task_execution (google.cloud.batch_v1alpha.types.TaskExecution):
             Task Execution
+        task_state (google.cloud.batch_v1alpha.types.TaskStatus.State):
+            Task State
     """
 
     type_: str = proto.Field(
@@ -103,6 +106,11 @@ class StatusEvent(proto.Message):
         proto.MESSAGE,
         number=4,
         message="TaskExecution",
+    )
+    task_state: "TaskStatus.State" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="TaskStatus.State",
     )
 
 
@@ -131,6 +139,8 @@ class TaskStatus(proto.Message):
             Task state
         status_events (MutableSequence[google.cloud.batch_v1alpha.types.StatusEvent]):
             Detailed info about why the state is reached.
+        resource_usage (google.cloud.batch_v1alpha.types.TaskResourceUsage):
+            The resource usage of the task.
     """
 
     class State(proto.Enum):
@@ -167,6 +177,26 @@ class TaskStatus(proto.Message):
         proto.MESSAGE,
         number=2,
         message="StatusEvent",
+    )
+    resource_usage: "TaskResourceUsage" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="TaskResourceUsage",
+    )
+
+
+class TaskResourceUsage(proto.Message):
+    r"""TaskResourceUsage describes the resource usage of the task.
+
+    Attributes:
+        core_hours (float):
+            The CPU core hours the task consumes based on
+            task requirement and run time.
+    """
+
+    core_hours: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
     )
 
 
@@ -310,9 +340,26 @@ class Runnable(proto.Message):
             path (str):
                 Script file path on the host VM.
 
+                To specify an interpreter, please add a
+                ``#!<interpreter>``\ (also known as `shebang
+                line <https://en.wikipedia.org/wiki/Shebang_(Unix)>`__) as
+                the first line of the file.(For example, to execute the
+                script using bash, ``#!/bin/bash`` should be the first line
+                of the file. To execute the script using\ ``Python3``,
+                ``#!/usr/bin/env python3`` should be the first line of the
+                file.) Otherwise, the file will by default be excuted by
+                ``/bin/sh``.
+
                 This field is a member of `oneof`_ ``command``.
             text (str):
                 Shell script text.
+
+                To specify an interpreter, please add a
+                ``#!<interpreter>\n`` at the beginning of the text.(For
+                example, to execute the script using bash, ``#!/bin/bash\n``
+                should be added. To execute the script using\ ``Python3``,
+                ``#!/usr/bin/env python3\n`` should be added.) Otherwise,
+                the script will by default be excuted by ``/bin/sh``.
 
                 This field is a member of `oneof`_ ``command``.
         """
@@ -419,15 +466,13 @@ class TaskSpec(proto.Message):
             means never retry. The valid value range is [0, 10].
         lifecycle_policies (MutableSequence[google.cloud.batch_v1alpha.types.LifecyclePolicy]):
             Lifecycle management schema when any task in a task group is
-            failed. The valid size of lifecycle policies are [0, 10].
-            For each lifecycle policy, when the condition is met, the
-            action in that policy will execute. If there are multiple
-            policies that the task execution result matches, we use the
-            action from the first matched policy. If task execution
-            result does not meet with any of the defined lifecycle
-            policy, we consider it as the default policy. Default policy
-            means if the exit code is 0, exit task. If task ends with
-            non-zero exit code, retry the task with max_retry_count.
+            failed. Currently we only support one lifecycle policy. When
+            the lifecycle policy condition is met, the action in the
+            policy will execute. If task execution result does not meet
+            with the defined lifecycle policy, we consider it as the
+            default policy. Default policy means if the exit code is 0,
+            exit task. If task ends with non-zero exit code, retry the
+            task with max_retry_count.
         environments (MutableMapping[str, str]):
             Deprecated: please use
             environment(non-plural) instead.
@@ -486,8 +531,12 @@ class LifecyclePolicy(proto.Message):
 
     Attributes:
         action (google.cloud.batch_v1alpha.types.LifecyclePolicy.Action):
-            Action to execute when ActionCondition is
-            true.
+            Action to execute when ActionCondition is true. When
+            RETRY_TASK is specified, we will retry failed tasks if we
+            notice any exit code match and fail tasks if no match is
+            found. Likewise, when FAIL_TASK is specified, we will fail
+            tasks if we notice any exit code match and retry tasks if no
+            match is found.
         action_condition (google.cloud.batch_v1alpha.types.LifecyclePolicy.ActionCondition):
             Conditions that decide why a task failure is
             dealt with a specific action.

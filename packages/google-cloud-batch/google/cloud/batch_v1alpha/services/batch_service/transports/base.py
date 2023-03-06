@@ -23,8 +23,6 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -287,36 +285,6 @@ class BatchServiceTransport(abc.ABC):
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
-        raise NotImplementedError()
-
-    @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
-    ]:
         raise NotImplementedError()
 
     @property

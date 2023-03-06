@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "LogsPolicy",
         "JobDependency",
         "JobStatus",
+        "ResourceUsage",
         "JobNotification",
         "AllocationPolicy",
         "TaskGroup",
@@ -50,9 +51,10 @@ class Job(proto.Message):
             Output only. A system generated unique ID (in
             UUID4 format) for the Job.
         priority (int):
-            Priority of the Job. The valid value range is [0, 100). A
-            job with higher priority value is more likely to run earlier
-            if all other requirements are satisfied.
+            Priority of the Job. The valid value range is [0, 100).
+            Default value is 0. Higher value indicates higher priority.
+            A job with higher priority value is more likely to run
+            earlier if all other requirements are satisfied.
         task_groups (MutableSequence[google.cloud.batch_v1alpha.types.TaskGroup]):
             Required. TaskGroups in the Job. Only one
             TaskGroup is supported now.
@@ -270,6 +272,8 @@ class JobStatus(proto.Message):
         run_duration (google.protobuf.duration_pb2.Duration):
             The duration of time that the Job spent in
             status RUNNING.
+        resource_usage (google.cloud.batch_v1alpha.types.ResourceUsage):
+            The resource usage of the job.
     """
 
     class State(proto.Enum):
@@ -384,6 +388,25 @@ class JobStatus(proto.Message):
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
+    )
+    resource_usage: "ResourceUsage" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ResourceUsage",
+    )
+
+
+class ResourceUsage(proto.Message):
+    r"""ResourceUsage describes the resource usage of the job.
+
+    Attributes:
+        core_hours (float):
+            The CPU core hours that the job consumes.
+    """
+
+    core_hours: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
     )
 
 
