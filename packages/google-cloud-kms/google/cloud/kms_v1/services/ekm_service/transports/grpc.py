@@ -346,6 +346,60 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["update_ekm_connection"]
 
     @property
+    def get_ekm_config(
+        self,
+    ) -> Callable[[ekm_service.GetEkmConfigRequest], ekm_service.EkmConfig]:
+        r"""Return a callable for the get ekm config method over gRPC.
+
+        Returns the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton
+        resource for a given project and location.
+
+        Returns:
+            Callable[[~.GetEkmConfigRequest],
+                    ~.EkmConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_ekm_config" not in self._stubs:
+            self._stubs["get_ekm_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.EkmService/GetEkmConfig",
+                request_serializer=ekm_service.GetEkmConfigRequest.serialize,
+                response_deserializer=ekm_service.EkmConfig.deserialize,
+            )
+        return self._stubs["get_ekm_config"]
+
+    @property
+    def update_ekm_config(
+        self,
+    ) -> Callable[[ekm_service.UpdateEkmConfigRequest], ekm_service.EkmConfig]:
+        r"""Return a callable for the update ekm config method over gRPC.
+
+        Updates the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton
+        resource for a given project and location.
+
+        Returns:
+            Callable[[~.UpdateEkmConfigRequest],
+                    ~.EkmConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_ekm_config" not in self._stubs:
+            self._stubs["update_ekm_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.EkmService/UpdateEkmConfig",
+                request_serializer=ekm_service.UpdateEkmConfigRequest.serialize,
+                response_deserializer=ekm_service.EkmConfig.deserialize,
+            )
+        return self._stubs["update_ekm_config"]
+
+    @property
     def set_iam_policy(
         self,
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:

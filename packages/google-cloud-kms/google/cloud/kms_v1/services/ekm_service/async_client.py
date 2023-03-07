@@ -70,6 +70,8 @@ class EkmServiceAsyncClient:
     DEFAULT_ENDPOINT = EkmServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = EkmServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    ekm_config_path = staticmethod(EkmServiceClient.ekm_config_path)
+    parse_ekm_config_path = staticmethod(EkmServiceClient.parse_ekm_config_path)
     ekm_connection_path = staticmethod(EkmServiceClient.ekm_connection_path)
     parse_ekm_connection_path = staticmethod(EkmServiceClient.parse_ekm_connection_path)
     service_path = staticmethod(EkmServiceClient.service_path)
@@ -742,6 +744,238 @@ class EkmServiceAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
                 (("ekm_connection.name", request.ekm_connection.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_ekm_config(
+        self,
+        request: Optional[Union[ekm_service.GetEkmConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> ekm_service.EkmConfig:
+        r"""Returns the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton
+        resource for a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import kms_v1
+
+            async def sample_get_ekm_config():
+                # Create a client
+                client = kms_v1.EkmServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GetEkmConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_ekm_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.kms_v1.types.GetEkmConfigRequest, dict]]):
+                The request object. Request message for
+                [EkmService.GetEkmConfig][google.cloud.kms.v1.EkmService.GetEkmConfig].
+            name (:class:`str`):
+                Required. The [name][google.cloud.kms.v1.EkmConfig.name]
+                of the [EkmConfig][google.cloud.kms.v1.EkmConfig] to
+                get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.EkmConfig:
+                An [EkmConfig][google.cloud.kms.v1.EkmConfig] is a singleton resource that
+                   represents configuration parameters that apply to all
+                   [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   with a
+                   [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+                   of
+                   [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC]
+                   in a given project and location.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = ekm_service.GetEkmConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_ekm_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_ekm_config(
+        self,
+        request: Optional[Union[ekm_service.UpdateEkmConfigRequest, dict]] = None,
+        *,
+        ekm_config: Optional[ekm_service.EkmConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> ekm_service.EkmConfig:
+        r"""Updates the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton
+        resource for a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import kms_v1
+
+            async def sample_update_ekm_config():
+                # Create a client
+                client = kms_v1.EkmServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.UpdateEkmConfigRequest(
+                )
+
+                # Make the request
+                response = await client.update_ekm_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.kms_v1.types.UpdateEkmConfigRequest, dict]]):
+                The request object. Request message for
+                [EkmService.UpdateEkmConfig][google.cloud.kms.v1.EkmService.UpdateEkmConfig].
+            ekm_config (:class:`google.cloud.kms_v1.types.EkmConfig`):
+                Required. [EkmConfig][google.cloud.kms.v1.EkmConfig]
+                with updated values.
+
+                This corresponds to the ``ekm_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. List of fields to be
+                updated in this request.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.EkmConfig:
+                An [EkmConfig][google.cloud.kms.v1.EkmConfig] is a singleton resource that
+                   represents configuration parameters that apply to all
+                   [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   with a
+                   [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+                   of
+                   [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC]
+                   in a given project and location.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([ekm_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = ekm_service.UpdateEkmConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if ekm_config is not None:
+            request.ekm_config = ekm_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_ekm_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("ekm_config.name", request.ekm_config.name),)
             ),
         )
 

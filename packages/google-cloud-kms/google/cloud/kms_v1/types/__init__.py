@@ -16,10 +16,13 @@
 from .ekm_service import (
     Certificate,
     CreateEkmConnectionRequest,
+    EkmConfig,
     EkmConnection,
+    GetEkmConfigRequest,
     GetEkmConnectionRequest,
     ListEkmConnectionsRequest,
     ListEkmConnectionsResponse,
+    UpdateEkmConfigRequest,
     UpdateEkmConnectionRequest,
 )
 from .resources import (
@@ -78,10 +81,13 @@ from .service import (
 __all__ = (
     "Certificate",
     "CreateEkmConnectionRequest",
+    "EkmConfig",
     "EkmConnection",
+    "GetEkmConfigRequest",
     "GetEkmConnectionRequest",
     "ListEkmConnectionsRequest",
     "ListEkmConnectionsResponse",
+    "UpdateEkmConfigRequest",
     "UpdateEkmConnectionRequest",
     "CryptoKey",
     "CryptoKeyVersion",

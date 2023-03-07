@@ -15,6 +15,11 @@
                 "create_ekm_connection"
               ]
             },
+            "GetEkmConfig": {
+              "methods": [
+                "get_ekm_config"
+              ]
+            },
             "GetEkmConnection": {
               "methods": [
                 "get_ekm_connection"
@@ -23,6 +28,11 @@
             "ListEkmConnections": {
               "methods": [
                 "list_ekm_connections"
+              ]
+            },
+            "UpdateEkmConfig": {
+              "methods": [
+                "update_ekm_config"
               ]
             },
             "UpdateEkmConnection": {
@@ -40,6 +50,11 @@
                 "create_ekm_connection"
               ]
             },
+            "GetEkmConfig": {
+              "methods": [
+                "get_ekm_config"
+              ]
+            },
             "GetEkmConnection": {
               "methods": [
                 "get_ekm_connection"
@@ -48,6 +63,11 @@
             "ListEkmConnections": {
               "methods": [
                 "list_ekm_connections"
+              ]
+            },
+            "UpdateEkmConfig": {
+              "methods": [
+                "update_ekm_config"
               ]
             },
             "UpdateEkmConnection": {
@@ -65,6 +85,11 @@
                 "create_ekm_connection"
               ]
             },
+            "GetEkmConfig": {
+              "methods": [
+                "get_ekm_config"
+              ]
+            },
             "GetEkmConnection": {
               "methods": [
                 "get_ekm_connection"
@@ -73,6 +98,11 @@
             "ListEkmConnections": {
               "methods": [
                 "list_ekm_connections"
+              ]
+            },
+            "UpdateEkmConfig": {
+              "methods": [
+                "update_ekm_config"
               ]
             },
             "UpdateEkmConnection": {

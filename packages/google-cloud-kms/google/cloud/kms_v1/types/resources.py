@@ -507,6 +507,16 @@ class CryptoKeyVersion(proto.Message):
             failure. Only present if
             [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
             [IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED].
+        generation_failure_reason (str):
+            Output only. The root cause of the most recent generation
+            failure. Only present if
+            [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
+            [GENERATION_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.GENERATION_FAILED].
+        external_destruction_failure_reason (str):
+            Output only. The root cause of the most recent external
+            destruction failure. Only present if
+            [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
+            [EXTERNAL_DESTRUCTION_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.EXTERNAL_DESTRUCTION_FAILED].
         external_protection_level_options (google.cloud.kms_v1.types.ExternalProtectionLevelOptions):
             ExternalProtectionLevelOptions stores a group of additional
             fields for configuring a
@@ -718,6 +728,22 @@ class CryptoKeyVersion(proto.Message):
                 material has been discarded. Additional details can be found
                 in
                 [CryptoKeyVersion.import_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.import_failure_reason].
+            GENERATION_FAILED (8):
+                This version was not generated successfully. It may not be
+                used, enabled, disabled, or destroyed. Additional details
+                can be found in
+                [CryptoKeyVersion.generation_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.generation_failure_reason].
+            PENDING_EXTERNAL_DESTRUCTION (9):
+                This version was destroyed, and it may not be
+                used or enabled again. Cloud KMS is waiting for
+                the corresponding key material residing in an
+                external key manager to be destroyed.
+            EXTERNAL_DESTRUCTION_FAILED (10):
+                This version was destroyed, and it may not be used or
+                enabled again. However, Cloud KMS could not confirm that the
+                corresponding key material residing in an external key
+                manager was destroyed. Additional details can be found in
+                [CryptoKeyVersion.external_destruction_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.external_destruction_failure_reason].
         """
         CRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 5
@@ -727,6 +753,9 @@ class CryptoKeyVersion(proto.Message):
         DESTROY_SCHEDULED = 4
         PENDING_IMPORT = 6
         IMPORT_FAILED = 7
+        GENERATION_FAILED = 8
+        PENDING_EXTERNAL_DESTRUCTION = 9
+        EXTERNAL_DESTRUCTION_FAILED = 10
 
     class CryptoKeyVersionView(proto.Enum):
         r"""A view for
@@ -809,6 +838,14 @@ class CryptoKeyVersion(proto.Message):
     import_failure_reason: str = proto.Field(
         proto.STRING,
         number=16,
+    )
+    generation_failure_reason: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    external_destruction_failure_reason: str = proto.Field(
+        proto.STRING,
+        number=20,
     )
     external_protection_level_options: "ExternalProtectionLevelOptions" = proto.Field(
         proto.MESSAGE,

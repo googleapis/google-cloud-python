@@ -2975,6 +2975,8 @@ def test_get_crypto_key_version(request_type, transport: str = "grpc"):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
         response = client.get_crypto_key_version(request)
@@ -2998,6 +3000,11 @@ def test_get_crypto_key_version(request_type, transport: str = "grpc"):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -3045,6 +3052,8 @@ async def test_get_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
             )
         )
@@ -3069,6 +3078,11 @@ async def test_get_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -4272,6 +4286,8 @@ def test_create_crypto_key_version(request_type, transport: str = "grpc"):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
         response = client.create_crypto_key_version(request)
@@ -4295,6 +4311,11 @@ def test_create_crypto_key_version(request_type, transport: str = "grpc"):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -4342,6 +4363,8 @@ async def test_create_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
             )
         )
@@ -4366,6 +4389,11 @@ async def test_create_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -4564,6 +4592,8 @@ def test_import_crypto_key_version(request_type, transport: str = "grpc"):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
         response = client.import_crypto_key_version(request)
@@ -4587,6 +4617,11 @@ def test_import_crypto_key_version(request_type, transport: str = "grpc"):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -4634,6 +4669,8 @@ async def test_import_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
             )
         )
@@ -4658,6 +4695,11 @@ async def test_import_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -5305,6 +5347,8 @@ def test_update_crypto_key_version(request_type, transport: str = "grpc"):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
         response = client.update_crypto_key_version(request)
@@ -5328,6 +5372,11 @@ def test_update_crypto_key_version(request_type, transport: str = "grpc"):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -5375,6 +5424,8 @@ async def test_update_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
             )
         )
@@ -5399,6 +5450,11 @@ async def test_update_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -5863,6 +5919,8 @@ def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
         response = client.destroy_crypto_key_version(request)
@@ -5886,6 +5944,11 @@ def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -5933,6 +5996,8 @@ async def test_destroy_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
             )
         )
@@ -5957,6 +6022,11 @@ async def test_destroy_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -6145,6 +6215,8 @@ def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
         response = client.restore_crypto_key_version(request)
@@ -6168,6 +6240,11 @@ def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -6215,6 +6292,8 @@ async def test_restore_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
             )
         )
@@ -6239,6 +6318,11 @@ async def test_restore_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -10174,6 +10258,8 @@ def test_get_crypto_key_version_rest(request_type):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
 
@@ -10201,6 +10287,11 @@ def test_get_crypto_key_version_rest(request_type):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -11335,6 +11426,8 @@ def test_create_crypto_key_rest(request_type):
             "import_job": "import_job_value",
             "import_time": {},
             "import_failure_reason": "import_failure_reason_value",
+            "generation_failure_reason": "generation_failure_reason_value",
+            "external_destruction_failure_reason": "external_destruction_failure_reason_value",
             "external_protection_level_options": {
                 "external_key_uri": "external_key_uri_value",
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -11595,6 +11688,8 @@ def test_create_crypto_key_rest_bad_request(
             "import_job": "import_job_value",
             "import_time": {},
             "import_failure_reason": "import_failure_reason_value",
+            "generation_failure_reason": "generation_failure_reason_value",
+            "external_destruction_failure_reason": "external_destruction_failure_reason_value",
             "external_protection_level_options": {
                 "external_key_uri": "external_key_uri_value",
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -11737,6 +11832,8 @@ def test_create_crypto_key_version_rest(request_type):
         "import_job": "import_job_value",
         "import_time": {},
         "import_failure_reason": "import_failure_reason_value",
+        "generation_failure_reason": "generation_failure_reason_value",
+        "external_destruction_failure_reason": "external_destruction_failure_reason_value",
         "external_protection_level_options": {
             "external_key_uri": "external_key_uri_value",
             "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -11755,6 +11852,8 @@ def test_create_crypto_key_version_rest(request_type):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
 
@@ -11782,6 +11881,11 @@ def test_create_crypto_key_version_rest(request_type):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -11976,6 +12080,8 @@ def test_create_crypto_key_version_rest_bad_request(
         "import_job": "import_job_value",
         "import_time": {},
         "import_failure_reason": "import_failure_reason_value",
+        "generation_failure_reason": "generation_failure_reason_value",
+        "external_destruction_failure_reason": "external_destruction_failure_reason_value",
         "external_protection_level_options": {
             "external_key_uri": "external_key_uri_value",
             "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -12091,6 +12197,8 @@ def test_import_crypto_key_version_rest(request_type):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
 
@@ -12118,6 +12226,11 @@ def test_import_crypto_key_version_rest(request_type):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -12714,6 +12827,8 @@ def test_update_crypto_key_rest(request_type):
             "import_job": "import_job_value",
             "import_time": {},
             "import_failure_reason": "import_failure_reason_value",
+            "generation_failure_reason": "generation_failure_reason_value",
+            "external_destruction_failure_reason": "external_destruction_failure_reason_value",
             "external_protection_level_options": {
                 "external_key_uri": "external_key_uri_value",
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -12949,6 +13064,8 @@ def test_update_crypto_key_rest_bad_request(
             "import_job": "import_job_value",
             "import_time": {},
             "import_failure_reason": "import_failure_reason_value",
+            "generation_failure_reason": "generation_failure_reason_value",
+            "external_destruction_failure_reason": "external_destruction_failure_reason_value",
             "external_protection_level_options": {
                 "external_key_uri": "external_key_uri_value",
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -13093,6 +13210,8 @@ def test_update_crypto_key_version_rest(request_type):
         "import_job": "import_job_value",
         "import_time": {},
         "import_failure_reason": "import_failure_reason_value",
+        "generation_failure_reason": "generation_failure_reason_value",
+        "external_destruction_failure_reason": "external_destruction_failure_reason_value",
         "external_protection_level_options": {
             "external_key_uri": "external_key_uri_value",
             "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -13111,6 +13230,8 @@ def test_update_crypto_key_version_rest(request_type):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
 
@@ -13138,6 +13259,11 @@ def test_update_crypto_key_version_rest(request_type):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -13331,6 +13457,8 @@ def test_update_crypto_key_version_rest_bad_request(
         "import_job": "import_job_value",
         "import_time": {},
         "import_failure_reason": "import_failure_reason_value",
+        "generation_failure_reason": "generation_failure_reason_value",
+        "external_destruction_failure_reason": "external_destruction_failure_reason_value",
         "external_protection_level_options": {
             "external_key_uri": "external_key_uri_value",
             "ekm_connection_key_path": "ekm_connection_key_path_value",
@@ -13748,6 +13876,8 @@ def test_destroy_crypto_key_version_rest(request_type):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
 
@@ -13775,6 +13905,11 @@ def test_destroy_crypto_key_version_rest(request_type):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 
@@ -14042,6 +14177,8 @@ def test_restore_crypto_key_version_rest(request_type):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
         )
 
@@ -14069,6 +14206,11 @@ def test_restore_crypto_key_version_rest(request_type):
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
     assert response.reimport_eligible is True
 
 

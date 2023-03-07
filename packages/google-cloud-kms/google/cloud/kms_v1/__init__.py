@@ -26,10 +26,13 @@ from .services.key_management_service import (
 from .types.ekm_service import (
     Certificate,
     CreateEkmConnectionRequest,
+    EkmConfig,
     EkmConnection,
+    GetEkmConfigRequest,
     GetEkmConnectionRequest,
     ListEkmConnectionsRequest,
     ListEkmConnectionsResponse,
+    UpdateEkmConfigRequest,
     UpdateEkmConnectionRequest,
 )
 from .types.resources import (
@@ -105,6 +108,7 @@ __all__ = (
     "DecryptResponse",
     "DestroyCryptoKeyVersionRequest",
     "Digest",
+    "EkmConfig",
     "EkmConnection",
     "EkmServiceClient",
     "EncryptRequest",
@@ -114,6 +118,7 @@ __all__ = (
     "GenerateRandomBytesResponse",
     "GetCryptoKeyRequest",
     "GetCryptoKeyVersionRequest",
+    "GetEkmConfigRequest",
     "GetEkmConnectionRequest",
     "GetImportJobRequest",
     "GetKeyRingRequest",
@@ -144,5 +149,6 @@ __all__ = (
     "UpdateCryptoKeyPrimaryVersionRequest",
     "UpdateCryptoKeyRequest",
     "UpdateCryptoKeyVersionRequest",
+    "UpdateEkmConfigRequest",
     "UpdateEkmConnectionRequest",
 )

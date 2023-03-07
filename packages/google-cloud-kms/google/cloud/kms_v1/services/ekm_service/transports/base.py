@@ -188,6 +188,16 @@ class EkmServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_ekm_config: gapic_v1.method.wrap_method(
+                self.get_ekm_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_ekm_config: gapic_v1.method.wrap_method(
+                self.update_ekm_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -235,6 +245,24 @@ class EkmServiceTransport(abc.ABC):
     ) -> Callable[
         [ekm_service.UpdateEkmConnectionRequest],
         Union[ekm_service.EkmConnection, Awaitable[ekm_service.EkmConnection]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_ekm_config(
+        self,
+    ) -> Callable[
+        [ekm_service.GetEkmConfigRequest],
+        Union[ekm_service.EkmConfig, Awaitable[ekm_service.EkmConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_ekm_config(
+        self,
+    ) -> Callable[
+        [ekm_service.UpdateEkmConfigRequest],
+        Union[ekm_service.EkmConfig, Awaitable[ekm_service.EkmConfig]],
     ]:
         raise NotImplementedError()
 

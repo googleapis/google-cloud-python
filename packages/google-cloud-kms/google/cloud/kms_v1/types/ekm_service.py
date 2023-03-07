@@ -29,8 +29,11 @@ __protobuf__ = proto.module(
         "GetEkmConnectionRequest",
         "CreateEkmConnectionRequest",
         "UpdateEkmConnectionRequest",
+        "GetEkmConfigRequest",
+        "UpdateEkmConfigRequest",
         "Certificate",
         "EkmConnection",
+        "EkmConfig",
     },
 )
 
@@ -202,6 +205,47 @@ class UpdateEkmConnectionRequest(proto.Message):
     )
 
 
+class GetEkmConfigRequest(proto.Message):
+    r"""Request message for
+    [EkmService.GetEkmConfig][google.cloud.kms.v1.EkmService.GetEkmConfig].
+
+    Attributes:
+        name (str):
+            Required. The [name][google.cloud.kms.v1.EkmConfig.name] of
+            the [EkmConfig][google.cloud.kms.v1.EkmConfig] to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateEkmConfigRequest(proto.Message):
+    r"""Request message for
+    [EkmService.UpdateEkmConfig][google.cloud.kms.v1.EkmService.UpdateEkmConfig].
+
+    Attributes:
+        ekm_config (google.cloud.kms_v1.types.EkmConfig):
+            Required. [EkmConfig][google.cloud.kms.v1.EkmConfig] with
+            updated values.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. List of fields to be updated in
+            this request.
+    """
+
+    ekm_config: "EkmConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="EkmConfig",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
 class Certificate(proto.Message):
     r"""A [Certificate][google.cloud.kms.v1.Certificate] represents an X.509
     certificate used to authenticate HTTPS connections to EKM replicas.
@@ -311,7 +355,67 @@ class EkmConnection(proto.Message):
         etag (str):
             Optional. Etag of the currently stored
             [EkmConnection][google.cloud.kms.v1.EkmConnection].
+        key_management_mode (google.cloud.kms_v1.types.EkmConnection.KeyManagementMode):
+            Optional. Describes who can perform control plane operations
+            on the EKM. If unset, this defaults to
+            [MANUAL][google.cloud.kms.v1.EkmConnection.KeyManagementMode.MANUAL].
+        crypto_space_path (str):
+            Optional. Identifies the EKM Crypto Space that this
+            [EkmConnection][google.cloud.kms.v1.EkmConnection] maps to.
+            Note: This field is required if
+            [KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode]
+            is
+            [CLOUD_KMS][google.cloud.kms.v1.EkmConnection.KeyManagementMode.CLOUD_KMS].
     """
+
+    class KeyManagementMode(proto.Enum):
+        r"""[KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode]
+        describes who can perform control plane cryptographic operations
+        using this [EkmConnection][google.cloud.kms.v1.EkmConnection].
+
+        Values:
+            KEY_MANAGEMENT_MODE_UNSPECIFIED (0):
+                Not specified.
+            MANUAL (1):
+                EKM-side key management operations on
+                [CryptoKeys][google.cloud.kms.v1.CryptoKey] created with
+                this [EkmConnection][google.cloud.kms.v1.EkmConnection] must
+                be initiated from the EKM directly and cannot be performed
+                from Cloud KMS. This means that:
+
+                -  When creating a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   associated with this
+                   [EkmConnection][google.cloud.kms.v1.EkmConnection], the
+                   caller must supply the key path of pre-existing external
+                   key material that will be linked to the
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+                -  Destruction of external key material cannot be requested
+                   via the Cloud KMS API and must be performed directly in
+                   the EKM.
+                -  Automatic rotation of key material is not supported.
+            CLOUD_KMS (2):
+                All [CryptoKeys][google.cloud.kms.v1.CryptoKey] created with
+                this [EkmConnection][google.cloud.kms.v1.EkmConnection] use
+                EKM-side key management operations initiated from Cloud KMS.
+                This means that:
+
+                -  When a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   associated with this
+                   [EkmConnection][google.cloud.kms.v1.EkmConnection] is
+                   created, the EKM automatically generates new key material
+                   and a new key path. The caller cannot supply the key path
+                   of pre-existing external key material.
+                -  Destruction of external key material associated with this
+                   [EkmConnection][google.cloud.kms.v1.EkmConnection] can be
+                   requested by calling
+                   [DestroyCryptoKeyVersion][EkmService.DestroyCryptoKeyVersion].
+                -  Automatic rotation of key material is supported.
+        """
+        KEY_MANAGEMENT_MODE_UNSPECIFIED = 0
+        MANUAL = 1
+        CLOUD_KMS = 2
 
     class ServiceResolver(proto.Message):
         r"""A
@@ -377,6 +481,45 @@ class EkmConnection(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    key_management_mode: KeyManagementMode = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=KeyManagementMode,
+    )
+    crypto_space_path: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+
+
+class EkmConfig(proto.Message):
+    r"""An [EkmConfig][google.cloud.kms.v1.EkmConfig] is a singleton
+    resource that represents configuration parameters that apply to all
+    [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+    [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] with a
+    [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
+    [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC] in a
+    given project and location.
+
+    Attributes:
+        name (str):
+            Output only. The resource name for the
+            [EkmConfig][google.cloud.kms.v1.EkmConfig] in the format
+            ``projects/*/locations/*/ekmConfig``.
+        default_ekm_connection (str):
+            Optional. Resource name of the default
+            [EkmConnection][google.cloud.kms.v1.EkmConnection]. Setting
+            this field to the empty string removes the default.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    default_ekm_connection: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

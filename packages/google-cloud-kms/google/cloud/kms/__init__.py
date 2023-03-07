@@ -29,10 +29,13 @@ from google.cloud.kms_v1.services.key_management_service.client import (
 from google.cloud.kms_v1.types.ekm_service import (
     Certificate,
     CreateEkmConnectionRequest,
+    EkmConfig,
     EkmConnection,
+    GetEkmConfigRequest,
     GetEkmConnectionRequest,
     ListEkmConnectionsRequest,
     ListEkmConnectionsResponse,
+    UpdateEkmConfigRequest,
     UpdateEkmConnectionRequest,
 )
 from google.cloud.kms_v1.types.resources import (
@@ -95,10 +98,13 @@ __all__ = (
     "KeyManagementServiceAsyncClient",
     "Certificate",
     "CreateEkmConnectionRequest",
+    "EkmConfig",
     "EkmConnection",
+    "GetEkmConfigRequest",
     "GetEkmConnectionRequest",
     "ListEkmConnectionsRequest",
     "ListEkmConnectionsResponse",
+    "UpdateEkmConfigRequest",
     "UpdateEkmConnectionRequest",
     "CryptoKey",
     "CryptoKeyVersion",
