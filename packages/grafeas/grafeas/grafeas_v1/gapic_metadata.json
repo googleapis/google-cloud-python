@@ -156,6 +156,81 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "GrafeasClient",
+          "rpcs": {
+            "BatchCreateNotes": {
+              "methods": [
+                "batch_create_notes"
+              ]
+            },
+            "BatchCreateOccurrences": {
+              "methods": [
+                "batch_create_occurrences"
+              ]
+            },
+            "CreateNote": {
+              "methods": [
+                "create_note"
+              ]
+            },
+            "CreateOccurrence": {
+              "methods": [
+                "create_occurrence"
+              ]
+            },
+            "DeleteNote": {
+              "methods": [
+                "delete_note"
+              ]
+            },
+            "DeleteOccurrence": {
+              "methods": [
+                "delete_occurrence"
+              ]
+            },
+            "GetNote": {
+              "methods": [
+                "get_note"
+              ]
+            },
+            "GetOccurrence": {
+              "methods": [
+                "get_occurrence"
+              ]
+            },
+            "GetOccurrenceNote": {
+              "methods": [
+                "get_occurrence_note"
+              ]
+            },
+            "ListNoteOccurrences": {
+              "methods": [
+                "list_note_occurrences"
+              ]
+            },
+            "ListNotes": {
+              "methods": [
+                "list_notes"
+              ]
+            },
+            "ListOccurrences": {
+              "methods": [
+                "list_occurrences"
+              ]
+            },
+            "UpdateNote": {
+              "methods": [
+                "update_note"
+              ]
+            },
+            "UpdateOccurrence": {
+              "methods": [
+                "update_occurrence"
+              ]
+            }
+          }
         }
       }
     }

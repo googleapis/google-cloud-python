@@ -138,12 +138,18 @@ class GrafeasAsyncClient:
         self,
         *,
         transport: Union[str, GrafeasTransport] = "grpc_asyncio",
+        credentials: Optional[ga_credentials.Credentials] = None,
     ) -> None:
         """Instantiate the grafeas client.
 
         Args:
             transport (Union[str, ~.GrafeasTransport]): The
                 transport to use.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -152,6 +158,7 @@ class GrafeasAsyncClient:
 
         self._client = GrafeasClient(
             transport=transport,
+            credentials=credentials,
         )
 
     async def get_occurrence(

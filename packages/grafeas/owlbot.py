@@ -103,13 +103,18 @@ for library in s.get_staging_dirs(default_version):
     """(\s+)def __init__\(self.*?def """,
     '''\g<1>def __init__(self, *,
             transport: Union[str, GrafeasTransport] = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             ) -> None:
         """Instantiate the grafeas client.
 
         Args:
             transport (Union[str, ~.GrafeasTransport]): The
                 transport to use.
-            
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -120,7 +125,7 @@ for library in s.get_staging_dirs(default_version):
             self._transport = transport
         else:
             Transport = type(self).get_transport_class(transport)
-            self._transport = Transport()
+            self._transport = Transport(credentials=credentials)
 \g<1>def ''',
     flags=re.MULTILINE | re.DOTALL,
     )
@@ -131,12 +136,18 @@ for library in s.get_staging_dirs(default_version):
     """(\s+)def __init__\(self.*?async def """,
     '''\g<1>def __init__(self, *,
             transport: Union[str, GrafeasTransport] = 'grpc_asyncio',
+            credentials: Optional[ga_credentials.Credentials] = None,
             ) -> None:
         """Instantiate the grafeas client.
 
         Args:
             transport (Union[str, ~.GrafeasTransport]): The
                 transport to use.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -145,6 +156,7 @@ for library in s.get_staging_dirs(default_version):
 
         self._client = GrafeasClient(
             transport=transport,
+            credentials=credentials,
         )
 \g<1>async def ''',
     flags=re.MULTILINE | re.DOTALL,
@@ -155,9 +167,6 @@ for library in s.get_staging_dirs(default_version):
 
     # Remove hardcoded default endpoint
     s.replace(library / "tests/**/test_grafeas.py", "containeranalysis.googleapis.com", "")
-
-    # remove use of credentials
-    s.replace(library / "tests/**/test_grafeas.py", """credentials=ga_credentials.*?,""", "")
 
     # Delete irrelevant tests
 
@@ -190,6 +199,7 @@ def test_get_occurrence""",
     """@pytest.mark.parametrize\("transport_name", \[
     "grpc",
     "grpc_asyncio",
+    "rest",
 \]\)
 def test_grafeas_host_no_port.*?def test_grafeas_grpc_transport_channel""",
     """def test_grafeas_grpc_transport_channel""",
