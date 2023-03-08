@@ -4712,6 +4712,7 @@ def test_create_node_rest(request_type):
             }
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
+        "accelerator_config": {"type_": 2, "topology": "topology_value"},
     }
     request = request_type(**request_init)
 
@@ -4934,6 +4935,7 @@ def test_create_node_rest_bad_request(
             }
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
+        "accelerator_config": {"type_": 2, "topology": "topology_value"},
     }
     request = request_type(**request_init)
 
@@ -5735,6 +5737,7 @@ def test_update_node_rest(request_type):
             }
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
+        "accelerator_config": {"type_": 2, "topology": "topology_value"},
     }
     request = request_type(**request_init)
 
@@ -5954,6 +5957,7 @@ def test_update_node_rest_bad_request(
             }
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
+        "accelerator_config": {"type_": 2, "topology": "topology_value"},
     }
     request = request_type(**request_init)
 

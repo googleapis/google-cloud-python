@@ -57,6 +57,7 @@ __protobuf__ = proto.module(
         "Symptom",
         "GetGuestAttributesRequest",
         "GetGuestAttributesResponse",
+        "AcceleratorConfig",
         "ShieldedInstanceConfig",
     },
 )
@@ -379,6 +380,8 @@ class Node(proto.Message):
             to the TPU Node.
         shielded_instance_config (google.cloud.tpu_v2.types.ShieldedInstanceConfig):
             Shielded Instance options.
+        accelerator_config (google.cloud.tpu_v2.types.AcceleratorConfig):
+            The AccleratorConfig for the TPU Node.
     """
 
     class State(proto.Enum):
@@ -579,6 +582,11 @@ class Node(proto.Message):
         proto.MESSAGE,
         number=45,
         message="ShieldedInstanceConfig",
+    )
+    accelerator_config: "AcceleratorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=46,
+        message="AcceleratorConfig",
     )
 
 
@@ -803,6 +811,8 @@ class AcceleratorType(proto.Message):
             The resource name.
         type_ (str):
             the accelerator type.
+        accelerator_configs (MutableSequence[google.cloud.tpu_v2.types.AcceleratorConfig]):
+            The accelerator config.
     """
 
     name: str = proto.Field(
@@ -812,6 +822,11 @@ class AcceleratorType(proto.Message):
     type_: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    accelerator_configs: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="AcceleratorConfig",
     )
 
 
@@ -1170,6 +1185,45 @@ class GetGuestAttributesResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message="GuestAttributes",
+    )
+
+
+class AcceleratorConfig(proto.Message):
+    r"""A TPU accelerator configuration.
+
+    Attributes:
+        type_ (google.cloud.tpu_v2.types.AcceleratorConfig.Type):
+            Required. Type of TPU.
+        topology (str):
+            Required. Topology of TPU in chips.
+    """
+
+    class Type(proto.Enum):
+        r"""TPU type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified version.
+            V2 (2):
+                TPU v2.
+            V3 (4):
+                TPU v3.
+            V4 (7):
+                TPU v4.
+        """
+        TYPE_UNSPECIFIED = 0
+        V2 = 2
+        V3 = 4
+        V4 = 7
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    topology: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

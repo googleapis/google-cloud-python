@@ -637,7 +637,7 @@ class QueuedResource(proto.Message):
             The queueing policy of the QueuedRequest.
         state (google.cloud.tpu_v2alpha1.types.QueuedResourceState):
             Output only. State of the QueuedResource
-            request
+            request.
     """
 
     class Tpu(proto.Message):

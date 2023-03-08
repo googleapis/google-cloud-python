@@ -20,6 +20,7 @@ __version__ = package_version.__version__
 
 from .services.tpu import TpuAsyncClient, TpuClient
 from .types.cloud_tpu import (
+    AcceleratorConfig,
     AcceleratorType,
     AccessConfig,
     AttachedDisk,
@@ -58,6 +59,7 @@ from .types.cloud_tpu import (
 
 __all__ = (
     "TpuAsyncClient",
+    "AcceleratorConfig",
     "AcceleratorType",
     "AccessConfig",
     "AttachedDisk",
