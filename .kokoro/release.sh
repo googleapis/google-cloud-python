@@ -65,6 +65,8 @@ for subdir in ${subdirs[@]}; do
             # Temporarily allow failure.
             set +e
             ${publish_script}
+            # Compile the dependencies of the package
+            pip-compile -o $d/release_requirements.in $d/setup.py
             ret=$?
             set -e
             if [ ${ret} -ne 0 ]; then
@@ -74,5 +76,19 @@ for subdir in ${subdirs[@]}; do
         fi
     done
 done
+
+# Note we cannot copy the dependencies of the release tooling as
+# there is a dependency conflict with gcp-releasetool which requires protobuf <4
+# whereas in python client libraries, we allow protobuf 4 as a dependency
+# See https://github.com/googleapis/releasetool/blob/master/setup.py which has the constraint
+# Uncomment the line below once the constraint is removed
+# cp github/google-cloud-python/.kokoro/requirements.in github/google-cloud-python/release_requirements.in
+touch release_requirements.in
+
+# Combine all package_requirements.in files
+cat ${PROJECT_ROOT}/**/release_requirements.in >> ${PROJECT_ROOT}/release_requirements.in
+
+# Compile the combined requirements.txt file for a combined list of all dependencies of packages published
+pip-compile --generate-hashes ${PROJECT_ROOT}/release_requirements.in --output-file ${PROJECT_ROOT}/requirements.txt
 
 exit ${RETVAL}

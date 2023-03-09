@@ -7,3 +7,4 @@ wheel
 setuptools
 nox
 charset-normalizer<3
+pip-tools
