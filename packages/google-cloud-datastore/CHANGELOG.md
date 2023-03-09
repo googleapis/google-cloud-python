@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.15.0](https://github.com/googleapis/python-datastore/compare/v2.14.0...v2.15.0) (2023-03-09)
+
+
+### Features
+
+* OR Query implementation ([#418](https://github.com/googleapis/python-datastore/issues/418)) ([3256951](https://github.com/googleapis/python-datastore/commit/325695197497f9da4976fe9220d1d72114bdc12b))
+
 ## [2.14.0](https://github.com/googleapis/python-datastore/compare/v2.13.2...v2.14.0) (2023-02-28)
 
 
