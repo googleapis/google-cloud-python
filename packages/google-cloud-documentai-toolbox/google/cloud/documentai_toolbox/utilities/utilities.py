@@ -24,8 +24,48 @@ from google.cloud.documentai_toolbox import constants
 from google.cloud.documentai_toolbox.wrappers.document import _get_storage_client
 
 
+def list_gcs_document_tree(
+    gcs_bucket_name: str, gcs_prefix: str
+) -> Dict[str, List[str]]:
+    r"""Returns a list path to files in Cloud Storage folder and prints the tree to terminal.
+
+    Args:
+        gcs_bucket_name (str):
+            Required. The name of the gcs bucket.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
+        gcs_prefix (str):
+            Required. The prefix of the json files in the target_folder.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
+    Returns:
+        Dict[str, List[str]]:
+            The paths to documents in `gs://{gcs_bucket_name}/{gcs_prefix}`.
+
+    """
+    file_check = re.match(constants.FILE_CHECK_REGEX, gcs_prefix)
+
+    if file_check is not None:
+        raise ValueError("gcs_prefix cannot contain file types")
+
+    storage_client = _get_storage_client()
+    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
+
+    path_list: Dict[str, List[str]] = {}
+
+    for blob in blob_list:
+        directory, file_name = os.path.split(blob.name)
+
+        if directory in path_list:
+            path_list[directory].append(file_name)
+        else:
+            path_list[directory] = [file_name]
+
+    return path_list
+
+
 def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
-    r"""Prints a tree of filenames in Cloud Storage folder.
+    r"""Prints a tree of filenames in Cloud Storage folder..
 
     Args:
         gcs_bucket_name (str):
@@ -44,23 +84,9 @@ def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
     FILENAME_TREE_LAST = "└──"
     FILES_TO_DISPLAY = 4
 
-    file_check = re.match(constants.FILE_CHECK_REGEX, gcs_prefix)
-
-    if file_check is not None:
-        raise ValueError("gcs_prefix cannot contain file types")
-
-    storage_client = _get_storage_client()
-    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
-
-    path_list: Dict[str, List[str]] = {}
-
-    for blob in blob_list:
-        directory, file_name = os.path.split(blob.name)
-
-        if directory in path_list:
-            path_list[directory].append(file_name)
-        else:
-            path_list[directory] = [file_name]
+    path_list = list_gcs_document_tree(
+        gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
+    )
 
     for directory, files in path_list.items():
         print(f"{directory}")
