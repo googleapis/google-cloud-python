@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.14.0](https://github.com/googleapis/python-documentai/compare/v2.13.0...v2.14.0) (2023-03-09)
+
+
+### Features
+
+* **v1beta3:** Added enable_image_quality_scores field in OcrConfig ([bee07d2](https://github.com/googleapis/python-documentai/commit/bee07d22ad010b9f200d5eea7e5f8f3b9df87081))
+* **v1beta3:** Added enable_symbol field in OcrConfig ([bee07d2](https://github.com/googleapis/python-documentai/commit/bee07d22ad010b9f200d5eea7e5f8f3b9df87081))
+* **v1beta3:** Added hints.language_hints field in OcrConfig ([bee07d2](https://github.com/googleapis/python-documentai/commit/bee07d22ad010b9f200d5eea7e5f8f3b9df87081))
+
 ## [2.13.0](https://github.com/googleapis/python-documentai/compare/v2.12.0...v2.13.0) (2023-02-21)
 
 
