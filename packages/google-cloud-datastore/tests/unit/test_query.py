@@ -16,6 +16,15 @@ import datetime
 import mock
 import pytest
 
+
+from google.cloud.datastore.query import (
+    Query,
+    PropertyFilter,
+    And,
+    Or,
+    BaseCompositeFilter,
+)
+
 _PROJECT = "PROJECT"
 
 
@@ -33,7 +42,16 @@ def test_query_ctor_defaults():
     assert query.distinct_on == []
 
 
-def test_query_ctor_explicit():
+@pytest.mark.parametrize(
+    "filters",
+    [
+        [("foo", "=", "Qux"), ("bar", "<", 17)],
+        [PropertyFilter("foo", "=", "Qux"), PropertyFilter("bar", "<", 17)],
+        [And([PropertyFilter("foo", "=", "Qux"), PropertyFilter("bar", "<", 17)])],
+        [Or([PropertyFilter("foo", "=", "Qux"), PropertyFilter("bar", "<", 17)])],
+    ],
+)
+def test_query_ctor_explicit(filters):
     from google.cloud.datastore.key import Key
 
     _PROJECT = "OTHER_PROJECT"
@@ -41,10 +59,11 @@ def test_query_ctor_explicit():
     _NAMESPACE = "OTHER_NAMESPACE"
     client = _make_client()
     ancestor = Key("ANCESTOR", 123, project=_PROJECT)
-    FILTERS = [("foo", "=", "Qux"), ("bar", "<", 17)]
+    FILTERS = filters
     PROJECTION = ["foo", "bar", "baz"]
     ORDER = ["foo", "bar"]
     DISTINCT_ON = ["foo"]
+
     query = _make_query(
         client,
         kind=_KIND,
@@ -148,6 +167,17 @@ def test_query_ancestor_setter_w_key():
     assert query.ancestor.path == key.path
 
 
+def test_query_ancestor_setter_w_key_property_filter():
+    from google.cloud.datastore.key import Key
+
+    _NAME = "NAME"
+    key = Key("KIND", 123, project=_PROJECT)
+    query = _make_query(_make_client())
+    query.add_filter(filter=PropertyFilter("name", "=", _NAME))
+    query.ancestor = key
+    assert query.ancestor.path == key.path
+
+
 def test_query_ancestor_deleter_w_key():
     from google.cloud.datastore.key import Key
 
@@ -159,14 +189,31 @@ def test_query_ancestor_deleter_w_key():
 
 def test_query_add_filter_setter_w_unknown_operator():
     query = _make_query(_make_client())
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as exc:
         query.add_filter("firstname", "~~", "John")
+    assert "Invalid expression:" in str(exc.value)
+    assert "Please use one of: =, <, <=, >, >=, !=, IN, NOT_IN." in str(exc.value)
+
+
+def test_query_add_property_filter_setter_w_unknown_operator():
+    query = _make_query(_make_client())
+    with pytest.raises(ValueError) as exc:
+        query.add_filter(filter=PropertyFilter("firstname", "~~", "John"))
+    assert "Invalid expression:" in str(exc.value)
+    assert "Please use one of: =, <, <=, >, >=, !=, IN, NOT_IN." in str(exc.value)
 
 
 def test_query_add_filter_w_known_operator():
     query = _make_query(_make_client())
     query.add_filter("firstname", "=", "John")
     assert query.filters == [("firstname", "=", "John")]
+
+
+def test_query_add_property_filter_w_known_operator():
+    query = _make_query(_make_client())
+    property_filter = PropertyFilter("firstname", "=", "John")
+    query.add_filter(filter=property_filter)
+    assert query.filters == [property_filter]
 
 
 def test_query_add_filter_w_all_operators():
@@ -190,6 +237,29 @@ def test_query_add_filter_w_all_operators():
     assert query.filters[7] == ("not_in_prop", "NOT_IN", ["val13"])
 
 
+def test_query_add_property_filter_w_all_operators():
+    query = _make_query(_make_client())
+    filters = [
+        ("leq_prop", "<=", "val1"),
+        ("geq_prop", ">=", "val2"),
+        ("lt_prop", "<", "val3"),
+        ("gt_prop", ">", "val4"),
+        ("eq_prop", "=", "val5"),
+        ("in_prop", "IN", ["val6"]),
+        ("neq_prop", "!=", "val9"),
+        ("not_in_prop", "NOT_IN", ["val13"]),
+    ]
+    property_filters = [PropertyFilter(*filter) for filter in filters]
+
+    for filter in property_filters:
+        query.add_filter(filter=filter)
+
+    assert len(query.filters) == 8
+
+    for i in range(8):
+        assert query.filters[i] == property_filters[i]
+
+
 def test_query_add_filter_w_known_operator_and_entity():
     from google.cloud.datastore.entity import Entity
 
@@ -201,11 +271,31 @@ def test_query_add_filter_w_known_operator_and_entity():
     assert query.filters == [("other", "=", other)]
 
 
+def test_query_add_property_filter_w_known_operator_and_entity():
+    from google.cloud.datastore.entity import Entity
+
+    query = _make_query(_make_client())
+    other = Entity()
+    other["firstname"] = "John"
+    other["lastname"] = "Smith"
+    property_filter = PropertyFilter("other", "=", other)
+    query.add_filter(filter=property_filter)
+    assert query.filters == [property_filter]
+
+
 def test_query_add_filter_w_whitespace_property_name():
     query = _make_query(_make_client())
     PROPERTY_NAME = "  property with lots of space "
     query.add_filter(PROPERTY_NAME, "=", "John")
     assert query.filters == [(PROPERTY_NAME, "=", "John")]
+
+
+def test_query_add_property_filter_w_whitespace_property_name():
+    query = _make_query(_make_client())
+    PROPERTY_NAME = "  property with lots of space "
+    property_filter = PropertyFilter(PROPERTY_NAME, "=", "John")
+    query.add_filter(filter=property_filter)
+    assert query.filters == [property_filter]
 
 
 def test_query_add_filter___key__valid_key():
@@ -217,6 +307,16 @@ def test_query_add_filter___key__valid_key():
     assert query.filters == [("__key__", "=", key)]
 
 
+def test_query_add_property_filter___key__valid_key():
+    from google.cloud.datastore.key import Key
+
+    query = _make_query(_make_client())
+    key = Key("Foo", project=_PROJECT)
+    property_filter = PropertyFilter("__key__", "=", key)
+    query.add_filter(filter=property_filter)
+    assert query.filters == [property_filter]
+
+
 def test_query_add_filter_return_query_obj():
     from google.cloud.datastore.query import Query
 
@@ -224,6 +324,81 @@ def test_query_add_filter_return_query_obj():
     query_obj = query.add_filter("firstname", "=", "John")
     assert isinstance(query_obj, Query)
     assert query_obj.filters == [("firstname", "=", "John")]
+
+
+def test_query_add_property_filter_without_keyword_argument():
+
+    query = _make_query(_make_client())
+    property_filter = PropertyFilter("firstname", "=", "John")
+    with pytest.raises(ValueError) as exc:
+        query.add_filter(property_filter)
+
+    assert (
+        "PropertyFilter object must be passed using keyword argument 'filter'"
+        in str(exc.value)
+    )
+
+
+def test_query_add_composite_filter_without_keyword_argument():
+
+    query = _make_query(_make_client())
+    and_filter = And(["firstname", "=", "John"])
+    with pytest.raises(ValueError) as exc:
+        query.add_filter(and_filter)
+
+    assert (
+        "'Or' and 'And' objects must be passed using keyword argument 'filter'"
+        in str(exc.value)
+    )
+
+    or_filter = Or(["firstname", "=", "John"])
+    with pytest.raises(ValueError) as exc:
+        query.add_filter(or_filter)
+
+    assert (
+        "'Or' and 'And' objects must be passed using keyword argument 'filter'"
+        in str(exc.value)
+    )
+
+
+def test_query_positional_args_and_property_filter():
+
+    query = _make_query(_make_client())
+    with pytest.raises(ValueError) as exc:
+        query.add_filter("firstname", "=", "John", filter=("name", "=", "Blabla"))
+
+    assert (
+        "Can't pass in both the positional arguments and 'filter' at the same time"
+        in str(exc.value)
+    )
+
+
+def test_query_positional_args_and_composite_filter():
+
+    query = _make_query(_make_client())
+    and_filter = And(["firstname", "=", "John"])
+    with pytest.raises(ValueError) as exc:
+        query.add_filter("firstname", "=", "John", filter=and_filter)
+
+    assert (
+        "Can't pass in both the positional arguments and 'filter' at the same time"
+        in str(exc.value)
+    )
+
+
+def test_query_add_filter_with_positional_args_raises_user_warning():
+    query = _make_query(_make_client())
+    with pytest.warns(
+        UserWarning,
+        match="Detected filter using positional arguments",
+    ):
+        query.add_filter("firstname", "=", "John")
+
+    with pytest.warns(
+        UserWarning,
+        match="Detected filter using positional arguments",
+    ):
+        _make_stub_query(filters=[("name", "=", "John")])
 
 
 def test_query_filter___key__not_equal_operator():
@@ -235,10 +410,28 @@ def test_query_filter___key__not_equal_operator():
     assert query.filters == [("__key__", "<", key)]
 
 
+def test_query_property_filter___key__not_equal_operator():
+    from google.cloud.datastore.key import Key
+
+    key = Key("Foo", project=_PROJECT)
+    query = _make_query(_make_client())
+    property_filter = PropertyFilter("__key__", "<", key)
+    query.add_filter(filter=property_filter)
+    assert query.filters == [property_filter]
+
+
 def test_query_filter___key__invalid_value():
     query = _make_query(_make_client())
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as exc:
         query.add_filter("__key__", "=", None)
+    assert "Invalid key:" in str(exc.value)
+
+
+def test_query_property_filter___key__invalid_value():
+    query = _make_query(_make_client())
+    with pytest.raises(ValueError) as exc:
+        query.add_filter(filter=PropertyFilter("__key__", "=", None))
+    assert "Invalid key:" in str(exc.value)
 
 
 def test_query_projection_setter_empty():
@@ -721,7 +914,7 @@ def test_pb_from_query_empty():
     from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
 
-    pb = _pb_from_query(_Query())
+    pb = _pb_from_query(_make_stub_query())
     assert list(pb.projection) == []
     assert list(pb.kind) == []
     assert list(pb.order) == []
@@ -739,14 +932,14 @@ def test_pb_from_query_empty():
 def test_pb_from_query_projection():
     from google.cloud.datastore.query import _pb_from_query
 
-    pb = _pb_from_query(_Query(projection=["a", "b", "c"]))
+    pb = _pb_from_query(_make_stub_query(projection=["a", "b", "c"]))
     assert [item.property.name for item in pb.projection] == ["a", "b", "c"]
 
 
 def test_pb_from_query_kind():
     from google.cloud.datastore.query import _pb_from_query
 
-    pb = _pb_from_query(_Query(kind="KIND"))
+    pb = _pb_from_query(_make_stub_query(kind="KIND"))
     assert [item.name for item in pb.kind] == ["KIND"]
 
 
@@ -756,7 +949,7 @@ def test_pb_from_query_ancestor():
     from google.cloud.datastore.query import _pb_from_query
 
     ancestor = Key("Ancestor", 123, project="PROJECT")
-    pb = _pb_from_query(_Query(ancestor=ancestor))
+    pb = _pb_from_query(_make_stub_query(ancestor=ancestor))
     cfilter = pb.filter.composite_filter
     assert cfilter.op == query_pb2.CompositeFilter.Operator.AND
     assert len(cfilter.filters) == 1
@@ -770,7 +963,7 @@ def test_pb_from_query_filter():
     from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
 
-    query = _Query(filters=[("name", "=", "John")])
+    query = _make_stub_query(filters=[("name", "=", "John")])
     query.OPERATORS = {"=": query_pb2.PropertyFilter.Operator.EQUAL}
     pb = _pb_from_query(query)
     cfilter = pb.filter.composite_filter
@@ -787,7 +980,7 @@ def test_pb_from_query_filter_key():
     from google.cloud.datastore.query import _pb_from_query
 
     key = Key("Kind", 123, project="PROJECT")
-    query = _Query(filters=[("__key__", "=", key)])
+    query = _make_stub_query(filters=[("__key__", "=", key)])
     query.OPERATORS = {"=": query_pb2.PropertyFilter.Operator.EQUAL}
     pb = _pb_from_query(query)
     cfilter = pb.filter.composite_filter
@@ -799,11 +992,114 @@ def test_pb_from_query_filter_key():
     assert pfilter.value.key_value == key_pb
 
 
+def test_pb_from_complex_filter():
+    from google.cloud.datastore_v1.types import query as query_pb2
+    from google.cloud.datastore.query import _pb_from_query
+
+    query = _make_stub_query(
+        filters=[
+            ("name", "=", "John"),
+            And(
+                [
+                    PropertyFilter("category", "=", "Grocery"),
+                    PropertyFilter("price", ">", "100"),
+                ]
+            ),
+            Or(
+                [
+                    PropertyFilter("category", "=", "Stationery"),
+                    PropertyFilter("price", "<", "50"),
+                ]
+            ),
+            PropertyFilter("name", "=", "Jana"),
+        ]
+    )
+    query.OPERATORS = {"=": query_pb2.PropertyFilter.Operator.EQUAL}
+    pb = _pb_from_query(query)
+    filter = pb.filter.composite_filter
+
+    assert filter.op == query_pb2.CompositeFilter.Operator.AND
+    assert len(filter.filters) == 4
+
+    filter_1 = filter.filters[0].property_filter
+    assert filter_1.property.name == "name"
+    assert filter_1.value.string_value == "John"
+    assert filter_1.op == Query.OPERATORS.get("=")
+
+    filter_2 = filter.filters[1].composite_filter
+    assert len(filter_2.filters) == 2
+    assert filter_2.op == query_pb2.CompositeFilter.Operator.AND
+
+    filter_2_1 = filter_2.filters[0].property_filter
+    assert filter_2_1.property.name == "category"
+    assert filter_2_1.op == Query.OPERATORS.get("=")
+    assert filter_2_1.value.string_value == "Grocery"
+
+    filter_2_2 = filter_2.filters[1].property_filter
+    assert filter_2_2.property.name == "price"
+    assert filter_2_2.op == Query.OPERATORS.get(">")
+    assert filter_2_2.value.string_value == "100"
+
+    filter_3 = filter.filters[2].composite_filter
+    assert len(filter_3.filters) == 2
+    assert filter_3.op == query_pb2.CompositeFilter.Operator.OR
+
+    filter_3_1 = filter_3.filters[0].property_filter
+    assert filter_3_1.property.name == "category"
+    assert filter_3_1.op == Query.OPERATORS.get("=")
+    assert filter_3_1.value.string_value == "Stationery"
+
+    filter_3_2 = filter_3.filters[1].property_filter
+    assert filter_3_2.property.name == "price"
+    assert filter_3_2.op == Query.OPERATORS.get("<")
+    assert filter_3_2.value.string_value == "50"
+
+    filter_4 = filter.filters[3].property_filter
+    assert filter_4.property.name == "name"
+    assert filter_4.value.string_value == "Jana"
+    assert filter_4.op == Query.OPERATORS.get("=")
+
+
+def test_build_pb_for_and():
+
+    and_filter = And(
+        [
+            ("name", "=", "John"),
+            And(
+                [
+                    PropertyFilter("category", "=", "Grocery"),
+                    PropertyFilter("price", ">", "100"),
+                ]
+            ),
+            PropertyFilter("category", "=", "Grocery"),
+        ]
+    )
+    from google.cloud.datastore_v1.types import query as query_pb2
+
+    container_pb = (
+        query_pb2.Filter().composite_filter.filters._pb.add().composite_filter
+    )
+    pb = and_filter.build_pb(container_pb=container_pb)
+
+    assert pb.op == query_pb2.CompositeFilter.Operator.AND
+    assert len(pb.filters) == 3
+
+
+def test_base_composite_filter():
+    from google.cloud.datastore_v1.types import query as query_pb2
+
+    comp_filter = BaseCompositeFilter()
+    assert len(comp_filter.filters) == 0
+    assert (
+        comp_filter.operation == query_pb2.CompositeFilter.Operator.OPERATOR_UNSPECIFIED
+    )
+
+
 def test_pb_from_query_order():
     from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
 
-    pb = _pb_from_query(_Query(order=["a", "-b", "c"]))
+    pb = _pb_from_query(_make_stub_query(order=["a", "-b", "c"]))
     assert [item.property.name for item in pb.order] == ["a", "b", "c"]
     expected_directions = [
         query_pb2.PropertyOrder.Direction.ASCENDING,
@@ -816,32 +1112,33 @@ def test_pb_from_query_order():
 def test_pb_from_query_distinct_on():
     from google.cloud.datastore.query import _pb_from_query
 
-    pb = _pb_from_query(_Query(distinct_on=["a", "b", "c"]))
+    pb = _pb_from_query(_make_stub_query(distinct_on=["a", "b", "c"]))
     assert [item.name for item in pb.distinct_on] == ["a", "b", "c"]
 
 
-class _Query(object):
-    def __init__(
-        self,
-        client=object(),
-        kind=None,
-        project=None,
-        namespace=None,
-        ancestor=None,
-        filters=(),
-        projection=(),
-        order=(),
-        distinct_on=(),
-    ):
-        self._client = client
-        self.kind = kind
-        self.project = project
-        self.namespace = namespace
-        self.ancestor = ancestor
-        self.filters = filters
-        self.projection = projection
-        self.order = order
-        self.distinct_on = distinct_on
+def _make_stub_query(
+    client=object(),
+    kind=None,
+    project=None,
+    namespace=None,
+    ancestor=None,
+    filters=(),
+    projection=(),
+    order=(),
+    distinct_on=(),
+):
+    query = Query(
+        client,
+        kind=kind,
+        project=project,
+        namespace=namespace,
+        ancestor=ancestor,
+        filters=filters,
+        projection=projection,
+        order=order,
+        distinct_on=distinct_on,
+    )
+    return query
 
 
 class _Client(object):

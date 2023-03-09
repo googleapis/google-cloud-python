@@ -21,6 +21,8 @@ from .utils import clear_datastore
 from .utils import populate_datastore
 from . import _helpers
 
+from google.cloud.datastore.query import PropertyFilter, And, Or
+
 
 retry_503 = RetryErrors(exceptions.ServiceUnavailable)
 
@@ -101,7 +103,7 @@ def test_query_w_limit_paging(ancestor_query):
 
 def test_query_w_simple_filter(ancestor_query):
     query = ancestor_query
-    query.add_filter("appearances", ">=", 20)
+    query.add_filter(filter=PropertyFilter("appearances", ">=", 20))
     expected_matches = 6
 
     # We expect 6, but allow the query to get 1 extra.
@@ -112,8 +114,8 @@ def test_query_w_simple_filter(ancestor_query):
 
 def test_query_w_multiple_filters(ancestor_query):
     query = ancestor_query
-    query.add_filter("appearances", ">=", 26)
-    query = query.add_filter("family", "=", "Stark")
+    query.add_filter(filter=PropertyFilter("appearances", ">=", 26))
+    query = query.add_filter(filter=PropertyFilter("family", "=", "Stark"))
     expected_matches = 4
 
     # We expect 4, but allow the query to get 1 extra.
@@ -348,10 +350,115 @@ def large_query(large_query_client):
 )
 def test_large_query(large_query, limit, offset, expected):
     page_query = large_query
-    page_query.add_filter("family", "=", "Stark")
-    page_query.add_filter("alive", "=", False)
+    page_query.add_filter(filter=PropertyFilter("family", "=", "Stark"))
+    page_query.add_filter(filter=PropertyFilter("alive", "=", False))
 
     iterator = page_query.fetch(limit=limit, offset=offset)
 
     entities = [e for e in iterator]
     assert len(entities) == expected
+
+
+def test_query_add_property_filter(ancestor_query):
+    query = ancestor_query
+
+    query.add_filter(filter=PropertyFilter("appearances", ">=", 26))
+    expected_matches = 4
+
+    entities = _do_fetch(query, limit=expected_matches + 1)
+
+    assert len(entities) == expected_matches
+    for e in entities:
+        assert e["appearances"] >= 26
+
+
+def test_query_and_composite_filter(ancestor_query):
+    query = ancestor_query
+
+    query.add_filter(
+        filter=And(
+            [
+                PropertyFilter("family", "=", "Stark"),
+                PropertyFilter("name", "=", "Jon Snow"),
+            ]
+        )
+    )
+    expected_matches = 1
+
+    entities = _do_fetch(query)
+
+    assert len(entities) == expected_matches
+    assert entities[0]["family"] == "Stark"
+    assert entities[0]["name"] == "Jon Snow"
+
+
+def test_query_or_composite_filter(ancestor_query):
+    query = ancestor_query
+
+    # name = Arya or name = Jon Snow
+    query.add_filter(
+        filter=Or(
+            [
+                PropertyFilter("name", "=", "Arya"),
+                PropertyFilter("name", "=", "Jon Snow"),
+            ]
+        )
+    )
+    expected_matches = 2
+
+    entities = _do_fetch(query)
+
+    assert len(entities) == expected_matches
+
+    assert entities[0]["name"] == "Arya"
+    assert entities[1]["name"] == "Jon Snow"
+
+
+def test_query_add_filters(ancestor_query):
+    query = ancestor_query
+
+    # family = Stark AND name = Jon Snow
+    query.add_filter(filter=PropertyFilter("family", "=", "Stark"))
+    query.add_filter(filter=PropertyFilter("name", "=", "Jon Snow"))
+
+    expected_matches = 1
+
+    entities = _do_fetch(query)
+
+    assert len(entities) == expected_matches
+    assert entities[0]["family"] == "Stark"
+    assert entities[0]["name"] == "Jon Snow"
+
+
+def test_query_add_complex_filters(ancestor_query):
+    query = ancestor_query
+
+    # (alive = True OR appearances >= 26) AND (family = Stark)
+    query.add_filter(
+        filter=(
+            Or(
+                [
+                    PropertyFilter("alive", "=", True),
+                    PropertyFilter("appearances", ">=", 26),
+                ]
+            )
+        )
+    )
+    query.add_filter(filter=PropertyFilter("family", "IN", ["Stark"]))
+
+    entities = _do_fetch(query)
+
+    alive_count = 0
+    appearance_count = 0
+    stark_family_count = 0
+    for e in entities:
+        if e["appearances"] >= 26:
+            appearance_count += 1
+        if e["alive"] is True:
+            alive_count += 1
+        if "Stark" in e["family"]:
+            stark_family_count += 1
+
+    assert alive_count == 4
+    assert appearance_count == 4
+    assert stark_family_count == 5

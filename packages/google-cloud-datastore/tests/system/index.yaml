@@ -21,3 +21,13 @@ indexes:
   properties:
   - name: name
   - name: family
+
+- kind: Character
+  properties:
+  - name: alive
+  - name: appearances
+
+- kind: Character
+  properties:
+  - name: Character
+  - name: appearances
