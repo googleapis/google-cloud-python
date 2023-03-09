@@ -1,5 +1,6 @@
 gcp-docuploader
-gcp-releasetool
+gcp-releasetool>=1.10.5 # required for compatibility with cryptography>=39.x
+cryptography>=39.0.1
 importlib-metadata
 typing-extensions
 twine
