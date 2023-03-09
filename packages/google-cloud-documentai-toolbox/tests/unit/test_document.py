@@ -75,23 +75,6 @@ def get_bytes_splitter_mock():
         yield byte_factory
 
 
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
-def test_get_bytes(mock_storage):
-    client = mock_storage.Client.return_value
-    mock_bucket = mock.Mock()
-    client.Bucket.return_value = mock_bucket
-    mock_blob1 = mock.Mock(name=[])
-    mock_blob1.name.ends_with.return_value = True
-    mock_blob1.download_as_bytes.return_value = (
-        "gs://test-directory/1/test-annotations.json"
-    )
-    client.list_blobs.return_value = [mock_blob1]
-
-    actual = document._get_bytes(gcs_bucket_name="test-directory", gcs_prefix="1")
-
-    assert actual == ["gs://test-directory/1/test-annotations.json"]
-
-
 def test_get_shards_with_gcs_uri_contains_file_type():
     with pytest.raises(ValueError, match="gcs_prefix cannot contain file types"):
         document._get_shards(
@@ -251,6 +234,42 @@ def test_get_entity_by_type(get_bytes_single_file_mock):
     assert len(actual) == 1
     assert actual[0].type_ == "receiver_address"
     assert actual[0].mention_text == "222 Main Street\nAnytown, USA"
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+def test_get_bytes(mock_storage):
+    client = mock_storage.Client.return_value
+    mock_bucket = mock.Mock()
+    client.Bucket.return_value = mock_bucket
+
+    mock_ds_store = mock.Mock(name=[])
+    mock_ds_store.name = "DS_Store"
+
+    mock_blob1 = mock.Mock(name=[])
+    mock_blob1.name = "gs://test-directory/1/test-annotations.json"
+    mock_blob1.download_as_bytes.return_value = (
+        "gs://test-directory/1/test-annotations.json"
+    )
+
+    mock_blob2 = mock.Mock(name=[])
+    mock_blob2.name = "gs://test-directory/1/test-config.json"
+    mock_blob2.download_as_bytes.return_value = "gs://test-directory/1/test-config.json"
+
+    mock_blob3 = mock.Mock(name=[])
+    mock_blob3.name = "gs://test-directory/1/test.pdf"
+    mock_blob3.download_as_bytes.return_value = "gs://test-directory/1/test.pdf"
+
+    client.list_blobs.return_value = [mock_ds_store, mock_blob1, mock_blob2, mock_blob3]
+
+    actual = document._get_bytes(
+        gcs_bucket_name="bucket",
+        gcs_prefix="prefix",
+    )
+
+    assert actual == [
+        "gs://test-directory/1/test-annotations.json",
+        "gs://test-directory/1/test-config.json",
+    ]
 
 
 def test_get_form_field_by_name(get_bytes_form_parser_mock):

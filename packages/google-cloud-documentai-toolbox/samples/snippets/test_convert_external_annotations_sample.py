@@ -16,19 +16,20 @@
 import os
 
 import pytest
-from samples.snippets import convert_document_to_vision_sample
+from samples.snippets import convert_external_annotations_sample
 
 location = "us"
 project_id = os.environ["GOOGLE_CLOUD_PROJECT"]
-gcs_bucket_name = "documentai_toolbox_samples"
-gcs_input_uri = "output/123456789/0"
 
 
-def test_convert_document_to_vision_sample(capsys: pytest.CaptureFixture) -> None:
-    convert_document_to_vision_sample.convert_document_to_vision_sample(
-        gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_input_uri
+def test_convert_external_annotations_sample(capsys: pytest.CaptureFixture) -> None:
+    convert_external_annotations_sample.convert_external_annotations_sample(
+        location=location,
+        processor_id="52a38e080c1a7296",
+        project_id="project_id",
+        gcs_input_path="gs://documentai_toolbox_samples/documentai_toolbox_samples/converter/azure",
+        gcs_output_path="gs://documentai_toolbox_samples/documentai_toolbox_samples/converter/output",
     )
     out, _ = capsys.readouterr()
 
-    assert "Document converted to AnnotateFileResponse!" in out
-    assert "Number of Pages : 1" in out
+    assert "-------- Finished Converting --------" in out

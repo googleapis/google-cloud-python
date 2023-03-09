@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,23 +13,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from google.cloud.documentai_toolbox import version as package_version
-
-__version__ = package_version.__version__
-
-from .wrappers import (
-    document,
-    page,
-    entity,
-)
-
-from .converters import (
-    converter,
-)
-
-from .utilities import (
-    utilities,
-)
-
-__all__ = (document, page, entity, converter, utilities)
