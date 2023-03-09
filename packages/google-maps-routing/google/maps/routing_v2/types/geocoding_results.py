@@ -17,16 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.rpc import status_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.maps.routing.v2',
+    package="google.maps.routing.v2",
     manifest={
-        'GeocodingResults',
-        'GeocodedWaypoint',
+        "GeocodingResults",
+        "GeocodedWaypoint",
     },
 )
 
@@ -47,20 +45,20 @@ class GeocodingResults(proto.Message):
             the order they were specified in the request.
     """
 
-    origin: 'GeocodedWaypoint' = proto.Field(
+    origin: "GeocodedWaypoint" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='GeocodedWaypoint',
+        message="GeocodedWaypoint",
     )
-    destination: 'GeocodedWaypoint' = proto.Field(
+    destination: "GeocodedWaypoint" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='GeocodedWaypoint',
+        message="GeocodedWaypoint",
     )
-    intermediates: MutableSequence['GeocodedWaypoint'] = proto.RepeatedField(
+    intermediates: MutableSequence["GeocodedWaypoint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='GeocodedWaypoint',
+        message="GeocodedWaypoint",
     )
 
 

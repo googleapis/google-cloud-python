@@ -52,6 +52,11 @@ class Waypoint(proto.Message):
             waypoint.
 
             This field is a member of `oneof`_ ``location_type``.
+        address (str):
+            Human readable address or a plus code.
+            See https://plus.codes for details.
+
+            This field is a member of `oneof`_ ``location_type``.
         via (bool):
             Marks this waypoint as a milestone rather a stopping point.
             For each non-via waypoint in the request, the response
@@ -93,6 +98,11 @@ class Waypoint(proto.Message):
     place_id: str = proto.Field(
         proto.STRING,
         number=2,
+        oneof="location_type",
+    )
+    address: str = proto.Field(
+        proto.STRING,
+        number=7,
         oneof="location_type",
     )
     via: bool = proto.Field(

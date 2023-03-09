@@ -22,6 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.maps.routing_v2.types import geocoding_results as gmr_geocoding_results
 from google.maps.routing_v2.types import routing_preference as gmr_routing_preference
 from google.maps.routing_v2.types import fallback_info as gmr_fallback_info
 from google.maps.routing_v2.types import polyline, route
@@ -259,6 +260,9 @@ class ComputeRoutesResponse(proto.Message):
             is used, this field contains detailed info about
             the fallback response. Otherwise this field is
             unset.
+        geocoding_results (google.maps.routing_v2.types.GeocodingResults):
+            Contains geocoding response info for
+            waypoints specified as addresses.
     """
 
     routes: MutableSequence[route.Route] = proto.RepeatedField(
@@ -270,6 +274,11 @@ class ComputeRoutesResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gmr_fallback_info.FallbackInfo,
+    )
+    geocoding_results: gmr_geocoding_results.GeocodingResults = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gmr_geocoding_results.GeocodingResults,
     )
 
 

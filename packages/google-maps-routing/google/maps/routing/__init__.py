@@ -25,6 +25,10 @@ from google.maps.routing_v2.types.fallback_info import (
     FallbackReason,
     FallbackRoutingMode,
 )
+from google.maps.routing_v2.types.geocoding_results import (
+    GeocodedWaypoint,
+    GeocodingResults,
+)
 from google.maps.routing_v2.types.location import Location
 from google.maps.routing_v2.types.maneuver import Maneuver
 from google.maps.routing_v2.types.navigation_instruction import NavigationInstruction
@@ -68,6 +72,8 @@ __all__ = (
     "FallbackInfo",
     "FallbackReason",
     "FallbackRoutingMode",
+    "GeocodedWaypoint",
+    "GeocodingResults",
     "Location",
     "Maneuver",
     "NavigationInstruction",
