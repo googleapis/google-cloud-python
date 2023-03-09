@@ -225,22 +225,67 @@ class OcrConfig(proto.Message):
     r"""Config for Document OCR.
 
     Attributes:
+        hints (google.cloud.documentai_v1beta3.types.OcrConfig.Hints):
+            Hints for the OCR model.
         enable_native_pdf_parsing (bool):
             Enables special handling for PDFs with
             existing text information. Results in better
             text extraction quality in such PDF inputs.
+        enable_image_quality_scores (bool):
+            Enables intelligent document quality scores
+            after OCR. Can help with diagnosing why OCR
+            responses are of poor quality for a given input.
+            Adds additional latency comparable to regular
+            OCR to the process call.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to further
             fine-tune OCR behavior.
+        enable_symbol (bool):
+            Includes symbol level OCR information if set
+            to true.
     """
 
+    class Hints(proto.Message):
+        r"""Hints for OCR Engine
+
+        Attributes:
+            language_hints (MutableSequence[str]):
+                List of BCP-47 language codes to use for OCR.
+                In most cases, not specifying it yields the best
+                results since it enables automatic language
+                detection. For languages based on the Latin
+                alphabet, setting hints is not needed. In rare
+                cases, when the language of the text in the
+                image is known, setting a hint will help get
+                better results (although it will be a
+                significant hindrance if the hint is wrong).
+        """
+
+        language_hints: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    hints: Hints = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Hints,
+    )
     enable_native_pdf_parsing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
+    enable_image_quality_scores: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
     advanced_ocr_options: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    enable_symbol: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
