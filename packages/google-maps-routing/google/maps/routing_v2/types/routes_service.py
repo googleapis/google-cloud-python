@@ -101,7 +101,9 @@ class ComputeRoutesRequest(proto.Message):
             the request fails.
         compute_alternative_routes (bool):
             Optional. Specifies whether to calculate
-            alternate routes in addition to the route.
+            alternate routes in addition to the route. No
+            alternative routes are returned for requests
+            that have intermediate waypoints.
         route_modifiers (google.maps.routing_v2.types.RouteModifiers):
             Optional. A set of conditions to satisfy that
             affect the way routes are calculated.
