@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.3.0-alpha...v0.4.0-alpha) (2023-03-09)
+
+
+### Features
+
+* Add config based annotation converter ([#72](https://github.com/googleapis/python-documentai-toolbox/issues/72)) ([735514e](https://github.com/googleapis/python-documentai-toolbox/commit/735514e9120698487c47a7ec1107fb6f48c26ce1))
+* Added Batch creation for Cloud Storage documents. ([#66](https://github.com/googleapis/python-documentai-toolbox/issues/66)) ([c32a371](https://github.com/googleapis/python-documentai-toolbox/commit/c32a371696047389b5baafe317d4c51449c6d7e9))
+* Added list_gcs_document_tree ([#75](https://github.com/googleapis/python-documentai-toolbox/issues/75)) ([d18d1dc](https://github.com/googleapis/python-documentai-toolbox/commit/d18d1dc9a4c6cbd36b7a918ab26a9e229230747f))
+
+
+### Bug Fixes
+
+* Handle Edge Case where GCS Shards are out of order ([#69](https://github.com/googleapis/python-documentai-toolbox/issues/69)) ([709fe86](https://github.com/googleapis/python-documentai-toolbox/commit/709fe86dc883ee3dd2c250e1da936c9e5b77b1b9))
+
 ## [0.3.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.2.1-alpha...v0.3.0-alpha) (2023-02-27)
 
 
