@@ -15,17 +15,14 @@
 # limitations under the License.
 
 import os
-from typing import Any, Callable, cast, Generator, TypeVar
+from typing import Any, Callable, Generator, TypeVar, cast
 import uuid
 
 from _pytest.capture import CaptureFixture
 from flaky import flaky
-from google.api_core.exceptions import InternalServerError
-from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import InternalServerError, NotFound
 from google.cloud import pubsub_v1
-from google.cloud.pubsub import PublisherClient
-from google.cloud.pubsub import SchemaServiceClient
-from google.cloud.pubsub import SubscriberClient
+from google.cloud.pubsub import PublisherClient, SchemaServiceClient, SubscriberClient
 from google.pubsub_v1.types import Encoding
 import pytest
 
@@ -39,12 +36,15 @@ except KeyError:
     raise KeyError("Need to set GOOGLE_CLOUD_PROJECT as an environment variable.")
 AVRO_TOPIC_ID = f"schema-test-avro-topic-{UUID}"
 PROTO_TOPIC_ID = f"schema-test-proto-topic-{UUID}"
+PROTO_WITH_REVISIONS_TOPIC_ID = f"schema-test-proto-with-revisions-topic-{UUID}"
 AVRO_SUBSCRIPTION_ID = f"schema-test-avro-subscription-{UUID}"
 PROTO_SUBSCRIPTION_ID = f"schema-test-proto-subscription-{UUID}"
 AVRO_SCHEMA_ID = f"schema-test-avro-schema-{UUID}"
 PROTO_SCHEMA_ID = f"schema-test-proto-schema-{UUID}"
 AVSC_FILE = "resources/us-states.avsc"
+AVSC_REVISION_FILE = "resources/us-states.avsc"
 PROTO_FILE = "resources/us-states.proto"
+PROTO_REVISION_FILE = "resources/us-states.proto"
 
 # These tests run in parallel if pytest-parallel is installed.
 # Avoid modifying resources that are shared across tests,
@@ -229,6 +229,30 @@ def test_create_proto_schema(
     assert f"{proto_schema}" in out
 
 
+def test_commit_avro_schema(
+    schema_client: pubsub_v1.SchemaServiceClient,
+    avro_schema: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    schema.commit_avro_schema(PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE)
+
+    out, _ = capsys.readouterr()
+    assert "Committed a schema revision using an Avro schema file:" in out
+    # assert f"{avro_schema}" in out
+
+
+def test_commit_proto_schema(
+    schema_client: pubsub_v1.SchemaServiceClient,
+    proto_schema: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    schema.commit_proto_schema(PROJECT_ID, PROTO_SCHEMA_ID, PROTO_REVISION_FILE)
+
+    out, _ = capsys.readouterr()
+    assert "Committed a schema revision using a protobuf schema file:" in out
+    # assert f"{proto_schema}" in out
+
+
 def test_get_schema(avro_schema: str, capsys: CaptureFixture[str]) -> None:
     schema.get_schema(PROJECT_ID, AVRO_SCHEMA_ID)
     out, _ = capsys.readouterr()
@@ -236,10 +260,52 @@ def test_get_schema(avro_schema: str, capsys: CaptureFixture[str]) -> None:
     assert f"{avro_schema}" in out
 
 
+def test_get_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) -> None:
+    committed_schema = schema.commit_avro_schema(
+        PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE
+    )
+    schema.get_schema_revision(PROJECT_ID, AVRO_SCHEMA_ID, committed_schema.revision_id)
+    out, _ = capsys.readouterr()
+    assert "Got a schema revision" in out
+    assert f"{avro_schema}" in out
+
+
+def test_rollback_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) -> None:
+    committed_schema = schema.commit_avro_schema(
+        PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE
+    )
+    schema.commit_avro_schema(PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE)
+    schema.rollback_schema_revision(
+        PROJECT_ID, AVRO_SCHEMA_ID, committed_schema.revision_id
+    )
+    out, _ = capsys.readouterr()
+    assert "Rolled back a schema revision" in out
+    # assert f"{avro_schema}" in out
+
+
+def test_delete_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) -> None:
+    committed_schema = schema.commit_avro_schema(
+        PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE
+    )
+    schema.commit_avro_schema(PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE)
+    schema.delete_schema_revision(
+        PROJECT_ID, AVRO_SCHEMA_ID, committed_schema.revision_id
+    )
+    out, _ = capsys.readouterr()
+    assert "Deleted a schema revision" in out
+    # assert f"{avro_schema}" in out
+
+
 def test_list_schemas(capsys: CaptureFixture[str]) -> None:
     schema.list_schemas(PROJECT_ID)
     out, _ = capsys.readouterr()
     assert "Listed schemas." in out
+
+
+def test_list_schema_revisions(capsys: CaptureFixture[str]) -> None:
+    schema.list_schema_revisions(PROJECT_ID, AVRO_SCHEMA_ID)
+    out, _ = capsys.readouterr()
+    assert "Listed schema revisions." in out
 
 
 def test_create_topic_with_schema(
@@ -251,6 +317,45 @@ def test_create_topic_with_schema(
     assert f"{AVRO_TOPIC_ID}" in out
     assert f"{avro_schema}" in out
     assert "BINARY" in out or "2" in out
+
+
+def test_create_topic_with_schema_revisions(
+    proto_schema: str, capsys: CaptureFixture[str]
+) -> None:
+    committed_schema = schema.commit_proto_schema(
+        PROJECT_ID, PROTO_SCHEMA_ID, PROTO_REVISION_FILE
+    )
+    schema.create_topic_with_schema_revisions(
+        PROJECT_ID,
+        PROTO_WITH_REVISIONS_TOPIC_ID,
+        PROTO_SCHEMA_ID,
+        committed_schema.revision_id,
+        committed_schema.revision_id,
+        "BINARY",
+    )
+    out, _ = capsys.readouterr()
+    assert "Created a topic" in out
+    assert f"{PROTO_WITH_REVISIONS_TOPIC_ID}" in out
+    assert f"{proto_schema}" in out
+    assert "BINARY" in out or "2" in out
+
+
+def test_update_topic_schema(
+    proto_schema: str, proto_topic: str, capsys: CaptureFixture[str]
+) -> None:
+    committed_schema = schema.commit_proto_schema(
+        PROJECT_ID, PROTO_SCHEMA_ID, PROTO_REVISION_FILE
+    )
+    schema.update_topic_schema(
+        PROJECT_ID,
+        PROTO_WITH_REVISIONS_TOPIC_ID,
+        committed_schema.revision_id,
+        committed_schema.revision_id,
+    )
+    out, _ = capsys.readouterr()
+    assert "Updated a topic schema" in out
+    assert f"{PROTO_WITH_REVISIONS_TOPIC_ID}" in out
+    assert f"{proto_schema}" in out
 
 
 def test_publish_avro_records(
@@ -271,6 +376,21 @@ def test_subscribe_with_avro_schema(
     schema.publish_avro_records(PROJECT_ID, AVRO_TOPIC_ID, AVSC_FILE)
 
     schema.subscribe_with_avro_schema(PROJECT_ID, AVRO_SUBSCRIPTION_ID, AVSC_FILE, 9)
+    out, _ = capsys.readouterr()
+    assert "Received a binary-encoded message:" in out
+
+
+def test_subscribe_with_avro_schema_revisions(
+    avro_schema: str,
+    avro_topic: str,
+    avro_subscription: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    schema.publish_avro_records(PROJECT_ID, AVRO_TOPIC_ID, AVSC_FILE)
+
+    schema.subscribe_with_avro_schema_with_revisions(
+        PROJECT_ID, AVRO_SUBSCRIPTION_ID, AVSC_FILE, 9
+    )
     out, _ = capsys.readouterr()
     assert "Received a binary-encoded message:" in out
 
