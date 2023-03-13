@@ -10,3 +10,4 @@
 
 # @googleapis/python-samples-reviewers @googleapis/cdpe-cloudai are the default owners for samples changes
 /samples/   @googleapis/python-samples-reviewers @googleapis/cdpe-cloudai
+/samples/snippets/requirements.txt   @yoshi-approver
