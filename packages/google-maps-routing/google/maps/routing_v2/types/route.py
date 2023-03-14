@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type import viewport_pb2  # type: ignore
+from google.geo.type.types import viewport as ggt_viewport
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -137,10 +137,10 @@ class Route(proto.Message):
         proto.STRING,
         number=7,
     )
-    viewport: viewport_pb2.Viewport = proto.Field(
+    viewport: ggt_viewport.Viewport = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=viewport_pb2.Viewport,
+        message=ggt_viewport.Viewport,
     )
     travel_advisory: "RouteTravelAdvisory" = proto.Field(
         proto.MESSAGE,
