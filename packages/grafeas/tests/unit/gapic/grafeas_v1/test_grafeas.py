@@ -72,6 +72,7 @@ from grafeas.grafeas_v1.types import severity
 from grafeas.grafeas_v1.types import slsa_provenance
 from grafeas.grafeas_v1.types import slsa_provenance_zero_two
 from grafeas.grafeas_v1.types import upgrade
+from grafeas.grafeas_v1.types import vex
 from grafeas.grafeas_v1.types import vulnerability
 import google.auth
 
@@ -5094,6 +5095,21 @@ def test_create_occurrence_rest(request_type):
             "fix_available": True,
             "cvss_version": 1,
             "cvss_v2": {},
+            "vex_assessment": {
+                "cve": "cve_value",
+                "related_uris": {},
+                "note_name": "note_name_value",
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+                "justification": {"justification_type": 1, "details": "details_value"},
+            },
         },
         "build": {
             "provenance": {
@@ -5576,6 +5592,21 @@ def test_create_occurrence_rest_bad_request(
             "fix_available": True,
             "cvss_version": 1,
             "cvss_v2": {},
+            "vex_assessment": {
+                "cve": "cve_value",
+                "related_uris": {},
+                "note_name": "note_name_value",
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+                "justification": {"justification_type": 1, "details": "details_value"},
+            },
         },
         "build": {
             "provenance": {
@@ -6232,6 +6263,21 @@ def test_update_occurrence_rest(request_type):
             "fix_available": True,
             "cvss_version": 1,
             "cvss_v2": {},
+            "vex_assessment": {
+                "cve": "cve_value",
+                "related_uris": {},
+                "note_name": "note_name_value",
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+                "justification": {"justification_type": 1, "details": "details_value"},
+            },
         },
         "build": {
             "provenance": {
@@ -6716,6 +6762,21 @@ def test_update_occurrence_rest_bad_request(
             "fix_available": True,
             "cvss_version": 1,
             "cvss_v2": {},
+            "vex_assessment": {
+                "cve": "cve_value",
+                "related_uris": {},
+                "note_name": "note_name_value",
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+                "justification": {"justification_type": 1, "details": "details_value"},
+            },
         },
         "build": {
             "provenance": {
@@ -8321,6 +8382,38 @@ def test_create_note_rest(request_type):
         "dsse_attestation": {
             "hint": {"human_readable_name": "human_readable_name_value"}
         },
+        "vulnerability_assessment": {
+            "title": "title_value",
+            "short_description": "short_description_value",
+            "long_description": "long_description_value",
+            "language_code": "language_code_value",
+            "publisher": {
+                "name": "name_value",
+                "issuing_authority": "issuing_authority_value",
+                "publisher_namespace": "publisher_namespace_value",
+            },
+            "product": {
+                "name": "name_value",
+                "id": "id_value",
+                "generic_uri": "generic_uri_value",
+            },
+            "assessment": {
+                "cve": "cve_value",
+                "short_description": "short_description_value",
+                "long_description": "long_description_value",
+                "related_uris": {},
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "justification": {"justification_type": 1, "details": "details_value"},
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+            },
+        },
     }
     request = request_type(**request_init)
 
@@ -8681,6 +8774,38 @@ def test_create_note_rest_bad_request(
         },
         "dsse_attestation": {
             "hint": {"human_readable_name": "human_readable_name_value"}
+        },
+        "vulnerability_assessment": {
+            "title": "title_value",
+            "short_description": "short_description_value",
+            "long_description": "long_description_value",
+            "language_code": "language_code_value",
+            "publisher": {
+                "name": "name_value",
+                "issuing_authority": "issuing_authority_value",
+                "publisher_namespace": "publisher_namespace_value",
+            },
+            "product": {
+                "name": "name_value",
+                "id": "id_value",
+                "generic_uri": "generic_uri_value",
+            },
+            "assessment": {
+                "cve": "cve_value",
+                "short_description": "short_description_value",
+                "long_description": "long_description_value",
+                "related_uris": {},
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "justification": {"justification_type": 1, "details": "details_value"},
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+            },
         },
     }
     request = request_type(**request_init)
@@ -9206,6 +9331,38 @@ def test_update_note_rest(request_type):
         "dsse_attestation": {
             "hint": {"human_readable_name": "human_readable_name_value"}
         },
+        "vulnerability_assessment": {
+            "title": "title_value",
+            "short_description": "short_description_value",
+            "long_description": "long_description_value",
+            "language_code": "language_code_value",
+            "publisher": {
+                "name": "name_value",
+                "issuing_authority": "issuing_authority_value",
+                "publisher_namespace": "publisher_namespace_value",
+            },
+            "product": {
+                "name": "name_value",
+                "id": "id_value",
+                "generic_uri": "generic_uri_value",
+            },
+            "assessment": {
+                "cve": "cve_value",
+                "short_description": "short_description_value",
+                "long_description": "long_description_value",
+                "related_uris": {},
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "justification": {"justification_type": 1, "details": "details_value"},
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+            },
+        },
     }
     request = request_type(**request_init)
 
@@ -9552,6 +9709,38 @@ def test_update_note_rest_bad_request(
         },
         "dsse_attestation": {
             "hint": {"human_readable_name": "human_readable_name_value"}
+        },
+        "vulnerability_assessment": {
+            "title": "title_value",
+            "short_description": "short_description_value",
+            "long_description": "long_description_value",
+            "language_code": "language_code_value",
+            "publisher": {
+                "name": "name_value",
+                "issuing_authority": "issuing_authority_value",
+                "publisher_namespace": "publisher_namespace_value",
+            },
+            "product": {
+                "name": "name_value",
+                "id": "id_value",
+                "generic_uri": "generic_uri_value",
+            },
+            "assessment": {
+                "cve": "cve_value",
+                "short_description": "short_description_value",
+                "long_description": "long_description_value",
+                "related_uris": {},
+                "state": 1,
+                "impacts": ["impacts_value1", "impacts_value2"],
+                "justification": {"justification_type": 1, "details": "details_value"},
+                "remediations": [
+                    {
+                        "remediation_type": 1,
+                        "details": "details_value",
+                        "remediation_uri": {},
+                    }
+                ],
+            },
         },
     }
     request = request_type(**request_init)

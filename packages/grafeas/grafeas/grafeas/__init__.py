@@ -105,6 +105,7 @@ from grafeas.grafeas_v1.types.upgrade import UpgradeDistribution
 from grafeas.grafeas_v1.types.upgrade import UpgradeNote
 from grafeas.grafeas_v1.types.upgrade import UpgradeOccurrence
 from grafeas.grafeas_v1.types.upgrade import WindowsUpdate
+from grafeas.grafeas_v1.types.vex import VulnerabilityAssessmentNote
 from grafeas.grafeas_v1.types.vulnerability import VulnerabilityNote
 from grafeas.grafeas_v1.types.vulnerability import VulnerabilityOccurrence
 
@@ -195,6 +196,7 @@ __all__ = (
     "UpgradeNote",
     "UpgradeOccurrence",
     "WindowsUpdate",
+    "VulnerabilityAssessmentNote",
     "VulnerabilityNote",
     "VulnerabilityOccurrence",
 )

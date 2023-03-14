@@ -31,6 +31,7 @@ from grafeas.grafeas_v1.types import dsse_attestation as g_dsse_attestation
 from grafeas.grafeas_v1.types import image as g_image
 from grafeas.grafeas_v1.types import package as g_package
 from grafeas.grafeas_v1.types import upgrade as g_upgrade
+from grafeas.grafeas_v1.types import vex
 from grafeas.grafeas_v1.types import vulnerability as g_vulnerability
 
 
@@ -328,6 +329,10 @@ class Note(proto.Message):
             A note describing a dsse attestation note.
 
             This field is a member of `oneof`_ ``type``.
+        vulnerability_assessment (grafeas.grafeas_v1.types.VulnerabilityAssessmentNote):
+            A note describing a vulnerability assessment.
+
+            This field is a member of `oneof`_ ``type``.
     """
 
     name: str = proto.Field(
@@ -430,6 +435,12 @@ class Note(proto.Message):
         number=19,
         oneof="type",
         message=g_dsse_attestation.DSSEAttestationNote,
+    )
+    vulnerability_assessment: vex.VulnerabilityAssessmentNote = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="type",
+        message=vex.VulnerabilityAssessmentNote,
     )
 
 

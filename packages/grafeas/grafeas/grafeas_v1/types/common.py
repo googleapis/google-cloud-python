@@ -67,6 +67,8 @@ class NoteKind(proto.Enum):
             This represents a Compliance Note
         DSSE_ATTESTATION (10):
             This represents a DSSE attestation Note
+        VULNERABILITY_ASSESSMENT (11):
+            This represents a Vulnerability Assessment.
     """
     NOTE_KIND_UNSPECIFIED = 0
     VULNERABILITY = 1
@@ -79,6 +81,7 @@ class NoteKind(proto.Enum):
     UPGRADE = 8
     COMPLIANCE = 9
     DSSE_ATTESTATION = 10
+    VULNERABILITY_ASSESSMENT = 11
 
 
 class RelatedUrl(proto.Message):

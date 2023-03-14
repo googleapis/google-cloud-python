@@ -130,6 +130,9 @@ from .upgrade import (
     UpgradeOccurrence,
     WindowsUpdate,
 )
+from .vex import (
+    VulnerabilityAssessmentNote,
+)
 from .vulnerability import (
     VulnerabilityNote,
     VulnerabilityOccurrence,
@@ -220,6 +223,7 @@ __all__ = (
     "UpgradeNote",
     "UpgradeOccurrence",
     "WindowsUpdate",
+    "VulnerabilityAssessmentNote",
     "VulnerabilityNote",
     "VulnerabilityOccurrence",
 )

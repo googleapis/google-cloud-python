@@ -56,6 +56,7 @@ from grafeas.grafeas_v1.types import grafeas
 from grafeas.grafeas_v1.types import image
 from grafeas.grafeas_v1.types import package
 from grafeas.grafeas_v1.types import upgrade
+from grafeas.grafeas_v1.types import vex
 from grafeas.grafeas_v1.types import vulnerability
 from .transports.base import GrafeasTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import GrafeasGrpcAsyncIOTransport

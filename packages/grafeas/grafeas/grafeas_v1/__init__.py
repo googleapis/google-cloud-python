@@ -105,6 +105,7 @@ from .types.upgrade import UpgradeDistribution
 from .types.upgrade import UpgradeNote
 from .types.upgrade import UpgradeOccurrence
 from .types.upgrade import WindowsUpdate
+from .types.vex import VulnerabilityAssessmentNote
 from .types.vulnerability import VulnerabilityNote
 from .types.vulnerability import VulnerabilityOccurrence
 
@@ -194,6 +195,7 @@ __all__ = (
     "UpgradeNote",
     "UpgradeOccurrence",
     "Version",
+    "VulnerabilityAssessmentNote",
     "VulnerabilityNote",
     "VulnerabilityOccurrence",
     "WindowsUpdate",
