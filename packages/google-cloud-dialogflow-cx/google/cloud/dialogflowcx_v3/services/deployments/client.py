@@ -704,7 +704,7 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
 
         Returns:
             google.cloud.dialogflowcx_v3.types.Deployment:
-                Represents an deployment in an
+                Represents a deployment in an
                 environment. A deployment happens when a
                 flow version configured to be active in
                 the environment. You can configure

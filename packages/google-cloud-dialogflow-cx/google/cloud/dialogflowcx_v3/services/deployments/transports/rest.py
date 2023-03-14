@@ -384,7 +384,7 @@ class DeploymentsRestTransport(DeploymentsTransport):
 
             Returns:
                 ~.deployment.Deployment:
-                    Represents an deployment in an
+                    Represents a deployment in an
                 environment. A deployment happens when a
                 flow version configured to be active in
                 the environment. You can configure

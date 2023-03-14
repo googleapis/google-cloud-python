@@ -1009,8 +1009,8 @@ class AudioInput(proto.Message):
             to process the speech audio.
         audio (bytes):
             The natural language speech audio to be processed. A single
-            request can contain up to 1 minute of speech audio data. The
-            [transcribed
+            request can contain up to 2 minutes of speech audio data.
+            The [transcribed
             text][google.cloud.dialogflow.cx.v3.QueryResult.transcript]
             cannot contain more than 256 bytes.
 
