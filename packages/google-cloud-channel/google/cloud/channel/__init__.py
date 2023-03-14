@@ -42,6 +42,7 @@ from google.cloud.channel_v1.types.common import (
     Value,
 )
 from google.cloud.channel_v1.types.customers import ContactInfo, Customer
+from google.cloud.channel_v1.types.entitlement_changes import EntitlementChange
 from google.cloud.channel_v1.types.entitlements import (
     AssociationInfo,
     CommitmentSettings,
@@ -136,6 +137,8 @@ from google.cloud.channel_v1.types.service import (
     ListCustomerRepricingConfigsResponse,
     ListCustomersRequest,
     ListCustomersResponse,
+    ListEntitlementChangesRequest,
+    ListEntitlementChangesResponse,
     ListEntitlementsRequest,
     ListEntitlementsResponse,
     ListOffersRequest,
@@ -193,6 +196,7 @@ __all__ = (
     "Value",
     "ContactInfo",
     "Customer",
+    "EntitlementChange",
     "AssociationInfo",
     "CommitmentSettings",
     "Entitlement",
@@ -276,6 +280,8 @@ __all__ = (
     "ListCustomerRepricingConfigsResponse",
     "ListCustomersRequest",
     "ListCustomersResponse",
+    "ListEntitlementChangesRequest",
+    "ListEntitlementChangesResponse",
     "ListEntitlementsRequest",
     "ListEntitlementsResponse",
     "ListOffersRequest",

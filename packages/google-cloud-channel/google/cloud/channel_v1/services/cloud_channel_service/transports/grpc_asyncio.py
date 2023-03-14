@@ -2494,6 +2494,51 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
             )
         return self._stubs["list_subscribers"]
 
+    @property
+    def list_entitlement_changes(
+        self,
+    ) -> Callable[
+        [service.ListEntitlementChangesRequest],
+        Awaitable[service.ListEntitlementChangesResponse],
+    ]:
+        r"""Return a callable for the list entitlement changes method over gRPC.
+
+        List entitlement history.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The reseller account making the request
+           and the provided reseller account are different.
+        -  INVALID_ARGUMENT: Missing or invalid required fields in the
+           request.
+        -  NOT_FOUND: The parent resource doesn't exist. Usually the
+           result of an invalid name parameter.
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. In this case, contact CloudChannel support.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return value: List of
+        [EntitlementChange][google.cloud.channel.v1.EntitlementChange]s.
+
+        Returns:
+            Callable[[~.ListEntitlementChangesRequest],
+                    Awaitable[~.ListEntitlementChangesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_entitlement_changes" not in self._stubs:
+            self._stubs["list_entitlement_changes"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/ListEntitlementChanges",
+                request_serializer=service.ListEntitlementChangesRequest.serialize,
+                response_deserializer=service.ListEntitlementChangesResponse.deserialize,
+            )
+        return self._stubs["list_entitlement_changes"]
+
     def close(self):
         return self.grpc_channel.close()
 

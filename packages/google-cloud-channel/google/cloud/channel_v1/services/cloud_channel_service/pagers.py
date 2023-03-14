@@ -27,6 +27,7 @@ from typing import (
 from google.cloud.channel_v1.types import (
     channel_partner_links,
     customers,
+    entitlement_changes,
     entitlements,
     offers,
     products,
@@ -1697,6 +1698,134 @@ class ListSubscribersAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.service_accounts:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEntitlementChangesPager:
+    """A pager for iterating through ``list_entitlement_changes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListEntitlementChangesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``entitlement_changes`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListEntitlementChanges`` requests and continue to iterate
+    through the ``entitlement_changes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListEntitlementChangesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListEntitlementChangesResponse],
+        request: service.ListEntitlementChangesRequest,
+        response: service.ListEntitlementChangesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListEntitlementChangesRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListEntitlementChangesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListEntitlementChangesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[service.ListEntitlementChangesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[entitlement_changes.EntitlementChange]:
+        for page in self.pages:
+            yield from page.entitlement_changes
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEntitlementChangesAsyncPager:
+    """A pager for iterating through ``list_entitlement_changes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListEntitlementChangesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``entitlement_changes`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListEntitlementChanges`` requests and continue to iterate
+    through the ``entitlement_changes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListEntitlementChangesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListEntitlementChangesResponse]],
+        request: service.ListEntitlementChangesRequest,
+        response: service.ListEntitlementChangesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListEntitlementChangesRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListEntitlementChangesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListEntitlementChangesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[service.ListEntitlementChangesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[entitlement_changes.EntitlementChange]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.entitlement_changes:
                     yield response
 
         return async_generator()

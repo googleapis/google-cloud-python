@@ -20,6 +20,7 @@ from .channel_partner_links import (
 )
 from .common import AdminUser, CloudIdentityInfo, EduData, Value
 from .customers import ContactInfo, Customer
+from .entitlement_changes import EntitlementChange
 from .entitlements import (
     AssociationInfo,
     CommitmentSettings,
@@ -108,6 +109,8 @@ from .service import (
     ListCustomerRepricingConfigsResponse,
     ListCustomersRequest,
     ListCustomersResponse,
+    ListEntitlementChangesRequest,
+    ListEntitlementChangesResponse,
     ListEntitlementsRequest,
     ListEntitlementsResponse,
     ListOffersRequest,
@@ -157,6 +160,7 @@ __all__ = (
     "Value",
     "ContactInfo",
     "Customer",
+    "EntitlementChange",
     "AssociationInfo",
     "CommitmentSettings",
     "Entitlement",
@@ -240,6 +244,8 @@ __all__ = (
     "ListCustomerRepricingConfigsResponse",
     "ListCustomersRequest",
     "ListCustomersResponse",
+    "ListEntitlementChangesRequest",
+    "ListEntitlementChangesResponse",
     "ListEntitlementsRequest",
     "ListEntitlementsResponse",
     "ListOffersRequest",

@@ -58,6 +58,7 @@ from google.cloud.channel_v1.types import (
     channel_partner_links,
     common,
     customers,
+    entitlement_changes,
     entitlements,
     offers,
     operations,
@@ -5918,6 +5919,141 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSubscribersPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_entitlement_changes(
+        self,
+        request: Optional[Union[service.ListEntitlementChangesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEntitlementChangesPager:
+        r"""List entitlement history.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The reseller account making the request
+           and the provided reseller account are different.
+        -  INVALID_ARGUMENT: Missing or invalid required fields in the
+           request.
+        -  NOT_FOUND: The parent resource doesn't exist. Usually the
+           result of an invalid name parameter.
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. In this case, contact CloudChannel support.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return value: List of
+        [EntitlementChange][google.cloud.channel.v1.EntitlementChange]s.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import channel_v1
+
+            def sample_list_entitlement_changes():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListEntitlementChangesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_entitlement_changes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.ListEntitlementChangesRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.ListEntitlementChanges][google.cloud.channel.v1.CloudChannelService.ListEntitlementChanges]
+            parent (str):
+                Required. The resource name of the entitlement for which
+                to list entitlement changes. The ``-`` wildcard may be
+                used to match entitlements across a customer. Formats:
+
+                -  accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
+                -  accounts/{account_id}/customers/{customer_id}/entitlements/-
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.services.cloud_channel_service.pagers.ListEntitlementChangesPager:
+                Response message for
+                   [CloudChannelService.ListEntitlementChanges][google.cloud.channel.v1.CloudChannelService.ListEntitlementChanges]
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListEntitlementChangesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListEntitlementChangesRequest):
+            request = service.ListEntitlementChangesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_entitlement_changes]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListEntitlementChangesPager(
             method=rpc,
             request=request,
             response=response,

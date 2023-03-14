@@ -23,6 +23,7 @@ import proto  # type: ignore
 from google.cloud.channel_v1.types import (
     channel_partner_links as gcc_channel_partner_links,
 )
+from google.cloud.channel_v1.types import entitlement_changes as gcc_entitlement_changes
 from google.cloud.channel_v1.types import common
 from google.cloud.channel_v1.types import customers as gcc_customers
 from google.cloud.channel_v1.types import entitlements as gcc_entitlements
@@ -99,6 +100,8 @@ __protobuf__ = proto.module(
         "UnregisterSubscriberResponse",
         "ListSubscribersRequest",
         "ListSubscribersResponse",
+        "ListEntitlementChangesRequest",
+        "ListEntitlementChangesResponse",
     },
 )
 
@@ -1917,6 +1920,11 @@ class ListOffersRequest(proto.Message):
             example, "en-US". The response will localize in
             the corresponding language code, if specified.
             The default value is "en-US".
+        show_future_offers (bool):
+            Optional. A boolean flag that determines if a response
+            returns future offers 30 days from now. If the
+            show_future_offers is true, the response will only contain
+            offers that are scheduled to be available 30 days from now.
     """
 
     parent: str = proto.Field(
@@ -1938,6 +1946,10 @@ class ListOffersRequest(proto.Message):
     language_code: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    show_future_offers: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 
@@ -2417,6 +2429,83 @@ class ListSubscribersResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class ListEntitlementChangesRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.ListEntitlementChanges][google.cloud.channel.v1.CloudChannelService.ListEntitlementChanges]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the entitlement for which to
+            list entitlement changes. The ``-`` wildcard may be used to
+            match entitlements across a customer. Formats:
+
+            -  accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
+            -  accounts/{account_id}/customers/{customer_id}/entitlements/-
+        page_size (int):
+            Optional. The maximum number of entitlement
+            changes to return. The service may return fewer
+            than this value. If unspecified, returns at most
+            10 entitlement changes. The maximum value is 50;
+            the server will coerce values above 50.
+        page_token (str):
+            Optional. A page token, received from a previous
+            [CloudChannelService.ListEntitlementChanges][google.cloud.channel.v1.CloudChannelService.ListEntitlementChanges]
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            [CloudChannelService.ListEntitlementChanges][google.cloud.channel.v1.CloudChannelService.ListEntitlementChanges]
+            must match the call that provided the page token.
+        filter (str):
+            Optional. Filters applied to the list
+            results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListEntitlementChangesResponse(proto.Message):
+    r"""Response message for
+    [CloudChannelService.ListEntitlementChanges][google.cloud.channel.v1.CloudChannelService.ListEntitlementChanges]
+
+    Attributes:
+        entitlement_changes (MutableSequence[google.cloud.channel_v1.types.EntitlementChange]):
+            The list of entitlement changes.
+        next_page_token (str):
+            A token to list the next page of results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    entitlement_changes: MutableSequence[
+        gcc_entitlement_changes.EntitlementChange
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcc_entitlement_changes.EntitlementChange,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

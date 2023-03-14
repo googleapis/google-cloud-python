@@ -64,6 +64,7 @@ from google.cloud.channel_v1.types import (
     channel_partner_links,
     common,
     customers,
+    entitlement_changes,
     entitlements,
     offers,
     operations,
@@ -1096,6 +1097,7 @@ def test_get_customer(request_type, transport: str = "grpc"):
             cloud_identity_id="cloud_identity_id_value",
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
+            correlation_id="correlation_id_value",
         )
         response = client.get_customer(request)
 
@@ -1113,6 +1115,7 @@ def test_get_customer(request_type, transport: str = "grpc"):
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 def test_get_customer_empty_call():
@@ -1156,6 +1159,7 @@ async def test_get_customer_async(
                 cloud_identity_id="cloud_identity_id_value",
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
             )
         )
         response = await client.get_customer(request)
@@ -1174,6 +1178,7 @@ async def test_get_customer_async(
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 @pytest.mark.asyncio
@@ -1503,6 +1508,7 @@ def test_create_customer(request_type, transport: str = "grpc"):
             cloud_identity_id="cloud_identity_id_value",
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
+            correlation_id="correlation_id_value",
         )
         response = client.create_customer(request)
 
@@ -1520,6 +1526,7 @@ def test_create_customer(request_type, transport: str = "grpc"):
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 def test_create_customer_empty_call():
@@ -1563,6 +1570,7 @@ async def test_create_customer_async(
                 cloud_identity_id="cloud_identity_id_value",
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
             )
         )
         response = await client.create_customer(request)
@@ -1581,6 +1589,7 @@ async def test_create_customer_async(
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 @pytest.mark.asyncio
@@ -1675,6 +1684,7 @@ def test_update_customer(request_type, transport: str = "grpc"):
             cloud_identity_id="cloud_identity_id_value",
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
+            correlation_id="correlation_id_value",
         )
         response = client.update_customer(request)
 
@@ -1692,6 +1702,7 @@ def test_update_customer(request_type, transport: str = "grpc"):
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 def test_update_customer_empty_call():
@@ -1735,6 +1746,7 @@ async def test_update_customer_async(
                 cloud_identity_id="cloud_identity_id_value",
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
             )
         )
         response = await client.update_customer(request)
@@ -1753,6 +1765,7 @@ async def test_update_customer_async(
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 @pytest.mark.asyncio
@@ -2067,6 +2080,7 @@ def test_import_customer(request_type, transport: str = "grpc"):
             cloud_identity_id="cloud_identity_id_value",
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
+            correlation_id="correlation_id_value",
         )
         response = client.import_customer(request)
 
@@ -2084,6 +2098,7 @@ def test_import_customer(request_type, transport: str = "grpc"):
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 def test_import_customer_empty_call():
@@ -2127,6 +2142,7 @@ async def test_import_customer_async(
                 cloud_identity_id="cloud_identity_id_value",
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
             )
         )
         response = await client.import_customer(request)
@@ -2145,6 +2161,7 @@ async def test_import_customer_async(
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
+    assert response.correlation_id == "correlation_id_value"
 
 
 @pytest.mark.asyncio
@@ -11406,6 +11423,452 @@ async def test_list_subscribers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListEntitlementChangesRequest,
+        dict,
+    ],
+)
+def test_list_entitlement_changes(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListEntitlementChangesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_entitlement_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntitlementChangesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEntitlementChangesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_entitlement_changes_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        client.list_entitlement_changes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntitlementChangesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_async(
+    transport: str = "grpc_asyncio", request_type=service.ListEntitlementChangesRequest
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListEntitlementChangesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_entitlement_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntitlementChangesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEntitlementChangesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_async_from_dict():
+    await test_list_entitlement_changes_async(request_type=dict)
+
+
+def test_list_entitlement_changes_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListEntitlementChangesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        call.return_value = service.ListEntitlementChangesResponse()
+        client.list_entitlement_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListEntitlementChangesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListEntitlementChangesResponse()
+        )
+        await client.list_entitlement_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_entitlement_changes_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListEntitlementChangesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_entitlement_changes(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_entitlement_changes_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_entitlement_changes(
+            service.ListEntitlementChangesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListEntitlementChangesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListEntitlementChangesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_entitlement_changes(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_entitlement_changes(
+            service.ListEntitlementChangesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_entitlement_changes_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[],
+                next_page_token="def",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_entitlement_changes(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, entitlement_changes.EntitlementChange) for i in results
+        )
+
+
+def test_list_entitlement_changes_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[],
+                next_page_token="def",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_entitlement_changes(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_async_pager():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[],
+                next_page_token="def",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_entitlement_changes(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, entitlement_changes.EntitlementChange) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_async_pages():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[],
+                next_page_token="def",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementChangesResponse(
+                entitlement_changes=[
+                    entitlement_changes.EntitlementChange(),
+                    entitlement_changes.EntitlementChange(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_entitlement_changes(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudChannelServiceGrpcTransport(
@@ -11588,6 +12051,7 @@ def test_cloud_channel_service_base_transport():
         "register_subscriber",
         "unregister_subscriber",
         "list_subscribers",
+        "list_entitlement_changes",
         "get_operation",
         "cancel_operation",
         "delete_operation",

@@ -33,6 +33,7 @@ from .types.channel_partner_links import (
 )
 from .types.common import AdminUser, CloudIdentityInfo, EduData, Value
 from .types.customers import ContactInfo, Customer
+from .types.entitlement_changes import EntitlementChange
 from .types.entitlements import (
     AssociationInfo,
     CommitmentSettings,
@@ -121,6 +122,8 @@ from .types.service import (
     ListCustomerRepricingConfigsResponse,
     ListCustomersRequest,
     ListCustomersResponse,
+    ListEntitlementChangesRequest,
+    ListEntitlementChangesResponse,
     ListEntitlementsRequest,
     ListEntitlementsResponse,
     ListOffersRequest,
@@ -200,6 +203,7 @@ __all__ = (
     "DeleteCustomerRequest",
     "EduData",
     "Entitlement",
+    "EntitlementChange",
     "EntitlementEvent",
     "FetchReportResultsRequest",
     "FetchReportResultsResponse",
@@ -217,6 +221,8 @@ __all__ = (
     "ListCustomerRepricingConfigsResponse",
     "ListCustomersRequest",
     "ListCustomersResponse",
+    "ListEntitlementChangesRequest",
+    "ListEntitlementChangesResponse",
     "ListEntitlementsRequest",
     "ListEntitlementsResponse",
     "ListOffersRequest",

@@ -84,6 +84,10 @@ class Customer(proto.Message):
             Cloud Identity ID of the customer's channel
             partner. Populated only if a channel partner
             exists for this customer.
+        correlation_id (str):
+            Optional. External CRM ID for the customer.
+            Populated only if a CRM ID exists for this
+            customer.
     """
 
     name: str = proto.Field(
@@ -138,6 +142,10 @@ class Customer(proto.Message):
     channel_partner_id: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    correlation_id: str = proto.Field(
+        proto.STRING,
+        number=14,
     )
 
 

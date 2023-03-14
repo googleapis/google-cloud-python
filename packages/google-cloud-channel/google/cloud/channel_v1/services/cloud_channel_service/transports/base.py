@@ -356,6 +356,11 @@ class CloudChannelServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_entitlement_changes: gapic_v1.method.wrap_method(
+                self.list_entitlement_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -834,6 +839,18 @@ class CloudChannelServiceTransport(abc.ABC):
         [service.ListSubscribersRequest],
         Union[
             service.ListSubscribersResponse, Awaitable[service.ListSubscribersResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_entitlement_changes(
+        self,
+    ) -> Callable[
+        [service.ListEntitlementChangesRequest],
+        Union[
+            service.ListEntitlementChangesResponse,
+            Awaitable[service.ListEntitlementChangesResponse],
         ],
     ]:
         raise NotImplementedError()
