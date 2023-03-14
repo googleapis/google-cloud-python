@@ -1640,7 +1640,8 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                           "condition": {
                             "title": "expirable access",
                             "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
                           }
                         }
                       ],
@@ -2783,7 +2784,8 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                           "condition": {
                             "title": "expirable access",
                             "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
                           }
                         }
                       ],
