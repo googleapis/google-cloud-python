@@ -91,6 +91,7 @@ def test__wrap_callback_errors_error():
 
 
 def test_constructor_and_default_state():
+    mock.sentinel.subscription = str()
     manager = streaming_pull_manager.StreamingPullManager(
         mock.sentinel.client, mock.sentinel.subscription
     )
@@ -113,6 +114,7 @@ def test_constructor_and_default_state():
 
 
 def test_constructor_with_default_options():
+    mock.sentinel.subscription = str()
     flow_control_ = types.FlowControl()
     manager = streaming_pull_manager.StreamingPullManager(
         mock.sentinel.client,
@@ -128,6 +130,7 @@ def test_constructor_with_default_options():
 
 
 def test_constructor_with_min_and_max_duration_per_lease_extension_():
+    mock.sentinel.subscription = str()
     flow_control_ = types.FlowControl(
         min_duration_per_lease_extension=15, max_duration_per_lease_extension=20
     )
@@ -142,6 +145,7 @@ def test_constructor_with_min_and_max_duration_per_lease_extension_():
 
 
 def test_constructor_with_min_duration_per_lease_extension_too_low():
+    mock.sentinel.subscription = str()
     flow_control_ = types.FlowControl(
         min_duration_per_lease_extension=9, max_duration_per_lease_extension=9
     )
@@ -156,6 +160,7 @@ def test_constructor_with_min_duration_per_lease_extension_too_low():
 
 
 def test_constructor_with_max_duration_per_lease_extension_too_high():
+    mock.sentinel.subscription = str()
     flow_control_ = types.FlowControl(
         max_duration_per_lease_extension=601, min_duration_per_lease_extension=601
     )
@@ -1181,6 +1186,7 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
         initial_request=mock.ANY,
         should_recover=manager._should_recover,
         should_terminate=manager._should_terminate,
+        metadata=manager._stream_metadata,
         throttle_reopen=True,
     )
     initial_request_arg = resumable_bidi_rpc.call_args.kwargs["initial_request"]

@@ -279,6 +279,9 @@ class StreamingPullManager(object):
         self._await_callbacks_on_shutdown = await_callbacks_on_shutdown
         self._ack_histogram = histogram.Histogram()
         self._last_histogram_size = 0
+        self._stream_metadata = [
+            ["x-goog-request-params", "subscription=" + subscription]
+        ]
 
         # If max_duration_per_lease_extension is the default
         # we set the stream_ack_deadline to the default of 60
@@ -845,6 +848,7 @@ class StreamingPullManager(object):
             initial_request=get_initial_request,
             should_recover=self._should_recover,
             should_terminate=self._should_terminate,
+            metadata=self._stream_metadata,
             throttle_reopen=True,
         )
         self._rpc.add_done_callback(self._on_rpc_done)
