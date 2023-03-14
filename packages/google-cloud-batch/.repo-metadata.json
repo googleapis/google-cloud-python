@@ -2,7 +2,7 @@
     "name": "batch",
     "name_pretty": "Cloud Batch",
     "api_description": "",
-    "product_documentation": "https://cloud.google.com/",
+    "product_documentation": "https://cloud.google.com/batch/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/batch/latest",
     "issue_tracker": "",
     "release_level": "preview",
