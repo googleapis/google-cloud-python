@@ -1976,15 +1976,8 @@ class Client(ClientWithProject):
             )
             destination = _get_sub_prop(job_config, ["copy", "destinationTable"])
             destination = TableReference.from_api_repr(destination)
-            sources = []
-            source_configs = _get_sub_prop(job_config, ["copy", "sourceTables"])
-            if source_configs is None:
-                source_configs = [_get_sub_prop(job_config, ["copy", "sourceTable"])]
-            for source_config in source_configs:
-                table_ref = TableReference.from_api_repr(source_config)
-                sources.append(table_ref)
             return self.copy_table(
-                sources,
+                [],  # Source table(s) already in job_config resource.
                 destination,
                 job_config=typing.cast(CopyJobConfig, copy_job_config),
                 retry=retry,

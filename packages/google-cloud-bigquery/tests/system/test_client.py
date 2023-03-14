@@ -2455,7 +2455,7 @@ def test_table_clones(dataset_id):
     # Now create a clone before modifying the original table data.
     copy_config = CopyJobConfig()
     copy_config.operation_type = OperationType.CLONE
-    copy_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
+    copy_config.write_disposition = bigquery.WriteDisposition.WRITE_EMPTY
 
     copy_job = client.copy_table(
         sources=table_path_source,

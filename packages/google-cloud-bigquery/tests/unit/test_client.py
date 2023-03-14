@@ -2743,17 +2743,21 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
-        RESOURCE = {
+        resource = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": "random-id"},
+            "configuration": job_config,
+        }
+        expected = {
             "jobReference": {"projectId": self.PROJECT, "jobId": mock.ANY},
             "configuration": job_config,
         }
-        conn = client._connection = make_connection(RESOURCE)
+        conn = client._connection = make_connection(resource)
         client.create_job(job_config=job_config)
 
         conn.api_request.assert_called_once_with(
             method="POST",
             path="/projects/%s/jobs" % self.PROJECT,
-            data=RESOURCE,
+            data=expected,
             timeout=DEFAULT_TIMEOUT,
         )
 
@@ -3156,7 +3160,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job_config.to_api_repr(), original_config_copy.to_api_repr())
 
         self.assertIsInstance(job, LoadJob)
-        self.assertIsInstance(job._configuration, LoadJobConfig)
+        self.assertIsInstance(job.configuration, LoadJobConfig)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
@@ -3662,7 +3666,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        client._connection = make_connection({})
+        conn = client._connection = make_connection({})
         sources = [
             "dataset_wo_proj.some_table",
             "other_project.other_dataset.other_table",
@@ -3673,6 +3677,11 @@ class TestClient(unittest.TestCase):
         destination = "some_project.some_dataset.destination_table"
 
         job = client.copy_table(sources, destination)
+
+        # Replace job with the request instead of response so we can verify those properties.
+        _, kwargs = conn.api_request.call_args
+        request = kwargs["data"]
+        job._properties = request
 
         expected_sources = [
             DatasetReference(client.project, "dataset_wo_proj").table("some_table"),
@@ -3750,7 +3759,7 @@ class TestClient(unittest.TestCase):
             data=RESOURCE,
             timeout=DEFAULT_TIMEOUT,
         )
-        self.assertIsInstance(job._configuration, CopyJobConfig)
+        self.assertIsInstance(job.configuration, CopyJobConfig)
 
         # the original config object should not have been modified
         assert job_config.to_api_repr() == original_config_copy.to_api_repr()

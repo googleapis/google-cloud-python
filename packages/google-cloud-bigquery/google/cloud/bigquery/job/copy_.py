@@ -14,6 +14,7 @@
 
 """Classes for copy jobs."""
 
+import typing
 from typing import Optional
 
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
@@ -160,15 +161,13 @@ class CopyJob(_AsyncJob):
     """
 
     _JOB_TYPE = "copy"
+    _CONFIG_CLASS = CopyJobConfig
 
     def __init__(self, job_id, sources, destination, client, job_config=None):
         super(CopyJob, self).__init__(job_id, client)
 
-        if not job_config:
-            job_config = CopyJobConfig()
-
-        self._configuration = job_config
-        self._properties["configuration"] = job_config._properties
+        if job_config is not None:
+            self._properties["configuration"] = job_config._properties
 
         if destination:
             _helpers._set_sub_prop(
@@ -184,6 +183,11 @@ class CopyJob(_AsyncJob):
                 ["configuration", "copy", "sourceTables"],
                 source_resources,
             )
+
+    @property
+    def configuration(self) -> CopyJobConfig:
+        """The configuration for this copy job."""
+        return typing.cast(CopyJobConfig, super().configuration)
 
     @property
     def destination(self):
@@ -223,14 +227,14 @@ class CopyJob(_AsyncJob):
         """See
         :attr:`google.cloud.bigquery.job.CopyJobConfig.create_disposition`.
         """
-        return self._configuration.create_disposition
+        return self.configuration.create_disposition
 
     @property
     def write_disposition(self):
         """See
         :attr:`google.cloud.bigquery.job.CopyJobConfig.write_disposition`.
         """
-        return self._configuration.write_disposition
+        return self.configuration.write_disposition
 
     @property
     def destination_encryption_configuration(self):
@@ -243,7 +247,7 @@ class CopyJob(_AsyncJob):
         See
         :attr:`google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration`.
         """
-        return self._configuration.destination_encryption_configuration
+        return self.configuration.destination_encryption_configuration
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""

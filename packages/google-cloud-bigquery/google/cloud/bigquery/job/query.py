@@ -745,17 +745,15 @@ class QueryJob(_AsyncJob):
 
     _JOB_TYPE = "query"
     _UDF_KEY = "userDefinedFunctionResources"
+    _CONFIG_CLASS = QueryJobConfig
 
     def __init__(self, job_id, query, client, job_config=None):
         super(QueryJob, self).__init__(job_id, client)
 
-        if job_config is None:
-            job_config = QueryJobConfig()
-        if job_config.use_legacy_sql is None:
-            job_config.use_legacy_sql = False
-
-        self._properties["configuration"] = job_config._properties
-        self._configuration = job_config
+        if job_config is not None:
+            self._properties["configuration"] = job_config._properties
+        if self.configuration.use_legacy_sql is None:
+            self.configuration.use_legacy_sql = False
 
         if query:
             _helpers._set_sub_prop(
@@ -771,7 +769,12 @@ class QueryJob(_AsyncJob):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.allow_large_results`.
         """
-        return self._configuration.allow_large_results
+        return self.configuration.allow_large_results
+
+    @property
+    def configuration(self) -> QueryJobConfig:
+        """The configuration for this query job."""
+        return typing.cast(QueryJobConfig, super().configuration)
 
     @property
     def connection_properties(self) -> List[ConnectionProperty]:
@@ -780,14 +783,14 @@ class QueryJob(_AsyncJob):
 
         .. versionadded:: 2.29.0
         """
-        return self._configuration.connection_properties
+        return self.configuration.connection_properties
 
     @property
     def create_disposition(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.create_disposition`.
         """
-        return self._configuration.create_disposition
+        return self.configuration.create_disposition
 
     @property
     def create_session(self) -> Optional[bool]:
@@ -796,21 +799,21 @@ class QueryJob(_AsyncJob):
 
         .. versionadded:: 2.29.0
         """
-        return self._configuration.create_session
+        return self.configuration.create_session
 
     @property
     def default_dataset(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.default_dataset`.
         """
-        return self._configuration.default_dataset
+        return self.configuration.default_dataset
 
     @property
     def destination(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.destination`.
         """
-        return self._configuration.destination
+        return self.configuration.destination
 
     @property
     def destination_encryption_configuration(self):
@@ -823,28 +826,28 @@ class QueryJob(_AsyncJob):
         See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration`.
         """
-        return self._configuration.destination_encryption_configuration
+        return self.configuration.destination_encryption_configuration
 
     @property
     def dry_run(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.dry_run`.
         """
-        return self._configuration.dry_run
+        return self.configuration.dry_run
 
     @property
     def flatten_results(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.flatten_results`.
         """
-        return self._configuration.flatten_results
+        return self.configuration.flatten_results
 
     @property
     def priority(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.priority`.
         """
-        return self._configuration.priority
+        return self.configuration.priority
 
     @property
     def query(self):
@@ -862,90 +865,90 @@ class QueryJob(_AsyncJob):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.query_parameters`.
         """
-        return self._configuration.query_parameters
+        return self.configuration.query_parameters
 
     @property
     def udf_resources(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.udf_resources`.
         """
-        return self._configuration.udf_resources
+        return self.configuration.udf_resources
 
     @property
     def use_legacy_sql(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql`.
         """
-        return self._configuration.use_legacy_sql
+        return self.configuration.use_legacy_sql
 
     @property
     def use_query_cache(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.use_query_cache`.
         """
-        return self._configuration.use_query_cache
+        return self.configuration.use_query_cache
 
     @property
     def write_disposition(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.write_disposition`.
         """
-        return self._configuration.write_disposition
+        return self.configuration.write_disposition
 
     @property
     def maximum_billing_tier(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier`.
         """
-        return self._configuration.maximum_billing_tier
+        return self.configuration.maximum_billing_tier
 
     @property
     def maximum_bytes_billed(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed`.
         """
-        return self._configuration.maximum_bytes_billed
+        return self.configuration.maximum_bytes_billed
 
     @property
     def range_partitioning(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.range_partitioning`.
         """
-        return self._configuration.range_partitioning
+        return self.configuration.range_partitioning
 
     @property
     def table_definitions(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.table_definitions`.
         """
-        return self._configuration.table_definitions
+        return self.configuration.table_definitions
 
     @property
     def time_partitioning(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.time_partitioning`.
         """
-        return self._configuration.time_partitioning
+        return self.configuration.time_partitioning
 
     @property
     def clustering_fields(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.clustering_fields`.
         """
-        return self._configuration.clustering_fields
+        return self.configuration.clustering_fields
 
     @property
     def schema_update_options(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.schema_update_options`.
         """
-        return self._configuration.schema_update_options
+        return self.configuration.schema_update_options
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
         # Use to_api_repr to allow for some configuration properties to be set
         # automatically.
-        configuration = self._configuration.to_api_repr()
+        configuration = self.configuration.to_api_repr()
         return {
             "jobReference": self._properties["jobReference"],
             "configuration": configuration,
@@ -1257,7 +1260,7 @@ class QueryJob(_AsyncJob):
         """
         template = "{message}\n\n{header}\n\n{ruler}\n{body}\n{ruler}"
 
-        lines = query.splitlines()
+        lines = query.splitlines() if query is not None else [""]
         max_line_len = max(len(line) for line in lines)
 
         header = "-----Query Job SQL Follows-----"

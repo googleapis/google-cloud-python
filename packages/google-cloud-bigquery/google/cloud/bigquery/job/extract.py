@@ -14,6 +14,8 @@
 
 """Classes for extract (export) jobs."""
 
+import typing
+
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.table import Table
@@ -125,15 +127,13 @@ class ExtractJob(_AsyncJob):
     """
 
     _JOB_TYPE = "extract"
+    _CONFIG_CLASS = ExtractJobConfig
 
     def __init__(self, job_id, source, destination_uris, client, job_config=None):
         super(ExtractJob, self).__init__(job_id, client)
 
-        if job_config is None:
-            job_config = ExtractJobConfig()
-
-        self._properties["configuration"] = job_config._properties
-        self._configuration = job_config
+        if job_config is not None:
+            self._properties["configuration"] = job_config._properties
 
         if source:
             source_ref = {"projectId": source.project, "datasetId": source.dataset_id}
@@ -155,6 +155,11 @@ class ExtractJob(_AsyncJob):
                 ["configuration", "extract", "destinationUris"],
                 destination_uris,
             )
+
+    @property
+    def configuration(self) -> ExtractJobConfig:
+        """The configuration for this extract job."""
+        return typing.cast(ExtractJobConfig, super().configuration)
 
     @property
     def source(self):
@@ -189,28 +194,28 @@ class ExtractJob(_AsyncJob):
         """See
         :attr:`google.cloud.bigquery.job.ExtractJobConfig.compression`.
         """
-        return self._configuration.compression
+        return self.configuration.compression
 
     @property
     def destination_format(self):
         """See
         :attr:`google.cloud.bigquery.job.ExtractJobConfig.destination_format`.
         """
-        return self._configuration.destination_format
+        return self.configuration.destination_format
 
     @property
     def field_delimiter(self):
         """See
         :attr:`google.cloud.bigquery.job.ExtractJobConfig.field_delimiter`.
         """
-        return self._configuration.field_delimiter
+        return self.configuration.field_delimiter
 
     @property
     def print_header(self):
         """See
         :attr:`google.cloud.bigquery.job.ExtractJobConfig.print_header`.
         """
-        return self._configuration.print_header
+        return self.configuration.print_header
 
     @property
     def destination_uri_file_counts(self):

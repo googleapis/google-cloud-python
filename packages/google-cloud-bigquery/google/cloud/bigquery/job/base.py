@@ -19,7 +19,7 @@ import copy
 import http
 import threading
 import typing
-from typing import Dict, Optional, Sequence
+from typing import ClassVar, Dict, Optional, Sequence
 
 from google.api_core import exceptions
 import google.api_core.future.polling
@@ -150,6 +150,182 @@ class _JobReference(object):
         return job_ref
 
 
+class _JobConfig(object):
+    """Abstract base class for job configuration objects.
+
+    Args:
+        job_type (str): The key to use for the job configuration.
+    """
+
+    def __init__(self, job_type, **kwargs):
+        self._job_type = job_type
+        self._properties = {job_type: {}}
+        for prop, val in kwargs.items():
+            setattr(self, prop, val)
+
+    def __setattr__(self, name, value):
+        """Override to be able to raise error if an unknown property is being set"""
+        if not name.startswith("_") and not hasattr(type(self), name):
+            raise AttributeError(
+                "Property {} is unknown for {}.".format(name, type(self))
+            )
+        super(_JobConfig, self).__setattr__(name, value)
+
+    @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job.
+
+        This method always returns a dict. Once a job has been created on the
+        server, its labels cannot be modified anymore.
+
+        Raises:
+            ValueError: If ``value`` type is invalid.
+        """
+        return self._properties.setdefault("labels", {})
+
+    @labels.setter
+    def labels(self, value):
+        if not isinstance(value, dict):
+            raise ValueError("Pass a dict")
+        self._properties["labels"] = value
+
+    def _get_sub_prop(self, key, default=None):
+        """Get a value in the ``self._properties[self._job_type]`` dictionary.
+
+        Most job properties are inside the dictionary related to the job type
+        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to access
+        those properties::
+
+            self._get_sub_prop('destinationTable')
+
+        This is equivalent to using the ``_helpers._get_sub_prop`` function::
+
+            _helpers._get_sub_prop(
+                self._properties, ['query', 'destinationTable'])
+
+        Args:
+            key (str):
+                Key for the value to get in the
+                ``self._properties[self._job_type]`` dictionary.
+            default (Optional[object]):
+                Default value to return if the key is not found.
+                Defaults to :data:`None`.
+
+        Returns:
+            object: The value if present or the default.
+        """
+        return _helpers._get_sub_prop(
+            self._properties, [self._job_type, key], default=default
+        )
+
+    def _set_sub_prop(self, key, value):
+        """Set a value in the ``self._properties[self._job_type]`` dictionary.
+
+        Most job properties are inside the dictionary related to the job type
+        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to set
+        those properties::
+
+            self._set_sub_prop('useLegacySql', False)
+
+        This is equivalent to using the ``_helper._set_sub_prop`` function::
+
+            _helper._set_sub_prop(
+                self._properties, ['query', 'useLegacySql'], False)
+
+        Args:
+            key (str):
+                Key to set in the ``self._properties[self._job_type]``
+                dictionary.
+            value (object): Value to set.
+        """
+        _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
+
+    def _del_sub_prop(self, key):
+        """Remove ``key`` from the ``self._properties[self._job_type]`` dict.
+
+        Most job properties are inside the dictionary related to the job type
+        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to clear
+        those properties::
+
+            self._del_sub_prop('useLegacySql')
+
+        This is equivalent to using the ``_helper._del_sub_prop`` function::
+
+            _helper._del_sub_prop(
+                self._properties, ['query', 'useLegacySql'])
+
+        Args:
+            key (str):
+                Key to remove in the ``self._properties[self._job_type]``
+                dictionary.
+        """
+        _helpers._del_sub_prop(self._properties, [self._job_type, key])
+
+    def to_api_repr(self) -> dict:
+        """Build an API representation of the job config.
+
+        Returns:
+            Dict: A dictionary in the format used by the BigQuery API.
+        """
+        return copy.deepcopy(self._properties)
+
+    def _fill_from_default(self, default_job_config):
+        """Merge this job config with a default job config.
+
+        The keys in this object take precedence over the keys in the default
+        config. The merge is done at the top-level as well as for keys one
+        level below the job type.
+
+        Args:
+            default_job_config (google.cloud.bigquery.job._JobConfig):
+                The default job config that will be used to fill in self.
+
+        Returns:
+            google.cloud.bigquery.job._JobConfig: A new (merged) job config.
+        """
+        if self._job_type != default_job_config._job_type:
+            raise TypeError(
+                "attempted to merge two incompatible job types: "
+                + repr(self._job_type)
+                + ", "
+                + repr(default_job_config._job_type)
+            )
+
+        # cls is one of the job config subclasses that provides the job_type argument to
+        # this base class on instantiation, thus missing-parameter warning is a false
+        # positive here.
+        new_job_config = self.__class__()  # pytype: disable=missing-parameter
+
+        default_job_properties = copy.deepcopy(default_job_config._properties)
+        for key in self._properties:
+            if key != self._job_type:
+                default_job_properties[key] = self._properties[key]
+
+        default_job_properties[self._job_type].update(self._properties[self._job_type])
+        new_job_config._properties = default_job_properties
+
+        return new_job_config
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> "_JobConfig":
+        """Factory: construct a job configuration given its API representation
+
+        Args:
+            resource (Dict):
+                A job configuration in the same representation as is returned
+                from the API.
+
+        Returns:
+            google.cloud.bigquery.job._JobConfig: Configuration parsed from ``resource``.
+        """
+        # cls is one of the job config subclasses that provides the job_type argument to
+        # this base class on instantiation, thus missing-parameter warning is a false
+        # positive here.
+        job_config = cls()  # type: ignore  # pytype: disable=missing-parameter
+        job_config._properties = resource
+        return job_config
+
+
 class _AsyncJob(google.api_core.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
@@ -160,6 +336,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         client (google.cloud.bigquery.client.Client):
             Client which holds credentials and project configuration.
     """
+
+    _JOB_TYPE = "unknown"
+    _CONFIG_CLASS: ClassVar
 
     def __init__(self, job_id, client):
         super(_AsyncJob, self).__init__()
@@ -175,6 +354,13 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         self._client = client
         self._result_set = False
         self._completion_lock = threading.Lock()
+
+    @property
+    def configuration(self) -> _JobConfig:
+        """Job-type specific configurtion."""
+        configuration = self._CONFIG_CLASS()
+        configuration._properties = self._properties.setdefault("configuration", {})
+        return configuration
 
     @property
     def job_id(self):
@@ -426,8 +612,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             api_response (Dict): response returned from an API call.
         """
         cleaned = api_response.copy()
-
-        statistics = cleaned.get("statistics", {})
+        statistics = cleaned.setdefault("statistics", {})
         if "creationTime" in statistics:
             statistics["creationTime"] = float(statistics["creationTime"])
         if "startTime" in statistics:
@@ -435,13 +620,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if "endTime" in statistics:
             statistics["endTime"] = float(statistics["endTime"])
 
-        # Save configuration to keep reference same in self._configuration.
-        cleaned_config = cleaned.pop("configuration", {})
-        configuration = self._properties.pop("configuration", {})
-        self._properties.clear()
-        self._properties.update(cleaned)
-        self._properties["configuration"] = configuration
-        self._properties["configuration"].update(cleaned_config)
+        self._properties = cleaned
 
         # For Future interface
         self._set_future_result()
@@ -749,182 +928,6 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             ">"
         )
         return result
-
-
-class _JobConfig(object):
-    """Abstract base class for job configuration objects.
-
-    Args:
-        job_type (str): The key to use for the job configuration.
-    """
-
-    def __init__(self, job_type, **kwargs):
-        self._job_type = job_type
-        self._properties = {job_type: {}}
-        for prop, val in kwargs.items():
-            setattr(self, prop, val)
-
-    def __setattr__(self, name, value):
-        """Override to be able to raise error if an unknown property is being set"""
-        if not name.startswith("_") and not hasattr(type(self), name):
-            raise AttributeError(
-                "Property {} is unknown for {}.".format(name, type(self))
-            )
-        super(_JobConfig, self).__setattr__(name, value)
-
-    @property
-    def labels(self):
-        """Dict[str, str]: Labels for the job.
-
-        This method always returns a dict. Once a job has been created on the
-        server, its labels cannot be modified anymore.
-
-        Raises:
-            ValueError: If ``value`` type is invalid.
-        """
-        return self._properties.setdefault("labels", {})
-
-    @labels.setter
-    def labels(self, value):
-        if not isinstance(value, dict):
-            raise ValueError("Pass a dict")
-        self._properties["labels"] = value
-
-    def _get_sub_prop(self, key, default=None):
-        """Get a value in the ``self._properties[self._job_type]`` dictionary.
-
-        Most job properties are inside the dictionary related to the job type
-        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to access
-        those properties::
-
-            self._get_sub_prop('destinationTable')
-
-        This is equivalent to using the ``_helpers._get_sub_prop`` function::
-
-            _helpers._get_sub_prop(
-                self._properties, ['query', 'destinationTable'])
-
-        Args:
-            key (str):
-                Key for the value to get in the
-                ``self._properties[self._job_type]`` dictionary.
-            default (Optional[object]):
-                Default value to return if the key is not found.
-                Defaults to :data:`None`.
-
-        Returns:
-            object: The value if present or the default.
-        """
-        return _helpers._get_sub_prop(
-            self._properties, [self._job_type, key], default=default
-        )
-
-    def _set_sub_prop(self, key, value):
-        """Set a value in the ``self._properties[self._job_type]`` dictionary.
-
-        Most job properties are inside the dictionary related to the job type
-        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to set
-        those properties::
-
-            self._set_sub_prop('useLegacySql', False)
-
-        This is equivalent to using the ``_helper._set_sub_prop`` function::
-
-            _helper._set_sub_prop(
-                self._properties, ['query', 'useLegacySql'], False)
-
-        Args:
-            key (str):
-                Key to set in the ``self._properties[self._job_type]``
-                dictionary.
-            value (object): Value to set.
-        """
-        _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
-
-    def _del_sub_prop(self, key):
-        """Remove ``key`` from the ``self._properties[self._job_type]`` dict.
-
-        Most job properties are inside the dictionary related to the job type
-        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to clear
-        those properties::
-
-            self._del_sub_prop('useLegacySql')
-
-        This is equivalent to using the ``_helper._del_sub_prop`` function::
-
-            _helper._del_sub_prop(
-                self._properties, ['query', 'useLegacySql'])
-
-        Args:
-            key (str):
-                Key to remove in the ``self._properties[self._job_type]``
-                dictionary.
-        """
-        _helpers._del_sub_prop(self._properties, [self._job_type, key])
-
-    def to_api_repr(self) -> dict:
-        """Build an API representation of the job config.
-
-        Returns:
-            Dict: A dictionary in the format used by the BigQuery API.
-        """
-        return copy.deepcopy(self._properties)
-
-    def _fill_from_default(self, default_job_config):
-        """Merge this job config with a default job config.
-
-        The keys in this object take precedence over the keys in the default
-        config. The merge is done at the top-level as well as for keys one
-        level below the job type.
-
-        Args:
-            default_job_config (google.cloud.bigquery.job._JobConfig):
-                The default job config that will be used to fill in self.
-
-        Returns:
-            google.cloud.bigquery.job._JobConfig: A new (merged) job config.
-        """
-        if self._job_type != default_job_config._job_type:
-            raise TypeError(
-                "attempted to merge two incompatible job types: "
-                + repr(self._job_type)
-                + ", "
-                + repr(default_job_config._job_type)
-            )
-
-        # cls is one of the job config subclasses that provides the job_type argument to
-        # this base class on instantiation, thus missing-parameter warning is a false
-        # positive here.
-        new_job_config = self.__class__()  # pytype: disable=missing-parameter
-
-        default_job_properties = copy.deepcopy(default_job_config._properties)
-        for key in self._properties:
-            if key != self._job_type:
-                default_job_properties[key] = self._properties[key]
-
-        default_job_properties[self._job_type].update(self._properties[self._job_type])
-        new_job_config._properties = default_job_properties
-
-        return new_job_config
-
-    @classmethod
-    def from_api_repr(cls, resource: dict) -> "_JobConfig":
-        """Factory: construct a job configuration given its API representation
-
-        Args:
-            resource (Dict):
-                A job configuration in the same representation as is returned
-                from the API.
-
-        Returns:
-            google.cloud.bigquery.job._JobConfig: Configuration parsed from ``resource``.
-        """
-        # cls is one of the job config subclasses that provides the job_type argument to
-        # this base class on instantiation, thus missing-parameter warning is a false
-        # positive here.
-        job_config = cls()  # type: ignore  # pytype: disable=missing-parameter
-        job_config._properties = resource
-        return job_config
 
 
 class ScriptStackFrame(object):
