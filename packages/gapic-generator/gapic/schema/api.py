@@ -341,7 +341,11 @@ class API:
 
         # Parse the google.api.Service proto from the service_yaml data.
         service_yaml_config = service_pb2.Service()
-        ParseDict(opts.service_yaml_config, service_yaml_config)
+        ParseDict(
+            opts.service_yaml_config,
+            service_yaml_config,
+            ignore_unknown_fields=True
+        )
 
         # Done; return the API.
         return cls(naming=naming,
