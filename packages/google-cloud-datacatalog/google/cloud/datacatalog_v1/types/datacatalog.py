@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
@@ -51,6 +52,8 @@ __protobuf__ = proto.module(
         "FilesetSpec",
         "DataSourceConnectionSpec",
         "RoutineSpec",
+        "SqlDatabaseSystemSpec",
+        "LookerSystemSpec",
         "BusinessContext",
         "EntryOverview",
         "Contacts",
@@ -69,12 +72,18 @@ __protobuf__ = proto.module(
         "DeleteTagTemplateFieldRequest",
         "ListTagsRequest",
         "ListTagsResponse",
+        "ReconcileTagsRequest",
+        "ReconcileTagsResponse",
+        "ReconcileTagsMetadata",
         "ListEntriesRequest",
         "ListEntriesResponse",
         "StarEntryRequest",
         "StarEntryResponse",
         "UnstarEntryRequest",
         "UnstarEntryResponse",
+        "ImportEntriesRequest",
+        "ImportEntriesResponse",
+        "ImportEntriesMetadata",
         "ModifyEntryOverviewRequest",
         "ModifyEntryContactsRequest",
     },
@@ -120,6 +129,20 @@ class EntryType(proto.Enum):
         SERVICE (14):
             A service, for example, a Dataproc Metastore
             service.
+        DATABASE_SCHEMA (15):
+            Schema within a relational database.
+        DASHBOARD (16):
+            A Dashboard, for example from Looker.
+        EXPLORE (17):
+            A Looker Explore.
+
+            For more information, see [Looker Explore API]
+            (https://developers.looker.com/api/explorer/4.0/methods/LookmlModel/lookml_model_explore).
+        LOOK (18):
+            A Looker Look.
+
+            For more information, see [Looker Look API]
+            (https://developers.looker.com/api/explorer/4.0/methods/Look).
     """
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
@@ -133,6 +156,10 @@ class EntryType(proto.Enum):
     LAKE = 10
     ZONE = 11
     SERVICE = 14
+    DATABASE_SCHEMA = 15
+    DASHBOARD = 16
+    EXPLORE = 17
+    LOOK = 18
 
 
 class SearchCatalogRequest(proto.Message):
@@ -210,8 +237,8 @@ class SearchCatalogRequest(proto.Message):
                 names, IDs, and numbers, see
                 `Projects </docs/overview/#projects>`__.
             include_gcp_public_datasets (bool):
-                If ``true``, include Google Cloud Platform (GCP) public
-                datasets in search results. By default, they are excluded.
+                If ``true``, include Google Cloud public datasets in search
+                results. By default, they are excluded.
 
                 See `Google Cloud Public Datasets </public-datasets>`__ for
                 more information.
@@ -807,6 +834,17 @@ class Entry(proto.Message):
                long.
 
             This field is a member of `oneof`_ ``system``.
+        sql_database_system_spec (google.cloud.datacatalog_v1.types.SqlDatabaseSystemSpec):
+            Specification that applies to a relational database system.
+            Only settable when ``user_specified_system`` is equal to
+            ``SQL_DATABASE``
+
+            This field is a member of `oneof`_ ``system_spec``.
+        looker_system_spec (google.cloud.datacatalog_v1.types.LookerSystemSpec):
+            Specification that applies to Looker sysstem. Only settable
+            when ``user_specified_system`` is equal to ``LOOKER``
+
+            This field is a member of `oneof`_ ``system_spec``.
         gcs_fileset_spec (google.cloud.datacatalog_v1.types.GcsFilesetSpec):
             Specification that applies to a Cloud Storage fileset. Valid
             only for entries with the ``FILESET`` type.
@@ -828,7 +866,7 @@ class Entry(proto.Message):
             This field is a member of `oneof`_ ``type_spec``.
         database_table_spec (google.cloud.datacatalog_v1.types.DatabaseTableSpec):
             Specification that applies to a table resource. Valid only
-            for entries with the ``TABLE`` type.
+            for entries with the ``TABLE`` or ``EXPLORE`` type.
 
             This field is a member of `oneof`_ ``spec``.
         data_source_connection_spec (google.cloud.datacatalog_v1.types.DataSourceConnectionSpec):
@@ -849,11 +887,8 @@ class Entry(proto.Message):
             This field is a member of `oneof`_ ``spec``.
         display_name (str):
             Display name of an entry.
-
-            The name must contain only Unicode letters, numbers (0-9),
-            underscores (_), dashes (-), spaces ( ), and can't start or
-            end with spaces. The maximum size is 200 bytes when encoded
-            in UTF-8. Default value is an empty string.
+            The maximum size is 500 bytes when encoded in
+            UTF-8. Default value is an empty string.
         description (str):
             Entry description that can consist of several
             sentences or paragraphs that describe entry
@@ -926,6 +961,18 @@ class Entry(proto.Message):
         proto.STRING,
         number=18,
         oneof="system",
+    )
+    sql_database_system_spec: "SqlDatabaseSystemSpec" = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        oneof="system_spec",
+        message="SqlDatabaseSystemSpec",
+    )
+    looker_system_spec: "LookerSystemSpec" = proto.Field(
+        proto.MESSAGE,
+        number=40,
+        oneof="system_spec",
+        message="LookerSystemSpec",
     )
     gcs_fileset_spec: gcd_gcs_fileset_spec.GcsFilesetSpec = proto.Field(
         proto.MESSAGE,
@@ -1025,6 +1072,9 @@ class DatabaseTableSpec(proto.Message):
             Output only. Fields specific to a Dataplex
             table and present only in the Dataplex table
             entries.
+        database_view_spec (google.cloud.datacatalog_v1.types.DatabaseTableSpec.DatabaseViewSpec):
+            Spec what aplies to tables that are actually
+            views. Not set for "real" tables.
     """
 
     class TableType(proto.Enum):
@@ -1042,6 +1092,61 @@ class DatabaseTableSpec(proto.Message):
         NATIVE = 1
         EXTERNAL = 2
 
+    class DatabaseViewSpec(proto.Message):
+        r"""Specification that applies to database view.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            view_type (google.cloud.datacatalog_v1.types.DatabaseTableSpec.DatabaseViewSpec.ViewType):
+                Type of this view.
+            base_table (str):
+                Name of a singular table this view reflects
+                one to one.
+
+                This field is a member of `oneof`_ ``source_definition``.
+            sql_query (str):
+                SQL query used to generate this view.
+
+                This field is a member of `oneof`_ ``source_definition``.
+        """
+
+        class ViewType(proto.Enum):
+            r"""Concrete type of the view.
+
+            Values:
+                VIEW_TYPE_UNSPECIFIED (0):
+                    Default unknown view type.
+                STANDARD_VIEW (1):
+                    Standard view.
+                MATERIALIZED_VIEW (2):
+                    Materialized view.
+            """
+            VIEW_TYPE_UNSPECIFIED = 0
+            STANDARD_VIEW = 1
+            MATERIALIZED_VIEW = 2
+
+        view_type: "DatabaseTableSpec.DatabaseViewSpec.ViewType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DatabaseTableSpec.DatabaseViewSpec.ViewType",
+        )
+        base_table: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="source_definition",
+        )
+        sql_query: str = proto.Field(
+            proto.STRING,
+            number=3,
+            oneof="source_definition",
+        )
+
     type_: TableType = proto.Field(
         proto.ENUM,
         number=1,
@@ -1051,6 +1156,11 @@ class DatabaseTableSpec(proto.Message):
         proto.MESSAGE,
         number=2,
         message=dataplex_spec.DataplexTableSpec,
+    )
+    database_view_spec: DatabaseViewSpec = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=DatabaseViewSpec,
     )
 
 
@@ -1208,6 +1318,88 @@ class RoutineSpec(proto.Message):
         number=6,
         oneof="system_spec",
         message=bigquery.BigQueryRoutineSpec,
+    )
+
+
+class SqlDatabaseSystemSpec(proto.Message):
+    r"""Specification that applies to entries that are part ``SQL_DATABASE``
+    system (user_specified_type)
+
+    Attributes:
+        sql_engine (str):
+            SQL Database Engine. enum SqlEngine { UNDEFINED = 0; MY_SQL
+            = 1; POSTGRE_SQL = 2; SQL_SERVER = 3; } Engine of the
+            enclosing database instance.
+        database_version (str):
+            Version of the database engine.
+        instance_host (str):
+            Host of the SQL database enum InstanceHost { UNDEFINED = 0;
+            SELF_HOSTED = 1; CLOUD_SQL = 2; AMAZON_RDS = 3; AZURE_SQL =
+            4; } Host of the enclousing database instance.
+    """
+
+    sql_engine: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance_host: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class LookerSystemSpec(proto.Message):
+    r"""Specification that applies to entries that are part ``LOOKER``
+    system (user_specified_type)
+
+    Attributes:
+        parent_instance_id (str):
+            ID of the parent Looker Instance. Empty if it does not
+            exist. Example value: ``someinstance.looker.com``
+        parent_instance_display_name (str):
+            Name of the parent Looker Instance. Empty if
+            it does not exist.
+        parent_model_id (str):
+            ID of the parent Model. Empty if it does not
+            exist.
+        parent_model_display_name (str):
+            Name of the parent Model. Empty if it does
+            not exist.
+        parent_view_id (str):
+            ID of the parent View. Empty if it does not
+            exist.
+        parent_view_display_name (str):
+            Name of the parent View. Empty if it does not
+            exist.
+    """
+
+    parent_instance_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent_instance_display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    parent_model_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    parent_model_display_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    parent_view_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    parent_view_display_name: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -1733,6 +1925,121 @@ class ListTagsResponse(proto.Message):
     )
 
 
+class ReconcileTagsRequest(proto.Message):
+    r"""Request message for
+    [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+
+    Attributes:
+        parent (str):
+            Required. Name of [Entry][google.cloud.datacatalog.v1.Entry]
+            to be tagged.
+        tag_template (str):
+            Required. The name of the tag template, which
+            is used for reconciliation.
+        force_delete_missing (bool):
+            If set to ``true``, deletes entry tags related to a tag
+            template not listed in the tags source from an entry. If set
+            to ``false``, unlisted tags are retained.
+        tags (MutableSequence[google.cloud.datacatalog_v1.types.Tag]):
+            A list of tags to apply to an entry. A tag can specify a tag
+            template, which must be the template specified in the
+            ``ReconcileTagsRequest``. The sole entry and each of its
+            columns must be mentioned at most once.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tag_template: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force_delete_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    tags: MutableSequence[gcd_tags.Tag] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=gcd_tags.Tag,
+    )
+
+
+class ReconcileTagsResponse(proto.Message):
+    r"""[Long-running operation][google.longrunning.Operation] response
+    message returned by
+    [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+
+    Attributes:
+        created_tags_count (int):
+            Number of tags created in the request.
+        updated_tags_count (int):
+            Number of tags updated in the request.
+        deleted_tags_count (int):
+            Number of tags deleted in the request.
+    """
+
+    created_tags_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    updated_tags_count: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    deleted_tags_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class ReconcileTagsMetadata(proto.Message):
+    r"""[Long-running operation][google.longrunning.Operation] metadata
+    message returned by the
+    [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+
+    Attributes:
+        state (google.cloud.datacatalog_v1.types.ReconcileTagsMetadata.ReconciliationState):
+            State of the reconciliation operation.
+        errors (MutableMapping[str, google.rpc.status_pb2.Status]):
+            Maps the name of each tagged column (or empty string for a
+            sole entry) to tagging operation
+            [status][google.rpc.Status].
+    """
+
+    class ReconciliationState(proto.Enum):
+        r"""Enum holding possible states of the reconciliation operation.
+
+        Values:
+            RECONCILIATION_STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            RECONCILIATION_QUEUED (1):
+                The reconciliation has been queued and awaits
+                for execution.
+            RECONCILIATION_IN_PROGRESS (2):
+                The reconciliation is in progress.
+            RECONCILIATION_DONE (3):
+                The reconciliation has been finished.
+        """
+        RECONCILIATION_STATE_UNSPECIFIED = 0
+        RECONCILIATION_QUEUED = 1
+        RECONCILIATION_IN_PROGRESS = 2
+        RECONCILIATION_DONE = 3
+
+    state: ReconciliationState = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ReconciliationState,
+    )
+    errors: MutableMapping[str, status_pb2.Status] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
 class ListEntriesRequest(proto.Message):
     r"""Request message for
     [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
@@ -1849,6 +2156,120 @@ class UnstarEntryResponse(proto.Message):
     Empty for now
 
     """
+
+
+class ImportEntriesRequest(proto.Message):
+    r"""Request message for
+    [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries]
+    method.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. Target entry group for ingested
+            entries.
+        gcs_bucket_path (str):
+            Path to a Cloud Storage bucket that contains
+            a dump ready for ingestion.
+
+            This field is a member of `oneof`_ ``source``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_bucket_path: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="source",
+    )
+
+
+class ImportEntriesResponse(proto.Message):
+    r"""Response message for [long-running
+    operation][google.longrunning.Operation] returned by the
+    [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        upserted_entries_count (int):
+            Cumulative number of entries created and
+            entries updated as a result of import operation.
+
+            This field is a member of `oneof`_ ``_upserted_entries_count``.
+        deleted_entries_count (int):
+            Number of entries deleted as a result of
+            import operation.
+
+            This field is a member of `oneof`_ ``_deleted_entries_count``.
+    """
+
+    upserted_entries_count: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+    deleted_entries_count: int = proto.Field(
+        proto.INT64,
+        number=6,
+        optional=True,
+    )
+
+
+class ImportEntriesMetadata(proto.Message):
+    r"""Metadata message for [long-running
+    operation][google.longrunning.Operation] returned by the
+    [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
+
+    Attributes:
+        state (google.cloud.datacatalog_v1.types.ImportEntriesMetadata.ImportState):
+            State of the import operation.
+        errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Partial errors that are encountered during
+            the ImportEntries operation. There is no
+            guarantee that all the encountered errors are
+            reported. However, if no errors are reported, it
+            means that no errors were encountered.
+    """
+
+    class ImportState(proto.Enum):
+        r"""Enum holding possible states of the import operation.
+
+        Values:
+            IMPORT_STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            IMPORT_QUEUED (1):
+                The dump with entries has been queued for
+                import.
+            IMPORT_IN_PROGRESS (2):
+                The import of entries is in progress.
+            IMPORT_DONE (3):
+                The import of entries has been finished.
+            IMPORT_OBSOLETE (4):
+                The import of entries has been abandoned in
+                favor of a newer request.
+        """
+        IMPORT_STATE_UNSPECIFIED = 0
+        IMPORT_QUEUED = 1
+        IMPORT_IN_PROGRESS = 2
+        IMPORT_DONE = 3
+        IMPORT_OBSOLETE = 4
+
+    state: ImportState = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ImportState,
+    )
+    errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
 
 
 class ModifyEntryOverviewRequest(proto.Message):

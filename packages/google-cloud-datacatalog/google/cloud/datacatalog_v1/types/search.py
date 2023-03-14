@@ -97,7 +97,7 @@ class SearchCatalogResult(proto.Message):
             in the source system.
         integrated_system (google.cloud.datacatalog_v1.types.IntegratedSystem):
             Output only. The source system that Data
-            Catalog automatically integrates  with, such as
+            Catalog automatically integrates with, such as
             BigQuery, Cloud Pub/Sub, or Dataproc Metastore.
 
             This field is a member of `oneof`_ ``system``.

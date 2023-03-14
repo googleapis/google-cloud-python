@@ -32,7 +32,7 @@ from .types.bigquery import (
     BigQueryRoutineSpec,
     CloudSqlBigQueryConnectionSpec,
 )
-from .types.common import IntegratedSystem, PersonalDetails
+from .types.common import IntegratedSystem, ManagingSystem, PersonalDetails
 from .types.data_source import DataSource, StorageProperties
 from .types.datacatalog import (
     BusinessContext,
@@ -57,20 +57,28 @@ from .types.datacatalog import (
     GetEntryGroupRequest,
     GetEntryRequest,
     GetTagTemplateRequest,
+    ImportEntriesMetadata,
+    ImportEntriesRequest,
+    ImportEntriesResponse,
     ListEntriesRequest,
     ListEntriesResponse,
     ListEntryGroupsRequest,
     ListEntryGroupsResponse,
     ListTagsRequest,
     ListTagsResponse,
+    LookerSystemSpec,
     LookupEntryRequest,
     ModifyEntryContactsRequest,
     ModifyEntryOverviewRequest,
+    ReconcileTagsMetadata,
+    ReconcileTagsRequest,
+    ReconcileTagsResponse,
     RenameTagTemplateFieldEnumValueRequest,
     RenameTagTemplateFieldRequest,
     RoutineSpec,
     SearchCatalogRequest,
     SearchCatalogResponse,
+    SqlDatabaseSystemSpec,
     StarEntryRequest,
     StarEntryResponse,
     UnstarEntryRequest,
@@ -87,6 +95,7 @@ from .types.dataplex_spec import (
     DataplexSpec,
     DataplexTableSpec,
 )
+from .types.dump_content import DumpItem, TaggedEntry
 from .types.gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
 from .types.physical_schema import PhysicalSchema
 from .types.policytagmanager import (
@@ -127,7 +136,7 @@ from .types.table_spec import (
 )
 from .types.tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from .types.timestamps import SystemTimestamps
-from .types.usage import UsageSignal, UsageStats
+from .types.usage import CommonUsageStats, UsageSignal, UsageStats
 
 __all__ = (
     "DataCatalogAsyncClient",
@@ -140,6 +149,7 @@ __all__ = (
     "BusinessContext",
     "CloudSqlBigQueryConnectionSpec",
     "ColumnSchema",
+    "CommonUsageStats",
     "Contacts",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
@@ -164,6 +174,7 @@ __all__ = (
     "DeleteTagTemplateFieldRequest",
     "DeleteTagTemplateRequest",
     "DeleteTaxonomyRequest",
+    "DumpItem",
     "Entry",
     "EntryGroup",
     "EntryOverview",
@@ -179,6 +190,9 @@ __all__ = (
     "GetPolicyTagRequest",
     "GetTagTemplateRequest",
     "GetTaxonomyRequest",
+    "ImportEntriesMetadata",
+    "ImportEntriesRequest",
+    "ImportEntriesResponse",
     "ImportTaxonomiesRequest",
     "ImportTaxonomiesResponse",
     "InlineSource",
@@ -193,7 +207,9 @@ __all__ = (
     "ListTagsResponse",
     "ListTaxonomiesRequest",
     "ListTaxonomiesResponse",
+    "LookerSystemSpec",
     "LookupEntryRequest",
+    "ManagingSystem",
     "ModifyEntryContactsRequest",
     "ModifyEntryOverviewRequest",
     "PersonalDetails",
@@ -201,6 +217,9 @@ __all__ = (
     "PolicyTag",
     "PolicyTagManagerClient",
     "PolicyTagManagerSerializationClient",
+    "ReconcileTagsMetadata",
+    "ReconcileTagsRequest",
+    "ReconcileTagsResponse",
     "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
     "ReplaceTaxonomyRequest",
@@ -212,6 +231,7 @@ __all__ = (
     "SearchResultType",
     "SerializedPolicyTag",
     "SerializedTaxonomy",
+    "SqlDatabaseSystemSpec",
     "StarEntryRequest",
     "StarEntryResponse",
     "StorageProperties",
@@ -222,6 +242,7 @@ __all__ = (
     "TagField",
     "TagTemplate",
     "TagTemplateField",
+    "TaggedEntry",
     "Taxonomy",
     "UnstarEntryRequest",
     "UnstarEntryResponse",

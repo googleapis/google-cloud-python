@@ -51,6 +51,9 @@ class ColumnSchema(proto.Message):
     r"""A column within a schema. Columns can be nested inside
     other columns.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         column (str):
             Required. Name of the column.
@@ -71,10 +74,84 @@ class ColumnSchema(proto.Message):
 
             Only ``NULLABLE``, ``REQUIRED``, and ``REPEATED`` values are
             supported. Default mode is ``NULLABLE``.
+        default_value (str):
+            Optional. Default value for the column.
+        ordinal_position (int):
+            Optional. Ordinal position
+        highest_indexing_type (google.cloud.datacatalog_v1.types.ColumnSchema.IndexingType):
+            Optional. Most important inclusion of this
+            column.
         subcolumns (MutableSequence[google.cloud.datacatalog_v1.types.ColumnSchema]):
             Optional. Schema of sub-columns. A column can
             have zero or more sub-columns.
+        looker_column_spec (google.cloud.datacatalog_v1.types.ColumnSchema.LookerColumnSpec):
+            Looker specific column info of this column.
+
+            This field is a member of `oneof`_ ``system_spec``.
+        gc_rule (str):
+            Optional. Garbage collection policy for the
+            column or column family. Applies to systems like
+            Cloud Bigtable.
     """
+
+    class IndexingType(proto.Enum):
+        r"""Specifies inclusion of the column in an index
+
+        Values:
+            INDEXING_TYPE_UNSPECIFIED (0):
+                Unspecified.
+            INDEXING_TYPE_NONE (1):
+                Column not a part of an index.
+            INDEXING_TYPE_NON_UNIQUE (2):
+                Column Part of non unique index.
+            INDEXING_TYPE_UNIQUE (3):
+                Column part of unique index.
+            INDEXING_TYPE_PRIMARY_KEY (4):
+                Column part of the primary key.
+        """
+        INDEXING_TYPE_UNSPECIFIED = 0
+        INDEXING_TYPE_NONE = 1
+        INDEXING_TYPE_NON_UNIQUE = 2
+        INDEXING_TYPE_UNIQUE = 3
+        INDEXING_TYPE_PRIMARY_KEY = 4
+
+    class LookerColumnSpec(proto.Message):
+        r"""Column info specific to Looker System.
+
+        Attributes:
+            type_ (google.cloud.datacatalog_v1.types.ColumnSchema.LookerColumnSpec.LookerColumnType):
+                Looker specific column type of this column.
+        """
+
+        class LookerColumnType(proto.Enum):
+            r"""Column type in Looker.
+
+            Values:
+                LOOKER_COLUMN_TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                DIMENSION (1):
+                    Dimension.
+                DIMENSION_GROUP (2):
+                    Dimension group - parent for Dimension.
+                FILTER (3):
+                    Filter.
+                MEASURE (4):
+                    Measure.
+                PARAMETER (5):
+                    Parameter.
+            """
+            LOOKER_COLUMN_TYPE_UNSPECIFIED = 0
+            DIMENSION = 1
+            DIMENSION_GROUP = 2
+            FILTER = 3
+            MEASURE = 4
+            PARAMETER = 5
+
+        type_: "ColumnSchema.LookerColumnSpec.LookerColumnType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ColumnSchema.LookerColumnSpec.LookerColumnType",
+        )
 
     column: str = proto.Field(
         proto.STRING,
@@ -92,10 +169,33 @@ class ColumnSchema(proto.Message):
         proto.STRING,
         number=3,
     )
+    default_value: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    ordinal_position: int = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    highest_indexing_type: IndexingType = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=IndexingType,
+    )
     subcolumns: MutableSequence["ColumnSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ColumnSchema",
+    )
+    looker_column_spec: LookerColumnSpec = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        oneof="system_spec",
+        message=LookerColumnSpec,
+    )
+    gc_rule: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 

@@ -40,8 +40,8 @@ def sample_create_entry():
 
     # Initialize request argument(s)
     entry = datacatalog_v1.Entry()
-    entry.type_ = "SERVICE"
-    entry.integrated_system = "DATAPLEX"
+    entry.type_ = "LOOK"
+    entry.integrated_system = "LOOKER"
     entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
 
     request = datacatalog_v1.CreateEntryRequest(

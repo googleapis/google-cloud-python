@@ -18,13 +18,13 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -324,6 +324,11 @@ class DataCatalogTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.reconcile_tags: gapic_v1.method.wrap_method(
+                self.reconcile_tags,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.star_entry: gapic_v1.method.wrap_method(
                 self.star_entry,
                 default_timeout=None,
@@ -358,6 +363,20 @@ class DataCatalogTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_entries: gapic_v1.method.wrap_method(
+                self.import_entries,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -367,6 +386,11 @@ class DataCatalogTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -615,6 +639,15 @@ class DataCatalogTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def reconcile_tags(
+        self,
+    ) -> Callable[
+        [datacatalog.ReconcileTagsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def star_entry(
         self,
     ) -> Callable[
@@ -662,6 +695,48 @@ class DataCatalogTransport(abc.ABC):
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def import_entries(
+        self,
+    ) -> Callable[
+        [datacatalog.ImportEntriesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

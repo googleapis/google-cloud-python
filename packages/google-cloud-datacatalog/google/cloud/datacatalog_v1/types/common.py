@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
     manifest={
         "IntegratedSystem",
+        "ManagingSystem",
         "PersonalDetails",
     },
 )
@@ -44,12 +45,35 @@ class IntegratedSystem(proto.Enum):
             Dataproc Metastore.
         DATAPLEX (4):
             Dataplex.
+        CLOUD_SQL (8):
+            Cloud Sql
+        LOOKER (9):
+            Looker
     """
     INTEGRATED_SYSTEM_UNSPECIFIED = 0
     BIGQUERY = 1
     CLOUD_PUBSUB = 2
     DATAPROC_METASTORE = 3
     DATAPLEX = 4
+    CLOUD_SQL = 8
+    LOOKER = 9
+
+
+class ManagingSystem(proto.Enum):
+    r"""This enum describes all the systems that manage
+    Taxonomy and PolicyTag resources in DataCatalog.
+
+    Values:
+        MANAGING_SYSTEM_UNSPECIFIED (0):
+            Default value
+        MANAGING_SYSTEM_DATAPLEX (1):
+            Dataplex.
+        MANAGING_SYSTEM_OTHER (2):
+            Other
+    """
+    MANAGING_SYSTEM_UNSPECIFIED = 0
+    MANAGING_SYSTEM_DATAPLEX = 1
+    MANAGING_SYSTEM_OTHER = 2
 
 
 class PersonalDetails(proto.Message):

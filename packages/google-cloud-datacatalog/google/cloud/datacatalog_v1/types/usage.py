@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
     manifest={
         "UsageStats",
+        "CommonUsageStats",
         "UsageSignal",
     },
 )
@@ -74,10 +75,34 @@ class UsageStats(proto.Message):
     )
 
 
+class CommonUsageStats(proto.Message):
+    r"""Common statistics on the entry's usage.
+    They can be set on any system.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        view_count (int):
+            View count in source system.
+
+            This field is a member of `oneof`_ ``_view_count``.
+    """
+
+    view_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+        optional=True,
+    )
+
+
 class UsageSignal(proto.Message):
     r"""The set of all usage signals that Data Catalog stores.
     Note: Usually, these signals are updated daily. In rare cases,
     an update may fail but will be performed again on the next day.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -88,6 +113,16 @@ class UsageSignal(proto.Message):
             predefined time ranges.
 
             Supported time ranges are ``{"24H", "7D", "30D"}``.
+        common_usage_within_time_range (MutableMapping[str, google.cloud.datacatalog_v1.types.CommonUsageStats]):
+            Common usage statistics over each of the predefined time
+            ranges.
+
+            Supported time ranges are
+            ``{"24H", "7D", "30D", "Lifetime"}``.
+        favorite_count (int):
+            Favorite count in the source system.
+
+            This field is a member of `oneof`_ ``_favorite_count``.
     """
 
     update_time: timestamp_pb2.Timestamp = proto.Field(
@@ -100,6 +135,19 @@ class UsageSignal(proto.Message):
         proto.MESSAGE,
         number=2,
         message="UsageStats",
+    )
+    common_usage_within_time_range: MutableMapping[
+        str, "CommonUsageStats"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message="CommonUsageStats",
+    )
+    favorite_count: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
     )
 
 

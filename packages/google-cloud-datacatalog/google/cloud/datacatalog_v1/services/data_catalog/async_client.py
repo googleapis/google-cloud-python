@@ -42,6 +42,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
@@ -478,10 +480,10 @@ class DataCatalogAsyncClient:
             parent (:class:`str`):
                 Required. The names of the project
                 and location that the new entry group
-                belongs to.  Note: The entry group
-                itself and its child resources might not
-                be stored in the location specified in
-                its name.
+                belongs to.
+                Note: The entry group itself and its
+                child resources might not be stored in
+                the location specified in its name.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1077,8 +1079,8 @@ class DataCatalogAsyncClient:
 
                 # Initialize request argument(s)
                 entry = datacatalog_v1.Entry()
-                entry.type_ = "SERVICE"
-                entry.integrated_system = "DATAPLEX"
+                entry.type_ = "LOOK"
+                entry.integrated_system = "LOOKER"
                 entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
 
                 request = datacatalog_v1.CreateEntryRequest(
@@ -1223,8 +1225,8 @@ class DataCatalogAsyncClient:
 
                 # Initialize request argument(s)
                 entry = datacatalog_v1.Entry()
-                entry.type_ = "SERVICE"
-                entry.integrated_system = "DATAPLEX"
+                entry.type_ = "LOOK"
+                entry.integrated_system = "LOOKER"
                 entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
 
                 request = datacatalog_v1.UpdateEntryRequest(
@@ -2044,8 +2046,9 @@ class DataCatalogAsyncClient:
                 A tag template defines a tag that can have one or more
                 typed fields.
 
-                   The template is used to create tags that are attached
-                   to GCP resources. [Tag template roles]
+                   The template is used to create tags that are attached to Google Cloud
+                      resources. [Tag template roles]
+
                    (https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
                    template. For example, see the [TagTemplate User]
@@ -2159,8 +2162,9 @@ class DataCatalogAsyncClient:
                 A tag template defines a tag that can have one or more
                 typed fields.
 
-                   The template is used to create tags that are attached
-                   to GCP resources. [Tag template roles]
+                   The template is used to create tags that are attached to Google Cloud
+                      resources. [Tag template roles]
+
                    (https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
                    template. For example, see the [TagTemplate User]
@@ -2295,8 +2299,9 @@ class DataCatalogAsyncClient:
                 A tag template defines a tag that can have one or more
                 typed fields.
 
-                   The template is used to create tags that are attached
-                   to GCP resources. [Tag template roles]
+                   The template is used to create tags that are attached to Google Cloud
+                      resources. [Tag template roles]
+
                    (https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
                    template. For example, see the [TagTemplate User]
@@ -3588,6 +3593,114 @@ class DataCatalogAsyncClient:
         # Done; return the response.
         return response
 
+    async def reconcile_tags(
+        self,
+        request: Optional[Union[datacatalog.ReconcileTagsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""``ReconcileTags`` creates or updates a list of tags on the
+        entry. If the
+        [ReconcileTagsRequest.force_delete_missing][google.cloud.datacatalog.v1.ReconcileTagsRequest.force_delete_missing]
+        parameter is set, the operation deletes tags not included in the
+        input tag list.
+
+        ``ReconcileTags`` returns a [long-running operation]
+        [google.longrunning.Operation] resource that can be queried with
+        [Operations.GetOperation][google.longrunning.Operations.GetOperation]
+        to return [ReconcileTagsMetadata]
+        [google.cloud.datacatalog.v1.ReconcileTagsMetadata] and a
+        [ReconcileTagsResponse]
+        [google.cloud.datacatalog.v1.ReconcileTagsResponse] message.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_v1
+
+            async def sample_reconcile_tags():
+                # Create a client
+                client = datacatalog_v1.DataCatalogAsyncClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1.ReconcileTagsRequest(
+                    parent="parent_value",
+                    tag_template="tag_template_value",
+                )
+
+                # Make the request
+                operation = client.reconcile_tags(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.datacatalog_v1.types.ReconcileTagsRequest, dict]]):
+                The request object. Request message for
+                [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.datacatalog_v1.types.ReconcileTagsResponse` [Long-running operation][google.longrunning.Operation]
+                   response message returned by
+                   [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = datacatalog.ReconcileTagsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.reconcile_tags,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            datacatalog.ReconcileTagsResponse,
+            metadata_type=datacatalog.ReconcileTagsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def star_entry(
         self,
         request: Optional[Union[datacatalog.StarEntryRequest, dict]] = None,
@@ -4276,6 +4389,347 @@ class DataCatalogAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def import_entries(
+        self,
+        request: Optional[Union[datacatalog.ImportEntriesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Imports entries from a source, such as data previously dumped
+        into a Cloud Storage bucket, into Data Catalog. Import of
+        entries is a sync operation that reconciles the state of the
+        third-party system with the Data Catalog.
+
+        ``ImportEntries`` accepts source data snapshots of a third-party
+        system. Snapshot should be delivered as a .wire or
+        base65-encoded .txt file containing a sequence of Protocol
+        Buffer messages of
+        [DumpItem][google.cloud.datacatalog.v1.DumpItem] type.
+
+        ``ImportEntries`` returns a [long-running operation]
+        [google.longrunning.Operation] resource that can be queried with
+        [Operations.GetOperation][google.longrunning.Operations.GetOperation]
+        to return
+        [ImportEntriesMetadata][google.cloud.datacatalog.v1.ImportEntriesMetadata]
+        and an
+        [ImportEntriesResponse][google.cloud.datacatalog.v1.ImportEntriesResponse]
+        message.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_v1
+
+            async def sample_import_entries():
+                # Create a client
+                client = datacatalog_v1.DataCatalogAsyncClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1.ImportEntriesRequest(
+                    gcs_bucket_path="gcs_bucket_path_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_entries(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.datacatalog_v1.types.ImportEntriesRequest, dict]]):
+                The request object. Request message for
+                [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.datacatalog_v1.types.ImportEntriesResponse` Response message for [long-running operation][google.longrunning.Operation]
+                   returned by the
+                   [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = datacatalog.ImportEntriesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.import_entries,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            datacatalog.ImportEntriesResponse,
+            metadata_type=datacatalog.ImportEntriesMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_operation(
+        self,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a long-running operation.
+
+        This method indicates that the client is no longer interested
+        in the operation result. It does not cancel the operation.
+        If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.DeleteOperationRequest`):
+                The request object. Request message for
+                `DeleteOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.DeleteOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.delete_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self):
         return self

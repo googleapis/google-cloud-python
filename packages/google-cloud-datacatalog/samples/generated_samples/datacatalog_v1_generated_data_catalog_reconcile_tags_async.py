@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateEntry
+# Snippet for ReconcileTags
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-datacatalog
 
 
-# [START datacatalog_v1_generated_DataCatalog_UpdateEntry_async]
+# [START datacatalog_v1_generated_DataCatalog_ReconcileTags_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,24 +34,24 @@
 from google.cloud import datacatalog_v1
 
 
-async def sample_update_entry():
+async def sample_reconcile_tags():
     # Create a client
     client = datacatalog_v1.DataCatalogAsyncClient()
 
     # Initialize request argument(s)
-    entry = datacatalog_v1.Entry()
-    entry.type_ = "LOOK"
-    entry.integrated_system = "LOOKER"
-    entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
-
-    request = datacatalog_v1.UpdateEntryRequest(
-        entry=entry,
+    request = datacatalog_v1.ReconcileTagsRequest(
+        parent="parent_value",
+        tag_template="tag_template_value",
     )
 
     # Make the request
-    response = await client.update_entry(request=request)
+    operation = client.reconcile_tags(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = (await operation).result()
 
     # Handle the response
     print(response)
 
-# [END datacatalog_v1_generated_DataCatalog_UpdateEntry_async]
+# [END datacatalog_v1_generated_DataCatalog_ReconcileTags_async]

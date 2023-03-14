@@ -18,7 +18,7 @@ from .bigquery import (
     BigQueryRoutineSpec,
     CloudSqlBigQueryConnectionSpec,
 )
-from .common import IntegratedSystem, PersonalDetails
+from .common import IntegratedSystem, ManagingSystem, PersonalDetails
 from .data_source import DataSource, StorageProperties
 from .datacatalog import (
     BusinessContext,
@@ -43,20 +43,28 @@ from .datacatalog import (
     GetEntryGroupRequest,
     GetEntryRequest,
     GetTagTemplateRequest,
+    ImportEntriesMetadata,
+    ImportEntriesRequest,
+    ImportEntriesResponse,
     ListEntriesRequest,
     ListEntriesResponse,
     ListEntryGroupsRequest,
     ListEntryGroupsResponse,
     ListTagsRequest,
     ListTagsResponse,
+    LookerSystemSpec,
     LookupEntryRequest,
     ModifyEntryContactsRequest,
     ModifyEntryOverviewRequest,
+    ReconcileTagsMetadata,
+    ReconcileTagsRequest,
+    ReconcileTagsResponse,
     RenameTagTemplateFieldEnumValueRequest,
     RenameTagTemplateFieldRequest,
     RoutineSpec,
     SearchCatalogRequest,
     SearchCatalogResponse,
+    SqlDatabaseSystemSpec,
     StarEntryRequest,
     StarEntryResponse,
     UnstarEntryRequest,
@@ -73,6 +81,7 @@ from .dataplex_spec import (
     DataplexSpec,
     DataplexTableSpec,
 )
+from .dump_content import DumpItem, TaggedEntry
 from .gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
 from .physical_schema import PhysicalSchema
 from .policytagmanager import (
@@ -113,7 +122,7 @@ from .table_spec import (
 )
 from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from .timestamps import SystemTimestamps
-from .usage import UsageSignal, UsageStats
+from .usage import CommonUsageStats, UsageSignal, UsageStats
 
 __all__ = (
     "BigQueryConnectionSpec",
@@ -121,6 +130,7 @@ __all__ = (
     "CloudSqlBigQueryConnectionSpec",
     "PersonalDetails",
     "IntegratedSystem",
+    "ManagingSystem",
     "DataSource",
     "StorageProperties",
     "BusinessContext",
@@ -144,20 +154,28 @@ __all__ = (
     "GetEntryGroupRequest",
     "GetEntryRequest",
     "GetTagTemplateRequest",
+    "ImportEntriesMetadata",
+    "ImportEntriesRequest",
+    "ImportEntriesResponse",
     "ListEntriesRequest",
     "ListEntriesResponse",
     "ListEntryGroupsRequest",
     "ListEntryGroupsResponse",
     "ListTagsRequest",
     "ListTagsResponse",
+    "LookerSystemSpec",
     "LookupEntryRequest",
     "ModifyEntryContactsRequest",
     "ModifyEntryOverviewRequest",
+    "ReconcileTagsMetadata",
+    "ReconcileTagsRequest",
+    "ReconcileTagsResponse",
     "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
     "RoutineSpec",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
+    "SqlDatabaseSystemSpec",
     "StarEntryRequest",
     "StarEntryResponse",
     "UnstarEntryRequest",
@@ -172,6 +190,8 @@ __all__ = (
     "DataplexFilesetSpec",
     "DataplexSpec",
     "DataplexTableSpec",
+    "DumpItem",
+    "TaggedEntry",
     "GcsFilesetSpec",
     "GcsFileSpec",
     "PhysicalSchema",
@@ -213,6 +233,7 @@ __all__ = (
     "TagTemplate",
     "TagTemplateField",
     "SystemTimestamps",
+    "CommonUsageStats",
     "UsageSignal",
     "UsageStats",
 )

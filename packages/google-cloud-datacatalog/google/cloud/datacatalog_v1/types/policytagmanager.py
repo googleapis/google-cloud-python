@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datacatalog_v1.types import timestamps
+from google.cloud.datacatalog_v1.types import common, timestamps
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
@@ -101,6 +101,11 @@ class Taxonomy(proto.Message):
             Optional. A list of policy types that are
             activated for this taxonomy. If not set,
             defaults to an empty list.
+        service (google.cloud.datacatalog_v1.types.Taxonomy.Service):
+            Output only. Identity of the service which
+            owns the Taxonomy. This field is only populated
+            when the taxonomy is created by a Google Cloud
+            service. Currently only 'DATAPLEX' is supported.
     """
 
     class PolicyType(proto.Enum):
@@ -115,6 +120,26 @@ class Taxonomy(proto.Message):
         """
         POLICY_TYPE_UNSPECIFIED = 0
         FINE_GRAINED_ACCESS_CONTROL = 1
+
+    class Service(proto.Message):
+        r"""The source system of the Taxonomy.
+
+        Attributes:
+            name (google.cloud.datacatalog_v1.types.ManagingSystem):
+                The Google Cloud service name.
+            identity (str):
+                P4SA Identity of the service.
+        """
+
+        name: common.ManagingSystem = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum=common.ManagingSystem,
+        )
+        identity: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -141,6 +166,11 @@ class Taxonomy(proto.Message):
         proto.ENUM,
         number=6,
         enum=PolicyType,
+    )
+    service: Service = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Service,
     )
 
 
@@ -301,6 +331,9 @@ class ListTaxonomiesRequest(proto.Message):
             page. If not set, the first page is returned.
             The token is returned in the response to a
             previous list request.
+        filter (str):
+            Supported field for filter is 'service' and
+            value is 'dataplex'. Eg: service=dataplex.
     """
 
     parent: str = proto.Field(
@@ -314,6 +347,10 @@ class ListTaxonomiesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

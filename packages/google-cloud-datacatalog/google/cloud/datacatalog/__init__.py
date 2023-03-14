@@ -39,7 +39,11 @@ from google.cloud.datacatalog_v1.types.bigquery import (
     BigQueryRoutineSpec,
     CloudSqlBigQueryConnectionSpec,
 )
-from google.cloud.datacatalog_v1.types.common import IntegratedSystem, PersonalDetails
+from google.cloud.datacatalog_v1.types.common import (
+    IntegratedSystem,
+    ManagingSystem,
+    PersonalDetails,
+)
 from google.cloud.datacatalog_v1.types.data_source import DataSource, StorageProperties
 from google.cloud.datacatalog_v1.types.datacatalog import (
     BusinessContext,
@@ -64,20 +68,28 @@ from google.cloud.datacatalog_v1.types.datacatalog import (
     GetEntryGroupRequest,
     GetEntryRequest,
     GetTagTemplateRequest,
+    ImportEntriesMetadata,
+    ImportEntriesRequest,
+    ImportEntriesResponse,
     ListEntriesRequest,
     ListEntriesResponse,
     ListEntryGroupsRequest,
     ListEntryGroupsResponse,
     ListTagsRequest,
     ListTagsResponse,
+    LookerSystemSpec,
     LookupEntryRequest,
     ModifyEntryContactsRequest,
     ModifyEntryOverviewRequest,
+    ReconcileTagsMetadata,
+    ReconcileTagsRequest,
+    ReconcileTagsResponse,
     RenameTagTemplateFieldEnumValueRequest,
     RenameTagTemplateFieldRequest,
     RoutineSpec,
     SearchCatalogRequest,
     SearchCatalogResponse,
+    SqlDatabaseSystemSpec,
     StarEntryRequest,
     StarEntryResponse,
     UnstarEntryRequest,
@@ -94,6 +106,7 @@ from google.cloud.datacatalog_v1.types.dataplex_spec import (
     DataplexSpec,
     DataplexTableSpec,
 )
+from google.cloud.datacatalog_v1.types.dump_content import DumpItem, TaggedEntry
 from google.cloud.datacatalog_v1.types.gcs_fileset_spec import (
     GcsFilesetSpec,
     GcsFileSpec,
@@ -146,7 +159,11 @@ from google.cloud.datacatalog_v1.types.tags import (
     TagTemplateField,
 )
 from google.cloud.datacatalog_v1.types.timestamps import SystemTimestamps
-from google.cloud.datacatalog_v1.types.usage import UsageSignal, UsageStats
+from google.cloud.datacatalog_v1.types.usage import (
+    CommonUsageStats,
+    UsageSignal,
+    UsageStats,
+)
 
 __all__ = (
     "DataCatalogClient",
@@ -160,6 +177,7 @@ __all__ = (
     "CloudSqlBigQueryConnectionSpec",
     "PersonalDetails",
     "IntegratedSystem",
+    "ManagingSystem",
     "DataSource",
     "StorageProperties",
     "BusinessContext",
@@ -183,20 +201,28 @@ __all__ = (
     "GetEntryGroupRequest",
     "GetEntryRequest",
     "GetTagTemplateRequest",
+    "ImportEntriesMetadata",
+    "ImportEntriesRequest",
+    "ImportEntriesResponse",
     "ListEntriesRequest",
     "ListEntriesResponse",
     "ListEntryGroupsRequest",
     "ListEntryGroupsResponse",
     "ListTagsRequest",
     "ListTagsResponse",
+    "LookerSystemSpec",
     "LookupEntryRequest",
     "ModifyEntryContactsRequest",
     "ModifyEntryOverviewRequest",
+    "ReconcileTagsMetadata",
+    "ReconcileTagsRequest",
+    "ReconcileTagsResponse",
     "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
     "RoutineSpec",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
+    "SqlDatabaseSystemSpec",
     "StarEntryRequest",
     "StarEntryResponse",
     "UnstarEntryRequest",
@@ -211,6 +237,8 @@ __all__ = (
     "DataplexFilesetSpec",
     "DataplexSpec",
     "DataplexTableSpec",
+    "DumpItem",
+    "TaggedEntry",
     "GcsFilesetSpec",
     "GcsFileSpec",
     "PhysicalSchema",
@@ -252,6 +280,7 @@ __all__ = (
     "TagTemplate",
     "TagTemplateField",
     "SystemTimestamps",
+    "CommonUsageStats",
     "UsageSignal",
     "UsageStats",
 )

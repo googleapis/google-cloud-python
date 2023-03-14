@@ -16,13 +16,13 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
@@ -115,6 +115,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -232,6 +233,20 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service."""
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def search_catalog(
@@ -1093,6 +1108,44 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         return self._stubs["list_tags"]
 
     @property
+    def reconcile_tags(
+        self,
+    ) -> Callable[[datacatalog.ReconcileTagsRequest], operations_pb2.Operation]:
+        r"""Return a callable for the reconcile tags method over gRPC.
+
+        ``ReconcileTags`` creates or updates a list of tags on the
+        entry. If the
+        [ReconcileTagsRequest.force_delete_missing][google.cloud.datacatalog.v1.ReconcileTagsRequest.force_delete_missing]
+        parameter is set, the operation deletes tags not included in the
+        input tag list.
+
+        ``ReconcileTags`` returns a [long-running operation]
+        [google.longrunning.Operation] resource that can be queried with
+        [Operations.GetOperation][google.longrunning.Operations.GetOperation]
+        to return [ReconcileTagsMetadata]
+        [google.cloud.datacatalog.v1.ReconcileTagsMetadata] and a
+        [ReconcileTagsResponse]
+        [google.cloud.datacatalog.v1.ReconcileTagsResponse] message.
+
+        Returns:
+            Callable[[~.ReconcileTagsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reconcile_tags" not in self._stubs:
+            self._stubs["reconcile_tags"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/ReconcileTags",
+                request_serializer=datacatalog.ReconcileTagsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["reconcile_tags"]
+
+    @property
     def star_entry(
         self,
     ) -> Callable[[datacatalog.StarEntryRequest], datacatalog.StarEntryResponse]:
@@ -1284,8 +1337,122 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    @property
+    def import_entries(
+        self,
+    ) -> Callable[[datacatalog.ImportEntriesRequest], operations_pb2.Operation]:
+        r"""Return a callable for the import entries method over gRPC.
+
+        Imports entries from a source, such as data previously dumped
+        into a Cloud Storage bucket, into Data Catalog. Import of
+        entries is a sync operation that reconciles the state of the
+        third-party system with the Data Catalog.
+
+        ``ImportEntries`` accepts source data snapshots of a third-party
+        system. Snapshot should be delivered as a .wire or
+        base65-encoded .txt file containing a sequence of Protocol
+        Buffer messages of
+        [DumpItem][google.cloud.datacatalog.v1.DumpItem] type.
+
+        ``ImportEntries`` returns a [long-running operation]
+        [google.longrunning.Operation] resource that can be queried with
+        [Operations.GetOperation][google.longrunning.Operations.GetOperation]
+        to return
+        [ImportEntriesMetadata][google.cloud.datacatalog.v1.ImportEntriesMetadata]
+        and an
+        [ImportEntriesResponse][google.cloud.datacatalog.v1.ImportEntriesResponse]
+        message.
+
+        Returns:
+            Callable[[~.ImportEntriesRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_entries" not in self._stubs:
+            self._stubs["import_entries"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/ImportEntries",
+                request_serializer=datacatalog.ImportEntriesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_entries"]
+
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
+        r"""Return a callable for the delete_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_operation" not in self._stubs:
+            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/DeleteOperation",
+                request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["delete_operation"]
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
 
     @property
     def kind(self) -> str:
