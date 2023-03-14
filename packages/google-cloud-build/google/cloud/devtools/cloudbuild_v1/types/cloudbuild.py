@@ -2674,6 +2674,9 @@ class BuildOptions(proto.Message):
             Using a global volume in a build with only one
             step is not valid as it is indicative of a build
             request with an incorrect configuration.
+        default_logs_bucket_behavior (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.DefaultLogsBucketBehavior):
+            Option to specify how default logs buckets
+            are setup.
     """
 
     class VerifyOption(proto.Enum):
@@ -2779,6 +2782,21 @@ class BuildOptions(proto.Message):
         CLOUD_LOGGING_ONLY = 5
         NONE = 4
 
+    class DefaultLogsBucketBehavior(proto.Enum):
+        r"""Default GCS log bucket behavior options.
+
+        Values:
+            DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED (0):
+                Unspecified.
+            REGIONAL_USER_OWNED_BUCKET (1):
+                Bucket is located in user-owned project in
+                the same region as the build. The builder
+                service account must have access to create and
+                write to GCS buckets in the build project.
+        """
+        DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED = 0
+        REGIONAL_USER_OWNED_BUCKET = 1
+
     class PoolOption(proto.Message):
         r"""Details about how a build should be executed on a ``WorkerPool``.
 
@@ -2860,6 +2878,11 @@ class BuildOptions(proto.Message):
         proto.MESSAGE,
         number=14,
         message="Volume",
+    )
+    default_logs_bucket_behavior: DefaultLogsBucketBehavior = proto.Field(
+        proto.ENUM,
+        number=21,
+        enum=DefaultLogsBucketBehavior,
     )
 
 
