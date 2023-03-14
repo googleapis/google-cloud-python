@@ -275,10 +275,14 @@ class UpdateIapSettingsRequest(proto.Message):
             Authorization: Requires the ``updateSettings`` permission
             for the associated resource.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The field mask specifying which IAP settings
-            should be updated. If omitted, the all of the
-            settings are updated. See
-            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+            The field mask specifying which IAP settings should be
+            updated. If omitted, then all of the settings are updated.
+            See
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
+
+            Note: All IAP reauth settings must always be set together,
+            using the field mask:
+            ``iapSettings.accessSettings.reauthSettings``.
     """
 
     iap_settings: "IapSettings" = proto.Field(
@@ -472,11 +476,14 @@ class ReauthSettings(proto.Message):
             SECURE_KEY (3):
                 User must use their secure key 2nd factor
                 device.
+            ENROLLED_SECOND_FACTORS (4):
+                User can use any enabled 2nd factor.
         """
         METHOD_UNSPECIFIED = 0
         LOGIN = 1
         PASSWORD = 2
         SECURE_KEY = 3
+        ENROLLED_SECOND_FACTORS = 4
 
     class PolicyType(proto.Enum):
         r"""Type of policy in the case of hierarchial policies.
