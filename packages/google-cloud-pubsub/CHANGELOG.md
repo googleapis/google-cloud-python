@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.15.1](https://github.com/googleapis/python-pubsub/compare/v2.15.0...v2.15.1) (2023-03-14)
+
+
+### Bug Fixes
+
+* Set x-goog-request-params for streaming pull request ([#884](https://github.com/googleapis/python-pubsub/issues/884)) ([0d247e6](https://github.com/googleapis/python-pubsub/commit/0d247e6b189409b4d57c95dbbbf3df3e0fac0fa2))
+
 ## [2.15.0](https://github.com/googleapis/python-pubsub/compare/v2.14.1...v2.15.0) (2023-02-22)
 
 
