@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.1.1](https://github.com/googleapis/python-ndb/compare/v2.1.0...v2.1.1) (2023-02-28)
+
+
+### Bug Fixes
+
+* Query options were not respecting use_cache ([#873](https://github.com/googleapis/python-ndb/issues/873)) ([802d88d](https://github.com/googleapis/python-ndb/commit/802d88d108969cba02437f55e5858556221930f3)), closes [#752](https://github.com/googleapis/python-ndb/issues/752)
+
+
+### Documentation
+
+* Note that we support Python 3.11 in CONTRIBUTING file ([#872](https://github.com/googleapis/python-ndb/issues/872)) ([982ee5f](https://github.com/googleapis/python-ndb/commit/982ee5f9e768c6f7f5ef19bf6fe9e646e4e08e1f))
+* Use cached versions of Cloud objects.inv files ([#863](https://github.com/googleapis/python-ndb/issues/863)) ([4471e2f](https://github.com/googleapis/python-ndb/commit/4471e2f11757be280266779544c59c90222b8184)), closes [#862](https://github.com/googleapis/python-ndb/issues/862)
+
 ## [2.1.0](https://github.com/googleapis/python-ndb/compare/v2.0.0...v2.1.0) (2022-12-15)
 
 
