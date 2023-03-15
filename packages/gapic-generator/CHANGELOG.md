@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.8.6](https://github.com/googleapis/gapic-generator-python/compare/v1.8.5...v1.8.6) (2023-03-14)
+
+
+### Bug Fixes
+
+* Ignore_unknown_fields parsing service config ([#1618](https://github.com/googleapis/gapic-generator-python/issues/1618)) ([de6386f](https://github.com/googleapis/gapic-generator-python/commit/de6386fc0115e5a05bfc25b9a06e22eeccc091ce))
+
 ## [1.8.5](https://github.com/googleapis/gapic-generator-python/compare/v1.8.4...v1.8.5) (2023-02-23)
 
 
