@@ -29,7 +29,7 @@ _sym_db = _symbol_database.Default()
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1bgoogle/iam/v1/options.proto\x12\rgoogle.iam.v1"4\n\x10GetPolicyOptions\x12 \n\x18requested_policy_version\x18\x01 \x01(\x05\x42\x84\x01\n\x11\x63om.google.iam.v1B\x0cOptionsProtoP\x01Z0google.golang.org/genproto/googleapis/iam/v1;iam\xf8\x01\x01\xaa\x02\x13Google.Cloud.Iam.V1\xca\x02\x13Google\\Cloud\\Iam\\V1b\x06proto3'
+    b'\n\x1bgoogle/iam/v1/options.proto\x12\rgoogle.iam.v1"4\n\x10GetPolicyOptions\x12 \n\x18requested_policy_version\x18\x01 \x01(\x05\x42}\n\x11\x63om.google.iam.v1B\x0cOptionsProtoP\x01Z)cloud.google.com/go/iam/apiv1/iampb;iampb\xf8\x01\x01\xaa\x02\x13Google.Cloud.Iam.V1\xca\x02\x13Google\\Cloud\\Iam\\V1b\x06proto3'
 )
 
 
@@ -48,7 +48,7 @@ _sym_db.RegisterMessage(GetPolicyOptions)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
     DESCRIPTOR._options = None
-    DESCRIPTOR._serialized_options = b"\n\021com.google.iam.v1B\014OptionsProtoP\001Z0google.golang.org/genproto/googleapis/iam/v1;iam\370\001\001\252\002\023Google.Cloud.Iam.V1\312\002\023Google\\Cloud\\Iam\\V1"
+    DESCRIPTOR._serialized_options = b"\n\021com.google.iam.v1B\014OptionsProtoP\001Z)cloud.google.com/go/iam/apiv1/iampb;iampb\370\001\001\252\002\023Google.Cloud.Iam.V1\312\002\023Google\\Cloud\\Iam\\V1"
     _GETPOLICYOPTIONS._serialized_start = 46
     _GETPOLICYOPTIONS._serialized_end = 98
 # @@protoc_insertion_point(module_scope)
