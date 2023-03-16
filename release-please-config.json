@@ -151,7 +151,13 @@
             "component": "google-cloud-workstations",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/workstations/gapic_version.py"
+                "google/cloud/workstations/gapic_version.py",
+                "google/cloud/workstations_v1beta/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }
