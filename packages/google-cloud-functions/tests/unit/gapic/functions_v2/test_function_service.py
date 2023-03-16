@@ -768,6 +768,8 @@ def test_get_function(request_type, transport: str = "grpc"):
             environment=functions.Environment.GEN_1,
             description="description_value",
             state=functions.Function.State.ACTIVE,
+            kms_key_name="kms_key_name_value",
+            url="url_value",
         )
         response = client.get_function(request)
 
@@ -782,6 +784,8 @@ def test_get_function(request_type, transport: str = "grpc"):
     assert response.environment == functions.Environment.GEN_1
     assert response.description == "description_value"
     assert response.state == functions.Function.State.ACTIVE
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.url == "url_value"
 
 
 def test_get_function_empty_call():
@@ -822,6 +826,8 @@ async def test_get_function_async(
                 environment=functions.Environment.GEN_1,
                 description="description_value",
                 state=functions.Function.State.ACTIVE,
+                kms_key_name="kms_key_name_value",
+                url="url_value",
             )
         )
         response = await client.get_function(request)
@@ -837,6 +843,8 @@ async def test_get_function_async(
     assert response.environment == functions.Environment.GEN_1
     assert response.description == "description_value"
     assert response.state == functions.Function.State.ACTIVE
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.url == "url_value"
 
 
 @pytest.mark.asyncio
@@ -2686,6 +2694,8 @@ def test_get_function_rest(request_type):
             environment=functions.Environment.GEN_1,
             description="description_value",
             state=functions.Function.State.ACTIVE,
+            kms_key_name="kms_key_name_value",
+            url="url_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2704,6 +2714,8 @@ def test_get_function_rest(request_type):
     assert response.environment == functions.Environment.GEN_1
     assert response.description == "description_value"
     assert response.state == functions.Function.State.ACTIVE
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.url == "url_value"
 
 
 def test_get_function_rest_required_fields(request_type=functions.GetFunctionRequest):
@@ -3316,12 +3328,14 @@ def test_create_function_rest(request_type):
             },
             "worker_pool": "worker_pool_value",
             "environment_variables": {},
+            "docker_registry": 1,
             "docker_repository": "docker_repository_value",
         },
         "service_config": {
             "service": "service_value",
             "timeout_seconds": 1621,
             "available_memory": "available_memory_value",
+            "available_cpu": "available_cpu_value",
             "environment_variables": {},
             "max_instance_count": 1922,
             "min_instance_count": 1920,
@@ -3348,6 +3362,8 @@ def test_create_function_rest(request_type):
                 }
             ],
             "revision": "revision_value",
+            "max_instance_request_concurrency": 3436,
+            "security_level": 1,
         },
         "event_trigger": {
             "trigger": "trigger_value",
@@ -3371,6 +3387,8 @@ def test_create_function_rest(request_type):
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
+        "kms_key_name": "kms_key_name_value",
+        "url": "url_value",
     }
     request = request_type(**request_init)
 
@@ -3586,12 +3604,14 @@ def test_create_function_rest_bad_request(
             },
             "worker_pool": "worker_pool_value",
             "environment_variables": {},
+            "docker_registry": 1,
             "docker_repository": "docker_repository_value",
         },
         "service_config": {
             "service": "service_value",
             "timeout_seconds": 1621,
             "available_memory": "available_memory_value",
+            "available_cpu": "available_cpu_value",
             "environment_variables": {},
             "max_instance_count": 1922,
             "min_instance_count": 1920,
@@ -3618,6 +3638,8 @@ def test_create_function_rest_bad_request(
                 }
             ],
             "revision": "revision_value",
+            "max_instance_request_concurrency": 3436,
+            "security_level": 1,
         },
         "event_trigger": {
             "trigger": "trigger_value",
@@ -3641,6 +3663,8 @@ def test_create_function_rest_bad_request(
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
+        "kms_key_name": "kms_key_name_value",
+        "url": "url_value",
     }
     request = request_type(**request_init)
 
@@ -3767,12 +3791,14 @@ def test_update_function_rest(request_type):
             },
             "worker_pool": "worker_pool_value",
             "environment_variables": {},
+            "docker_registry": 1,
             "docker_repository": "docker_repository_value",
         },
         "service_config": {
             "service": "service_value",
             "timeout_seconds": 1621,
             "available_memory": "available_memory_value",
+            "available_cpu": "available_cpu_value",
             "environment_variables": {},
             "max_instance_count": 1922,
             "min_instance_count": 1920,
@@ -3799,6 +3825,8 @@ def test_update_function_rest(request_type):
                 }
             ],
             "revision": "revision_value",
+            "max_instance_request_concurrency": 3436,
+            "security_level": 1,
         },
         "event_trigger": {
             "trigger": "trigger_value",
@@ -3822,6 +3850,8 @@ def test_update_function_rest(request_type):
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
+        "kms_key_name": "kms_key_name_value",
+        "url": "url_value",
     }
     request = request_type(**request_init)
 
@@ -4026,12 +4056,14 @@ def test_update_function_rest_bad_request(
             },
             "worker_pool": "worker_pool_value",
             "environment_variables": {},
+            "docker_registry": 1,
             "docker_repository": "docker_repository_value",
         },
         "service_config": {
             "service": "service_value",
             "timeout_seconds": 1621,
             "available_memory": "available_memory_value",
+            "available_cpu": "available_cpu_value",
             "environment_variables": {},
             "max_instance_count": 1922,
             "min_instance_count": 1920,
@@ -4058,6 +4090,8 @@ def test_update_function_rest_bad_request(
                 }
             ],
             "revision": "revision_value",
+            "max_instance_request_concurrency": 3436,
+            "security_level": 1,
         },
         "event_trigger": {
             "trigger": "trigger_value",
@@ -4081,6 +4115,8 @@ def test_update_function_rest_bad_request(
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
+        "kms_key_name": "kms_key_name_value",
+        "url": "url_value",
     }
     request = request_type(**request_init)
 
@@ -5810,10 +5846,41 @@ def test_parse_connector_path():
     assert expected == actual
 
 
-def test_function_path():
+def test_crypto_key_path():
     project = "cuttlefish"
     location = "mussel"
-    function = "winkle"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = FunctionServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
+    }
+    path = FunctionServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FunctionServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_function_path():
+    project = "whelk"
+    location = "octopus"
+    function = "oyster"
     expected = "projects/{project}/locations/{location}/functions/{function}".format(
         project=project,
         location=location,
@@ -5825,9 +5892,9 @@ def test_function_path():
 
 def test_parse_function_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "function": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "function": "mussel",
     }
     path = FunctionServiceClient.function_path(**expected)
 
@@ -5837,9 +5904,9 @@ def test_parse_function_path():
 
 
 def test_repository_path():
-    project = "squid"
-    location = "clam"
-    repository = "whelk"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
     expected = (
         "projects/{project}/locations/{location}/repositories/{repository}".format(
             project=project,
@@ -5853,9 +5920,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "repository": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "repository": "clam",
     }
     path = FunctionServiceClient.repository_path(**expected)
 
@@ -5865,9 +5932,9 @@ def test_parse_repository_path():
 
 
 def test_service_path():
-    project = "cuttlefish"
-    location = "mussel"
-    service = "winkle"
+    project = "whelk"
+    location = "octopus"
+    service = "oyster"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -5879,9 +5946,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "service": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "service": "mussel",
     }
     path = FunctionServiceClient.service_path(**expected)
 
@@ -5891,8 +5958,8 @@ def test_parse_service_path():
 
 
 def test_topic_path():
-    project = "squid"
-    topic = "clam"
+    project = "winkle"
+    topic = "nautilus"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -5903,8 +5970,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "whelk",
-        "topic": "octopus",
+        "project": "scallop",
+        "topic": "abalone",
     }
     path = FunctionServiceClient.topic_path(**expected)
 
@@ -5914,9 +5981,9 @@ def test_parse_topic_path():
 
 
 def test_trigger_path():
-    project = "oyster"
-    location = "nudibranch"
-    trigger = "cuttlefish"
+    project = "squid"
+    location = "clam"
+    trigger = "whelk"
     expected = "projects/{project}/locations/{location}/triggers/{trigger}".format(
         project=project,
         location=location,
@@ -5928,9 +5995,9 @@ def test_trigger_path():
 
 def test_parse_trigger_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "trigger": "nautilus",
+        "project": "octopus",
+        "location": "oyster",
+        "trigger": "nudibranch",
     }
     path = FunctionServiceClient.trigger_path(**expected)
 
@@ -5940,9 +6007,9 @@ def test_parse_trigger_path():
 
 
 def test_worker_pool_path():
-    project = "scallop"
-    location = "abalone"
-    worker_pool = "squid"
+    project = "cuttlefish"
+    location = "mussel"
+    worker_pool = "winkle"
     expected = (
         "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
             project=project,
@@ -5956,9 +6023,9 @@ def test_worker_pool_path():
 
 def test_parse_worker_pool_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "worker_pool": "octopus",
+        "project": "nautilus",
+        "location": "scallop",
+        "worker_pool": "abalone",
     }
     path = FunctionServiceClient.worker_pool_path(**expected)
 
@@ -5968,7 +6035,7 @@ def test_parse_worker_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5978,7 +6045,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = FunctionServiceClient.common_billing_account_path(**expected)
 
@@ -5988,7 +6055,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5998,7 +6065,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = FunctionServiceClient.common_folder_path(**expected)
 
@@ -6008,7 +6075,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6018,7 +6085,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = FunctionServiceClient.common_organization_path(**expected)
 
@@ -6028,7 +6095,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6038,7 +6105,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = FunctionServiceClient.common_project_path(**expected)
 
@@ -6048,8 +6115,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6060,8 +6127,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = FunctionServiceClient.common_location_path(**expected)
 

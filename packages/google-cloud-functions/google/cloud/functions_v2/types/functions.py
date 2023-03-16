@@ -83,8 +83,8 @@ class Function(proto.Message):
             unique globally and match pattern
             ``projects/*/locations/*/functions/*``
         environment (google.cloud.functions_v2.types.Environment):
-            Describe whether the function is gen1 or
-            gen2.
+            Describe whether the function is 1st Gen or
+            2nd Gen.
         description (str):
             User-provided description of a function.
         build_config (google.cloud.functions_v2.types.BuildConfig):
@@ -108,6 +108,15 @@ class Function(proto.Message):
         state_messages (MutableSequence[google.cloud.functions_v2.types.StateMessage]):
             Output only. State Messages for this Cloud
             Function.
+        kms_key_name (str):
+            Resource name of a KMS crypto key (managed by the user) used
+            to encrypt/decrypt function resources.
+
+            It must match the pattern
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+        url (str):
+            Output only. The deployed url for the
+            function.
     """
 
     class State(proto.Enum):
@@ -186,6 +195,14 @@ class Function(proto.Message):
         proto.MESSAGE,
         number=9,
         message="StateMessage",
+    )
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=25,
+    )
+    url: str = proto.Field(
+        proto.STRING,
+        number=14,
     )
 
 
@@ -455,13 +472,23 @@ class BuildConfig(proto.Message):
         environment_variables (MutableMapping[str, str]):
             User-provided build-time environment
             variables for the function
+        docker_registry (google.cloud.functions_v2.types.BuildConfig.DockerRegistry):
+            Optional. Docker Registry to use for this deployment. This
+            configuration is only applicable to 1st Gen functions, 2nd
+            Gen functions can only use Artifact Registry.
+
+            If ``docker_repository`` field is specified, this field will
+            be automatically set as ``ARTIFACT_REGISTRY``. If
+            unspecified, it currently defaults to
+            ``CONTAINER_REGISTRY``. This field may be overridden by the
+            backend for eligible deployments.
         docker_repository (str):
-            Optional. User managed repository created in Artifact
-            Registry optionally with a customer managed encryption key.
-            This is the repository to which the function docker image
-            will be pushed after it is built by Cloud Build. If
-            unspecified, GCF will create and use a repository named
-            'gcf-artifacts' for every deployed region.
+            User managed repository created in Artifact Registry
+            optionally with a customer managed encryption key. This is
+            the repository to which the function docker image will be
+            pushed after it is built by Cloud Build. If unspecified, GCF
+            will create and use a repository named 'gcf-artifacts' for
+            every deployed region.
 
             It must match the pattern
             ``projects/{project}/locations/{location}/repositories/{repository}``.
@@ -470,6 +497,27 @@ class BuildConfig(proto.Message):
             repositories are not supported. Repository format must be
             'DOCKER'.
     """
+
+    class DockerRegistry(proto.Enum):
+        r"""Docker Registry to use for storing function Docker images.
+
+        Values:
+            DOCKER_REGISTRY_UNSPECIFIED (0):
+                Unspecified.
+            CONTAINER_REGISTRY (1):
+                Docker images will be stored in multi-regional Container
+                Registry repositories named ``gcf``.
+            ARTIFACT_REGISTRY (2):
+                Docker images will be stored in regional Artifact Registry
+                repositories. By default, GCF will create and use
+                repositories named ``gcf-artifacts`` in every region in
+                which a function is deployed. But the repository to use can
+                also be specified by the user using the
+                ``docker_repository`` field.
+        """
+        DOCKER_REGISTRY_UNSPECIFIED = 0
+        CONTAINER_REGISTRY = 1
+        ARTIFACT_REGISTRY = 2
 
     build: str = proto.Field(
         proto.STRING,
@@ -502,6 +550,11 @@ class BuildConfig(proto.Message):
         proto.STRING,
         number=6,
     )
+    docker_registry: DockerRegistry = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=DockerRegistry,
+    )
     docker_repository: str = proto.Field(
         proto.STRING,
         number=7,
@@ -511,6 +564,7 @@ class BuildConfig(proto.Message):
 class ServiceConfig(proto.Message):
     r"""Describes the Service being deployed.
     Currently Supported : Cloud Run (fully managed).
+    Next tag: 23
 
     Attributes:
         service (str):
@@ -530,6 +584,13 @@ class ServiceConfig(proto.Message):
             See
             https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go
             a full description.
+        available_cpu (str):
+            The number of CPUs used in a single container
+            instance. Default value is calculated from
+            available memory. Supports the same values as
+            Cloud Run, see
+            https://cloud.google.com/run/docs/reference/rest/v1/Container#resourcerequirements
+            Example: "1" indicates 1 vCPU
         environment_variables (MutableMapping[str, str]):
             Environment variables that shall be available
             during function execution.
@@ -590,6 +651,16 @@ class ServiceConfig(proto.Message):
             Secret volumes configuration.
         revision (str):
             Output only. The name of service revision.
+        max_instance_request_concurrency (int):
+            Sets the maximum number of concurrent
+            requests that each instance can receive.
+            Defaults to 1.
+        security_level (google.cloud.functions_v2.types.ServiceConfig.SecurityLevel):
+            Security level configure whether the function
+            only accepts https. This configuration is only
+            applicable to 1st Gen functions with Http
+            trigger. By default https is optional for 1st
+            Gen functions; 2nd Gen functions are https ONLY.
     """
 
     class VpcConnectorEgressSettings(proto.Enum):
@@ -637,6 +708,33 @@ class ServiceConfig(proto.Message):
         ALLOW_INTERNAL_ONLY = 2
         ALLOW_INTERNAL_AND_GCLB = 3
 
+    class SecurityLevel(proto.Enum):
+        r"""Available security level settings.
+
+        This enforces security protocol on function URL.
+
+        Security level is only ocnfigurable for 1st Gen functions, If
+        unspecified, SECURE_OPTIONAL will be used. 2nd Gen functions are
+        SECURE_ALWAYS ONLY.
+
+        Values:
+            SECURITY_LEVEL_UNSPECIFIED (0):
+                Unspecified.
+            SECURE_ALWAYS (1):
+                Requests for a URL that match this handler
+                that do not use HTTPS are automatically
+                redirected to the HTTPS URL with the same path.
+                Query parameters are reserved for the redirect.
+            SECURE_OPTIONAL (2):
+                Both HTTP and HTTPS requests with URLs that
+                match the handler succeed without redirects. The
+                application can examine the request to determine
+                which protocol was used and respond accordingly.
+        """
+        SECURITY_LEVEL_UNSPECIFIED = 0
+        SECURE_ALWAYS = 1
+        SECURE_OPTIONAL = 2
+
     service: str = proto.Field(
         proto.STRING,
         number=1,
@@ -648,6 +746,10 @@ class ServiceConfig(proto.Message):
     available_memory: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    available_cpu: str = proto.Field(
+        proto.STRING,
+        number=22,
     )
     environment_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -701,6 +803,15 @@ class ServiceConfig(proto.Message):
     revision: str = proto.Field(
         proto.STRING,
         number=18,
+    )
+    max_instance_request_concurrency: int = proto.Field(
+        proto.INT32,
+        number=20,
+    )
+    security_level: SecurityLevel = proto.Field(
+        proto.ENUM,
+        number=21,
+        enum=SecurityLevel,
     )
 
 
@@ -981,8 +1092,11 @@ class ListFunctionsRequest(proto.Message):
             reachable locations along with the names of any unreachable
             locations.
         page_size (int):
-            Maximum number of functions to return per
-            call.
+            Maximum number of functions to return per call. The largest
+            allowed page_size is 1,000, if the page_size is omitted or
+            specified as greater than 1,000 then it will be replaced as
+            1,000. The size of the list response can be less than
+            specified when used with filters.
         page_token (str):
             The value returned by the last ``ListFunctionsResponse``;
             indicates that this is a continuation of a prior
@@ -1136,11 +1250,33 @@ class GenerateUploadUrlRequest(proto.Message):
             Required. The project and location in which the Google Cloud
             Storage signed URL should be generated, specified in the
             format ``projects/*/locations/*``.
+        kms_key_name (str):
+            Resource name of a KMS crypto key (managed by the user) used
+            to encrypt/decrypt function source code objects in
+            intermediate Cloud Storage buckets. When you generate an
+            upload url and upload your source code, it gets copied to an
+            intermediate Cloud Storage bucket. The source code is then
+            copied to a versioned directory in the sources bucket in the
+            consumer project during the function deployment.
+
+            It must match the pattern
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+
+            The Google Cloud Functions service account
+            (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com)
+            must be granted the role 'Cloud KMS CryptoKey
+            Encrypter/Decrypter
+            (roles/cloudkms.cryptoKeyEncrypterDecrypter)' on the
+            Key/KeyRing/Project/Organization (least access preferred).
     """
 
     parent: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

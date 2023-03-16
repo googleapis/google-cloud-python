@@ -42,7 +42,7 @@ class functionsCallTransformer(cst.CSTTransformer):
         'create_function': ('parent', 'function', 'function_id', ),
         'delete_function': ('name', ),
         'generate_download_url': ('name', ),
-        'generate_upload_url': ('parent', ),
+        'generate_upload_url': ('parent', 'kms_key_name', ),
         'get_function': ('name', ),
         'list_functions': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_runtimes': ('parent', 'filter', ),

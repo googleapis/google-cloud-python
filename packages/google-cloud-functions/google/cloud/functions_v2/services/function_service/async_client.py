@@ -80,6 +80,8 @@ class FunctionServiceAsyncClient:
     parse_channel_path = staticmethod(FunctionServiceClient.parse_channel_path)
     connector_path = staticmethod(FunctionServiceClient.connector_path)
     parse_connector_path = staticmethod(FunctionServiceClient.parse_connector_path)
+    crypto_key_path = staticmethod(FunctionServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(FunctionServiceClient.parse_crypto_key_path)
     function_path = staticmethod(FunctionServiceClient.function_path)
     parse_function_path = staticmethod(FunctionServiceClient.parse_function_path)
     repository_path = staticmethod(FunctionServiceClient.repository_path)
