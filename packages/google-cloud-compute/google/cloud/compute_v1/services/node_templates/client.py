@@ -746,8 +746,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeTemplate:
-        r"""Returns the specified node template. Gets a list of
-        available node templates by making a list() request.
+        r"""Returns the specified node template.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetNodeTemplateRequest, dict]):

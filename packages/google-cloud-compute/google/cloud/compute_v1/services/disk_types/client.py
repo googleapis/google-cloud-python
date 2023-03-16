@@ -514,8 +514,7 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.DiskType:
-        r"""Returns the specified disk type. Gets a list of
-        available disk types by making a list() request.
+        r"""Returns the specified disk type.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetDiskTypeRequest, dict]):

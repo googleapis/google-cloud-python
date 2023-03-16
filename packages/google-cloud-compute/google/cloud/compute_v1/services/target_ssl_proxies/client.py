@@ -637,9 +637,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetSslProxy:
-        r"""Returns the specified TargetSslProxy resource. Gets a
-        list of available target SSL proxies by making a list()
-        request.
+        r"""Returns the specified TargetSslProxy resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetSslProxyRequest, dict]):

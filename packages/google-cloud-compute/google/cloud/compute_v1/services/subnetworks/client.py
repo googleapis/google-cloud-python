@@ -1015,8 +1015,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Subnetwork:
-        r"""Returns the specified subnetwork. Gets a list of
-        available subnetworks list() request.
+        r"""Returns the specified subnetwork.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetSubnetworkRequest, dict]):

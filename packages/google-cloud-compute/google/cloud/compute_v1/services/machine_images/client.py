@@ -637,8 +637,7 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.MachineImage:
-        r"""Returns the specified machine image. Gets a list of
-        available machine images by making a list() request.
+        r"""Returns the specified machine image.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetMachineImageRequest, dict]):

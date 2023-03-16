@@ -727,9 +727,7 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SslCertificate:
-        r"""Returns the specified SslCertificate resource. Gets a
-        list of available SSL certificates by making a list()
-        request.
+        r"""Returns the specified SslCertificate resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetSslCertificateRequest, dict]):

@@ -727,9 +727,7 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetHttpProxy:
-        r"""Returns the specified TargetHttpProxy resource. Gets
-        a list of available target HTTP proxies by making a
-        list() request.
+        r"""Returns the specified TargetHttpProxy resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetHttpProxyRequest, dict]):

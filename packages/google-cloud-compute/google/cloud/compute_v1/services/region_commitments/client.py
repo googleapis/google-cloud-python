@@ -522,9 +522,7 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Commitment:
-        r"""Returns the specified commitment resource. Gets a
-        list of available commitments by making a list()
-        request.
+        r"""Returns the specified commitment resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionCommitmentRequest, dict]):

@@ -1101,9 +1101,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.BackendBucket:
-        r"""Returns the specified BackendBucket resource. Gets a
-        list of available backend buckets by making a list()
-        request.
+        r"""Returns the specified BackendBucket resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetBackendBucketRequest, dict]):

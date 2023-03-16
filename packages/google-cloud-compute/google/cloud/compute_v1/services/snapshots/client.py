@@ -647,8 +647,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Snapshot:
-        r"""Returns the specified Snapshot resource. Gets a list
-        of available snapshots by making a list() request.
+        r"""Returns the specified Snapshot resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetSnapshotRequest, dict]):

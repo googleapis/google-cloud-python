@@ -338,6 +338,11 @@
               "methods": [
                 "test_iam_permissions"
               ]
+            },
+            "Update": {
+              "methods": [
+                "update"
+              ]
             }
           }
         }
@@ -1073,6 +1078,11 @@
         "rest": {
           "libraryClient": "InstanceTemplatesClient",
           "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -1265,6 +1275,11 @@
             "SetMinCpuPlatform": {
               "methods": [
                 "set_min_cpu_platform"
+              ]
+            },
+            "SetName": {
+              "methods": [
+                "set_name"
               ]
             },
             "SetScheduling": {
@@ -2422,6 +2437,11 @@
               "methods": [
                 "test_iam_permissions"
               ]
+            },
+            "Update": {
+              "methods": [
+                "update"
+              ]
             }
           }
         }
@@ -2627,6 +2647,35 @@
             "SetNamedPorts": {
               "methods": [
                 "set_named_ports"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionInstanceTemplates": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionInstanceTemplatesClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
               ]
             }
           }

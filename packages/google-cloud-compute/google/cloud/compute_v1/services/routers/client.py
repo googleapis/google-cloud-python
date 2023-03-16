@@ -739,8 +739,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Router:
-        r"""Returns the specified Router resource. Gets a list of
-        available routers by making a list() request.
+        r"""Returns the specified Router resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetRouterRequest, dict]):

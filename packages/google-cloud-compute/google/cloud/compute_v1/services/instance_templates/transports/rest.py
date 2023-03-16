@@ -63,6 +63,14 @@ class InstanceTemplatesRestInterceptor:
 
     .. code-block:: python
         class MyCustomInstanceTemplatesInterceptor(InstanceTemplatesRestInterceptor):
+            def pre_aggregated_list(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -124,6 +132,31 @@ class InstanceTemplatesRestInterceptor:
 
 
     """
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListInstanceTemplatesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.AggregatedListInstanceTemplatesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.InstanceTemplateAggregatedList
+    ) -> compute.InstanceTemplateAggregatedList:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_delete(
         self,
@@ -381,6 +414,95 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or InstanceTemplatesRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _AggregatedList(InstanceTemplatesRestStub):
+        def __hash__(self):
+            return hash("AggregatedList")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.AggregatedListInstanceTemplatesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.InstanceTemplateAggregatedList:
+            r"""Call the aggregated list method over HTTP.
+
+            Args:
+                request (~.compute.AggregatedListInstanceTemplatesRequest):
+                    The request object. A request message for
+                InstanceTemplates.AggregatedList. See
+                the method description for details.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.InstanceTemplateAggregatedList:
+                    Contains a list of
+                InstanceTemplatesScopedList.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/aggregated/instanceTemplates",
+                },
+            ]
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
+            pb_request = compute.AggregatedListInstanceTemplatesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.InstanceTemplateAggregatedList()
+            pb_resp = compute.InstanceTemplateAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_aggregated_list(resp)
+            return resp
 
     class _Delete(InstanceTemplatesRestStub):
         def __hash__(self):
@@ -1136,6 +1258,17 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListInstanceTemplatesRequest],
+        compute.InstanceTemplateAggregatedList,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(

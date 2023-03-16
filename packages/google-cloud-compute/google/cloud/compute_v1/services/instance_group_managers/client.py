@@ -2221,8 +2221,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroupManager:
         r"""Returns all of the details about the specified
-        managed instance group. Gets a list of available managed
-        instance groups by making a list() request.
+        managed instance group.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetInstanceGroupManagerRequest, dict]):

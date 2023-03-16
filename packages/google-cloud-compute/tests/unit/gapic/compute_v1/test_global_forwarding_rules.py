@@ -1238,6 +1238,7 @@ def test_get_rest(request_type):
             all_ports=True,
             allow_global_access=True,
             backend_service="backend_service_value",
+            base_forwarding_rule="base_forwarding_rule_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             fingerprint="fingerprint_value",
@@ -1259,6 +1260,7 @@ def test_get_rest(request_type):
             self_link="self_link_value",
             service_label="service_label_value",
             service_name="service_name_value",
+            source_ip_ranges=["source_ip_ranges_value"],
             subnetwork="subnetwork_value",
             target="target_value",
         )
@@ -1280,6 +1282,7 @@ def test_get_rest(request_type):
     assert response.all_ports is True
     assert response.allow_global_access is True
     assert response.backend_service == "backend_service_value"
+    assert response.base_forwarding_rule == "base_forwarding_rule_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.fingerprint == "fingerprint_value"
@@ -1301,6 +1304,7 @@ def test_get_rest(request_type):
     assert response.self_link == "self_link_value"
     assert response.service_label == "service_label_value"
     assert response.service_name == "service_name_value"
+    assert response.source_ip_ranges == ["source_ip_ranges_value"]
     assert response.subnetwork == "subnetwork_value"
     assert response.target == "target_value"
 
@@ -1567,6 +1571,7 @@ def test_insert_rest(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -1602,6 +1607,7 @@ def test_insert_rest(request_type):
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }
@@ -1839,6 +1845,7 @@ def test_insert_rest_bad_request(
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -1874,6 +1881,7 @@ def test_insert_rest_bad_request(
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }
@@ -1980,6 +1988,7 @@ def test_insert_unary_rest(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2015,6 +2024,7 @@ def test_insert_unary_rest(request_type):
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }
@@ -2230,6 +2240,7 @@ def test_insert_unary_rest_bad_request(
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2265,6 +2276,7 @@ def test_insert_unary_rest_bad_request(
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }
@@ -2721,6 +2733,7 @@ def test_patch_rest(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2756,6 +2769,7 @@ def test_patch_rest(request_type):
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }
@@ -2998,6 +3012,7 @@ def test_patch_rest_bad_request(
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3033,6 +3048,7 @@ def test_patch_rest_bad_request(
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }
@@ -3141,6 +3157,7 @@ def test_patch_unary_rest(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3176,6 +3193,7 @@ def test_patch_unary_rest(request_type):
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }
@@ -3396,6 +3414,7 @@ def test_patch_unary_rest_bad_request(
         "all_ports": True,
         "allow_global_access": True,
         "backend_service": "backend_service_value",
+        "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3431,6 +3450,7 @@ def test_patch_unary_rest_bad_request(
         ],
         "service_label": "service_label_value",
         "service_name": "service_name_value",
+        "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
         "subnetwork": "subnetwork_value",
         "target": "target_value",
     }

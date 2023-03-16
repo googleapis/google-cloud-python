@@ -1193,8 +1193,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.BackendService:
-        r"""Returns the specified BackendService resource. Gets a
-        list of available backend services.
+        r"""Returns the specified BackendService resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetBackendServiceRequest, dict]):

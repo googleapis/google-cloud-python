@@ -277,6 +277,11 @@ class InstancesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_name: gapic_v1.method.wrap_method(
+                self.set_name,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_scheduling: gapic_v1.method.wrap_method(
                 self.set_scheduling,
                 default_timeout=None,
@@ -640,6 +645,15 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SetMinCpuPlatformInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_name(
+        self,
+    ) -> Callable[
+        [compute.SetNameInstanceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

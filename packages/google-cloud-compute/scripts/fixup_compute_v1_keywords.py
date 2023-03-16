@@ -139,6 +139,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'set_machine_type': ('instance', 'instances_set_machine_type_request_resource', 'project', 'zone', 'request_id', ),
         'set_metadata': ('instance', 'metadata_resource', 'project', 'zone', 'request_id', ),
         'set_min_cpu_platform': ('instance', 'instances_set_min_cpu_platform_request_resource', 'project', 'zone', 'request_id', ),
+        'set_name': ('instance', 'instances_set_name_request_resource', 'project', 'zone', 'request_id', ),
         'set_named_ports': ('instance_group', 'instance_groups_set_named_ports_request_resource', 'project', 'zone', 'request_id', ),
         'set_node_template': ('node_group', 'node_groups_set_node_template_request_resource', 'project', 'zone', 'request_id', ),
         'set_private_ip_google_access': ('project', 'region', 'subnetwork', 'subnetworks_set_private_ip_google_access_request_resource', 'request_id', ),

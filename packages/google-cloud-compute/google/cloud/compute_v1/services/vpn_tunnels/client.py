@@ -740,8 +740,7 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.VpnTunnel:
-        r"""Returns the specified VpnTunnel resource. Gets a list
-        of available VPN tunnels by making a list() request.
+        r"""Returns the specified VpnTunnel resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetVpnTunnelRequest, dict]):

@@ -725,9 +725,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.HealthCheck:
-        r"""Returns the specified HealthCheck resource. Gets a
-        list of available health checks by making a list()
-        request.
+        r"""Returns the specified HealthCheck resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetHealthCheckRequest, dict]):

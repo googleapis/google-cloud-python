@@ -861,8 +861,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Network:
-        r"""Returns the specified network. Gets a list of
-        available networks by making a list() request.
+        r"""Returns the specified network.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkRequest, dict]):

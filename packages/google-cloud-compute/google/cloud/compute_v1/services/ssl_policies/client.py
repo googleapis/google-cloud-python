@@ -824,9 +824,7 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Returns the specified SSL policy resource. Gets a
-        list of available SSL policies by making a list()
-        request.
+        r"""Returns the specified SSL policy resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslPolicyRequest, dict]):
@@ -909,9 +907,7 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Returns the specified SSL policy resource. Gets a
-        list of available SSL policies by making a list()
-        request.
+        r"""Returns the specified SSL policy resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslPolicyRequest, dict]):

@@ -49,15 +49,15 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import extended_operation  # type: ignore
 
-from google.cloud.compute_v1.services.target_tcp_proxies import pagers
+from google.cloud.compute_v1.services.region_instance_templates import pagers
 from google.cloud.compute_v1.types import compute
 
-from .transports.base import DEFAULT_CLIENT_INFO, TargetTcpProxiesTransport
-from .transports.rest import TargetTcpProxiesRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, RegionInstanceTemplatesTransport
+from .transports.rest import RegionInstanceTemplatesRestTransport
 
 
-class TargetTcpProxiesClientMeta(type):
-    """Metaclass for the TargetTcpProxies client.
+class RegionInstanceTemplatesClientMeta(type):
+    """Metaclass for the RegionInstanceTemplates client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -66,13 +66,13 @@ class TargetTcpProxiesClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[TargetTcpProxiesTransport]]
-    _transport_registry["rest"] = TargetTcpProxiesRestTransport
+    )  # type: Dict[str, Type[RegionInstanceTemplatesTransport]]
+    _transport_registry["rest"] = RegionInstanceTemplatesRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[TargetTcpProxiesTransport]:
+    ) -> Type[RegionInstanceTemplatesTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -91,8 +91,8 @@ class TargetTcpProxiesClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
-    """The TargetTcpProxies API."""
+class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta):
+    """The RegionInstanceTemplates API."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -140,7 +140,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            TargetTcpProxiesClient: The constructed client.
+            RegionInstanceTemplatesClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -158,7 +158,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            TargetTcpProxiesClient: The constructed client.
+            RegionInstanceTemplatesClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -167,11 +167,11 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> TargetTcpProxiesTransport:
+    def transport(self) -> RegionInstanceTemplatesTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            TargetTcpProxiesTransport: The transport used by the client
+            RegionInstanceTemplatesTransport: The transport used by the client
                 instance.
         """
         return self._transport
@@ -324,11 +324,11 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, TargetTcpProxiesTransport]] = None,
+        transport: Optional[Union[str, RegionInstanceTemplatesTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the target tcp proxies client.
+        """Instantiates the region instance templates client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -336,7 +336,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, TargetTcpProxiesTransport]): The
+            transport (Union[str, RegionInstanceTemplatesTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
                 NOTE: "rest" transport functionality is currently in a
@@ -387,8 +387,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, TargetTcpProxiesTransport):
-            # transport is a TargetTcpProxiesTransport instance.
+        if isinstance(transport, RegionInstanceTemplatesTransport):
+            # transport is a RegionInstanceTemplatesTransport instance.
             if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -423,123 +423,44 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
                 api_audience=client_options.api_audience,
             )
 
-    def aggregated_list(
+    def delete_unary(
         self,
         request: Optional[
-            Union[compute.AggregatedListTargetTcpProxiesRequest, dict]
+            Union[compute.DeleteRegionInstanceTemplateRequest, dict]
         ] = None,
         *,
         project: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.AggregatedListPager:
-        r"""Retrieves the list of all TargetTcpProxy resources,
-        regional and global, available to the specified project.
-
-        Args:
-            request (Union[google.cloud.compute_v1.types.AggregatedListTargetTcpProxiesRequest, dict]):
-                The request object. A request message for
-                TargetTcpProxies.AggregatedList. See the method
-                description for details.
-            project (str):
-                Name of the project scoping this
-                request.
-
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.compute_v1.services.target_tcp_proxies.pagers.AggregatedListPager:
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListTargetTcpProxiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, compute.AggregatedListTargetTcpProxiesRequest):
-            request = compute.AggregatedListTargetTcpProxiesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if project is not None:
-                request.project = project
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.aggregated_list]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.AggregatedListPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_unary(
-        self,
-        request: Optional[Union[compute.DeleteTargetTcpProxyRequest, dict]] = None,
-        *,
-        project: Optional[str] = None,
-        target_tcp_proxy: Optional[str] = None,
+        region: Optional[str] = None,
+        instance_template: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Deletes the specified TargetTcpProxy resource.
+        r"""Deletes the specified instance template. Deleting an
+        instance template is permanent and cannot be undone.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.DeleteTargetTcpProxyRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Delete. See the method description for
-                details.
+                RegionInstanceTemplates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            target_tcp_proxy (str):
-                Name of the TargetTcpProxy resource
-                to delete.
+            region (str):
+                The name of the region for this
+                request.
 
-                This corresponds to the ``target_tcp_proxy`` field
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_template (str):
+                The name of the instance template to
+                delete.
+
+                This corresponds to the ``instance_template`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -557,7 +478,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_tcp_proxy])
+        has_flattened_params = any([project, region, instance_template])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -565,17 +486,19 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetTcpProxyRequest.
+        # in a compute.DeleteRegionInstanceTemplateRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.DeleteTargetTcpProxyRequest):
-            request = compute.DeleteTargetTcpProxyRequest(request)
+        if not isinstance(request, compute.DeleteRegionInstanceTemplateRequest):
+            request = compute.DeleteRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if target_tcp_proxy is not None:
-                request.target_tcp_proxy = target_tcp_proxy
+            if region is not None:
+                request.region = region
+            if instance_template is not None:
+                request.instance_template = instance_template
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -587,7 +510,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
-                    ("target_tcp_proxy", request.target_tcp_proxy),
+                    ("region", request.region),
+                    ("instance_template", request.instance_template),
                 )
             ),
         )
@@ -605,31 +529,42 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
 
     def delete(
         self,
-        request: Optional[Union[compute.DeleteTargetTcpProxyRequest, dict]] = None,
+        request: Optional[
+            Union[compute.DeleteRegionInstanceTemplateRequest, dict]
+        ] = None,
         *,
         project: Optional[str] = None,
-        target_tcp_proxy: Optional[str] = None,
+        region: Optional[str] = None,
+        instance_template: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Deletes the specified TargetTcpProxy resource.
+        r"""Deletes the specified instance template. Deleting an
+        instance template is permanent and cannot be undone.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.DeleteTargetTcpProxyRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Delete. See the method description for
-                details.
+                RegionInstanceTemplates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            target_tcp_proxy (str):
-                Name of the TargetTcpProxy resource
-                to delete.
+            region (str):
+                The name of the region for this
+                request.
 
-                This corresponds to the ``target_tcp_proxy`` field
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_template (str):
+                The name of the instance template to
+                delete.
+
+                This corresponds to the ``instance_template`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -647,7 +582,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_tcp_proxy])
+        has_flattened_params = any([project, region, instance_template])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -655,17 +590,19 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetTcpProxyRequest.
+        # in a compute.DeleteRegionInstanceTemplateRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.DeleteTargetTcpProxyRequest):
-            request = compute.DeleteTargetTcpProxyRequest(request)
+        if not isinstance(request, compute.DeleteRegionInstanceTemplateRequest):
+            request = compute.DeleteRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if target_tcp_proxy is not None:
-                request.target_tcp_proxy = target_tcp_proxy
+            if region is not None:
+                request.region = region
+            if instance_template is not None:
+                request.instance_template = instance_template
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -677,7 +614,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
-                    ("target_tcp_proxy", request.target_tcp_proxy),
+                    ("region", request.region),
+                    ("instance_template", request.instance_template),
                 )
             ),
         )
@@ -690,9 +628,10 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             metadata=metadata,
         )
 
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
         operation_request.project = request.project
+        operation_request.region = request.region
         operation_request.operation = response.name
 
         get_operation = functools.partial(operation_service.get, operation_request)
@@ -719,31 +658,37 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
 
     def get(
         self,
-        request: Optional[Union[compute.GetTargetTcpProxyRequest, dict]] = None,
+        request: Optional[Union[compute.GetRegionInstanceTemplateRequest, dict]] = None,
         *,
         project: Optional[str] = None,
-        target_tcp_proxy: Optional[str] = None,
+        region: Optional[str] = None,
+        instance_template: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.TargetTcpProxy:
-        r"""Returns the specified TargetTcpProxy resource.
+    ) -> compute.InstanceTemplate:
+        r"""Returns the specified instance template.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.GetTargetTcpProxyRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.GetRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Get. See the method description for
-                details.
+                RegionInstanceTemplates.Get. See the method description
+                for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            target_tcp_proxy (str):
-                Name of the TargetTcpProxy resource
-                to return.
+            region (str):
+                The name of the region for this
+                request.
 
-                This corresponds to the ``target_tcp_proxy`` field
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_template (str):
+                The name of the instance template.
+                This corresponds to the ``instance_template`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -753,21 +698,18 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.TargetTcpProxy:
-                Represents a Target TCP Proxy
-                resource. A target TCP proxy is a
-                component of a TCP Proxy load balancer.
-                Global forwarding rules reference target
-                TCP proxy, and the target proxy then
-                references an external backend service.
-                For more information, read TCP Proxy
-                Load Balancing overview.
+            google.cloud.compute_v1.types.InstanceTemplate:
+                Represents an Instance Template
+                resource. You can use instance templates
+                to create VM instances and managed
+                instance groups. For more information,
+                read Instance Templates.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_tcp_proxy])
+        has_flattened_params = any([project, region, instance_template])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -775,17 +717,19 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetTargetTcpProxyRequest.
+        # in a compute.GetRegionInstanceTemplateRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.GetTargetTcpProxyRequest):
-            request = compute.GetTargetTcpProxyRequest(request)
+        if not isinstance(request, compute.GetRegionInstanceTemplateRequest):
+            request = compute.GetRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if target_tcp_proxy is not None:
-                request.target_tcp_proxy = target_tcp_proxy
+            if region is not None:
+                request.region = region
+            if instance_template is not None:
+                request.instance_template = instance_template
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -797,7 +741,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project", request.project),
-                    ("target_tcp_proxy", request.target_tcp_proxy),
+                    ("region", request.region),
+                    ("instance_template", request.instance_template),
                 )
             ),
         )
@@ -815,30 +760,41 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
 
     def insert_unary(
         self,
-        request: Optional[Union[compute.InsertTargetTcpProxyRequest, dict]] = None,
+        request: Optional[
+            Union[compute.InsertRegionInstanceTemplateRequest, dict]
+        ] = None,
         *,
         project: Optional[str] = None,
-        target_tcp_proxy_resource: Optional[compute.TargetTcpProxy] = None,
+        region: Optional[str] = None,
+        instance_template_resource: Optional[compute.InstanceTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Creates a TargetTcpProxy resource in the specified
-        project using the data included in the request.
+        r"""Creates an instance template in the specified project
+        and region using the global instance template whose URL
+        is included in the request.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.InsertTargetTcpProxyRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.InsertRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Insert. See the method description for
-                details.
+                RegionInstanceTemplates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            target_tcp_proxy_resource (google.cloud.compute_v1.types.TargetTcpProxy):
+            region (str):
+                The name of the region for this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_template_resource (google.cloud.compute_v1.types.InstanceTemplate):
                 The body resource for this request
-                This corresponds to the ``target_tcp_proxy_resource`` field
+                This corresponds to the ``instance_template_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -856,7 +812,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_tcp_proxy_resource])
+        has_flattened_params = any([project, region, instance_template_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -864,17 +820,19 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetTcpProxyRequest.
+        # in a compute.InsertRegionInstanceTemplateRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.InsertTargetTcpProxyRequest):
-            request = compute.InsertTargetTcpProxyRequest(request)
+        if not isinstance(request, compute.InsertRegionInstanceTemplateRequest):
+            request = compute.InsertRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if target_tcp_proxy_resource is not None:
-                request.target_tcp_proxy_resource = target_tcp_proxy_resource
+            if region is not None:
+                request.region = region
+            if instance_template_resource is not None:
+                request.instance_template_resource = instance_template_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -883,7 +841,12 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
         )
 
         # Send the request.
@@ -899,30 +862,41 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
 
     def insert(
         self,
-        request: Optional[Union[compute.InsertTargetTcpProxyRequest, dict]] = None,
+        request: Optional[
+            Union[compute.InsertRegionInstanceTemplateRequest, dict]
+        ] = None,
         *,
         project: Optional[str] = None,
-        target_tcp_proxy_resource: Optional[compute.TargetTcpProxy] = None,
+        region: Optional[str] = None,
+        instance_template_resource: Optional[compute.InstanceTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Creates a TargetTcpProxy resource in the specified
-        project using the data included in the request.
+        r"""Creates an instance template in the specified project
+        and region using the global instance template whose URL
+        is included in the request.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.InsertTargetTcpProxyRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.InsertRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Insert. See the method description for
-                details.
+                RegionInstanceTemplates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            target_tcp_proxy_resource (google.cloud.compute_v1.types.TargetTcpProxy):
+            region (str):
+                The name of the region for this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_template_resource (google.cloud.compute_v1.types.InstanceTemplate):
                 The body resource for this request
-                This corresponds to the ``target_tcp_proxy_resource`` field
+                This corresponds to the ``instance_template_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -940,7 +914,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_tcp_proxy_resource])
+        has_flattened_params = any([project, region, instance_template_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -948,17 +922,19 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetTcpProxyRequest.
+        # in a compute.InsertRegionInstanceTemplateRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.InsertTargetTcpProxyRequest):
-            request = compute.InsertTargetTcpProxyRequest(request)
+        if not isinstance(request, compute.InsertRegionInstanceTemplateRequest):
+            request = compute.InsertRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
-            if target_tcp_proxy_resource is not None:
-                request.target_tcp_proxy_resource = target_tcp_proxy_resource
+            if region is not None:
+                request.region = region
+            if instance_template_resource is not None:
+                request.instance_template_resource = instance_template_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -967,7 +943,12 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
         )
 
         # Send the request.
@@ -978,9 +959,10 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             metadata=metadata,
         )
 
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
         operation_request.project = request.project
+        operation_request.region = request.region
         operation_request.operation = response.name
 
         get_operation = functools.partial(operation_service.get, operation_request)
@@ -1007,24 +989,34 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
 
     def list(
         self,
-        request: Optional[Union[compute.ListTargetTcpProxiesRequest, dict]] = None,
+        request: Optional[
+            Union[compute.ListRegionInstanceTemplatesRequest, dict]
+        ] = None,
         *,
         project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
-        r"""Retrieves the list of TargetTcpProxy resources
-        available to the specified project.
+        r"""Retrieves a list of instance templates that are
+        contained within the specified project and region.
 
         Args:
-            request (Union[google.cloud.compute_v1.types.ListTargetTcpProxiesRequest, dict]):
+            request (Union[google.cloud.compute_v1.types.ListRegionInstanceTemplatesRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.List. See the method description for
-                details.
+                RegionInstanceTemplates.List. See the method description
+                for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                The name of the regions for this
+                request.
+
+                This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1034,9 +1026,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.services.target_tcp_proxies.pagers.ListPager:
-                Contains a list of TargetTcpProxy
-                resources.
+            google.cloud.compute_v1.services.region_instance_templates.pagers.ListPager:
+                A list of instance templates.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1045,7 +1036,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1053,15 +1044,17 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListTargetTcpProxiesRequest.
+        # in a compute.ListRegionInstanceTemplatesRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, compute.ListTargetTcpProxiesRequest):
-            request = compute.ListTargetTcpProxiesRequest(request)
+        if not isinstance(request, compute.ListRegionInstanceTemplatesRequest):
+            request = compute.ListRegionInstanceTemplatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
                 request.project = project
+            if region is not None:
+                request.region = region
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1070,7 +1063,12 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
         )
 
         # Send the request.
@@ -1093,497 +1091,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_backend_service_unary(
-        self,
-        request: Optional[
-            Union[compute.SetBackendServiceTargetTcpProxyRequest, dict]
-        ] = None,
-        *,
-        project: Optional[str] = None,
-        target_tcp_proxy: Optional[str] = None,
-        target_tcp_proxies_set_backend_service_request_resource: Optional[
-            compute.TargetTcpProxiesSetBackendServiceRequest
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Changes the BackendService for TargetTcpProxy.
-
-        Args:
-            request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetTcpProxyRequest, dict]):
-                The request object. A request message for
-                TargetTcpProxies.SetBackendService. See the method
-                description for details.
-            project (str):
-                Project ID for this request.
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxy (str):
-                Name of the TargetTcpProxy resource
-                whose BackendService resource is to be
-                set.
-
-                This corresponds to the ``target_tcp_proxy`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxies_set_backend_service_request_resource (google.cloud.compute_v1.types.TargetTcpProxiesSetBackendServiceRequest):
-                The body resource for this request
-                This corresponds to the ``target_tcp_proxies_set_backend_service_request_resource`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_tcp_proxy,
-                target_tcp_proxies_set_backend_service_request_resource,
-            ]
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetBackendServiceTargetTcpProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, compute.SetBackendServiceTargetTcpProxyRequest):
-            request = compute.SetBackendServiceTargetTcpProxyRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if project is not None:
-                request.project = project
-            if target_tcp_proxy is not None:
-                request.target_tcp_proxy = target_tcp_proxy
-            if target_tcp_proxies_set_backend_service_request_resource is not None:
-                request.target_tcp_proxies_set_backend_service_request_resource = (
-                    target_tcp_proxies_set_backend_service_request_resource
-                )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_backend_service]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project", request.project),
-                    ("target_tcp_proxy", request.target_tcp_proxy),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def set_backend_service(
-        self,
-        request: Optional[
-            Union[compute.SetBackendServiceTargetTcpProxyRequest, dict]
-        ] = None,
-        *,
-        project: Optional[str] = None,
-        target_tcp_proxy: Optional[str] = None,
-        target_tcp_proxies_set_backend_service_request_resource: Optional[
-            compute.TargetTcpProxiesSetBackendServiceRequest
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> extended_operation.ExtendedOperation:
-        r"""Changes the BackendService for TargetTcpProxy.
-
-        Args:
-            request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetTcpProxyRequest, dict]):
-                The request object. A request message for
-                TargetTcpProxies.SetBackendService. See the method
-                description for details.
-            project (str):
-                Project ID for this request.
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxy (str):
-                Name of the TargetTcpProxy resource
-                whose BackendService resource is to be
-                set.
-
-                This corresponds to the ``target_tcp_proxy`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxies_set_backend_service_request_resource (google.cloud.compute_v1.types.TargetTcpProxiesSetBackendServiceRequest):
-                The body resource for this request
-                This corresponds to the ``target_tcp_proxies_set_backend_service_request_resource`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_tcp_proxy,
-                target_tcp_proxies_set_backend_service_request_resource,
-            ]
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetBackendServiceTargetTcpProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, compute.SetBackendServiceTargetTcpProxyRequest):
-            request = compute.SetBackendServiceTargetTcpProxyRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if project is not None:
-                request.project = project
-            if target_tcp_proxy is not None:
-                request.target_tcp_proxy = target_tcp_proxy
-            if target_tcp_proxies_set_backend_service_request_resource is not None:
-                request.target_tcp_proxies_set_backend_service_request_resource = (
-                    target_tcp_proxies_set_backend_service_request_resource
-                )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_backend_service]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project", request.project),
-                    ("target_tcp_proxy", request.target_tcp_proxy),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
-        operation_request.project = request.project
-        operation_request.operation = response.name
-
-        get_operation = functools.partial(operation_service.get, operation_request)
-        # Cancel is not part of extended operations yet.
-        cancel_operation = lambda: None
-
-        # Note: this class is an implementation detail to provide a uniform
-        # set of names for certain fields in the extended operation proto message.
-        # See google.api_core.extended_operation.ExtendedOperation for details
-        # on these properties and the  expected interface.
-        class _CustomOperation(extended_operation.ExtendedOperation):
-            @property
-            def error_message(self):
-                return self._extended_operation.http_error_message
-
-            @property
-            def error_code(self):
-                return self._extended_operation.http_error_status_code
-
-        response = _CustomOperation.make(get_operation, cancel_operation, response)
-
-        # Done; return the response.
-        return response
-
-    def set_proxy_header_unary(
-        self,
-        request: Optional[
-            Union[compute.SetProxyHeaderTargetTcpProxyRequest, dict]
-        ] = None,
-        *,
-        project: Optional[str] = None,
-        target_tcp_proxy: Optional[str] = None,
-        target_tcp_proxies_set_proxy_header_request_resource: Optional[
-            compute.TargetTcpProxiesSetProxyHeaderRequest
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Changes the ProxyHeaderType for TargetTcpProxy.
-
-        Args:
-            request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetTcpProxyRequest, dict]):
-                The request object. A request message for
-                TargetTcpProxies.SetProxyHeader. See the method
-                description for details.
-            project (str):
-                Project ID for this request.
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxy (str):
-                Name of the TargetTcpProxy resource
-                whose ProxyHeader is to be set.
-
-                This corresponds to the ``target_tcp_proxy`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxies_set_proxy_header_request_resource (google.cloud.compute_v1.types.TargetTcpProxiesSetProxyHeaderRequest):
-                The body resource for this request
-                This corresponds to the ``target_tcp_proxies_set_proxy_header_request_resource`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_tcp_proxy,
-                target_tcp_proxies_set_proxy_header_request_resource,
-            ]
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetProxyHeaderTargetTcpProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, compute.SetProxyHeaderTargetTcpProxyRequest):
-            request = compute.SetProxyHeaderTargetTcpProxyRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if project is not None:
-                request.project = project
-            if target_tcp_proxy is not None:
-                request.target_tcp_proxy = target_tcp_proxy
-            if target_tcp_proxies_set_proxy_header_request_resource is not None:
-                request.target_tcp_proxies_set_proxy_header_request_resource = (
-                    target_tcp_proxies_set_proxy_header_request_resource
-                )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_proxy_header]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project", request.project),
-                    ("target_tcp_proxy", request.target_tcp_proxy),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def set_proxy_header(
-        self,
-        request: Optional[
-            Union[compute.SetProxyHeaderTargetTcpProxyRequest, dict]
-        ] = None,
-        *,
-        project: Optional[str] = None,
-        target_tcp_proxy: Optional[str] = None,
-        target_tcp_proxies_set_proxy_header_request_resource: Optional[
-            compute.TargetTcpProxiesSetProxyHeaderRequest
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> extended_operation.ExtendedOperation:
-        r"""Changes the ProxyHeaderType for TargetTcpProxy.
-
-        Args:
-            request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetTcpProxyRequest, dict]):
-                The request object. A request message for
-                TargetTcpProxies.SetProxyHeader. See the method
-                description for details.
-            project (str):
-                Project ID for this request.
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxy (str):
-                Name of the TargetTcpProxy resource
-                whose ProxyHeader is to be set.
-
-                This corresponds to the ``target_tcp_proxy`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            target_tcp_proxies_set_proxy_header_request_resource (google.cloud.compute_v1.types.TargetTcpProxiesSetProxyHeaderRequest):
-                The body resource for this request
-                This corresponds to the ``target_tcp_proxies_set_proxy_header_request_resource`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.extended_operation.ExtendedOperation:
-                An object representing a extended
-                long-running operation.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_tcp_proxy,
-                target_tcp_proxies_set_proxy_header_request_resource,
-            ]
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetProxyHeaderTargetTcpProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, compute.SetProxyHeaderTargetTcpProxyRequest):
-            request = compute.SetProxyHeaderTargetTcpProxyRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if project is not None:
-                request.project = project
-            if target_tcp_proxy is not None:
-                request.target_tcp_proxy = target_tcp_proxy
-            if target_tcp_proxies_set_proxy_header_request_resource is not None:
-                request.target_tcp_proxies_set_proxy_header_request_resource = (
-                    target_tcp_proxies_set_proxy_header_request_resource
-                )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_proxy_header]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project", request.project),
-                    ("target_tcp_proxy", request.target_tcp_proxy),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        operation_service = self._transport._global_operations_client
-        operation_request = compute.GetGlobalOperationRequest()
-        operation_request.project = request.project
-        operation_request.operation = response.name
-
-        get_operation = functools.partial(operation_service.get, operation_request)
-        # Cancel is not part of extended operations yet.
-        cancel_operation = lambda: None
-
-        # Note: this class is an implementation detail to provide a uniform
-        # set of names for certain fields in the extended operation proto message.
-        # See google.api_core.extended_operation.ExtendedOperation for details
-        # on these properties and the  expected interface.
-        class _CustomOperation(extended_operation.ExtendedOperation):
-            @property
-            def error_message(self):
-                return self._extended_operation.http_error_message
-
-            @property
-            def error_code(self):
-                return self._extended_operation.http_error_status_code
-
-        response = _CustomOperation.make(get_operation, cancel_operation, response)
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "TargetTcpProxiesClient":
+    def __enter__(self) -> "RegionInstanceTemplatesClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1602,4 +1110,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("TargetTcpProxiesClient",)
+__all__ = ("RegionInstanceTemplatesClient",)

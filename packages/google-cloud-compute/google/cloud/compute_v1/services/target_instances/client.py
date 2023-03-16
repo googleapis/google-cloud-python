@@ -748,9 +748,7 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetInstance:
-        r"""Returns the specified TargetInstance resource. Gets a
-        list of available target instances by making a list()
-        request.
+        r"""Returns the specified TargetInstance resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetInstanceRequest, dict]):

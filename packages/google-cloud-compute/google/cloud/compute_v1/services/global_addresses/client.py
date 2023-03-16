@@ -637,8 +637,7 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Address:
-        r"""Returns the specified address resource. Gets a list
-        of available addresses by making a list() request.
+        r"""Returns the specified address resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalAddressRequest, dict]):

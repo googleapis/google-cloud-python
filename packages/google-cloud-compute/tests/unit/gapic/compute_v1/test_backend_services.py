@@ -3927,7 +3927,12 @@ def test_insert_rest(request_type):
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -4302,7 +4307,12 @@ def test_insert_rest_bad_request(
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -4548,7 +4558,12 @@ def test_insert_unary_rest(request_type):
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -4903,7 +4918,12 @@ def test_insert_unary_rest_bad_request(
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -5497,7 +5517,12 @@ def test_patch_rest(request_type):
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -5877,7 +5902,12 @@ def test_patch_rest_bad_request(
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -6125,7 +6155,12 @@ def test_patch_unary_rest(request_type):
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -6485,7 +6520,12 @@ def test_patch_unary_rest_bad_request(
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -8489,7 +8529,12 @@ def test_update_rest(request_type):
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -8869,7 +8914,12 @@ def test_update_rest_bad_request(
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -9117,7 +9167,12 @@ def test_update_unary_rest(request_type):
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",
@@ -9477,7 +9532,12 @@ def test_update_unary_rest_bad_request(
             }
         ],
         "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "log_config": {
+            "enable": True,
+            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
+            "optional_mode": "optional_mode_value",
+            "sample_rate": 0.1165,
+        },
         "max_stream_duration": {},
         "name": "name_value",
         "network": "network_value",

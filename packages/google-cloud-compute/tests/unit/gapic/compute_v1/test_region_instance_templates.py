@@ -49,8 +49,8 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.compute_v1.services.region_security_policies import (
-    RegionSecurityPoliciesClient,
+from google.cloud.compute_v1.services.region_instance_templates import (
+    RegionInstanceTemplatesClient,
     pagers,
     transports,
 )
@@ -79,25 +79,25 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert RegionSecurityPoliciesClient._get_default_mtls_endpoint(None) is None
+    assert RegionInstanceTemplatesClient._get_default_mtls_endpoint(None) is None
     assert (
-        RegionSecurityPoliciesClient._get_default_mtls_endpoint(api_endpoint)
+        RegionInstanceTemplatesClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        RegionSecurityPoliciesClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        RegionInstanceTemplatesClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        RegionSecurityPoliciesClient._get_default_mtls_endpoint(sandbox_endpoint)
+        RegionInstanceTemplatesClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        RegionSecurityPoliciesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        RegionInstanceTemplatesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        RegionSecurityPoliciesClient._get_default_mtls_endpoint(non_googleapi)
+        RegionInstanceTemplatesClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
@@ -105,10 +105,10 @@ def test__get_default_mtls_endpoint():
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (RegionSecurityPoliciesClient, "rest"),
+        (RegionInstanceTemplatesClient, "rest"),
     ],
 )
-def test_region_security_policies_client_from_service_account_info(
+def test_region_instance_templates_client_from_service_account_info(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -131,10 +131,10 @@ def test_region_security_policies_client_from_service_account_info(
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.RegionSecurityPoliciesRestTransport, "rest"),
+        (transports.RegionInstanceTemplatesRestTransport, "rest"),
     ],
 )
-def test_region_security_policies_client_service_account_always_use_jwt(
+def test_region_instance_templates_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -155,10 +155,10 @@ def test_region_security_policies_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (RegionSecurityPoliciesClient, "rest"),
+        (RegionInstanceTemplatesClient, "rest"),
     ],
 )
-def test_region_security_policies_client_from_service_account_file(
+def test_region_instance_templates_client_from_service_account_file(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -185,43 +185,43 @@ def test_region_security_policies_client_from_service_account_file(
         )
 
 
-def test_region_security_policies_client_get_transport_class():
-    transport = RegionSecurityPoliciesClient.get_transport_class()
+def test_region_instance_templates_client_get_transport_class():
+    transport = RegionInstanceTemplatesClient.get_transport_class()
     available_transports = [
-        transports.RegionSecurityPoliciesRestTransport,
+        transports.RegionInstanceTemplatesRestTransport,
     ]
     assert transport in available_transports
 
-    transport = RegionSecurityPoliciesClient.get_transport_class("rest")
-    assert transport == transports.RegionSecurityPoliciesRestTransport
+    transport = RegionInstanceTemplatesClient.get_transport_class("rest")
+    assert transport == transports.RegionInstanceTemplatesRestTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
         (
-            RegionSecurityPoliciesClient,
-            transports.RegionSecurityPoliciesRestTransport,
+            RegionInstanceTemplatesClient,
+            transports.RegionInstanceTemplatesRestTransport,
             "rest",
         ),
     ],
 )
 @mock.patch.object(
-    RegionSecurityPoliciesClient,
+    RegionInstanceTemplatesClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RegionSecurityPoliciesClient),
+    modify_default_endpoint(RegionInstanceTemplatesClient),
 )
-def test_region_security_policies_client_client_options(
+def test_region_instance_templates_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(RegionSecurityPoliciesClient, "get_transport_class") as gtc:
+    with mock.patch.object(RegionInstanceTemplatesClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(RegionSecurityPoliciesClient, "get_transport_class") as gtc:
+    with mock.patch.object(RegionInstanceTemplatesClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -331,26 +331,26 @@ def test_region_security_policies_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            RegionSecurityPoliciesClient,
-            transports.RegionSecurityPoliciesRestTransport,
+            RegionInstanceTemplatesClient,
+            transports.RegionInstanceTemplatesRestTransport,
             "rest",
             "true",
         ),
         (
-            RegionSecurityPoliciesClient,
-            transports.RegionSecurityPoliciesRestTransport,
+            RegionInstanceTemplatesClient,
+            transports.RegionInstanceTemplatesRestTransport,
             "rest",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    RegionSecurityPoliciesClient,
+    RegionInstanceTemplatesClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RegionSecurityPoliciesClient),
+    modify_default_endpoint(RegionInstanceTemplatesClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_region_security_policies_client_mtls_env_auto(
+def test_region_instance_templates_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -446,13 +446,13 @@ def test_region_security_policies_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize("client_class", [RegionSecurityPoliciesClient])
+@pytest.mark.parametrize("client_class", [RegionInstanceTemplatesClient])
 @mock.patch.object(
-    RegionSecurityPoliciesClient,
+    RegionInstanceTemplatesClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RegionSecurityPoliciesClient),
+    modify_default_endpoint(RegionInstanceTemplatesClient),
 )
-def test_region_security_policies_client_get_mtls_endpoint_and_cert_source(
+def test_region_instance_templates_client_get_mtls_endpoint_and_cert_source(
     client_class,
 ):
     mock_client_cert_source = mock.Mock()
@@ -526,13 +526,13 @@ def test_region_security_policies_client_get_mtls_endpoint_and_cert_source(
     "client_class,transport_class,transport_name",
     [
         (
-            RegionSecurityPoliciesClient,
-            transports.RegionSecurityPoliciesRestTransport,
+            RegionInstanceTemplatesClient,
+            transports.RegionInstanceTemplatesRestTransport,
             "rest",
         ),
     ],
 )
-def test_region_security_policies_client_client_options_scopes(
+def test_region_instance_templates_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -559,14 +559,14 @@ def test_region_security_policies_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            RegionSecurityPoliciesClient,
-            transports.RegionSecurityPoliciesRestTransport,
+            RegionInstanceTemplatesClient,
+            transports.RegionInstanceTemplatesRestTransport,
             "rest",
             None,
         ),
     ],
 )
-def test_region_security_policies_client_client_options_credentials_file(
+def test_region_instance_templates_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -591,12 +591,12 @@ def test_region_security_policies_client_client_options_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.DeleteRegionSecurityPolicyRequest,
+        compute.DeleteRegionInstanceTemplateRequest,
         dict,
     ],
 )
 def test_delete_rest(request_type):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -605,7 +605,7 @@ def test_delete_rest(request_type):
     request_init = {
         "project": "sample1",
         "region": "sample2",
-        "security_policy": "sample3",
+        "instance_template": "sample3",
     }
     request = request_type(**request_init)
 
@@ -674,14 +674,14 @@ def test_delete_rest(request_type):
 
 
 def test_delete_rest_required_fields(
-    request_type=compute.DeleteRegionSecurityPolicyRequest,
+    request_type=compute.DeleteRegionInstanceTemplateRequest,
 ):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
+    transport_class = transports.RegionInstanceTemplatesRestTransport
 
     request_init = {}
+    request_init["instance_template"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -701,9 +701,9 @@ def test_delete_rest_required_fields(
 
     # verify required fields with default values are now present
 
+    jsonified_request["instanceTemplate"] = "instance_template_value"
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
-    jsonified_request["securityPolicy"] = "security_policy_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -713,14 +713,14 @@ def test_delete_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
+    assert "instanceTemplate" in jsonified_request
+    assert jsonified_request["instanceTemplate"] == "instance_template_value"
     assert "project" in jsonified_request
     assert jsonified_request["project"] == "project_value"
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
-    assert "securityPolicy" in jsonified_request
-    assert jsonified_request["securityPolicy"] == "security_policy_value"
 
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -761,7 +761,7 @@ def test_delete_rest_required_fields(
 
 
 def test_delete_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -770,9 +770,9 @@ def test_delete_rest_unset_required_fields():
         set(("requestId",))
         & set(
             (
+                "instanceTemplate",
                 "project",
                 "region",
-                "securityPolicy",
             )
         )
     )
@@ -780,26 +780,26 @@ def test_delete_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
+        else transports.RegionInstanceTemplatesRestInterceptor(),
     )
-    client = RegionSecurityPoliciesClient(transport=transport)
+    client = RegionInstanceTemplatesClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_delete"
+        transports.RegionInstanceTemplatesRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_delete"
+        transports.RegionInstanceTemplatesRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.DeleteRegionSecurityPolicyRequest.pb(
-            compute.DeleteRegionSecurityPolicyRequest()
+        pb_message = compute.DeleteRegionInstanceTemplateRequest.pb(
+            compute.DeleteRegionInstanceTemplateRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -813,7 +813,7 @@ def test_delete_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         req.return_value._content = compute.Operation.to_json(compute.Operation())
 
-        request = compute.DeleteRegionSecurityPolicyRequest()
+        request = compute.DeleteRegionInstanceTemplateRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -834,9 +834,9 @@ def test_delete_rest_interceptors(null_interceptor):
 
 
 def test_delete_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteRegionSecurityPolicyRequest
+    transport: str = "rest", request_type=compute.DeleteRegionInstanceTemplateRequest
 ):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -845,7 +845,7 @@ def test_delete_rest_bad_request(
     request_init = {
         "project": "sample1",
         "region": "sample2",
-        "security_policy": "sample3",
+        "instance_template": "sample3",
     }
     request = request_type(**request_init)
 
@@ -862,7 +862,7 @@ def test_delete_rest_bad_request(
 
 
 def test_delete_rest_flattened():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -876,14 +876,14 @@ def test_delete_rest_flattened():
         sample_request = {
             "project": "sample1",
             "region": "sample2",
-            "security_policy": "sample3",
+            "instance_template": "sample3",
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
             region="region_value",
-            security_policy="security_policy_value",
+            instance_template="instance_template_value",
         )
         mock_args.update(sample_request)
 
@@ -902,14 +902,14 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}"
+            "%s/compute/v1/projects/{project}/regions/{region}/instanceTemplates/{instance_template}"
             % client.transport._host,
             args[1],
         )
 
 
 def test_delete_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -918,15 +918,15 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete(
-            compute.DeleteRegionSecurityPolicyRequest(),
+            compute.DeleteRegionInstanceTemplateRequest(),
             project="project_value",
             region="region_value",
-            security_policy="security_policy_value",
+            instance_template="instance_template_value",
         )
 
 
 def test_delete_rest_error():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -934,12 +934,12 @@ def test_delete_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.DeleteRegionSecurityPolicyRequest,
+        compute.DeleteRegionInstanceTemplateRequest,
         dict,
     ],
 )
 def test_delete_unary_rest(request_type):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -948,7 +948,7 @@ def test_delete_unary_rest(request_type):
     request_init = {
         "project": "sample1",
         "region": "sample2",
-        "security_policy": "sample3",
+        "instance_template": "sample3",
     }
     request = request_type(**request_init)
 
@@ -995,14 +995,14 @@ def test_delete_unary_rest(request_type):
 
 
 def test_delete_unary_rest_required_fields(
-    request_type=compute.DeleteRegionSecurityPolicyRequest,
+    request_type=compute.DeleteRegionInstanceTemplateRequest,
 ):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
+    transport_class = transports.RegionInstanceTemplatesRestTransport
 
     request_init = {}
+    request_init["instance_template"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -1022,9 +1022,9 @@ def test_delete_unary_rest_required_fields(
 
     # verify required fields with default values are now present
 
+    jsonified_request["instanceTemplate"] = "instance_template_value"
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
-    jsonified_request["securityPolicy"] = "security_policy_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -1034,14 +1034,14 @@ def test_delete_unary_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
+    assert "instanceTemplate" in jsonified_request
+    assert jsonified_request["instanceTemplate"] == "instance_template_value"
     assert "project" in jsonified_request
     assert jsonified_request["project"] == "project_value"
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
-    assert "securityPolicy" in jsonified_request
-    assert jsonified_request["securityPolicy"] == "security_policy_value"
 
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1082,7 +1082,7 @@ def test_delete_unary_rest_required_fields(
 
 
 def test_delete_unary_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -1091,9 +1091,9 @@ def test_delete_unary_rest_unset_required_fields():
         set(("requestId",))
         & set(
             (
+                "instanceTemplate",
                 "project",
                 "region",
-                "securityPolicy",
             )
         )
     )
@@ -1101,26 +1101,26 @@ def test_delete_unary_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
+        else transports.RegionInstanceTemplatesRestInterceptor(),
     )
-    client = RegionSecurityPoliciesClient(transport=transport)
+    client = RegionInstanceTemplatesClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_delete"
+        transports.RegionInstanceTemplatesRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_delete"
+        transports.RegionInstanceTemplatesRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.DeleteRegionSecurityPolicyRequest.pb(
-            compute.DeleteRegionSecurityPolicyRequest()
+        pb_message = compute.DeleteRegionInstanceTemplateRequest.pb(
+            compute.DeleteRegionInstanceTemplateRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1134,7 +1134,7 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         req.return_value._content = compute.Operation.to_json(compute.Operation())
 
-        request = compute.DeleteRegionSecurityPolicyRequest()
+        request = compute.DeleteRegionInstanceTemplateRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -1155,9 +1155,9 @@ def test_delete_unary_rest_interceptors(null_interceptor):
 
 
 def test_delete_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteRegionSecurityPolicyRequest
+    transport: str = "rest", request_type=compute.DeleteRegionInstanceTemplateRequest
 ):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1166,7 +1166,7 @@ def test_delete_unary_rest_bad_request(
     request_init = {
         "project": "sample1",
         "region": "sample2",
-        "security_policy": "sample3",
+        "instance_template": "sample3",
     }
     request = request_type(**request_init)
 
@@ -1183,7 +1183,7 @@ def test_delete_unary_rest_bad_request(
 
 
 def test_delete_unary_rest_flattened():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1197,14 +1197,14 @@ def test_delete_unary_rest_flattened():
         sample_request = {
             "project": "sample1",
             "region": "sample2",
-            "security_policy": "sample3",
+            "instance_template": "sample3",
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
             region="region_value",
-            security_policy="security_policy_value",
+            instance_template="instance_template_value",
         )
         mock_args.update(sample_request)
 
@@ -1223,14 +1223,14 @@ def test_delete_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}"
+            "%s/compute/v1/projects/{project}/regions/{region}/instanceTemplates/{instance_template}"
             % client.transport._host,
             args[1],
         )
 
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1239,15 +1239,15 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_unary(
-            compute.DeleteRegionSecurityPolicyRequest(),
+            compute.DeleteRegionInstanceTemplateRequest(),
             project="project_value",
             region="region_value",
-            security_policy="security_policy_value",
+            instance_template="instance_template_value",
         )
 
 
 def test_delete_unary_rest_error():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -1255,12 +1255,12 @@ def test_delete_unary_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.GetRegionSecurityPolicyRequest,
+        compute.GetRegionInstanceTemplateRequest,
         dict,
     ],
 )
 def test_get_rest(request_type):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1269,29 +1269,28 @@ def test_get_rest(request_type):
     request_init = {
         "project": "sample1",
         "region": "sample2",
-        "security_policy": "sample3",
+        "instance_template": "sample3",
     }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.SecurityPolicy(
+        return_value = compute.InstanceTemplate(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
-            fingerprint="fingerprint_value",
             id=205,
             kind="kind_value",
             name="name_value",
             region="region_value",
             self_link="self_link_value",
-            type_="type__value",
+            source_instance="source_instance_value",
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.SecurityPolicy.pb(return_value)
+        pb_return_value = compute.InstanceTemplate.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -1299,25 +1298,26 @@ def test_get_rest(request_type):
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.SecurityPolicy)
+    assert isinstance(response, compute.InstanceTemplate)
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
-    assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
-    assert response.type_ == "type__value"
+    assert response.source_instance == "source_instance_value"
 
 
-def test_get_rest_required_fields(request_type=compute.GetRegionSecurityPolicyRequest):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
+def test_get_rest_required_fields(
+    request_type=compute.GetRegionInstanceTemplateRequest,
+):
+    transport_class = transports.RegionInstanceTemplatesRestTransport
 
     request_init = {}
+    request_init["instance_template"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -1337,9 +1337,9 @@ def test_get_rest_required_fields(request_type=compute.GetRegionSecurityPolicyRe
 
     # verify required fields with default values are now present
 
+    jsonified_request["instanceTemplate"] = "instance_template_value"
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
-    jsonified_request["securityPolicy"] = "security_policy_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -1347,21 +1347,21 @@ def test_get_rest_required_fields(request_type=compute.GetRegionSecurityPolicyRe
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
+    assert "instanceTemplate" in jsonified_request
+    assert jsonified_request["instanceTemplate"] == "instance_template_value"
     assert "project" in jsonified_request
     assert jsonified_request["project"] == "project_value"
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
-    assert "securityPolicy" in jsonified_request
-    assert jsonified_request["securityPolicy"] == "security_policy_value"
 
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = compute.SecurityPolicy()
+    return_value = compute.InstanceTemplate()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1381,7 +1381,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionSecurityPolicyRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.SecurityPolicy.pb(return_value)
+            pb_return_value = compute.InstanceTemplate.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -1395,7 +1395,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionSecurityPolicyRe
 
 
 def test_get_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -1404,9 +1404,9 @@ def test_get_rest_unset_required_fields():
         set(())
         & set(
             (
+                "instanceTemplate",
                 "project",
                 "region",
-                "securityPolicy",
             )
         )
     )
@@ -1414,26 +1414,26 @@ def test_get_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
+        else transports.RegionInstanceTemplatesRestInterceptor(),
     )
-    client = RegionSecurityPoliciesClient(transport=transport)
+    client = RegionInstanceTemplatesClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_get"
+        transports.RegionInstanceTemplatesRestInterceptor, "post_get"
     ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_get"
+        transports.RegionInstanceTemplatesRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.GetRegionSecurityPolicyRequest.pb(
-            compute.GetRegionSecurityPolicyRequest()
+        pb_message = compute.GetRegionInstanceTemplateRequest.pb(
+            compute.GetRegionInstanceTemplateRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1445,17 +1445,17 @@ def test_get_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.SecurityPolicy.to_json(
-            compute.SecurityPolicy()
+        req.return_value._content = compute.InstanceTemplate.to_json(
+            compute.InstanceTemplate()
         )
 
-        request = compute.GetRegionSecurityPolicyRequest()
+        request = compute.GetRegionInstanceTemplateRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.SecurityPolicy()
+        post.return_value = compute.InstanceTemplate()
 
         client.get(
             request,
@@ -1470,9 +1470,9 @@ def test_get_rest_interceptors(null_interceptor):
 
 
 def test_get_rest_bad_request(
-    transport: str = "rest", request_type=compute.GetRegionSecurityPolicyRequest
+    transport: str = "rest", request_type=compute.GetRegionInstanceTemplateRequest
 ):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1481,7 +1481,7 @@ def test_get_rest_bad_request(
     request_init = {
         "project": "sample1",
         "region": "sample2",
-        "security_policy": "sample3",
+        "instance_template": "sample3",
     }
     request = request_type(**request_init)
 
@@ -1498,7 +1498,7 @@ def test_get_rest_bad_request(
 
 
 def test_get_rest_flattened():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1506,27 +1506,27 @@ def test_get_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.SecurityPolicy()
+        return_value = compute.InstanceTemplate()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
             "region": "sample2",
-            "security_policy": "sample3",
+            "instance_template": "sample3",
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
             region="region_value",
-            security_policy="security_policy_value",
+            instance_template="instance_template_value",
         )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.SecurityPolicy.pb(return_value)
+        pb_return_value = compute.InstanceTemplate.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1538,14 +1538,14 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}"
+            "%s/compute/v1/projects/{project}/regions/{region}/instanceTemplates/{instance_template}"
             % client.transport._host,
             args[1],
         )
 
 
 def test_get_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1554,15 +1554,15 @@ def test_get_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.get(
-            compute.GetRegionSecurityPolicyRequest(),
+            compute.GetRegionInstanceTemplateRequest(),
             project="project_value",
             region="region_value",
-            security_policy="security_policy_value",
+            instance_template="instance_template_value",
         )
 
 
 def test_get_rest_error():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -1570,106 +1570,195 @@ def test_get_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.InsertRegionSecurityPolicyRequest,
+        compute.InsertRegionInstanceTemplateRequest,
         dict,
     ],
 )
 def test_insert_rest(request_type):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
+    request_init["instance_template_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
-        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
+        "properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "enable_uefi_networking": True,
+                "threads_per_core": 1689,
+                "visible_core_count": 1918,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "architecture": "architecture_value",
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
                     },
-                    "expr": {
+                    "disk_size_gb": 1261,
+                    "force_attach": True,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "licenses": ["licenses_value1", "licenses_value2"],
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
+                        "resource_policies": [
+                            "resource_policies_value1",
+                            "resource_policies_value2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {},
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {},
                     },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value1", "licenses_value2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": {},
+                        "keks": {},
+                        "pk": {},
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
                         {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
                         }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
+                    "ipv6_access_configs": {},
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_attachment": "network_attachment_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "network_performance_config": {
+                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
+            },
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value1", "values_value2"],
+            },
+            "resource_manager_tags": {},
+            "resource_policies": [
+                "resource_policies_value1",
+                "resource_policies_value2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "instance_termination_action": "instance_termination_action_value",
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+                "provisioning_model": "provisioning_model_value",
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value1", "items_value2"],
+            },
+        },
+        "region": "region_value",
         "self_link": "self_link_value",
-        "type_": "type__value",
+        "source_instance": "source_instance_value",
+        "source_instance_params": {
+            "disk_configs": [
+                {
+                    "auto_delete": True,
+                    "custom_image": "custom_image_value",
+                    "device_name": "device_name_value",
+                    "instantiate_from": "instantiate_from_value",
+                }
+            ]
+        },
     }
     request = request_type(**request_init)
 
@@ -1738,9 +1827,9 @@ def test_insert_rest(request_type):
 
 
 def test_insert_rest_required_fields(
-    request_type=compute.InsertRegionSecurityPolicyRequest,
+    request_type=compute.InsertRegionInstanceTemplateRequest,
 ):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
+    transport_class = transports.RegionInstanceTemplatesRestTransport
 
     request_init = {}
     request_init["project"] = ""
@@ -1771,12 +1860,7 @@ def test_insert_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "request_id",
-            "validate_only",
-        )
-    )
+    assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1785,7 +1869,7 @@ def test_insert_rest_required_fields(
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
 
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1827,23 +1911,18 @@ def test_insert_rest_required_fields(
 
 
 def test_insert_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "requestId",
-                "validateOnly",
-            )
-        )
+        set(("requestId",))
         & set(
             (
+                "instanceTemplateResource",
                 "project",
                 "region",
-                "securityPolicyResource",
             )
         )
     )
@@ -1851,26 +1930,26 @@ def test_insert_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_insert_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
+        else transports.RegionInstanceTemplatesRestInterceptor(),
     )
-    client = RegionSecurityPoliciesClient(transport=transport)
+    client = RegionInstanceTemplatesClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_insert"
+        transports.RegionInstanceTemplatesRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_insert"
+        transports.RegionInstanceTemplatesRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.InsertRegionSecurityPolicyRequest.pb(
-            compute.InsertRegionSecurityPolicyRequest()
+        pb_message = compute.InsertRegionInstanceTemplateRequest.pb(
+            compute.InsertRegionInstanceTemplateRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1884,7 +1963,7 @@ def test_insert_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         req.return_value._content = compute.Operation.to_json(compute.Operation())
 
-        request = compute.InsertRegionSecurityPolicyRequest()
+        request = compute.InsertRegionInstanceTemplateRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -1905,103 +1984,192 @@ def test_insert_rest_interceptors(null_interceptor):
 
 
 def test_insert_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionSecurityPolicyRequest
+    transport: str = "rest", request_type=compute.InsertRegionInstanceTemplateRequest
 ):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
+    request_init["instance_template_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
-        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
+        "properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "enable_uefi_networking": True,
+                "threads_per_core": 1689,
+                "visible_core_count": 1918,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "architecture": "architecture_value",
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
                     },
-                    "expr": {
+                    "disk_size_gb": 1261,
+                    "force_attach": True,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "licenses": ["licenses_value1", "licenses_value2"],
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
+                        "resource_policies": [
+                            "resource_policies_value1",
+                            "resource_policies_value2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {},
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {},
                     },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value1", "licenses_value2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": {},
+                        "keks": {},
+                        "pk": {},
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
                         {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
                         }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
+                    "ipv6_access_configs": {},
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_attachment": "network_attachment_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "network_performance_config": {
+                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
+            },
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value1", "values_value2"],
+            },
+            "resource_manager_tags": {},
+            "resource_policies": [
+                "resource_policies_value1",
+                "resource_policies_value2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "instance_termination_action": "instance_termination_action_value",
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+                "provisioning_model": "provisioning_model_value",
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value1", "items_value2"],
+            },
+        },
+        "region": "region_value",
         "self_link": "self_link_value",
-        "type_": "type__value",
+        "source_instance": "source_instance_value",
+        "source_instance_params": {
+            "disk_configs": [
+                {
+                    "auto_delete": True,
+                    "custom_image": "custom_image_value",
+                    "device_name": "device_name_value",
+                    "instantiate_from": "instantiate_from_value",
+                }
+            ]
+        },
     }
     request = request_type(**request_init)
 
@@ -2018,7 +2186,7 @@ def test_insert_rest_bad_request(
 
 
 def test_insert_rest_flattened():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2035,12 +2203,8 @@ def test_insert_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
+            instance_template_resource=compute.InstanceTemplate(
+                creation_timestamp="creation_timestamp_value"
             ),
         )
         mock_args.update(sample_request)
@@ -2060,14 +2224,14 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies"
+            "%s/compute/v1/projects/{project}/regions/{region}/instanceTemplates"
             % client.transport._host,
             args[1],
         )
 
 
 def test_insert_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2076,21 +2240,17 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.insert(
-            compute.InsertRegionSecurityPolicyRequest(),
+            compute.InsertRegionInstanceTemplateRequest(),
             project="project_value",
             region="region_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
+            instance_template_resource=compute.InstanceTemplate(
+                creation_timestamp="creation_timestamp_value"
             ),
         )
 
 
 def test_insert_rest_error():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -2098,106 +2258,195 @@ def test_insert_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.InsertRegionSecurityPolicyRequest,
+        compute.InsertRegionInstanceTemplateRequest,
         dict,
     ],
 )
 def test_insert_unary_rest(request_type):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
+    request_init["instance_template_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
-        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
+        "properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "enable_uefi_networking": True,
+                "threads_per_core": 1689,
+                "visible_core_count": 1918,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "architecture": "architecture_value",
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
                     },
-                    "expr": {
+                    "disk_size_gb": 1261,
+                    "force_attach": True,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "licenses": ["licenses_value1", "licenses_value2"],
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
+                        "resource_policies": [
+                            "resource_policies_value1",
+                            "resource_policies_value2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {},
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {},
                     },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value1", "licenses_value2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": {},
+                        "keks": {},
+                        "pk": {},
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
                         {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
                         }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
+                    "ipv6_access_configs": {},
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_attachment": "network_attachment_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "network_performance_config": {
+                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
+            },
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value1", "values_value2"],
+            },
+            "resource_manager_tags": {},
+            "resource_policies": [
+                "resource_policies_value1",
+                "resource_policies_value2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "instance_termination_action": "instance_termination_action_value",
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+                "provisioning_model": "provisioning_model_value",
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value1", "items_value2"],
+            },
+        },
+        "region": "region_value",
         "self_link": "self_link_value",
-        "type_": "type__value",
+        "source_instance": "source_instance_value",
+        "source_instance_params": {
+            "disk_configs": [
+                {
+                    "auto_delete": True,
+                    "custom_image": "custom_image_value",
+                    "device_name": "device_name_value",
+                    "instantiate_from": "instantiate_from_value",
+                }
+            ]
+        },
     }
     request = request_type(**request_init)
 
@@ -2244,9 +2493,9 @@ def test_insert_unary_rest(request_type):
 
 
 def test_insert_unary_rest_required_fields(
-    request_type=compute.InsertRegionSecurityPolicyRequest,
+    request_type=compute.InsertRegionInstanceTemplateRequest,
 ):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
+    transport_class = transports.RegionInstanceTemplatesRestTransport
 
     request_init = {}
     request_init["project"] = ""
@@ -2277,12 +2526,7 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "request_id",
-            "validate_only",
-        )
-    )
+    assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2291,7 +2535,7 @@ def test_insert_unary_rest_required_fields(
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
 
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2333,23 +2577,18 @@ def test_insert_unary_rest_required_fields(
 
 
 def test_insert_unary_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "requestId",
-                "validateOnly",
-            )
-        )
+        set(("requestId",))
         & set(
             (
+                "instanceTemplateResource",
                 "project",
                 "region",
-                "securityPolicyResource",
             )
         )
     )
@@ -2357,26 +2596,26 @@ def test_insert_unary_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_insert_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
+        else transports.RegionInstanceTemplatesRestInterceptor(),
     )
-    client = RegionSecurityPoliciesClient(transport=transport)
+    client = RegionInstanceTemplatesClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_insert"
+        transports.RegionInstanceTemplatesRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_insert"
+        transports.RegionInstanceTemplatesRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.InsertRegionSecurityPolicyRequest.pb(
-            compute.InsertRegionSecurityPolicyRequest()
+        pb_message = compute.InsertRegionInstanceTemplateRequest.pb(
+            compute.InsertRegionInstanceTemplateRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2390,7 +2629,7 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         req.return_value._content = compute.Operation.to_json(compute.Operation())
 
-        request = compute.InsertRegionSecurityPolicyRequest()
+        request = compute.InsertRegionInstanceTemplateRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -2411,103 +2650,192 @@ def test_insert_unary_rest_interceptors(null_interceptor):
 
 
 def test_insert_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionSecurityPolicyRequest
+    transport: str = "rest", request_type=compute.InsertRegionInstanceTemplateRequest
 ):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
+    request_init["instance_template_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
-        "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
+        "properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "enable_uefi_networking": True,
+                "threads_per_core": 1689,
+                "visible_core_count": 1918,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "architecture": "architecture_value",
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
                     },
-                    "expr": {
+                    "disk_size_gb": 1261,
+                    "force_attach": True,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "licenses": ["licenses_value1", "licenses_value2"],
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
+                        "resource_policies": [
+                            "resource_policies_value1",
+                            "resource_policies_value2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {},
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {},
                     },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value1", "licenses_value2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": {},
+                        "keks": {},
+                        "pk": {},
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
                         {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
                         }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
+                    "ipv6_access_configs": {},
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_attachment": "network_attachment_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "network_performance_config": {
+                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
+            },
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value1", "values_value2"],
+            },
+            "resource_manager_tags": {},
+            "resource_policies": [
+                "resource_policies_value1",
+                "resource_policies_value2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "instance_termination_action": "instance_termination_action_value",
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value1", "values_value2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+                "provisioning_model": "provisioning_model_value",
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value1", "items_value2"],
+            },
+        },
+        "region": "region_value",
         "self_link": "self_link_value",
-        "type_": "type__value",
+        "source_instance": "source_instance_value",
+        "source_instance_params": {
+            "disk_configs": [
+                {
+                    "auto_delete": True,
+                    "custom_image": "custom_image_value",
+                    "device_name": "device_name_value",
+                    "instantiate_from": "instantiate_from_value",
+                }
+            ]
+        },
     }
     request = request_type(**request_init)
 
@@ -2524,7 +2852,7 @@ def test_insert_unary_rest_bad_request(
 
 
 def test_insert_unary_rest_flattened():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2541,12 +2869,8 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
+            instance_template_resource=compute.InstanceTemplate(
+                creation_timestamp="creation_timestamp_value"
             ),
         )
         mock_args.update(sample_request)
@@ -2566,14 +2890,14 @@ def test_insert_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies"
+            "%s/compute/v1/projects/{project}/regions/{region}/instanceTemplates"
             % client.transport._host,
             args[1],
         )
 
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2582,21 +2906,17 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.insert_unary(
-            compute.InsertRegionSecurityPolicyRequest(),
+            compute.InsertRegionInstanceTemplateRequest(),
             project="project_value",
             region="region_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
+            instance_template_resource=compute.InstanceTemplate(
+                creation_timestamp="creation_timestamp_value"
             ),
         )
 
 
 def test_insert_unary_rest_error():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -2604,12 +2924,12 @@ def test_insert_unary_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        compute.ListRegionSecurityPoliciesRequest,
+        compute.ListRegionInstanceTemplatesRequest,
         dict,
     ],
 )
 def test_list_rest(request_type):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2621,16 +2941,17 @@ def test_list_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.SecurityPolicyList(
+        return_value = compute.InstanceTemplateList(
             id="id_value",
             kind="kind_value",
             next_page_token="next_page_token_value",
+            self_link="self_link_value",
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.SecurityPolicyList.pb(return_value)
+        pb_return_value = compute.InstanceTemplateList.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -2642,12 +2963,13 @@ def test_list_rest(request_type):
     assert response.id == "id_value"
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
 
 
 def test_list_rest_required_fields(
-    request_type=compute.ListRegionSecurityPoliciesRequest,
+    request_type=compute.ListRegionInstanceTemplatesRequest,
 ):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
+    transport_class = transports.RegionInstanceTemplatesRestTransport
 
     request_init = {}
     request_init["project"] = ""
@@ -2695,14 +3017,14 @@ def test_list_rest_required_fields(
     assert "region" in jsonified_request
     assert jsonified_request["region"] == "region_value"
 
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = compute.SecurityPolicyList()
+    return_value = compute.InstanceTemplateList()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2722,7 +3044,7 @@ def test_list_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.SecurityPolicyList.pb(return_value)
+            pb_return_value = compute.InstanceTemplateList.pb(return_value)
             json_return_value = json_format.MessageToJson(pb_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -2736,7 +3058,7 @@ def test_list_rest_required_fields(
 
 
 def test_list_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -2762,26 +3084,26 @@ def test_list_rest_unset_required_fields():
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
+        else transports.RegionInstanceTemplatesRestInterceptor(),
     )
-    client = RegionSecurityPoliciesClient(transport=transport)
+    client = RegionInstanceTemplatesClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_list"
+        transports.RegionInstanceTemplatesRestInterceptor, "post_list"
     ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_list"
+        transports.RegionInstanceTemplatesRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = compute.ListRegionSecurityPoliciesRequest.pb(
-            compute.ListRegionSecurityPoliciesRequest()
+        pb_message = compute.ListRegionInstanceTemplatesRequest.pb(
+            compute.ListRegionInstanceTemplatesRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2793,17 +3115,17 @@ def test_list_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.SecurityPolicyList.to_json(
-            compute.SecurityPolicyList()
+        req.return_value._content = compute.InstanceTemplateList.to_json(
+            compute.InstanceTemplateList()
         )
 
-        request = compute.ListRegionSecurityPoliciesRequest()
+        request = compute.ListRegionInstanceTemplatesRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.SecurityPolicyList()
+        post.return_value = compute.InstanceTemplateList()
 
         client.list(
             request,
@@ -2818,9 +3140,9 @@ def test_list_rest_interceptors(null_interceptor):
 
 
 def test_list_rest_bad_request(
-    transport: str = "rest", request_type=compute.ListRegionSecurityPoliciesRequest
+    transport: str = "rest", request_type=compute.ListRegionInstanceTemplatesRequest
 ):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2842,7 +3164,7 @@ def test_list_rest_bad_request(
 
 
 def test_list_rest_flattened():
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2850,7 +3172,7 @@ def test_list_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.SecurityPolicyList()
+        return_value = compute.InstanceTemplateList()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "region": "sample2"}
@@ -2865,7 +3187,7 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.SecurityPolicyList.pb(return_value)
+        pb_return_value = compute.InstanceTemplateList.pb(return_value)
         json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2877,14 +3199,14 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies"
+            "%s/compute/v1/projects/{project}/regions/{region}/instanceTemplates"
             % client.transport._host,
             args[1],
         )
 
 
 def test_list_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2893,14 +3215,14 @@ def test_list_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.list(
-            compute.ListRegionSecurityPoliciesRequest(),
+            compute.ListRegionInstanceTemplatesRequest(),
             project="project_value",
             region="region_value",
         )
 
 
 def test_list_rest_pager(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2911,28 +3233,28 @@ def test_list_rest_pager(transport: str = "rest"):
         # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
-            compute.SecurityPolicyList(
+            compute.InstanceTemplateList(
                 items=[
-                    compute.SecurityPolicy(),
-                    compute.SecurityPolicy(),
-                    compute.SecurityPolicy(),
+                    compute.InstanceTemplate(),
+                    compute.InstanceTemplate(),
+                    compute.InstanceTemplate(),
                 ],
                 next_page_token="abc",
             ),
-            compute.SecurityPolicyList(
+            compute.InstanceTemplateList(
                 items=[],
                 next_page_token="def",
             ),
-            compute.SecurityPolicyList(
+            compute.InstanceTemplateList(
                 items=[
-                    compute.SecurityPolicy(),
+                    compute.InstanceTemplate(),
                 ],
                 next_page_token="ghi",
             ),
-            compute.SecurityPolicyList(
+            compute.InstanceTemplateList(
                 items=[
-                    compute.SecurityPolicy(),
-                    compute.SecurityPolicy(),
+                    compute.InstanceTemplate(),
+                    compute.InstanceTemplate(),
                 ],
             ),
         )
@@ -2940,7 +3262,7 @@ def test_list_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(compute.SecurityPolicyList.to_json(x) for x in response)
+        response = tuple(compute.InstanceTemplateList.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -2953,1094 +3275,42 @@ def test_list_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, compute.SecurityPolicy) for i in results)
+        assert all(isinstance(i, compute.InstanceTemplate) for i in results)
 
         pages = list(client.list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.PatchRegionSecurityPolicyRequest,
-        dict,
-    ],
-)
-def test_patch_rest(request_type):
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "security_policy": "sample3",
-    }
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
-                    },
-                    "expr": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
-                        {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
-                        }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
-        "self_link": "self_link_value",
-        "type_": "type__value",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.patch(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
-
-
-def test_patch_rest_required_fields(
-    request_type=compute.PatchRegionSecurityPolicyRequest,
-):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request_init["region"] = ""
-    request_init["security_policy"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-    jsonified_request["region"] = "region_value"
-    jsonified_request["securityPolicy"] = "security_policy_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-    assert "region" in jsonified_request
-    assert jsonified_request["region"] == "region_value"
-    assert "securityPolicy" in jsonified_request
-    assert jsonified_request["securityPolicy"] == "security_policy_value"
-
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.patch(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_patch_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.patch._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("requestId",))
-        & set(
-            (
-                "project",
-                "region",
-                "securityPolicy",
-                "securityPolicyResource",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_patch_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
-    )
-    client = RegionSecurityPoliciesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_patch"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.PatchRegionSecurityPolicyRequest.pb(
-            compute.PatchRegionSecurityPolicyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.PatchRegionSecurityPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.patch(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_patch_rest_bad_request(
-    transport: str = "rest", request_type=compute.PatchRegionSecurityPolicyRequest
-):
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "security_policy": "sample3",
-    }
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
-                    },
-                    "expr": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
-                        {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
-                        }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
-        "self_link": "self_link_value",
-        "type_": "type__value",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.patch(request)
-
-
-def test_patch_rest_flattened():
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "project": "sample1",
-            "region": "sample2",
-            "security_policy": "sample3",
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            region="region_value",
-            security_policy="security_policy_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.patch(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_patch_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.patch(
-            compute.PatchRegionSecurityPolicyRequest(),
-            project="project_value",
-            region="region_value",
-            security_policy="security_policy_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
-            ),
-        )
-
-
-def test_patch_rest_error():
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.PatchRegionSecurityPolicyRequest,
-        dict,
-    ],
-)
-def test_patch_unary_rest(request_type):
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "security_policy": "sample3",
-    }
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
-                    },
-                    "expr": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
-                        {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
-                        }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
-        "self_link": "self_link_value",
-        "type_": "type__value",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.patch_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
-
-
-def test_patch_unary_rest_required_fields(
-    request_type=compute.PatchRegionSecurityPolicyRequest,
-):
-    transport_class = transports.RegionSecurityPoliciesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request_init["region"] = ""
-    request_init["security_policy"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-    jsonified_request["region"] = "region_value"
-    jsonified_request["securityPolicy"] = "security_policy_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-    assert "region" in jsonified_request
-    assert jsonified_request["region"] == "region_value"
-    assert "securityPolicy" in jsonified_request
-    assert jsonified_request["securityPolicy"] == "security_policy_value"
-
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.patch_unary(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_patch_unary_rest_unset_required_fields():
-    transport = transports.RegionSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.patch._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("requestId",))
-        & set(
-            (
-                "project",
-                "region",
-                "securityPolicy",
-                "securityPolicyResource",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_patch_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionSecurityPoliciesRestInterceptor(),
-    )
-    client = RegionSecurityPoliciesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.RegionSecurityPoliciesRestInterceptor, "pre_patch"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.PatchRegionSecurityPolicyRequest.pb(
-            compute.PatchRegionSecurityPolicyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.PatchRegionSecurityPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.patch_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_patch_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.PatchRegionSecurityPolicyRequest
-):
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "security_policy": "sample3",
-    }
-    request_init["security_policy_resource"] = {
-        "adaptive_protection_config": {
-            "layer7_ddos_defense_config": {
-                "enable": True,
-                "rule_visibility": "rule_visibility_value",
-            }
-        },
-        "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
-            "json_parsing": "json_parsing_value",
-            "log_level": "log_level_value",
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
-        "region": "region_value",
-        "rules": [
-            {
-                "action": "action_value",
-                "description": "description_value",
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
-                "kind": "kind_value",
-                "match": {
-                    "config": {
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ]
-                    },
-                    "expr": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "versioned_expr": "versioned_expr_value",
-                },
-                "preconfigured_waf_config": {
-                    "exclusions": [
-                        {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
-                            "request_headers_to_exclude": {},
-                            "request_query_params_to_exclude": {},
-                            "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
-                            "target_rule_set": "target_rule_set_value",
-                        }
-                    ]
-                },
-                "preview": True,
-                "priority": 898,
-                "rate_limit_options": {
-                    "ban_duration_sec": 1680,
-                    "ban_threshold": {"count": 553, "interval_sec": 1279},
-                    "conform_action": "conform_action_value",
-                    "enforce_on_key": "enforce_on_key_value",
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
-                    "rate_limit_threshold": {},
-                },
-                "redirect_options": {},
-            }
-        ],
-        "self_link": "self_link_value",
-        "type_": "type__value",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.patch_unary(request)
-
-
-def test_patch_unary_rest_flattened():
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "project": "sample1",
-            "region": "sample2",
-            "security_policy": "sample3",
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            region="region_value",
-            security_policy="security_policy_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.patch_unary(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_patch_unary_rest_flattened_error(transport: str = "rest"):
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.patch_unary(
-            compute.PatchRegionSecurityPolicyRequest(),
-            project="project_value",
-            region="region_value",
-            security_policy="security_policy_value",
-            security_policy_resource=compute.SecurityPolicy(
-                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
-                        enable=True
-                    )
-                )
-            ),
-        )
-
-
-def test_patch_unary_rest_error():
-    client = RegionSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             client_options=options,
             transport=transport,
         )
@@ -4049,16 +3319,16 @@ def test_credentials_transport_error():
     options = mock.Mock()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -4066,17 +3336,17 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.RegionSecurityPoliciesRestTransport(
+    transport = transports.RegionInstanceTemplatesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = RegionSecurityPoliciesClient(transport=transport)
+    client = RegionInstanceTemplatesClient(transport=transport)
     assert client.transport is transport
 
 
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.RegionSecurityPoliciesRestTransport,
+        transports.RegionInstanceTemplatesRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4094,28 +3364,28 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = RegionSecurityPoliciesClient.get_transport_class(transport_name)(
+    transport = RegionInstanceTemplatesClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
 
-def test_region_security_policies_base_transport_error():
+def test_region_instance_templates_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.RegionSecurityPoliciesTransport(
+        transport = transports.RegionInstanceTemplatesTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_region_security_policies_base_transport():
+def test_region_instance_templates_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.compute_v1.services.region_security_policies.transports.RegionSecurityPoliciesTransport.__init__"
+        "google.cloud.compute_v1.services.region_instance_templates.transports.RegionInstanceTemplatesTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.RegionSecurityPoliciesTransport(
+        transport = transports.RegionInstanceTemplatesTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
@@ -4126,7 +3396,6 @@ def test_region_security_policies_base_transport():
         "get",
         "insert",
         "list",
-        "patch",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -4144,16 +3413,16 @@ def test_region_security_policies_base_transport():
             getattr(transport, r)()
 
 
-def test_region_security_policies_base_transport_with_credentials_file():
+def test_region_instance_templates_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.compute_v1.services.region_security_policies.transports.RegionSecurityPoliciesTransport._prep_wrapped_messages"
+        "google.cloud.compute_v1.services.region_instance_templates.transports.RegionInstanceTemplatesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.RegionSecurityPoliciesTransport(
+        transport = transports.RegionInstanceTemplatesTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -4168,22 +3437,22 @@ def test_region_security_policies_base_transport_with_credentials_file():
         )
 
 
-def test_region_security_policies_base_transport_with_adc():
+def test_region_instance_templates_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1.services.region_security_policies.transports.RegionSecurityPoliciesTransport._prep_wrapped_messages"
+        "google.cloud.compute_v1.services.region_instance_templates.transports.RegionInstanceTemplatesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.RegionSecurityPoliciesTransport()
+        transport = transports.RegionInstanceTemplatesTransport()
         adc.assert_called_once()
 
 
-def test_region_security_policies_auth_adc():
+def test_region_instance_templates_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        RegionSecurityPoliciesClient()
+        RegionInstanceTemplatesClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(
@@ -4194,12 +3463,12 @@ def test_region_security_policies_auth_adc():
         )
 
 
-def test_region_security_policies_http_transport_client_cert_source_for_mtls():
+def test_region_instance_templates_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.RegionSecurityPoliciesRestTransport(
+        transports.RegionInstanceTemplatesRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
@@ -4211,8 +3480,8 @@ def test_region_security_policies_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_region_security_policies_host_no_port(transport_name):
-    client = RegionSecurityPoliciesClient(
+def test_region_instance_templates_host_no_port(transport_name):
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
@@ -4232,8 +3501,8 @@ def test_region_security_policies_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_region_security_policies_host_with_port(transport_name):
-    client = RegionSecurityPoliciesClient(
+def test_region_instance_templates_host_with_port(transport_name):
+    client = RegionInstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
@@ -4253,14 +3522,14 @@ def test_region_security_policies_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_region_security_policies_client_transport_session_collision(transport_name):
+def test_region_instance_templates_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = RegionSecurityPoliciesClient(
+    client1 = RegionInstanceTemplatesClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = RegionSecurityPoliciesClient(
+    client2 = RegionInstanceTemplatesClient(
         credentials=creds2,
         transport=transport_name,
     )
@@ -4276,9 +3545,6 @@ def test_region_security_policies_client_transport_session_collision(transport_n
     session1 = client1.transport.list._session
     session2 = client2.transport.list._session
     assert session1 != session2
-    session1 = client1.transport.patch._session
-    session2 = client2.transport.patch._session
-    assert session1 != session2
 
 
 def test_common_billing_account_path():
@@ -4286,7 +3552,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = RegionSecurityPoliciesClient.common_billing_account_path(billing_account)
+    actual = RegionInstanceTemplatesClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -4294,10 +3560,10 @@ def test_parse_common_billing_account_path():
     expected = {
         "billing_account": "clam",
     }
-    path = RegionSecurityPoliciesClient.common_billing_account_path(**expected)
+    path = RegionInstanceTemplatesClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionSecurityPoliciesClient.parse_common_billing_account_path(path)
+    actual = RegionInstanceTemplatesClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
@@ -4306,7 +3572,7 @@ def test_common_folder_path():
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = RegionSecurityPoliciesClient.common_folder_path(folder)
+    actual = RegionInstanceTemplatesClient.common_folder_path(folder)
     assert expected == actual
 
 
@@ -4314,10 +3580,10 @@ def test_parse_common_folder_path():
     expected = {
         "folder": "octopus",
     }
-    path = RegionSecurityPoliciesClient.common_folder_path(**expected)
+    path = RegionInstanceTemplatesClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionSecurityPoliciesClient.parse_common_folder_path(path)
+    actual = RegionInstanceTemplatesClient.parse_common_folder_path(path)
     assert expected == actual
 
 
@@ -4326,7 +3592,7 @@ def test_common_organization_path():
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = RegionSecurityPoliciesClient.common_organization_path(organization)
+    actual = RegionInstanceTemplatesClient.common_organization_path(organization)
     assert expected == actual
 
 
@@ -4334,10 +3600,10 @@ def test_parse_common_organization_path():
     expected = {
         "organization": "nudibranch",
     }
-    path = RegionSecurityPoliciesClient.common_organization_path(**expected)
+    path = RegionInstanceTemplatesClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionSecurityPoliciesClient.parse_common_organization_path(path)
+    actual = RegionInstanceTemplatesClient.parse_common_organization_path(path)
     assert expected == actual
 
 
@@ -4346,7 +3612,7 @@ def test_common_project_path():
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = RegionSecurityPoliciesClient.common_project_path(project)
+    actual = RegionInstanceTemplatesClient.common_project_path(project)
     assert expected == actual
 
 
@@ -4354,10 +3620,10 @@ def test_parse_common_project_path():
     expected = {
         "project": "mussel",
     }
-    path = RegionSecurityPoliciesClient.common_project_path(**expected)
+    path = RegionInstanceTemplatesClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionSecurityPoliciesClient.parse_common_project_path(path)
+    actual = RegionInstanceTemplatesClient.parse_common_project_path(path)
     assert expected == actual
 
 
@@ -4368,7 +3634,7 @@ def test_common_location_path():
         project=project,
         location=location,
     )
-    actual = RegionSecurityPoliciesClient.common_location_path(project, location)
+    actual = RegionInstanceTemplatesClient.common_location_path(project, location)
     assert expected == actual
 
 
@@ -4377,10 +3643,10 @@ def test_parse_common_location_path():
         "project": "scallop",
         "location": "abalone",
     }
-    path = RegionSecurityPoliciesClient.common_location_path(**expected)
+    path = RegionInstanceTemplatesClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = RegionSecurityPoliciesClient.parse_common_location_path(path)
+    actual = RegionInstanceTemplatesClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -4388,18 +3654,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.RegionSecurityPoliciesTransport, "_prep_wrapped_messages"
+        transports.RegionInstanceTemplatesTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.RegionSecurityPoliciesTransport, "_prep_wrapped_messages"
+        transports.RegionInstanceTemplatesTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = RegionSecurityPoliciesClient.get_transport_class()
+        transport_class = RegionInstanceTemplatesClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -4413,7 +3679,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -4429,7 +3695,7 @@ def test_client_ctx():
         "rest",
     ]
     for transport in transports:
-        client = RegionSecurityPoliciesClient(
+        client = RegionInstanceTemplatesClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -4443,7 +3709,10 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (RegionSecurityPoliciesClient, transports.RegionSecurityPoliciesRestTransport),
+        (
+            RegionInstanceTemplatesClient,
+            transports.RegionInstanceTemplatesRestTransport,
+        ),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

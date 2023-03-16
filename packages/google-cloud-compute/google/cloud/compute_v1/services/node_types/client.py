@@ -514,8 +514,7 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeType:
-        r"""Returns the specified node type. Gets a list of
-        available node types by making a list() request.
+        r"""Returns the specified node type.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetNodeTypeRequest, dict]):

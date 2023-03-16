@@ -617,6 +617,23 @@ def test_add_rule_rest(request_type):
             },
             "versioned_expr": "versioned_expr_value",
         },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
+        },
         "preview": True,
         "priority": 898,
         "rate_limit_options": {
@@ -891,6 +908,23 @@ def test_add_rule_rest_bad_request(
             },
             "versioned_expr": "versioned_expr_value",
         },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
+        },
         "preview": True,
         "priority": 898,
         "rate_limit_options": {
@@ -1030,6 +1064,23 @@ def test_add_rule_unary_rest(request_type):
                 "title": "title_value",
             },
             "versioned_expr": "versioned_expr_value",
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
         },
         "preview": True,
         "priority": 898,
@@ -1282,6 +1333,23 @@ def test_add_rule_unary_rest_bad_request(
                 "title": "title_value",
             },
             "versioned_expr": "versioned_expr_value",
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
         },
         "preview": True,
         "priority": 898,
@@ -3032,6 +3100,23 @@ def test_insert_rest(request_type):
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
+                },
                 "preview": True,
                 "priority": 898,
                 "rate_limit_options": {
@@ -3340,6 +3425,23 @@ def test_insert_rest_bad_request(
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
+                },
                 "preview": True,
                 "priority": 898,
                 "rate_limit_options": {
@@ -3516,6 +3618,23 @@ def test_insert_unary_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
                 },
                 "preview": True,
                 "priority": 898,
@@ -3804,6 +3923,23 @@ def test_insert_unary_rest_bad_request(
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
                 },
                 "preview": True,
                 "priority": 898,
@@ -4639,6 +4775,23 @@ def test_patch_rest(request_type):
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
+                },
                 "preview": True,
                 "priority": 898,
                 "rate_limit_options": {
@@ -4942,6 +5095,23 @@ def test_patch_rest_bad_request(
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
+                },
                 "preview": True,
                 "priority": 898,
                 "rate_limit_options": {
@@ -5120,6 +5290,23 @@ def test_patch_unary_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
                 },
                 "preview": True,
                 "priority": 898,
@@ -5404,6 +5591,23 @@ def test_patch_unary_rest_bad_request(
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
+                "preconfigured_waf_config": {
+                    "exclusions": [
+                        {
+                            "request_cookies_to_exclude": [
+                                {"op": "op_value", "val": "val_value"}
+                            ],
+                            "request_headers_to_exclude": {},
+                            "request_query_params_to_exclude": {},
+                            "request_uris_to_exclude": {},
+                            "target_rule_ids": [
+                                "target_rule_ids_value1",
+                                "target_rule_ids_value2",
+                            ],
+                            "target_rule_set": "target_rule_set_value",
+                        }
+                    ]
+                },
                 "preview": True,
                 "priority": 898,
                 "rate_limit_options": {
@@ -5555,6 +5759,23 @@ def test_patch_rule_rest(request_type):
                 "title": "title_value",
             },
             "versioned_expr": "versioned_expr_value",
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
         },
         "preview": True,
         "priority": 898,
@@ -5840,6 +6061,23 @@ def test_patch_rule_rest_bad_request(
             },
             "versioned_expr": "versioned_expr_value",
         },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
+        },
         "preview": True,
         "priority": 898,
         "rate_limit_options": {
@@ -5979,6 +6217,23 @@ def test_patch_rule_unary_rest(request_type):
                 "title": "title_value",
             },
             "versioned_expr": "versioned_expr_value",
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
         },
         "preview": True,
         "priority": 898,
@@ -6241,6 +6496,23 @@ def test_patch_rule_unary_rest_bad_request(
                 "title": "title_value",
             },
             "versioned_expr": "versioned_expr_value",
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
         },
         "preview": True,
         "priority": 898,

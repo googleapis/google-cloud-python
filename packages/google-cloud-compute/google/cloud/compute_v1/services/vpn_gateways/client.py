@@ -736,8 +736,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.VpnGateway:
-        r"""Returns the specified VPN gateway. Gets a list of
-        available VPN gateways by making a list() request.
+        r"""Returns the specified VPN gateway.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetVpnGatewayRequest, dict]):

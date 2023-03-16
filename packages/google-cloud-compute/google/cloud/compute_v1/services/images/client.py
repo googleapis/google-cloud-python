@@ -849,8 +849,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
-        r"""Returns the specified image. Gets a list of available
-        images by making a list() request.
+        r"""Returns the specified image.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetImageRequest, dict]):
@@ -940,7 +939,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
         r"""Returns the latest image that is part of an image
-        family and is not deprecated.
+        family and is not deprecated. For more information on
+        image families, see Public image families documentation.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetFromFamilyImageRequest, dict]):
@@ -948,7 +948,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 Images.GetFromFamily. See the method description for
                 details.
             project (str):
-                Project ID for this request.
+                The image project that the image
+                belongs to. For example, to get a CentOS
+                image, specify centos-cloud as the image
+                project.
+
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

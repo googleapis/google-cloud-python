@@ -736,9 +736,7 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Autoscaler:
-        r"""Returns the specified autoscaler resource. Gets a
-        list of available autoscalers by making a list()
-        request.
+        r"""Returns the specified autoscaler resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetAutoscalerRequest, dict]):

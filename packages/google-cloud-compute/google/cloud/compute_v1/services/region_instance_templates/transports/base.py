@@ -33,8 +33,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class RegionDisksTransport(abc.ABC):
-    """Abstract transport class for RegionDisks."""
+class RegionInstanceTemplatesTransport(abc.ABC):
+    """Abstract transport class for RegionInstanceTemplates."""
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/compute",
@@ -127,16 +127,6 @@ class RegionDisksTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.add_resource_policies: gapic_v1.method.wrap_method(
-                self.add_resource_policies,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.create_snapshot: gapic_v1.method.wrap_method(
-                self.create_snapshot,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
                 default_timeout=None,
@@ -147,11 +137,6 @@ class RegionDisksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
                 default_timeout=None,
@@ -159,36 +144,6 @@ class RegionDisksTransport(abc.ABC):
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.remove_resource_policies: gapic_v1.method.wrap_method(
-                self.remove_resource_policies,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.resize: gapic_v1.method.wrap_method(
-                self.resize,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.set_labels: gapic_v1.method.wrap_method(
-                self.set_labels,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.test_iam_permissions: gapic_v1.method.wrap_method(
-                self.test_iam_permissions,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update: gapic_v1.method.wrap_method(
-                self.update,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -204,28 +159,10 @@ class RegionDisksTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def add_resource_policies(
-        self,
-    ) -> Callable[
-        [compute.AddResourcePoliciesRegionDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_snapshot(
-        self,
-    ) -> Callable[
-        [compute.CreateSnapshotRegionDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def delete(
         self,
     ) -> Callable[
-        [compute.DeleteRegionDiskRequest],
+        [compute.DeleteRegionInstanceTemplateRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -234,16 +171,8 @@ class RegionDisksTransport(abc.ABC):
     def get(
         self,
     ) -> Callable[
-        [compute.GetRegionDiskRequest], Union[compute.Disk, Awaitable[compute.Disk]]
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.GetIamPolicyRegionDiskRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
+        [compute.GetRegionInstanceTemplateRequest],
+        Union[compute.InstanceTemplate, Awaitable[compute.InstanceTemplate]],
     ]:
         raise NotImplementedError()
 
@@ -251,7 +180,7 @@ class RegionDisksTransport(abc.ABC):
     def insert(
         self,
     ) -> Callable[
-        [compute.InsertRegionDiskRequest],
+        [compute.InsertRegionInstanceTemplateRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -260,64 +189,8 @@ class RegionDisksTransport(abc.ABC):
     def list(
         self,
     ) -> Callable[
-        [compute.ListRegionDisksRequest],
-        Union[compute.DiskList, Awaitable[compute.DiskList]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def remove_resource_policies(
-        self,
-    ) -> Callable[
-        [compute.RemoveResourcePoliciesRegionDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def resize(
-        self,
-    ) -> Callable[
-        [compute.ResizeRegionDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.SetIamPolicyRegionDiskRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def set_labels(
-        self,
-    ) -> Callable[
-        [compute.SetLabelsRegionDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsRegionDiskRequest],
-        Union[
-            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateRegionDiskRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
+        [compute.ListRegionInstanceTemplatesRequest],
+        Union[compute.InstanceTemplateList, Awaitable[compute.InstanceTemplateList]],
     ]:
         raise NotImplementedError()
 
@@ -338,4 +211,4 @@ class RegionDisksTransport(abc.ABC):
         return ex_op_service
 
 
-__all__ = ("RegionDisksTransport",)
+__all__ = ("RegionInstanceTemplatesTransport",)

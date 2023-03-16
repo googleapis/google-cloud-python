@@ -192,6 +192,11 @@ class DisksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update: gapic_v1.method.wrap_method(
+                self.update,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -317,6 +322,15 @@ class DisksTransport(abc.ABC):
         Union[
             compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update(
+        self,
+    ) -> Callable[
+        [compute.UpdateDiskRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

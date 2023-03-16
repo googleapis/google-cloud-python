@@ -629,8 +629,7 @@ class RoutesClient(metaclass=RoutesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Route:
-        r"""Returns the specified Route resource. Gets a list of
-        available routes by making a list() request.
+        r"""Returns the specified Route resource.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetRouteRequest, dict]):

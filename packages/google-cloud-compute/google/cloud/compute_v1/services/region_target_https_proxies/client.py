@@ -666,8 +666,7 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetHttpsProxy:
         r"""Returns the specified TargetHttpsProxy resource in
-        the specified region. Gets a list of available target
-        HTTP proxies by making a list() request.
+        the specified region.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionTargetHttpsProxyRequest, dict]):

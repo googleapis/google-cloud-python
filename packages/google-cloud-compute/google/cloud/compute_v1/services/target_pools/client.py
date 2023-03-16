@@ -1264,8 +1264,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetPool:
-        r"""Returns the specified target pool. Gets a list of
-        available target pools by making a list() request.
+        r"""Returns the specified target pool.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetPoolRequest, dict]):

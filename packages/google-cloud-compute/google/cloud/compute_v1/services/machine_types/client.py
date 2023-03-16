@@ -516,8 +516,7 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.MachineType:
-        r"""Returns the specified machine type. Gets a list of
-        available machine types by making a list() request.
+        r"""Returns the specified machine type.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetMachineTypeRequest, dict]):
