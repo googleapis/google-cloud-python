@@ -1,9 +1,9 @@
-Python Client for Cloud Workstations
-====================================
+Python Client for Cloud Workstations API
+========================================
 
 |preview| |pypi| |versions|
 
-`Cloud Workstations`_: 
+`Cloud Workstations API`_: Cloud Workstations API
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Workstations
    :target: https://pypi.org/project/google-cloud-workstations/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-workstations.svg
    :target: https://pypi.org/project/google-cloud-workstations/
-.. _Cloud Workstations: https://cloud.google.com/workstations/
+.. _Cloud Workstations API: https://cloud.google.com/workstations/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workstations/latest
 .. _Product Documentation:  https://cloud.google.com/workstations/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Workstations.`_
+3. `Enable the Cloud Workstations API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Workstations.:  https://cloud.google.com/workstations/
+.. _Enable the Cloud Workstations API.:  https://cloud.google.com/workstations/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Workstations
+-  Read the `Client Library Documentation`_ for Cloud Workstations API
    to see other available methods on the client.
--  Read the `Cloud Workstations Product documentation`_ to learn
+-  Read the `Cloud Workstations API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Workstations Product Documentation:  https://cloud.google.com/workstations/docs
+.. _Cloud Workstations API Product documentation:  https://cloud.google.com/workstations/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
