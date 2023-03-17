@@ -239,6 +239,31 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._default_query_job_config, QueryJobConfig)
         self.assertTrue(client._default_query_job_config.dry_run)
 
+    def test_ctor_w_load_job_config(self):
+        from google.cloud.bigquery._http import Connection
+        from google.cloud.bigquery import LoadJobConfig
+
+        creds = _make_credentials()
+        http = object()
+        location = "us-central"
+        job_config = LoadJobConfig()
+        job_config.create_session = True
+
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            location=location,
+            default_load_job_config=job_config,
+        )
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
+        self.assertEqual(client.location, location)
+
+        self.assertIsInstance(client._default_load_job_config, LoadJobConfig)
+        self.assertTrue(client._default_load_job_config.create_session)
+
     def test__call_api_applying_custom_retry_on_timeout(self):
         from concurrent.futures import TimeoutError
         from google.cloud.bigquery.retry import DEFAULT_RETRY
@@ -425,6 +450,19 @@ class TestClient(unittest.TestCase):
         job_config.dry_run = True
         client.default_query_job_config = job_config
         self.assertIsInstance(client.default_query_job_config, QueryJobConfig)
+
+    def test_default_load_job_config(self):
+        from google.cloud.bigquery import LoadJobConfig
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        self.assertIsNone(client.default_load_job_config)
+
+        job_config = LoadJobConfig()
+        job_config.create_session = True
+        client.default_load_job_config = job_config
+        self.assertIsInstance(client.default_load_job_config, LoadJobConfig)
 
     def test_get_service_account_email(self):
         path = "/projects/%s/serviceAccount" % (self.PROJECT,)
@@ -3281,6 +3319,146 @@ class TestClient(unittest.TestCase):
             )
 
         self.assertIn("Expected an instance of LoadJobConfig", exc.exception.args[0])
+
+    def test_load_table_from_uri_w_explicit_job_config(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        JOB = "job_name"
+        DESTINATION = "destination_table"
+        SOURCE_URI = "http://example.com/source.csv"
+        RESOURCE = {
+            "jobReference": {"jobId": JOB, "projectId": self.PROJECT},
+            "configuration": {
+                "load": {
+                    "sourceUris": [SOURCE_URI],
+                    "destinationTable": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "tableId": DESTINATION,
+                    },
+                    "createSession": True,
+                    "encoding": "UTF-8",
+                }
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RESOURCE)
+        destination = DatasetReference(self.PROJECT, self.DS_ID).table(DESTINATION)
+
+        job_config = LoadJobConfig()
+        job_config.create_session = True
+        job_config.encoding = "UTF-8"
+        client.load_table_from_uri(
+            SOURCE_URI, destination, job_id=JOB, job_config=job_config
+        )
+
+        # Check that load_table_from_uri actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+    def test_load_table_from_uri_w_explicit_job_config_override(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        JOB = "job_name"
+        DESTINATION = "destination_table"
+        SOURCE_URI = "http://example.com/source.csv"
+        RESOURCE = {
+            "jobReference": {"jobId": JOB, "projectId": self.PROJECT},
+            "configuration": {
+                "load": {
+                    "sourceUris": [SOURCE_URI],
+                    "destinationTable": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "tableId": DESTINATION,
+                    },
+                    "createSession": False,
+                    "encoding": "ISO-8859-1",
+                }
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+        default_job_config = LoadJobConfig()
+        default_job_config.create_session = True
+        default_job_config.encoding = "ISO-8859-1"
+
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            default_load_job_config=default_job_config,
+        )
+        conn = client._connection = make_connection(RESOURCE)
+        destination = DatasetReference(self.PROJECT, self.DS_ID).table(DESTINATION)
+
+        job_config = LoadJobConfig()
+        job_config.create_session = False
+        client.load_table_from_uri(
+            SOURCE_URI, destination, job_id=JOB, job_config=job_config
+        )
+
+        # Check that load_table_from_uri actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+    def test_load_table_from_uri_w_default_load_config(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        JOB = "job_name"
+        DESTINATION = "destination_table"
+        SOURCE_URI = "http://example.com/source.csv"
+        RESOURCE = {
+            "jobReference": {"jobId": JOB, "projectId": self.PROJECT},
+            "configuration": {
+                "load": {
+                    "sourceUris": [SOURCE_URI],
+                    "destinationTable": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "tableId": DESTINATION,
+                    },
+                    "encoding": "ISO-8859-1",
+                }
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+        default_job_config = LoadJobConfig()
+        default_job_config.encoding = "ISO-8859-1"
+
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            default_load_job_config=default_job_config,
+        )
+        conn = client._connection = make_connection(RESOURCE)
+        destination = DatasetReference(self.PROJECT, self.DS_ID).table(DESTINATION)
+
+        client.load_table_from_uri(SOURCE_URI, destination, job_id=JOB)
+
+        # Check that load_table_from_uri actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=DEFAULT_TIMEOUT,
+        )
 
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b""):
@@ -6940,6 +7118,118 @@ class TestClientUpload(object):
         err_msg = str(exc.value)
         assert "Expected an instance of LoadJobConfig" in err_msg
 
+    def test_load_table_from_file_w_explicit_job_config(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+
+        job_config = self._make_config()
+        job_config.create_session = True
+        job_config.encoding = "UTF-8"
+        do_upload_patch = self._make_do_upload_patch(
+            client, "_do_resumable_upload", self.EXPECTED_CONFIGURATION
+        )
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj,
+                self.TABLE_REF,
+                job_id="job_id",
+                project=self.PROJECT,
+                location=self.LOCATION,
+                job_config=job_config,
+            )
+
+        expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
+        expected_resource["jobReference"]["location"] = self.LOCATION
+        expected_resource["jobReference"]["projectId"] = self.PROJECT
+        expected_resource["configuration"]["load"]["createSession"] = True
+        expected_resource["configuration"]["load"]["encoding"] = "UTF-8"
+        do_upload.assert_called_once_with(
+            file_obj,
+            expected_resource,
+            _DEFAULT_NUM_RETRIES,
+            DEFAULT_TIMEOUT,
+            project=self.PROJECT,
+        )
+
+    def test_load_table_from_file_w_explicit_job_config_override(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+
+        default_job_config = LoadJobConfig()
+        default_job_config.create_session = True
+        default_job_config.encoding = "ISO-8859-1"
+        client.default_load_job_config = default_job_config
+
+        job_config = self._make_config()
+        job_config.create_session = False
+        do_upload_patch = self._make_do_upload_patch(
+            client, "_do_resumable_upload", self.EXPECTED_CONFIGURATION
+        )
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj,
+                self.TABLE_REF,
+                job_id="job_id",
+                project=self.PROJECT,
+                location=self.LOCATION,
+                job_config=job_config,
+            )
+
+        expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
+        expected_resource["jobReference"]["location"] = self.LOCATION
+        expected_resource["jobReference"]["projectId"] = self.PROJECT
+        expected_resource["configuration"]["load"]["createSession"] = False
+        expected_resource["configuration"]["load"]["encoding"] = "ISO-8859-1"
+        do_upload.assert_called_once_with(
+            file_obj,
+            expected_resource,
+            _DEFAULT_NUM_RETRIES,
+            DEFAULT_TIMEOUT,
+            project=self.PROJECT,
+        )
+
+    def test_load_table_from_file_w_default_load_config(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+
+        default_job_config = LoadJobConfig()
+        default_job_config.encoding = "ISO-8859-1"
+        client.default_load_job_config = default_job_config
+
+        job_config = self._make_config()
+        do_upload_patch = self._make_do_upload_patch(
+            client, "_do_resumable_upload", self.EXPECTED_CONFIGURATION
+        )
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj,
+                self.TABLE_REF,
+                job_id="job_id",
+                project=self.PROJECT,
+                location=self.LOCATION,
+                job_config=job_config,
+            )
+
+        expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
+        expected_resource["jobReference"]["location"] = self.LOCATION
+        expected_resource["jobReference"]["projectId"] = self.PROJECT
+        expected_resource["configuration"]["load"]["encoding"] = "ISO-8859-1"
+        do_upload.assert_called_once_with(
+            file_obj,
+            expected_resource,
+            _DEFAULT_NUM_RETRIES,
+            DEFAULT_TIMEOUT,
+            project=self.PROJECT,
+        )
+
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe(self):
@@ -7303,6 +7593,117 @@ class TestClientUpload(object):
 
         # the original config object should not have been modified
         assert job_config.to_api_repr() == original_config_copy.to_api_repr()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_explicit_job_config_override(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        client.default_load_job_config = job.LoadJobConfig(
+            encoding="ISO-8859-1",
+            write_disposition=job.WriteDisposition.WRITE_TRUNCATE,
+            source_format=job.SourceFormat.PARQUET,
+        )
+
+        job_config = job.LoadJobConfig(
+            write_disposition=job.WriteDisposition.WRITE_APPEND,
+            source_format=job.SourceFormat.PARQUET,
+        )
+        original_config_copy = copy.deepcopy(job_config)
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
+            ),
+        )
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            size=mock.ANY,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.write_disposition == job.WriteDisposition.WRITE_APPEND
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert sent_config.encoding == "ISO-8859-1"
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_default_load_config(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        client.default_load_job_config = job.LoadJobConfig(
+            write_disposition=job.WriteDisposition.WRITE_TRUNCATE,
+            source_format=job.SourceFormat.PARQUET,
+        )
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
+            ),
+        )
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            size=mock.ANY,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.write_disposition == job.WriteDisposition.WRITE_TRUNCATE
+        assert sent_config.source_format == job.SourceFormat.PARQUET
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
@@ -8376,6 +8777,118 @@ class TestClientUpload(object):
             )
         err_msg = str(exc.value)
         assert "Expected an instance of LoadJobConfig" in err_msg
+
+    def test_load_table_from_json_w_explicit_job_config_override(self):
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+
+        json_rows = [
+            {"name": "One", "age": 11, "birthday": "2008-09-10", "adult": False},
+            {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
+        ]
+
+        schema = [
+            SchemaField("name", "STRING"),
+            SchemaField("age", "INTEGER"),
+            SchemaField("adult", "BOOLEAN"),
+        ]
+        client.default_load_job_config = job.LoadJobConfig(
+            schema=schema, encoding="ISO-8859-1"
+        )
+
+        override_schema = schema
+        override_schema[0] = SchemaField("username", "STRING")
+        job_config = job.LoadJobConfig(schema=override_schema)
+        original_config_copy = copy.deepcopy(job_config)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        with load_patch as load_table_from_file:
+            client.load_table_from_json(
+                json_rows,
+                self.TABLE_REF,
+                job_config=job_config,
+                project="project-x",
+                location="EU",
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            size=mock.ANY,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location="EU",
+            project="project-x",
+            job_config=mock.ANY,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
+        assert sent_config.schema == override_schema
+        assert sent_config.encoding == "ISO-8859-1"
+        assert not sent_config.autodetect
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
+
+    def test_load_table_from_json_w_default_job_config(self):
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+
+        json_rows = [
+            {"name": "One", "age": 11, "birthday": "2008-09-10", "adult": False},
+            {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
+        ]
+
+        schema = [
+            SchemaField("name", "STRING"),
+            SchemaField("age", "INTEGER"),
+            SchemaField("adult", "BOOLEAN"),
+        ]
+        client.default_load_job_config = job.LoadJobConfig(schema=schema)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        with load_patch as load_table_from_file:
+            client.load_table_from_json(
+                json_rows,
+                self.TABLE_REF,
+                job_config=None,
+                project="project-x",
+                location="EU",
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            size=mock.ANY,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location="EU",
+            project="project-x",
+            job_config=mock.ANY,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
+        assert sent_config.schema == schema
 
     def test_load_table_from_json_unicode_emoji_data_case(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES

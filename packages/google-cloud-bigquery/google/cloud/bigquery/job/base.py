@@ -269,7 +269,7 @@ class _JobConfig(object):
         """
         return copy.deepcopy(self._properties)
 
-    def _fill_from_default(self, default_job_config):
+    def _fill_from_default(self, default_job_config=None):
         """Merge this job config with a default job config.
 
         The keys in this object take precedence over the keys in the default
@@ -283,6 +283,10 @@ class _JobConfig(object):
         Returns:
             google.cloud.bigquery.job._JobConfig: A new (merged) job config.
         """
+        if not default_job_config:
+            new_job_config = copy.deepcopy(self)
+            return new_job_config
+
         if self._job_type != default_job_config._job_type:
             raise TypeError(
                 "attempted to merge two incompatible job types: "

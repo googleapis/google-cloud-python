@@ -2319,7 +2319,7 @@ def _table_exists(t):
         return False
 
 
-def test_dbapi_create_view(dataset_id):
+def test_dbapi_create_view(dataset_id: str):
 
     query = f"""
     CREATE VIEW {dataset_id}.dbapi_create_view
@@ -2332,7 +2332,7 @@ def test_dbapi_create_view(dataset_id):
     assert Config.CURSOR.rowcount == 0, "expected 0 rows"
 
 
-def test_parameterized_types_round_trip(dataset_id):
+def test_parameterized_types_round_trip(dataset_id: str):
     client = Config.CLIENT
     table_id = f"{dataset_id}.test_parameterized_types_round_trip"
     fields = (
@@ -2358,7 +2358,7 @@ def test_parameterized_types_round_trip(dataset_id):
     assert tuple(s._key()[:2] for s in table2.schema) == fields
 
 
-def test_table_snapshots(dataset_id):
+def test_table_snapshots(dataset_id: str):
     from google.cloud.bigquery import CopyJobConfig
     from google.cloud.bigquery import OperationType
 
@@ -2429,7 +2429,7 @@ def test_table_snapshots(dataset_id):
     assert rows == [(1, "one"), (2, "two")]
 
 
-def test_table_clones(dataset_id):
+def test_table_clones(dataset_id: str):
     from google.cloud.bigquery import CopyJobConfig
     from google.cloud.bigquery import OperationType
 
