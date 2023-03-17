@@ -177,10 +177,10 @@ def test_search_page_with_target_string(get_bytes_single_file_mock):
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0/"
     )
 
-    actual_string = doc.search_pages(target_string="contract")
+    actual_pages = doc.search_pages(target_string="contract")
 
     get_bytes_single_file_mock.assert_called_once()
-    assert len(actual_string) == 1
+    assert len(actual_pages) == 1
 
 
 def test_search_page_with_target_pattern(get_bytes_single_file_mock):
@@ -192,6 +192,28 @@ def test_search_page_with_target_pattern(get_bytes_single_file_mock):
 
     get_bytes_single_file_mock.assert_called_once()
     assert len(actual_regex) == 1
+
+
+def test_search_page_with_multiple_pages(get_bytes_multiple_files_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0/"
+    )
+
+    actual_pages = doc.search_pages(target_string="Invoice")
+
+    get_bytes_multiple_files_mock.assert_called_once()
+    assert len(actual_pages) == 48
+
+
+def test_search_page_with_no_results(get_bytes_single_file_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0/"
+    )
+
+    actual_pages = doc.search_pages(target_string="Google")
+
+    get_bytes_single_file_mock.assert_called_once()
+    assert len(actual_pages) == 0
 
 
 def test_search_page_with_regex_and_str(get_bytes_single_file_mock):

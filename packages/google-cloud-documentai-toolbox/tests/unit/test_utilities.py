@@ -1,4 +1,3 @@
-# pylint: disable=protected-access
 # -*- coding: utf-8 -*-
 # Copyright 2023 Google LLC
 #
@@ -31,7 +30,7 @@ test_prefix = "documentai/input"
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
-def test_list_gcs_document_tree_with_one_folder(mock_storage, capfd):
+def test_list_gcs_document_tree_with_one_folder(mock_storage):
     client = mock_storage.Client.return_value
 
     mock_bucket = mock.Mock()
@@ -60,8 +59,6 @@ def test_list_gcs_document_tree_with_one_folder(mock_storage, capfd):
     )
 
     mock_storage.Client.assert_called_once()
-
-    out, err = capfd.readouterr()
 
     assert "gs://test-directory/1" in list(doc_list.keys())
 
@@ -302,6 +299,28 @@ def test_print_gcs_document_tree_with_gcs_uri_contains_file_type():
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+def test_create_batches_with_empty_directory(mock_storage, capfd):
+    client = mock_storage.Client.return_value
+    mock_bucket = mock.Mock()
+    client.Bucket.return_value = mock_bucket
+
+    mock_blob = mock.Mock(name="test_directory/", content_type="", size=0)
+    mock_blob.name.endswith.return_value = True
+
+    client.list_blobs.return_value = [mock_blob]
+
+    actual = utilities.create_batches(
+        gcs_bucket_name=test_bucket, gcs_prefix=test_prefix
+    )
+
+    mock_storage.Client.assert_called_once()
+
+    out, err = capfd.readouterr()
+    assert out == ""
+    assert len(actual) == 0
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
 def test_create_batches_with_3_documents(mock_storage, capfd):
     client = mock_storage.Client.return_value
     mock_bucket = mock.Mock()
@@ -328,15 +347,14 @@ def test_create_batches_with_3_documents(mock_storage, capfd):
     assert len(actual[0].gcs_documents.documents) == 3
 
 
-def test_create_batches_with_invalid_batch_size(capfd):
-    with pytest.raises(ValueError):
+def test_create_batches_with_invalid_batch_size():
+    with pytest.raises(
+        ValueError,
+        match="Batch size must be less than 50. You provided 51.",
+    ):
         utilities.create_batches(
             gcs_bucket_name=test_bucket, gcs_prefix=test_prefix, batch_size=51
         )
-
-        out, err = capfd.readouterr()
-        assert "Batch size must be less than" in out
-        assert err
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
@@ -387,7 +405,7 @@ def test_create_batches_with_invalid_file_type(mock_storage, capfd):
 
     out, err = capfd.readouterr()
     assert "Invalid Mime Type" in out
-    assert actual == []
+    assert not actual
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
@@ -410,4 +428,4 @@ def test_create_batches_with_large_file(mock_storage, capfd):
 
     out, err = capfd.readouterr()
     assert "File size must be less than" in out
-    assert actual == []
+    assert not actual
