@@ -16,7 +16,7 @@ Python Client for Cloud Workstations
    :target: https://pypi.org/project/google-cloud-workstations/
 .. _Cloud Workstations: https://cloud.google.com/workstations/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workstations/latest
-.. _Product Documentation:  https://cloud.google.com/workstations/
+.. _Product Documentation:  https://cloud.google.com/workstations/docs
 
 Quick Start
 -----------
@@ -103,5 +103,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Workstations Product documentation:  https://cloud.google.com/workstations/
+.. _Cloud Workstations Product Documentation:  https://cloud.google.com/workstations/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
