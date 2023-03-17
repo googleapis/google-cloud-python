@@ -20,13 +20,15 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-apps-script-type"
+name = "google-apps-script-type-slides"
 
 
-description = "Google Apps Script Type API client library"
+description = "Google Apps Script Type Slides API client library"
 
 version = {}
-with open(os.path.join(package_root, "google/apps/script/type/gapic_version.py")) as fp:
+with open(
+    os.path.join(package_root, "google/apps/script/type/slides/gapic_version.py")
+) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 
@@ -40,6 +42,7 @@ dependencies = [
     "proto-plus >= 1.22.0, <2.0.0dev",
     "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "google-apps-script-type >= 0.2.0, <1.0.0dev",
 ]
 url = "https://github.com/googleapis/google-cloud-python"
 
@@ -55,7 +58,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google", "google.apps", "google.apps.script"]
+namespaces = ["google", "google.apps", "google.apps.script", "google.apps.script.type"]
 
 setuptools.setup(
     name=name,
