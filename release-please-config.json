@@ -146,6 +146,13 @@
                 "google/cloud/alloydb_v1alpha/gapic_version.py",
                 "google/cloud/alloydb_v1beta/gapic_version.py"
             ]
+        },
+        "packages/google-cloud-workstations": {
+            "component": "google-cloud-workstations",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/workstations/gapic_version.py"
+            ]
         }
     }
 }
