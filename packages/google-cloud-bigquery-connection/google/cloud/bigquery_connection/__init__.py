@@ -39,6 +39,9 @@ from google.cloud.bigquery_connection_v1.types.connection import (
     GetConnectionRequest,
     ListConnectionsRequest,
     ListConnectionsResponse,
+    MetastoreServiceConfig,
+    SparkHistoryServerConfig,
+    SparkProperties,
     UpdateConnectionRequest,
 )
 
@@ -59,5 +62,8 @@ __all__ = (
     "GetConnectionRequest",
     "ListConnectionsRequest",
     "ListConnectionsResponse",
+    "MetastoreServiceConfig",
+    "SparkHistoryServerConfig",
+    "SparkProperties",
     "UpdateConnectionRequest",
 )

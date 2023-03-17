@@ -3056,6 +3056,15 @@ def test_create_connection_rest(request_type):
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
+        "spark": {
+            "service_account_id": "service_account_id_value",
+            "metastore_service_config": {
+                "metastore_service": "metastore_service_value"
+            },
+            "spark_history_server_config": {
+                "dataproc_cluster": "dataproc_cluster_value"
+            },
+        },
         "creation_time": 1379,
         "last_modified_time": 1890,
         "has_credential": True,
@@ -3299,6 +3308,15 @@ def test_create_connection_rest_bad_request(
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
+        "spark": {
+            "service_account_id": "service_account_id_value",
+            "metastore_service_config": {
+                "metastore_service": "metastore_service_value"
+            },
+            "spark_history_server_config": {
+                "dataproc_cluster": "dataproc_cluster_value"
+            },
+        },
         "creation_time": 1379,
         "last_modified_time": 1890,
         "has_credential": True,
@@ -4075,6 +4093,15 @@ def test_update_connection_rest(request_type):
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
+        "spark": {
+            "service_account_id": "service_account_id_value",
+            "metastore_service_config": {
+                "metastore_service": "metastore_service_value"
+            },
+            "spark_history_server_config": {
+                "dataproc_cluster": "dataproc_cluster_value"
+            },
+        },
         "creation_time": 1379,
         "last_modified_time": 1890,
         "has_credential": True,
@@ -4319,6 +4346,15 @@ def test_update_connection_rest_bad_request(
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
+        "spark": {
+            "service_account_id": "service_account_id_value",
+            "metastore_service_config": {
+                "metastore_service": "metastore_service_value"
+            },
+            "spark_history_server_config": {
+                "dataproc_cluster": "dataproc_cluster_value"
+            },
+        },
         "creation_time": 1379,
         "last_modified_time": 1890,
         "has_credential": True,
@@ -6070,10 +6106,36 @@ def test_connection_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_connection_path():
+def test_cluster_path():
     project = "squid"
-    location = "clam"
-    connection = "whelk"
+    region = "clam"
+    cluster = "whelk"
+    expected = "projects/{project}/regions/{region}/clusters/{cluster}".format(
+        project=project,
+        region=region,
+        cluster=cluster,
+    )
+    actual = ConnectionServiceClient.cluster_path(project, region, cluster)
+    assert expected == actual
+
+
+def test_parse_cluster_path():
+    expected = {
+        "project": "octopus",
+        "region": "oyster",
+        "cluster": "nudibranch",
+    }
+    path = ConnectionServiceClient.cluster_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConnectionServiceClient.parse_cluster_path(path)
+    assert expected == actual
+
+
+def test_connection_path():
+    project = "cuttlefish"
+    location = "mussel"
+    connection = "winkle"
     expected = (
         "projects/{project}/locations/{location}/connections/{connection}".format(
             project=project,
@@ -6087,14 +6149,40 @@ def test_connection_path():
 
 def test_parse_connection_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "connection": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "connection": "abalone",
     }
     path = ConnectionServiceClient.connection_path(**expected)
 
     # Check that the path construction is reversible.
     actual = ConnectionServiceClient.parse_connection_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "squid"
+    location = "clam"
+    service = "whelk"
+    expected = "projects/{project}/locations/{location}/services/{service}".format(
+        project=project,
+        location=location,
+        service=service,
+    )
+    actual = ConnectionServiceClient.service_path(project, location, service)
+    assert expected == actual
+
+
+def test_parse_service_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "service": "nudibranch",
+    }
+    path = ConnectionServiceClient.service_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConnectionServiceClient.parse_service_path(path)
     assert expected == actual
 
 

@@ -37,6 +37,9 @@ from .types.connection import (
     GetConnectionRequest,
     ListConnectionsRequest,
     ListConnectionsResponse,
+    MetastoreServiceConfig,
+    SparkHistoryServerConfig,
+    SparkProperties,
     UpdateConnectionRequest,
 )
 
@@ -57,5 +60,8 @@ __all__ = (
     "GetConnectionRequest",
     "ListConnectionsRequest",
     "ListConnectionsResponse",
+    "MetastoreServiceConfig",
+    "SparkHistoryServerConfig",
+    "SparkProperties",
     "UpdateConnectionRequest",
 )

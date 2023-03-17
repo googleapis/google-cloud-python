@@ -63,8 +63,12 @@ class ConnectionServiceAsyncClient:
     DEFAULT_ENDPOINT = ConnectionServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConnectionServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    cluster_path = staticmethod(ConnectionServiceClient.cluster_path)
+    parse_cluster_path = staticmethod(ConnectionServiceClient.parse_cluster_path)
     connection_path = staticmethod(ConnectionServiceClient.connection_path)
     parse_connection_path = staticmethod(ConnectionServiceClient.parse_connection_path)
+    service_path = staticmethod(ConnectionServiceClient.service_path)
+    parse_service_path = staticmethod(ConnectionServiceClient.parse_service_path)
     common_billing_account_path = staticmethod(
         ConnectionServiceClient.common_billing_account_path
     )

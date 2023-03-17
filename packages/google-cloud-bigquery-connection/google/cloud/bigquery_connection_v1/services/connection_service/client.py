@@ -183,6 +183,28 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def cluster_path(
+        project: str,
+        region: str,
+        cluster: str,
+    ) -> str:
+        """Returns a fully-qualified cluster string."""
+        return "projects/{project}/regions/{region}/clusters/{cluster}".format(
+            project=project,
+            region=region,
+            cluster=cluster,
+        )
+
+    @staticmethod
+    def parse_cluster_path(path: str) -> Dict[str, str]:
+        """Parses a cluster path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/clusters/(?P<cluster>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def connection_path(
         project: str,
         location: str,
@@ -202,6 +224,28 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         """Parses a connection path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_path(
+        project: str,
+        location: str,
+        service: str,
+    ) -> str:
+        """Returns a fully-qualified service string."""
+        return "projects/{project}/locations/{location}/services/{service}".format(
+            project=project,
+            location=location,
+            service=service,
+        )
+
+    @staticmethod
+    def parse_service_path(path: str) -> Dict[str, str]:
+        """Parses a service path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/services/(?P<service>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

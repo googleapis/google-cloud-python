@@ -38,6 +38,9 @@ __protobuf__ = proto.module(
         "AwsAccessRole",
         "AzureProperties",
         "CloudResourceProperties",
+        "MetastoreServiceConfig",
+        "SparkHistoryServerConfig",
+        "SparkProperties",
     },
 )
 
@@ -229,6 +232,10 @@ class Connection(proto.Message):
             Cloud Resource properties.
 
             This field is a member of `oneof`_ ``properties``.
+        spark (google.cloud.bigquery_connection_v1.types.SparkProperties):
+            Spark properties.
+
+            This field is a member of `oneof`_ ``properties``.
         creation_time (int):
             Output only. The creation timestamp of the
             connection.
@@ -281,6 +288,12 @@ class Connection(proto.Message):
         number=22,
         oneof="properties",
         message="CloudResourceProperties",
+    )
+    spark: "SparkProperties" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        oneof="properties",
+        message="SparkProperties",
     )
     creation_time: int = proto.Field(
         proto.INT64,
@@ -614,6 +627,87 @@ class CloudResourceProperties(proto.Message):
     service_account_id: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class MetastoreServiceConfig(proto.Message):
+    r"""Configuration of the Dataproc Metastore Service.
+
+    Attributes:
+        metastore_service (str):
+            Optional. Resource name of an existing Dataproc Metastore
+            service.
+
+            Example:
+
+            -  ``projects/[project_id]/locations/[region]/services/[service_id]``
+    """
+
+    metastore_service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SparkHistoryServerConfig(proto.Message):
+    r"""Configuration of the Spark History Server.
+
+    Attributes:
+        dataproc_cluster (str):
+            Optional. Resource name of an existing Dataproc Cluster to
+            act as a Spark History Server for the connection.
+
+            Example:
+
+            -  ``projects/[project_id]/regions/[region]/clusters/[cluster_name]``
+    """
+
+    dataproc_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SparkProperties(proto.Message):
+    r"""Container for connection properties to execute stored
+    procedures for Apache Spark.
+
+    Attributes:
+        service_account_id (str):
+            Output only. The account ID of the service
+            created for the purpose of this connection.
+
+            The service account does not have any
+            permissions associated with it when it is
+            created. After creation, customers delegate
+            permissions to the service account. When the
+            connection is used in the context of a stored
+            procedure for Apache Spark in BigQuery, the
+            service account will be used to connect to the
+            desired resources in Google Cloud.
+            The account ID is in the form of:
+            bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
+        metastore_service_config (google.cloud.bigquery_connection_v1.types.MetastoreServiceConfig):
+            Optional. Dataproc Metastore Service
+            configuration for the connection.
+        spark_history_server_config (google.cloud.bigquery_connection_v1.types.SparkHistoryServerConfig):
+            Optional. Spark History Server configuration
+            for the connection.
+    """
+
+    service_account_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metastore_service_config: "MetastoreServiceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="MetastoreServiceConfig",
+    )
+    spark_history_server_config: "SparkHistoryServerConfig" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="SparkHistoryServerConfig",
     )
 
 
