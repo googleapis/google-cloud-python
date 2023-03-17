@@ -29,7 +29,6 @@ pip-log.txt
 .nox
 .cache
 .pytest_cache
-.mypy_cache/
 
 
 # Mac
