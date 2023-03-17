@@ -109,6 +109,7 @@ def test_api_build():
     )
 
     assert api_schema.requires_package(('google', 'example', 'v1'))
+
     assert not api_schema.requires_package(('elgoog', 'example', 'v1'))
 
     # Establish that the subpackages work.
@@ -718,70 +719,294 @@ def test_undefined_type():
 def test_python_modules_nested():
     fd = (
         make_file_pb2(
-            name='dep.proto',
-            package='google.dep',
-            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+            name="dep.proto",
+            package="google.dep",
+            messages=(make_message_pb2(name="ImportedMessage", fields=()),),
         ),
         make_file_pb2(
-            name='common.proto',
-            package='google.example.v1.common',
-            messages=(make_message_pb2(name='Bar'),),
+            name="baa.proto",
+            package="google.baa",
+            messages=(make_message_pb2(name="ImportedMessageBaa", fields=()),),
         ),
         make_file_pb2(
-            name='foo.proto',
-            package='google.example.v1',
+            name="bab.v1.proto",
+            package="google.bab.v1",
+            messages=(make_message_pb2(name="ImportedMessageBab", fields=()),),
+        ),
+        make_file_pb2(
+            name="bac.v10.proto",
+            package="google.bac.v10",
+            messages=(make_message_pb2(name="ImportedMessageBac", fields=()),),
+        ),
+        make_file_pb2(
+            name="bad.v2beta.proto",
+            package="google.bad.v2beta",
+            messages=(make_message_pb2(name="ImportedMessageBad", fields=()),),
+        ),
+        make_file_pb2(
+            name="bae.v2beta20.proto",
+            package="google.bae.v2beta20",
+            messages=(make_message_pb2(name="ImportedMessageBae", fields=()),),
+        ),
+        make_file_pb2(
+            name="baf.v20beta.proto",
+            package="google.baf.v20beta",
+            messages=(make_message_pb2(name="ImportedMessageBaf", fields=()),),
+        ),
+        make_file_pb2(
+            name="bag.v20p1.proto",
+            package="google.bag.v20p1",
+            messages=(make_message_pb2(name="ImportedMessageBag", fields=()),),
+        ),
+        make_file_pb2(
+            name="bah.v20p1alpha3p5.proto",
+            package="google.bah.v20p1alpha3p5",
+            messages=(make_message_pb2(name="ImportedMessageBah", fields=()),),
+        ),
+        make_file_pb2(
+            name="bah.v20p1.bai.proto",
+            package="google.bah.v20p1.bai",
+            messages=(make_message_pb2(name="ImportedMessageBai", fields=()),),
+        ),
+        make_file_pb2(
+            name="bah.v20p1.baj.v3.proto",
+            package="google.bah.v20p1.baj.v3",
+            messages=(make_message_pb2(name="ImportedMessageBaj", fields=()),),
+        ),
+        make_file_pb2(
+            name="common.proto",
+            package="google.example.v1.common",
+            messages=(make_message_pb2(name="Bar"),),
+        ),
+        make_file_pb2(
+            name="foo.proto",
+            package="google.example.v1",
             messages=(
                 make_message_pb2(
-                    name='GetFooRequest',
+                    name="GetFooRequest",
                     fields=(
-                        make_field_pb2(name='primitive', number=2, type=1),
+                        make_field_pb2(name="primitive", number=2, type=1),
                         make_field_pb2(
-                            name='foo',
+                            name="foo",
                             number=3,
                             type=1,
-                            type_name='.google.example.v1.GetFooRequest.Foo',
+                            type_name=".google.example.v1.GetFooRequest.Foo",
                         ),
                     ),
                     nested_type=(
                         make_message_pb2(
-                            name='Foo',
+                            name="Foo",
                             fields=(
                                 make_field_pb2(
-                                    name='imported_message',
+                                    name="imported_message",
                                     number=1,
-                                    type_name='.google.dep.ImportedMessage'),
+                                    type_name=".google.dep.ImportedMessage",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Baa",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_baa",
+                                    number=1,
+                                    type_name=".google.baa.ImportedMessageBaa",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bab",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bab",
+                                    number=1,
+                                    type_name=".google.bab.v1.ImportedMessageBab",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bac",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bac",
+                                    number=1,
+                                    type_name=".google.bac.v10.ImportedMessageBac",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bad",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bad",
+                                    number=1,
+                                    type_name=".google.bad.v2beta.ImportedMessageBad",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bae",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bae",
+                                    number=1,
+                                    type_name=".google.bae.v2beta20.ImportedMessageBae",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Baf",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_baf",
+                                    number=1,
+                                    type_name=".google.baf.v20beta.ImportedMessageBaf",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bag",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bag",
+                                    number=1,
+                                    type_name=".google.bag.v20p1.ImportedMessageBag",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bah",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bah",
+                                    number=1,
+                                    type_name=".google.bah.v20p1alpha3p5.ImportedMessageBah",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bai",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bai",
+                                    number=1,
+                                    type_name=".google.bah.v20p1.bai.ImportedMessageBai",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Baj",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_baj",
+                                    number=1,
+                                    type_name=".google.bah.v20p1.baj.v3.ImportedMessageBaj",
+                                ),
                             ),
                         ),
                     ),
                 ),
                 make_message_pb2(
-                    name='GetFooResponse',
+                    name="GetFooResponse",
                     fields=(
                         make_field_pb2(
-                            name='foo',
+                            name="foo",
                             number=1,
-                            type_name='.google.example.v1.GetFooRequest.Foo',
+                            type_name=".google.example.v1.GetFooRequest.Foo",
                         ),
                     ),
                 ),
             ),
-            services=(descriptor_pb2.ServiceDescriptorProto(
-                name='FooService',
-                method=(
-                    descriptor_pb2.MethodDescriptorProto(
-                        name='GetFoo',
-                        input_type='google.example.v1.GetFooRequest',
-                        output_type='google.example.v1.GetFooResponse',
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="FooService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="GetFoo",
+                            input_type="google.example.v1.GetFooRequest",
+                            output_type="google.example.v1.GetFooResponse",
+                        ),
                     ),
                 ),
-            ),),
+            ),
         ),
     )
 
-    api_schema = api.API.build(fd, package='google.example.v1')
+    api_schema = api.API.build(fd, package="google.example.v1")
 
-    assert api_schema.protos['foo.proto'].python_modules == (
-        imp.Import(package=('google', 'dep'), module='dep_pb2'),
+    assert api_schema.protos["foo.proto"].python_modules == (
+        imp.Import(package=("google", "baa"), module="baa_pb2"),
+        imp.Import(package=("google", "bab", "v1"), module="bab_v1_pb2"),
+        imp.Import(package=("google", "bac", "v10"), module="bac_v10_pb2"),
+        imp.Import(package=("google", "bad", "v2beta"),
+                   module="bad_v2beta_pb2"),
+        imp.Import(package=("google", "bae", "v2beta20"),
+                   module="bae_v2beta20_pb2"),
+        imp.Import(package=("google", "baf", "v20beta"),
+                   module="baf_v20beta_pb2"),
+        imp.Import(package=("google", "bag", "v20p1"), module="bag_v20p1_pb2"),
+        imp.Import(
+            package=("google", "bah", "v20p1", "bai"),
+            module="bah_v20p1_bai_pb2"
+        ),
+        imp.Import(
+            package=("google", "bah", "v20p1", "baj", "v3"),
+            module="bah_v20p1_baj_v3_pb2",
+        ),
+        imp.Import(
+            package=("google", "bah", "v20p1alpha3p5"), module="bah_v20p1alpha3p5_pb2"
+        ),
+        imp.Import(package=("google", "dep"), module="dep_pb2"),
+    )
+
+    # Ensure that we can change the import statements to cater for a
+    # dependency that uses proto-plus types.
+    # For example,
+    # `from google.bar import bar_pb2` becomes `from google.bar.types import bar``
+    # `from google.baz.v2 import baz_pb2` becomes `from google.baz_v2.types improt baz_v2`
+    api_schema = api.API.build(
+        fd,
+        package="google.example.v1",
+        opts=Options(
+            proto_plus_deps="+".join(
+                (
+                    "google.baa",
+                    "google.bab.v1",
+                    "google.bac.v10",
+                    "google.bad.v2beta",
+                    "google.bae.v2beta20",
+                    "google.baf.v20beta",
+                    "google.bag.v20p1",
+                    "google.bah.v20p1alpha3p5",
+                    "google.bah.v20p1.bai",
+                    "google.bah.v20p1.baj.v3",
+                )
+            )
+        ),
+    )
+    assert api_schema.protos["foo.proto"].python_modules == (
+        imp.Import(package=("google", "baa", "types"), module="baa"),
+        imp.Import(package=("google", "bab_v1", "types"), module="bab_v1"),
+        imp.Import(package=("google", "bac_v10", "types"), module="bac_v10"),
+        imp.Import(package=("google", "bad_v2beta", "types"),
+                   module="bad_v2beta"),
+        imp.Import(package=("google", "bae_v2beta20", "types"),
+                   module="bae_v2beta20"),
+        imp.Import(package=("google", "baf_v20beta", "types"),
+                   module="baf_v20beta"),
+        imp.Import(package=("google", "bag_v20p1", "types"),
+                   module="bag_v20p1"),
+        imp.Import(
+            package=("google", "bah", "v20p1", "bai", "types"), module="bah_v20p1_bai"
+        ),
+        imp.Import(
+            package=("google", "bah", "v20p1", "baj_v3", "types"),
+            module="bah_v20p1_baj_v3",
+        ),
+        imp.Import(
+            package=("google", "bah_v20p1alpha3p5", "types"), module="bah_v20p1alpha3p5"
+        ),
+        imp.Import(package=("google", "dep"), module="dep_pb2"),
     )
 
 

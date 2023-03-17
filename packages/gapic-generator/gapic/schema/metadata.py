@@ -27,6 +27,7 @@ with the things they describe for easy access in templates.
 """
 
 import dataclasses
+import re
 from typing import FrozenSet, Tuple, Optional
 
 from google.protobuf import descriptor_pb2
@@ -89,10 +90,8 @@ class Address(BaseAddress):
             if self.module_alias:
                 module_name = self.module_alias
 
-            # This module is from a different proto package
-            # Most commonly happens for a common proto
-            # https://pypi.org/project/googleapis-common-protos/
-            if self.is_external_type:
+            # Add _pb2 suffix except when it is a proto-plus type
+            if not self.is_proto_plus_type:
                 module_name = f'{self.module}_pb2'
 
             # Return the dot-separated Python identifier.
@@ -103,8 +102,23 @@ class Address(BaseAddress):
         return '.'.join(self.parent + (self.name,))
 
     @property
-    def is_external_type(self):
-        return not self.proto_package.startswith(self.api_naming.proto_package)
+    def is_proto_plus_type(self) -> bool:
+        """This function is used to determine whether a given package `self.proto_package`
+        is using proto-plus types or protobuf types. There are 2 scenarios where the package
+        is expected to use proto-plus types:
+        1) When `self.proto_package` starts with `self.api_naming.proto_package`, then
+        the given package has the same namespace as the one that is being generated. It is assumed
+        that the gapic generator always generates packages with proto-plus types.
+        2) When `self.proto_package` is explicitly in `self.api_naming.proto_plus_deps` which is
+        populated via the generator option `proto-plus-deps`.
+
+        Returns:
+            bool: Whether the given package uses proto-plus types or not.
+        """
+        return self.proto_package.startswith(self.api_naming.proto_package) or (
+            hasattr(self.api_naming, "proto_plus_deps")
+            and self.proto_package in self.api_naming.proto_plus_deps
+        )
 
     @cached_property
     def __cached_string_repr(self):
@@ -187,6 +201,29 @@ class Address(BaseAddress):
                 module=self.module,
                 alias=self.module_alias,
             )
+
+        if self.is_proto_plus_type:
+            # We need to change the import statement to use an
+            # underscore between the module and the version. For example,
+            # change google.cloud.documentai.v1 to google.cloud.documentai_v1.
+            # Check if the package name contains a version.
+            version_regex = "^v\d[^/]*$"
+            regex_match = re.match(version_regex, self.package[-1])
+
+            if regex_match and len(self.package) > 1:
+                versioned_module = f"{self.package[-2]}_{regex_match[0]}"
+                return imp.Import(
+                    package=self.package[:-2] +
+                    (versioned_module, 'types'),
+                    module=self.module,
+                    alias=self.module_alias,
+                )
+            else:
+                return imp.Import(
+                    package=self.package + ('types',),
+                    module=self.module,
+                    alias=self.module_alias,
+                )
 
         # Return the standard import.
         return imp.Import(

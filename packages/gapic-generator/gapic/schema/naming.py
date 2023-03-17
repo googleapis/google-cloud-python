@@ -43,6 +43,7 @@ class Naming(abc.ABC):
     product_name: str = ''
     proto_package: str = ''
     _warehouse_package_name: str = ''
+    proto_plus_deps: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     def __post_init__(self):
         if not self.product_name:
@@ -146,6 +147,11 @@ class Naming(abc.ABC):
             package_info = dataclasses.replace(package_info,
                 _warehouse_package_name=opts.warehouse_package_name
                                                )
+        if opts.proto_plus_deps:
+            package_info = dataclasses.replace(
+                package_info,
+                proto_plus_deps=opts.proto_plus_deps,
+            )
 
         # Done; return the naming information.
         return package_info

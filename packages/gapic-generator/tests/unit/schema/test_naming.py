@@ -228,6 +228,17 @@ def test_cli_override_warehouse_package_name():
     assert n.warehouse_package_name == "google-cloud-foo"
 
 
+def test_cli_override_proto_plus_deps():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.translation')
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(
+            proto_plus_deps=('google.dep1', 'google.dep2')),
+    )
+    assert n.proto_plus_deps == ('google.dep1', 'google.dep2')
+
+
 def test_build_factory():
     proto = descriptor_pb2.FileDescriptorProto(
         package='google.mollusc.v1alpha1'
