@@ -477,7 +477,7 @@ class ExecuteSqlRequest(proto.Message):
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
         data_boost_enabled (bool):
-            If this is for a partitioned read and this field is set to
+            If this is for a partitioned query and this field is set to
             ``true``, the request will be executed via Spanner
             independent compute resources.
 
@@ -625,7 +625,7 @@ class ExecuteSqlRequest(proto.Message):
     )
     data_boost_enabled: bool = proto.Field(
         proto.BOOL,
-        number=15,
+        number=16,
     )
 
 
@@ -1138,7 +1138,7 @@ class ReadRequest(proto.Message):
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
         data_boost_enabled (bool):
-            If this is for a partitioned query and this field is set to
+            If this is for a partitioned read and this field is set to
             ``true``, the request will be executed via Spanner
             independent compute resources.
 
@@ -1192,7 +1192,7 @@ class ReadRequest(proto.Message):
     )
     data_boost_enabled: bool = proto.Field(
         proto.BOOL,
-        number=16,
+        number=15,
     )
 
 
