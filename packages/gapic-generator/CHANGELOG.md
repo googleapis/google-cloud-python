@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.9.0](https://github.com/googleapis/gapic-generator-python/compare/v1.8.6...v1.9.0) (2023-03-17)
+
+
+### Features
+
+* Add generator option proto-plus-dep ([#1596](https://github.com/googleapis/gapic-generator-python/issues/1596)) ([1c4de67](https://github.com/googleapis/gapic-generator-python/commit/1c4de6728e02d2fa1aa2c48e1a86def6aef5c563))
+
 ## [1.8.6](https://github.com/googleapis/gapic-generator-python/compare/v1.8.5...v1.8.6) (2023-03-14)
 
 
