@@ -20,6 +20,11 @@
                 "create_instance"
               ]
             },
+            "CreateSnapshot": {
+              "methods": [
+                "create_snapshot"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -28,6 +33,11 @@
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteSnapshot": {
+              "methods": [
+                "delete_snapshot"
               ]
             },
             "GetBackup": {
@@ -40,6 +50,11 @@
                 "get_instance"
               ]
             },
+            "GetSnapshot": {
+              "methods": [
+                "get_snapshot"
+              ]
+            },
             "ListBackups": {
               "methods": [
                 "list_backups"
@@ -48,6 +63,11 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
+              ]
+            },
+            "ListSnapshots": {
+              "methods": [
+                "list_snapshots"
               ]
             },
             "RestoreInstance": {
@@ -63,6 +83,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateSnapshot": {
+              "methods": [
+                "update_snapshot"
               ]
             }
           }
@@ -80,6 +105,11 @@
                 "create_instance"
               ]
             },
+            "CreateSnapshot": {
+              "methods": [
+                "create_snapshot"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -88,6 +118,11 @@
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteSnapshot": {
+              "methods": [
+                "delete_snapshot"
               ]
             },
             "GetBackup": {
@@ -100,6 +135,11 @@
                 "get_instance"
               ]
             },
+            "GetSnapshot": {
+              "methods": [
+                "get_snapshot"
+              ]
+            },
             "ListBackups": {
               "methods": [
                 "list_backups"
@@ -108,6 +148,11 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
+              ]
+            },
+            "ListSnapshots": {
+              "methods": [
+                "list_snapshots"
               ]
             },
             "RestoreInstance": {
@@ -123,6 +168,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateSnapshot": {
+              "methods": [
+                "update_snapshot"
               ]
             }
           }
@@ -140,6 +190,11 @@
                 "create_instance"
               ]
             },
+            "CreateSnapshot": {
+              "methods": [
+                "create_snapshot"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -148,6 +203,11 @@
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteSnapshot": {
+              "methods": [
+                "delete_snapshot"
               ]
             },
             "GetBackup": {
@@ -160,6 +220,11 @@
                 "get_instance"
               ]
             },
+            "GetSnapshot": {
+              "methods": [
+                "get_snapshot"
+              ]
+            },
             "ListBackups": {
               "methods": [
                 "list_backups"
@@ -168,6 +233,11 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
+              ]
+            },
+            "ListSnapshots": {
+              "methods": [
+                "list_snapshots"
               ]
             },
             "RestoreInstance": {
@@ -183,6 +253,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateSnapshot": {
+              "methods": [
+                "update_snapshot"
               ]
             }
           }

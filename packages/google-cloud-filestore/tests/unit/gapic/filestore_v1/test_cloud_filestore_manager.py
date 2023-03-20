@@ -1217,6 +1217,10 @@ def test_get_instance(request_type, transport: str = "grpc"):
             status_message="status_message_value",
             tier=cloud_filestore_service.Instance.Tier.STANDARD,
             etag="etag_value",
+            kms_key_name="kms_key_name_value",
+            suspension_reasons=[
+                cloud_filestore_service.Instance.SuspensionReason.KMS_KEY_ISSUE
+            ],
         )
         response = client.get_instance(request)
 
@@ -1233,6 +1237,10 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.status_message == "status_message_value"
     assert response.tier == cloud_filestore_service.Instance.Tier.STANDARD
     assert response.etag == "etag_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.suspension_reasons == [
+        cloud_filestore_service.Instance.SuspensionReason.KMS_KEY_ISSUE
+    ]
 
 
 def test_get_instance_empty_call():
@@ -1276,6 +1284,10 @@ async def test_get_instance_async(
                 status_message="status_message_value",
                 tier=cloud_filestore_service.Instance.Tier.STANDARD,
                 etag="etag_value",
+                kms_key_name="kms_key_name_value",
+                suspension_reasons=[
+                    cloud_filestore_service.Instance.SuspensionReason.KMS_KEY_ISSUE
+                ],
             )
         )
         response = await client.get_instance(request)
@@ -1293,6 +1305,10 @@ async def test_get_instance_async(
     assert response.status_message == "status_message_value"
     assert response.tier == cloud_filestore_service.Instance.Tier.STANDARD
     assert response.etag == "etag_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.suspension_reasons == [
+        cloud_filestore_service.Instance.SuspensionReason.KMS_KEY_ISSUE
+    ]
 
 
 @pytest.mark.asyncio
@@ -2302,6 +2318,1383 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_filestore_service.ListSnapshotsRequest,
+        dict,
+    ],
+)
+def test_list_snapshots(request_type, transport: str = "grpc"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_filestore_service.ListSnapshotsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.ListSnapshotsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSnapshotsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_snapshots_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        client.list_snapshots()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.ListSnapshotsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_filestore_service.ListSnapshotsRequest,
+):
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_filestore_service.ListSnapshotsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.ListSnapshotsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSnapshotsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_async_from_dict():
+    await test_list_snapshots_async(request_type=dict)
+
+
+def test_list_snapshots_field_headers():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.ListSnapshotsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        call.return_value = cloud_filestore_service.ListSnapshotsResponse()
+        client.list_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_field_headers_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.ListSnapshotsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_filestore_service.ListSnapshotsResponse()
+        )
+        await client.list_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_snapshots_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_filestore_service.ListSnapshotsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_snapshots(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_snapshots_flattened_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_snapshots(
+            cloud_filestore_service.ListSnapshotsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_flattened_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_filestore_service.ListSnapshotsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_filestore_service.ListSnapshotsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_snapshots(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_flattened_error_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_snapshots(
+            cloud_filestore_service.ListSnapshotsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_snapshots_pager(transport_name: str = "grpc"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[],
+                next_page_token="def",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_snapshots(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_filestore_service.Snapshot) for i in results)
+
+
+def test_list_snapshots_pages(transport_name: str = "grpc"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[],
+                next_page_token="def",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_snapshots(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_async_pager():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_snapshots), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[],
+                next_page_token="def",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_snapshots(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, cloud_filestore_service.Snapshot) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_async_pages():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_snapshots), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[],
+                next_page_token="def",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_snapshots(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.GetSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_snapshot(request_type, transport: str = "grpc"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_filestore_service.Snapshot(
+            name="name_value",
+            description="description_value",
+            state=cloud_filestore_service.Snapshot.State.CREATING,
+            filesystem_used_bytes=2267,
+        )
+        response = client.get_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.GetSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_filestore_service.Snapshot)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == cloud_filestore_service.Snapshot.State.CREATING
+    assert response.filesystem_used_bytes == 2267
+
+
+def test_get_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        client.get_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.GetSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_filestore_service.GetSnapshotRequest,
+):
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_filestore_service.Snapshot(
+                name="name_value",
+                description="description_value",
+                state=cloud_filestore_service.Snapshot.State.CREATING,
+                filesystem_used_bytes=2267,
+            )
+        )
+        response = await client.get_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.GetSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_filestore_service.Snapshot)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == cloud_filestore_service.Snapshot.State.CREATING
+    assert response.filesystem_used_bytes == 2267
+
+
+@pytest.mark.asyncio
+async def test_get_snapshot_async_from_dict():
+    await test_get_snapshot_async(request_type=dict)
+
+
+def test_get_snapshot_field_headers():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.GetSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        call.return_value = cloud_filestore_service.Snapshot()
+        client.get_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_snapshot_field_headers_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.GetSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_filestore_service.Snapshot()
+        )
+        await client.get_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_snapshot_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_filestore_service.Snapshot()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_snapshot_flattened_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_snapshot(
+            cloud_filestore_service.GetSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_snapshot_flattened_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_filestore_service.Snapshot()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_filestore_service.Snapshot()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_snapshot_flattened_error_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_snapshot(
+            cloud_filestore_service.GetSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.CreateSnapshotRequest,
+        dict,
+    ],
+)
+def test_create_snapshot(request_type, transport: str = "grpc"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.CreateSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        client.create_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.CreateSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_filestore_service.CreateSnapshotRequest,
+):
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.CreateSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_snapshot_async_from_dict():
+    await test_create_snapshot_async(request_type=dict)
+
+
+def test_create_snapshot_field_headers():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.CreateSnapshotRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_snapshot_field_headers_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.CreateSnapshotRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_snapshot_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_snapshot(
+            parent="parent_value",
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            snapshot_id="snapshot_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].snapshot
+        mock_val = cloud_filestore_service.Snapshot(name="name_value")
+        assert arg == mock_val
+        arg = args[0].snapshot_id
+        mock_val = "snapshot_id_value"
+        assert arg == mock_val
+
+
+def test_create_snapshot_flattened_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_snapshot(
+            cloud_filestore_service.CreateSnapshotRequest(),
+            parent="parent_value",
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            snapshot_id="snapshot_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_snapshot_flattened_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_snapshot(
+            parent="parent_value",
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            snapshot_id="snapshot_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].snapshot
+        mock_val = cloud_filestore_service.Snapshot(name="name_value")
+        assert arg == mock_val
+        arg = args[0].snapshot_id
+        mock_val = "snapshot_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_snapshot_flattened_error_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_snapshot(
+            cloud_filestore_service.CreateSnapshotRequest(),
+            parent="parent_value",
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            snapshot_id="snapshot_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.DeleteSnapshotRequest,
+        dict,
+    ],
+)
+def test_delete_snapshot(request_type, transport: str = "grpc"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.DeleteSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        client.delete_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.DeleteSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_filestore_service.DeleteSnapshotRequest,
+):
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.DeleteSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_snapshot_async_from_dict():
+    await test_delete_snapshot_async(request_type=dict)
+
+
+def test_delete_snapshot_field_headers():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.DeleteSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_snapshot_field_headers_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.DeleteSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_snapshot_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_snapshot_flattened_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_snapshot(
+            cloud_filestore_service.DeleteSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_snapshot_flattened_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_snapshot_flattened_error_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_snapshot(
+            cloud_filestore_service.DeleteSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.UpdateSnapshotRequest,
+        dict,
+    ],
+)
+def test_update_snapshot(request_type, transport: str = "grpc"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.UpdateSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        client.update_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.UpdateSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_filestore_service.UpdateSnapshotRequest,
+):
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_filestore_service.UpdateSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_snapshot_async_from_dict():
+    await test_update_snapshot_async(request_type=dict)
+
+
+def test_update_snapshot_field_headers():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.UpdateSnapshotRequest()
+
+    request.snapshot.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "snapshot.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_snapshot_field_headers_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_filestore_service.UpdateSnapshotRequest()
+
+    request.snapshot.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "snapshot.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_snapshot_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_snapshot(
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].snapshot
+        mock_val = cloud_filestore_service.Snapshot(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_snapshot_flattened_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_snapshot(
+            cloud_filestore_service.UpdateSnapshotRequest(),
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_snapshot_flattened_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_snapshot(
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].snapshot
+        mock_val = cloud_filestore_service.Snapshot(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_snapshot_flattened_error_async():
+    client = CloudFilestoreManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_snapshot(
+            cloud_filestore_service.UpdateSnapshotRequest(),
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_filestore_service.ListBackupsRequest,
         dict,
     ],
@@ -2754,6 +4147,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             source_file_share="source_file_share_value",
             source_instance_tier=cloud_filestore_service.Instance.Tier.STANDARD,
             download_bytes=1502,
+            kms_key="kms_key_value",
         )
         response = client.get_backup(request)
 
@@ -2775,6 +4169,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
         response.source_instance_tier == cloud_filestore_service.Instance.Tier.STANDARD
     )
     assert response.download_bytes == 1502
+    assert response.kms_key == "kms_key_value"
 
 
 def test_get_backup_empty_call():
@@ -2821,6 +4216,7 @@ async def test_get_backup_async(
                 source_file_share="source_file_share_value",
                 source_instance_tier=cloud_filestore_service.Instance.Tier.STANDARD,
                 download_bytes=1502,
+                kms_key="kms_key_value",
             )
         )
         response = await client.get_backup(request)
@@ -2843,6 +4239,7 @@ async def test_get_backup_async(
         response.source_instance_tier == cloud_filestore_service.Instance.Tier.STANDARD
     )
     assert response.download_bytes == 1502
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.asyncio
@@ -4080,6 +5477,10 @@ def test_get_instance_rest(request_type):
             status_message="status_message_value",
             tier=cloud_filestore_service.Instance.Tier.STANDARD,
             etag="etag_value",
+            kms_key_name="kms_key_name_value",
+            suspension_reasons=[
+                cloud_filestore_service.Instance.SuspensionReason.KMS_KEY_ISSUE
+            ],
         )
 
         # Wrap the value into a proper Response obj
@@ -4100,6 +5501,10 @@ def test_get_instance_rest(request_type):
     assert response.status_message == "status_message_value"
     assert response.tier == cloud_filestore_service.Instance.Tier.STANDARD
     assert response.etag == "etag_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.suspension_reasons == [
+        cloud_filestore_service.Instance.SuspensionReason.KMS_KEY_ISSUE
+    ]
 
 
 def test_get_instance_rest_required_fields(
@@ -4377,10 +5782,13 @@ def test_create_instance_rest(request_type):
                 "modes": [1],
                 "reserved_ip_range": "reserved_ip_range_value",
                 "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                "connect_mode": 1,
             }
         ],
         "etag": "etag_value",
         "satisfies_pzs": {"value": True},
+        "kms_key_name": "kms_key_name_value",
+        "suspension_reasons": [1],
     }
     request = request_type(**request_init)
 
@@ -4610,10 +6018,13 @@ def test_create_instance_rest_bad_request(
                 "modes": [1],
                 "reserved_ip_range": "reserved_ip_range_value",
                 "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                "connect_mode": 1,
             }
         ],
         "etag": "etag_value",
         "satisfies_pzs": {"value": True},
+        "kms_key_name": "kms_key_name_value",
+        "suspension_reasons": [1],
     }
     request = request_type(**request_init)
 
@@ -4740,10 +6151,13 @@ def test_update_instance_rest(request_type):
                 "modes": [1],
                 "reserved_ip_range": "reserved_ip_range_value",
                 "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                "connect_mode": 1,
             }
         ],
         "etag": "etag_value",
         "satisfies_pzs": {"value": True},
+        "kms_key_name": "kms_key_name_value",
+        "suspension_reasons": [1],
     }
     request = request_type(**request_init)
 
@@ -4866,10 +6280,13 @@ def test_update_instance_rest_bad_request(
                 "modes": [1],
                 "reserved_ip_range": "reserved_ip_range_value",
                 "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
+                "connect_mode": 1,
             }
         ],
         "etag": "etag_value",
         "satisfies_pzs": {"value": True},
+        "kms_key_name": "kms_key_name_value",
+        "suspension_reasons": [1],
     }
     request = request_type(**request_init)
 
@@ -5237,6 +6654,8 @@ def test_delete_instance_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instance._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5287,7 +6706,7 @@ def test_delete_instance_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5430,6 +6849,1516 @@ def test_delete_instance_rest_flattened_error(transport: str = "rest"):
 
 
 def test_delete_instance_rest_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.ListSnapshotsRequest,
+        dict,
+    ],
+)
+def test_list_snapshots_rest(request_type):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_filestore_service.ListSnapshotsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_filestore_service.ListSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_snapshots(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSnapshotsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_snapshots_rest_required_fields(
+    request_type=cloud_filestore_service.ListSnapshotsRequest,
+):
+    transport_class = transports.CloudFilestoreManagerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_snapshots._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_snapshots._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_filestore_service.ListSnapshotsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_filestore_service.ListSnapshotsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_snapshots(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_snapshots_rest_unset_required_fields():
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_snapshots._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_snapshots_rest_interceptors(null_interceptor):
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFilestoreManagerRestInterceptor(),
+    )
+    client = CloudFilestoreManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "post_list_snapshots"
+    ) as post, mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "pre_list_snapshots"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_filestore_service.ListSnapshotsRequest.pb(
+            cloud_filestore_service.ListSnapshotsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            cloud_filestore_service.ListSnapshotsResponse.to_json(
+                cloud_filestore_service.ListSnapshotsResponse()
+            )
+        )
+
+        request = cloud_filestore_service.ListSnapshotsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_filestore_service.ListSnapshotsResponse()
+
+        client.list_snapshots(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_snapshots_rest_bad_request(
+    transport: str = "rest", request_type=cloud_filestore_service.ListSnapshotsRequest
+):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_snapshots(request)
+
+
+def test_list_snapshots_rest_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_filestore_service.ListSnapshotsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_filestore_service.ListSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_snapshots(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/instances/*}/snapshots"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_snapshots_rest_flattened_error(transport: str = "rest"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_snapshots(
+            cloud_filestore_service.ListSnapshotsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_snapshots_rest_pager(transport: str = "rest"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[],
+                next_page_token="def",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_filestore_service.ListSnapshotsResponse(
+                snapshots=[
+                    cloud_filestore_service.Snapshot(),
+                    cloud_filestore_service.Snapshot(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_filestore_service.ListSnapshotsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        pager = client.list_snapshots(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_filestore_service.Snapshot) for i in results)
+
+        pages = list(client.list_snapshots(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.GetSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_snapshot_rest(request_type):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_filestore_service.Snapshot(
+            name="name_value",
+            description="description_value",
+            state=cloud_filestore_service.Snapshot.State.CREATING,
+            filesystem_used_bytes=2267,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_filestore_service.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_filestore_service.Snapshot)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == cloud_filestore_service.Snapshot.State.CREATING
+    assert response.filesystem_used_bytes == 2267
+
+
+def test_get_snapshot_rest_required_fields(
+    request_type=cloud_filestore_service.GetSnapshotRequest,
+):
+    transport_class = transports.CloudFilestoreManagerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_filestore_service.Snapshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_filestore_service.Snapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_snapshot_rest_unset_required_fields():
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFilestoreManagerRestInterceptor(),
+    )
+    client = CloudFilestoreManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "post_get_snapshot"
+    ) as post, mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "pre_get_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_filestore_service.GetSnapshotRequest.pb(
+            cloud_filestore_service.GetSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_filestore_service.Snapshot.to_json(
+            cloud_filestore_service.Snapshot()
+        )
+
+        request = cloud_filestore_service.GetSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_filestore_service.Snapshot()
+
+        client.get_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=cloud_filestore_service.GetSnapshotRequest
+):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_snapshot(request)
+
+
+def test_get_snapshot_rest_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_filestore_service.Snapshot()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_filestore_service.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/instances/*/snapshots/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_snapshot(
+            cloud_filestore_service.GetSnapshotRequest(),
+            name="name_value",
+        )
+
+
+def test_get_snapshot_rest_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.CreateSnapshotRequest,
+        dict,
+    ],
+)
+def test_create_snapshot_rest(request_type):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
+    request_init["snapshot"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "labels": {},
+        "filesystem_used_bytes": 2267,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_snapshot_rest_required_fields(
+    request_type=cloud_filestore_service.CreateSnapshotRequest,
+):
+    transport_class = transports.CloudFilestoreManagerRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["snapshot_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "snapshotId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "snapshotId" in jsonified_request
+    assert jsonified_request["snapshotId"] == request_init["snapshot_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["snapshotId"] = "snapshot_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_snapshot._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("snapshot_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "snapshotId" in jsonified_request
+    assert jsonified_request["snapshotId"] == "snapshot_id_value"
+
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_snapshot(request)
+
+            expected_params = [
+                (
+                    "snapshotId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_snapshot_rest_unset_required_fields():
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("snapshotId",))
+        & set(
+            (
+                "parent",
+                "snapshotId",
+                "snapshot",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFilestoreManagerRestInterceptor(),
+    )
+    client = CloudFilestoreManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "post_create_snapshot"
+    ) as post, mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "pre_create_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_filestore_service.CreateSnapshotRequest.pb(
+            cloud_filestore_service.CreateSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_filestore_service.CreateSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=cloud_filestore_service.CreateSnapshotRequest
+):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
+    request_init["snapshot"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "labels": {},
+        "filesystem_used_bytes": 2267,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_snapshot(request)
+
+
+def test_create_snapshot_rest_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            snapshot_id="snapshot_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/instances/*}/snapshots"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_snapshot(
+            cloud_filestore_service.CreateSnapshotRequest(),
+            parent="parent_value",
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            snapshot_id="snapshot_id_value",
+        )
+
+
+def test_create_snapshot_rest_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.DeleteSnapshotRequest,
+        dict,
+    ],
+)
+def test_delete_snapshot_rest(request_type):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_snapshot_rest_required_fields(
+    request_type=cloud_filestore_service.DeleteSnapshotRequest,
+):
+    transport_class = transports.CloudFilestoreManagerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_snapshot_rest_unset_required_fields():
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFilestoreManagerRestInterceptor(),
+    )
+    client = CloudFilestoreManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "post_delete_snapshot"
+    ) as post, mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "pre_delete_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_filestore_service.DeleteSnapshotRequest.pb(
+            cloud_filestore_service.DeleteSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_filestore_service.DeleteSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=cloud_filestore_service.DeleteSnapshotRequest
+):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_snapshot(request)
+
+
+def test_delete_snapshot_rest_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/instances/*/snapshots/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_snapshot(
+            cloud_filestore_service.DeleteSnapshotRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_snapshot_rest_error():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.UpdateSnapshotRequest,
+        dict,
+    ],
+)
+def test_update_snapshot_rest(request_type):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "snapshot": {
+            "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+        }
+    }
+    request_init["snapshot"] = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4",
+        "description": "description_value",
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "labels": {},
+        "filesystem_used_bytes": 2267,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_snapshot_rest_required_fields(
+    request_type=cloud_filestore_service.UpdateSnapshotRequest,
+):
+    transport_class = transports.CloudFilestoreManagerRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_snapshot._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_snapshot_rest_unset_required_fields():
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "updateMask",
+                "snapshot",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.CloudFilestoreManagerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudFilestoreManagerRestInterceptor(),
+    )
+    client = CloudFilestoreManagerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "post_update_snapshot"
+    ) as post, mock.patch.object(
+        transports.CloudFilestoreManagerRestInterceptor, "pre_update_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_filestore_service.UpdateSnapshotRequest.pb(
+            cloud_filestore_service.UpdateSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_filestore_service.UpdateSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=cloud_filestore_service.UpdateSnapshotRequest
+):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "snapshot": {
+            "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+        }
+    }
+    request_init["snapshot"] = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4",
+        "description": "description_value",
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "labels": {},
+        "filesystem_used_bytes": 2267,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_snapshot(request)
+
+
+def test_update_snapshot_rest_flattened():
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "snapshot": {
+                "name": "projects/sample1/locations/sample2/instances/sample3/snapshots/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{snapshot.name=projects/*/locations/*/instances/*/snapshots/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = CloudFilestoreManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_snapshot(
+            cloud_filestore_service.UpdateSnapshotRequest(),
+            snapshot=cloud_filestore_service.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_snapshot_rest_error():
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -5812,6 +8741,7 @@ def test_get_backup_rest(request_type):
             source_file_share="source_file_share_value",
             source_instance_tier=cloud_filestore_service.Instance.Tier.STANDARD,
             download_bytes=1502,
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5837,6 +8767,7 @@ def test_get_backup_rest(request_type):
         response.source_instance_tier == cloud_filestore_service.Instance.Tier.STANDARD
     )
     assert response.download_bytes == 1502
+    assert response.kms_key == "kms_key_value"
 
 
 def test_get_backup_rest_required_fields(
@@ -6095,6 +9026,7 @@ def test_create_backup_rest(request_type):
         "source_instance_tier": 1,
         "download_bytes": 1502,
         "satisfies_pzs": {"value": True},
+        "kms_key": "kms_key_value",
     }
     request = request_type(**request_init)
 
@@ -6307,6 +9239,7 @@ def test_create_backup_rest_bad_request(
         "source_instance_tier": 1,
         "download_bytes": 1502,
         "satisfies_pzs": {"value": True},
+        "kms_key": "kms_key_value",
     }
     request = request_type(**request_init)
 
@@ -6678,6 +9611,7 @@ def test_update_backup_rest(request_type):
         "source_instance_tier": 1,
         "download_bytes": 1502,
         "satisfies_pzs": {"value": True},
+        "kms_key": "kms_key_value",
     }
     request = request_type(**request_init)
 
@@ -6873,6 +9807,7 @@ def test_update_backup_rest_bad_request(
         "source_instance_tier": 1,
         "download_bytes": 1502,
         "satisfies_pzs": {"value": True},
+        "kms_key": "kms_key_value",
     }
     request = request_type(**request_init)
 
@@ -7098,6 +10033,11 @@ def test_cloud_filestore_manager_base_transport():
         "update_instance",
         "restore_instance",
         "delete_instance",
+        "list_snapshots",
+        "get_snapshot",
+        "create_snapshot",
+        "delete_snapshot",
+        "update_snapshot",
         "list_backups",
         "get_backup",
         "create_backup",
@@ -7403,6 +10343,21 @@ def test_cloud_filestore_manager_client_transport_session_collision(transport_na
     session1 = client1.transport.delete_instance._session
     session2 = client2.transport.delete_instance._session
     assert session1 != session2
+    session1 = client1.transport.list_snapshots._session
+    session2 = client2.transport.list_snapshots._session
+    assert session1 != session2
+    session1 = client1.transport.get_snapshot._session
+    session2 = client2.transport.get_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.create_snapshot._session
+    session2 = client2.transport.create_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.delete_snapshot._session
+    session2 = client2.transport.delete_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.update_snapshot._session
+    session2 = client2.transport.update_snapshot._session
+    assert session1 != session2
     session1 = client1.transport.list_backups._session
     session2 = client2.transport.list_backups._session
     assert session1 != session2
@@ -7632,8 +10587,39 @@ def test_parse_instance_path():
     assert expected == actual
 
 
+def test_snapshot_path():
+    project = "squid"
+    location = "clam"
+    instance = "whelk"
+    snapshot = "octopus"
+    expected = "projects/{project}/locations/{location}/instances/{instance}/snapshots/{snapshot}".format(
+        project=project,
+        location=location,
+        instance=instance,
+        snapshot=snapshot,
+    )
+    actual = CloudFilestoreManagerClient.snapshot_path(
+        project, location, instance, snapshot
+    )
+    assert expected == actual
+
+
+def test_parse_snapshot_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "instance": "cuttlefish",
+        "snapshot": "mussel",
+    }
+    path = CloudFilestoreManagerClient.snapshot_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFilestoreManagerClient.parse_snapshot_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7643,7 +10629,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = CloudFilestoreManagerClient.common_billing_account_path(**expected)
 
@@ -7653,7 +10639,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7663,7 +10649,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = CloudFilestoreManagerClient.common_folder_path(**expected)
 
@@ -7673,7 +10659,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7683,7 +10669,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = CloudFilestoreManagerClient.common_organization_path(**expected)
 
@@ -7693,7 +10679,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7703,7 +10689,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = CloudFilestoreManagerClient.common_project_path(**expected)
 
@@ -7713,8 +10699,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7725,8 +10711,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = CloudFilestoreManagerClient.common_location_path(**expected)
 

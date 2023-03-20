@@ -41,15 +41,20 @@ class filestoreCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_backup': ('parent', 'backup', 'backup_id', ),
         'create_instance': ('parent', 'instance_id', 'instance', ),
+        'create_snapshot': ('parent', 'snapshot_id', 'snapshot', ),
         'delete_backup': ('name', ),
-        'delete_instance': ('name', ),
+        'delete_instance': ('name', 'force', ),
+        'delete_snapshot': ('name', ),
         'get_backup': ('name', ),
         'get_instance': ('name', ),
+        'get_snapshot': ('name', ),
         'list_backups': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
+        'list_snapshots': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
         'restore_instance': ('name', 'file_share', 'source_backup', ),
         'update_backup': ('backup', 'update_mask', ),
         'update_instance': ('update_mask', 'instance', ),
+        'update_snapshot': ('update_mask', 'snapshot', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

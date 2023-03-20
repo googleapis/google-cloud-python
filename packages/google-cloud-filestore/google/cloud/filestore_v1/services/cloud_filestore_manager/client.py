@@ -103,12 +103,12 @@ class CloudFilestoreManagerClientMeta(type):
 
 
 class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
-    """Configures and manages Cloud Filestore resources.
+    """Configures and manages Filestore resources.
 
-    Cloud Filestore Manager v1.
+    Filestore Manager v1.
 
-    The ``file.googleapis.com`` service implements the Cloud Filestore
-    API and defines the following resource model for managing instances:
+    The ``file.googleapis.com`` service implements the Filestore API and
+    defines the following resource model for managing instances:
 
     -  The service works with a collection of cloud projects, named:
        ``/projects/*``
@@ -116,13 +116,13 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
        ``/locations/*``
     -  Each location has a collection of instances and backups, named:
        ``/instances/*`` and ``/backups/*`` respectively.
-    -  As such, Cloud Filestore instances are resources of the form:
+    -  As such, Filestore instances are resources of the form:
        ``/projects/{project_number}/locations/{location_id}/instances/{instance_id}``
        and backups are resources of the form:
        ``/projects/{project_number}/locations/{location_id}/backup/{backup_id}``
 
-    Note that location_id must be a GCP ``zone`` for instances and but
-    to a GCP ``region`` for backups; for example:
+    Note that location_id must be a Google Cloud ``zone`` for instances,
+    but a Google Cloud ``region`` for backups; for example:
 
     -  ``projects/12345/locations/us-central1-c/instances/my-filestore``
     -  ``projects/12345/locations/us-central1/backups/my-backup``
@@ -250,6 +250,30 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         """Parses a instance path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def snapshot_path(
+        project: str,
+        location: str,
+        instance: str,
+        snapshot: str,
+    ) -> str:
+        """Returns a fully-qualified snapshot string."""
+        return "projects/{project}/locations/{location}/instances/{instance}/snapshots/{snapshot}".format(
+            project=project,
+            location=location,
+            instance=instance,
+            snapshot=snapshot,
+        )
+
+    @staticmethod
+    def parse_snapshot_path(path: str) -> Dict[str, str]:
+        """Parses a snapshot path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/snapshots/(?P<snapshot>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -547,9 +571,9 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 Required. The project and location for which to retrieve
                 instance information, in the format
                 ``projects/{project_id}/locations/{location}``. In Cloud
-                Filestore, locations map to GCP zones, for example
-                **us-west1-b**. To retrieve instance information for all
-                locations, use "-" for the ``{location}`` value.
+                Filestore, locations map to Google Cloud zones, for
+                example **us-west1-b**. To retrieve instance information
+                for all locations, use "-" for the ``{location}`` value.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -678,7 +702,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         Returns:
             google.cloud.filestore_v1.types.Instance:
-                A Cloud Filestore instance.
+                A Filestore instance.
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -779,7 +803,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
             parent (str):
                 Required. The instance's project and location, in the
                 format ``projects/{project_id}/locations/{location}``.
-                In Cloud Filestore, locations map to GCP zones, for
+                In Filestore, locations map to Google Cloud zones, for
                 example **us-west1-b**.
 
                 This corresponds to the ``parent`` field
@@ -812,7 +836,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
                 The result type for the operation will be
                 :class:`google.cloud.filestore_v1.types.Instance` A
-                Cloud Filestore instance.
+                Filestore instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -945,7 +969,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
                 The result type for the operation will be
                 :class:`google.cloud.filestore_v1.types.Instance` A
-                Cloud Filestore instance.
+                Filestore instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1053,7 +1077,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         Args:
             request (Union[google.cloud.filestore_v1.types.RestoreInstanceRequest, dict]):
                 The request object. RestoreInstanceRequest restores an
-                existing instances's file share from a backup.
+                existing instance's file share from a backup.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1066,7 +1090,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
                 The result type for the operation will be
                 :class:`google.cloud.filestore_v1.types.Instance` A
-                Cloud Filestore instance.
+                Filestore instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1232,6 +1256,626 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         # Done; return the response.
         return response
 
+    def list_snapshots(
+        self,
+        request: Optional[
+            Union[cloud_filestore_service.ListSnapshotsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSnapshotsPager:
+        r"""Lists all snapshots in a project for either a
+        specified location or for all locations.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import filestore_v1
+
+            def sample_list_snapshots():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.ListSnapshotsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_snapshots(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.filestore_v1.types.ListSnapshotsRequest, dict]):
+                The request object. ListSnapshotsRequest lists
+                snapshots.
+            parent (str):
+                Required. The instance for which to retrieve snapshot
+                information, in the format
+                ``projects/{project_id}/locations/{location}/instances/{instance_id}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.filestore_v1.services.cloud_filestore_manager.pagers.ListSnapshotsPager:
+                ListSnapshotsResponse is the result
+                of ListSnapshotsRequest.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_filestore_service.ListSnapshotsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_filestore_service.ListSnapshotsRequest):
+            request = cloud_filestore_service.ListSnapshotsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_snapshots]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSnapshotsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_snapshot(
+        self,
+        request: Optional[
+            Union[cloud_filestore_service.GetSnapshotRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_filestore_service.Snapshot:
+        r"""Gets the details of a specific snapshot.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import filestore_v1
+
+            def sample_get_snapshot():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.GetSnapshotRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_snapshot(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.filestore_v1.types.GetSnapshotRequest, dict]):
+                The request object. GetSnapshotRequest gets the state of
+                a snapshot.
+            name (str):
+                Required. The snapshot resource name, in the format
+                ``projects/{project_id}/locations/{location}/instances/{instance_id}/snapshots/{snapshot_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.filestore_v1.types.Snapshot:
+                A Filestore snapshot.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_filestore_service.GetSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_filestore_service.GetSnapshotRequest):
+            request = cloud_filestore_service.GetSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_snapshot(
+        self,
+        request: Optional[
+            Union[cloud_filestore_service.CreateSnapshotRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        snapshot: Optional[cloud_filestore_service.Snapshot] = None,
+        snapshot_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates a snapshot.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import filestore_v1
+
+            def sample_create_snapshot():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.CreateSnapshotRequest(
+                    parent="parent_value",
+                    snapshot_id="snapshot_id_value",
+                )
+
+                # Make the request
+                operation = client.create_snapshot(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.filestore_v1.types.CreateSnapshotRequest, dict]):
+                The request object. CreateSnapshotRequest creates a
+                snapshot.
+            parent (str):
+                Required. The Filestore Instance to create the snapshots
+                of, in the format
+                ``projects/{project_id}/locations/{location}/instances/{instance_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            snapshot (google.cloud.filestore_v1.types.Snapshot):
+                Required. A snapshot resource.
+                This corresponds to the ``snapshot`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            snapshot_id (str):
+                Required. The ID to use for the
+                snapshot. The ID must be unique within
+                the specified instance.
+                This value must start with a lowercase
+                letter followed by up to 62 lowercase
+                letters, numbers, or hyphens, and cannot
+                end with a hyphen.
+
+                This corresponds to the ``snapshot_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.filestore_v1.types.Snapshot` A
+                Filestore snapshot.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, snapshot, snapshot_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_filestore_service.CreateSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_filestore_service.CreateSnapshotRequest):
+            request = cloud_filestore_service.CreateSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if snapshot is not None:
+                request.snapshot = snapshot
+            if snapshot_id is not None:
+                request.snapshot_id = snapshot_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_filestore_service.Snapshot,
+            metadata_type=operation_metadata_pb2.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_snapshot(
+        self,
+        request: Optional[
+            Union[cloud_filestore_service.DeleteSnapshotRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a snapshot.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import filestore_v1
+
+            def sample_delete_snapshot():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.DeleteSnapshotRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_snapshot(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.filestore_v1.types.DeleteSnapshotRequest, dict]):
+                The request object. DeleteSnapshotRequest deletes a
+                snapshot.
+            name (str):
+                Required. The snapshot resource name, in the format
+                ``projects/{project_id}/locations/{location}/instances/{instance_id}/snapshots/{snapshot_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_filestore_service.DeleteSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_filestore_service.DeleteSnapshotRequest):
+            request = cloud_filestore_service.DeleteSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=operation_metadata_pb2.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_snapshot(
+        self,
+        request: Optional[
+            Union[cloud_filestore_service.UpdateSnapshotRequest, dict]
+        ] = None,
+        *,
+        snapshot: Optional[cloud_filestore_service.Snapshot] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Updates the settings of a specific snapshot.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import filestore_v1
+
+            def sample_update_snapshot():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.UpdateSnapshotRequest(
+                )
+
+                # Make the request
+                operation = client.update_snapshot(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.filestore_v1.types.UpdateSnapshotRequest, dict]):
+                The request object. UpdateSnapshotRequest updates
+                description and/or labels for a snapshot.
+            snapshot (google.cloud.filestore_v1.types.Snapshot):
+                Required. A snapshot resource.
+                This corresponds to the ``snapshot`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Mask of fields to update.
+                At least one path must be supplied in
+                this field.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.filestore_v1.types.Snapshot` A
+                Filestore snapshot.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([snapshot, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_filestore_service.UpdateSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_filestore_service.UpdateSnapshotRequest):
+            request = cloud_filestore_service.UpdateSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if snapshot is not None:
+                request.snapshot = snapshot
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("snapshot.name", request.snapshot.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_filestore_service.Snapshot,
+            metadata_type=operation_metadata_pb2.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def list_backups(
         self,
         request: Optional[
@@ -1280,7 +1924,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 Required. The project and location for which to retrieve
                 backup information, in the format
                 ``projects/{project_number}/locations/{location}``. In
-                Cloud Filestore, backup locations map to GCP regions,
+                Filestore, backup locations map to Google Cloud regions,
                 for example **us-west1**. To retrieve backup information
                 for all locations, use "-" for the ``{location}`` value.
 
@@ -1409,7 +2053,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         Returns:
             google.cloud.filestore_v1.types.Backup:
-                A Cloud Filestore backup.
+                A Filestore backup.
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1507,7 +2151,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 Required. The backup's project and location, in the
                 format
                 ``projects/{project_number}/locations/{location}``. In
-                Cloud Filestore, backup locations map to GCP regions,
+                Filestore, backup locations map to Google Cloud regions,
                 for example **us-west1**.
 
                 This corresponds to the ``parent`` field
@@ -1543,7 +2187,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.filestore_v1.types.Backup` A Cloud
+                :class:`google.cloud.filestore_v1.types.Backup` A
                 Filestore backup.
 
         """
@@ -1800,7 +2444,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.filestore_v1.types.Backup` A Cloud
+                :class:`google.cloud.filestore_v1.types.Backup` A
                 Filestore backup.
 
         """

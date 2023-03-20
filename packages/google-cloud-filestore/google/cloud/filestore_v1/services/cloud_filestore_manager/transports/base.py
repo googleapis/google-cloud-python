@@ -171,6 +171,31 @@ class CloudFilestoreManagerTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.list_snapshots: gapic_v1.method.wrap_method(
+                self.list_snapshots,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_snapshot: gapic_v1.method.wrap_method(
+                self.get_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_snapshot: gapic_v1.method.wrap_method(
+                self.create_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_snapshot: gapic_v1.method.wrap_method(
+                self.delete_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_snapshot: gapic_v1.method.wrap_method(
+                self.update_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_backups: gapic_v1.method.wrap_method(
                 self.list_backups,
                 default_retry=retries.Retry(
@@ -286,6 +311,57 @@ class CloudFilestoreManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_filestore_service.DeleteInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_snapshots(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.ListSnapshotsRequest],
+        Union[
+            cloud_filestore_service.ListSnapshotsResponse,
+            Awaitable[cloud_filestore_service.ListSnapshotsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.GetSnapshotRequest],
+        Union[
+            cloud_filestore_service.Snapshot,
+            Awaitable[cloud_filestore_service.Snapshot],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.CreateSnapshotRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.DeleteSnapshotRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.UpdateSnapshotRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

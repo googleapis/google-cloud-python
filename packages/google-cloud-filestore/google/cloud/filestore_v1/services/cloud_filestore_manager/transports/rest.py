@@ -87,6 +87,14 @@ class CloudFilestoreManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_snapshot(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -100,6 +108,14 @@ class CloudFilestoreManagerRestInterceptor:
                 return request, metadata
 
             def post_delete_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_snapshot(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -119,6 +135,14 @@ class CloudFilestoreManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_snapshot(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_backups(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -132,6 +156,14 @@ class CloudFilestoreManagerRestInterceptor:
                 return request, metadata
 
             def post_list_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_snapshots(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_snapshots(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -156,6 +188,14 @@ class CloudFilestoreManagerRestInterceptor:
                 return request, metadata
 
             def post_update_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_snapshot(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -213,6 +253,31 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return response
 
+    def pre_create_snapshot(
+        self,
+        request: cloud_filestore_service.CreateSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        cloud_filestore_service.CreateSnapshotRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudFilestoreManager server.
+        """
+        return request, metadata
+
+    def post_create_snapshot(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_snapshot
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudFilestoreManager server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_backup(
         self,
         request: cloud_filestore_service.DeleteBackupRequest,
@@ -254,6 +319,31 @@ class CloudFilestoreManagerRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudFilestoreManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_snapshot(
+        self,
+        request: cloud_filestore_service.DeleteSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        cloud_filestore_service.DeleteSnapshotRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudFilestoreManager server.
+        """
+        return request, metadata
+
+    def post_delete_snapshot(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_snapshot
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudFilestoreManager server but before
@@ -307,6 +397,29 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return response
 
+    def pre_get_snapshot(
+        self,
+        request: cloud_filestore_service.GetSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_filestore_service.GetSnapshotRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudFilestoreManager server.
+        """
+        return request, metadata
+
+    def post_get_snapshot(
+        self, response: cloud_filestore_service.Snapshot
+    ) -> cloud_filestore_service.Snapshot:
+        """Post-rpc interceptor for get_snapshot
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudFilestoreManager server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_backups(
         self,
         request: cloud_filestore_service.ListBackupsRequest,
@@ -346,6 +459,29 @@ class CloudFilestoreManagerRestInterceptor:
         self, response: cloud_filestore_service.ListInstancesResponse
     ) -> cloud_filestore_service.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudFilestoreManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_snapshots(
+        self,
+        request: cloud_filestore_service.ListSnapshotsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_filestore_service.ListSnapshotsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_snapshots
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudFilestoreManager server.
+        """
+        return request, metadata
+
+    def post_list_snapshots(
+        self, response: cloud_filestore_service.ListSnapshotsResponse
+    ) -> cloud_filestore_service.ListSnapshotsResponse:
+        """Post-rpc interceptor for list_snapshots
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudFilestoreManager server but before
@@ -426,6 +562,31 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return response
 
+    def pre_update_snapshot(
+        self,
+        request: cloud_filestore_service.UpdateSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        cloud_filestore_service.UpdateSnapshotRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudFilestoreManager server.
+        """
+        return request, metadata
+
+    def post_update_snapshot(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_snapshot
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudFilestoreManager server but before
+        it is returned to user code.
+        """
+        return response
+
 
 @dataclasses.dataclass
 class CloudFilestoreManagerRestStub:
@@ -437,12 +598,12 @@ class CloudFilestoreManagerRestStub:
 class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
     """REST backend transport for CloudFilestoreManager.
 
-    Configures and manages Cloud Filestore resources.
+    Configures and manages Filestore resources.
 
-    Cloud Filestore Manager v1.
+    Filestore Manager v1.
 
-    The ``file.googleapis.com`` service implements the Cloud Filestore
-    API and defines the following resource model for managing instances:
+    The ``file.googleapis.com`` service implements the Filestore API and
+    defines the following resource model for managing instances:
 
     -  The service works with a collection of cloud projects, named:
        ``/projects/*``
@@ -450,13 +611,13 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
        ``/locations/*``
     -  Each location has a collection of instances and backups, named:
        ``/instances/*`` and ``/backups/*`` respectively.
-    -  As such, Cloud Filestore instances are resources of the form:
+    -  As such, Filestore instances are resources of the form:
        ``/projects/{project_number}/locations/{location_id}/instances/{instance_id}``
        and backups are resources of the form:
        ``/projects/{project_number}/locations/{location_id}/backup/{backup_id}``
 
-    Note that location_id must be a GCP ``zone`` for instances and but
-    to a GCP ``region`` for backups; for example:
+    Note that location_id must be a Google Cloud ``zone`` for instances,
+    but a Google Cloud ``region`` for backups; for example:
 
     -  ``projects/12345/locations/us-central1-c/instances/my-filestore``
     -  ``projects/12345/locations/us-central1/backups/my-backup``
@@ -797,6 +958,106 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
             resp = self._interceptor.post_create_instance(resp)
             return resp
 
+    class _CreateSnapshot(CloudFilestoreManagerRestStub):
+        def __hash__(self):
+            return hash("CreateSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "snapshotId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_filestore_service.CreateSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create snapshot method over HTTP.
+
+            Args:
+                request (~.cloud_filestore_service.CreateSnapshotRequest):
+                    The request object. CreateSnapshotRequest creates a
+                snapshot.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/snapshots",
+                    "body": "snapshot",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
+            pb_request = cloud_filestore_service.CreateSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_snapshot(resp)
+            return resp
+
     class _DeleteBackup(CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("DeleteBackup")
@@ -973,6 +1234,95 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
             resp = self._interceptor.post_delete_instance(resp)
             return resp
 
+    class _DeleteSnapshot(CloudFilestoreManagerRestStub):
+        def __hash__(self):
+            return hash("DeleteSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_filestore_service.DeleteSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete snapshot method over HTTP.
+
+            Args:
+                request (~.cloud_filestore_service.DeleteSnapshotRequest):
+                    The request object. DeleteSnapshotRequest deletes a
+                snapshot.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*/snapshots/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
+            pb_request = cloud_filestore_service.DeleteSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_snapshot(resp)
+            return resp
+
     class _GetBackup(CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("GetBackup")
@@ -1010,7 +1360,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
 
             Returns:
                 ~.cloud_filestore_service.Backup:
-                    A Cloud Filestore backup.
+                    A Filestore backup.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -1098,7 +1448,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
 
             Returns:
                 ~.cloud_filestore_service.Instance:
-                    A Cloud Filestore instance.
+                    A Filestore instance.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -1147,6 +1497,94 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_instance(resp)
+            return resp
+
+    class _GetSnapshot(CloudFilestoreManagerRestStub):
+        def __hash__(self):
+            return hash("GetSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_filestore_service.GetSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_filestore_service.Snapshot:
+            r"""Call the get snapshot method over HTTP.
+
+            Args:
+                request (~.cloud_filestore_service.GetSnapshotRequest):
+                    The request object. GetSnapshotRequest gets the state of
+                a snapshot.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_filestore_service.Snapshot:
+                    A Filestore snapshot.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*/snapshots/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
+            pb_request = cloud_filestore_service.GetSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_filestore_service.Snapshot()
+            pb_resp = cloud_filestore_service.Snapshot.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_snapshot(resp)
             return resp
 
     class _ListBackups(CloudFilestoreManagerRestStub):
@@ -1325,6 +1763,94 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
             resp = self._interceptor.post_list_instances(resp)
             return resp
 
+    class _ListSnapshots(CloudFilestoreManagerRestStub):
+        def __hash__(self):
+            return hash("ListSnapshots")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_filestore_service.ListSnapshotsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_filestore_service.ListSnapshotsResponse:
+            r"""Call the list snapshots method over HTTP.
+
+            Args:
+                request (~.cloud_filestore_service.ListSnapshotsRequest):
+                    The request object. ListSnapshotsRequest lists snapshots.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_filestore_service.ListSnapshotsResponse:
+                    ListSnapshotsResponse is the result
+                of ListSnapshotsRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/snapshots",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
+            pb_request = cloud_filestore_service.ListSnapshotsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_filestore_service.ListSnapshotsResponse()
+            pb_resp = cloud_filestore_service.ListSnapshotsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_snapshots(resp)
+            return resp
+
     class _RestoreInstance(CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("RestoreInstance")
@@ -1352,7 +1878,7 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
             Args:
                 request (~.cloud_filestore_service.RestoreInstanceRequest):
                     The request object. RestoreInstanceRequest restores an
-                existing instances's file share from a
+                existing instance's file share from a
                 backup.
 
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1613,6 +2139,107 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
             resp = self._interceptor.post_update_instance(resp)
             return resp
 
+    class _UpdateSnapshot(CloudFilestoreManagerRestStub):
+        def __hash__(self):
+            return hash("UpdateSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_filestore_service.UpdateSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update snapshot method over HTTP.
+
+            Args:
+                request (~.cloud_filestore_service.UpdateSnapshotRequest):
+                    The request object. UpdateSnapshotRequest updates
+                description and/or labels for a
+                snapshot.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{snapshot.name=projects/*/locations/*/instances/*/snapshots/*}",
+                    "body": "snapshot",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_snapshot(request, metadata)
+            pb_request = cloud_filestore_service.UpdateSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_snapshot(resp)
+            return resp
+
     @property
     def create_backup(
         self,
@@ -1632,6 +2259,16 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.CreateSnapshotRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_backup(
@@ -1654,6 +2291,16 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.DeleteSnapshotRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteSnapshot(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_backup(
         self,
     ) -> Callable[
@@ -1672,6 +2319,16 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.GetSnapshotRequest], cloud_filestore_service.Snapshot
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_backups(
@@ -1694,6 +2351,17 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_snapshots(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.ListSnapshotsRequest],
+        cloud_filestore_service.ListSnapshotsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSnapshots(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def restore_instance(
@@ -1724,6 +2392,16 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.UpdateSnapshotRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

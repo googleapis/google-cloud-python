@@ -32,12 +32,12 @@ from .grpc import CloudFilestoreManagerGrpcTransport
 class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
     """gRPC AsyncIO backend transport for CloudFilestoreManager.
 
-    Configures and manages Cloud Filestore resources.
+    Configures and manages Filestore resources.
 
-    Cloud Filestore Manager v1.
+    Filestore Manager v1.
 
-    The ``file.googleapis.com`` service implements the Cloud Filestore
-    API and defines the following resource model for managing instances:
+    The ``file.googleapis.com`` service implements the Filestore API and
+    defines the following resource model for managing instances:
 
     -  The service works with a collection of cloud projects, named:
        ``/projects/*``
@@ -45,13 +45,13 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
        ``/locations/*``
     -  Each location has a collection of instances and backups, named:
        ``/instances/*`` and ``/backups/*`` respectively.
-    -  As such, Cloud Filestore instances are resources of the form:
+    -  As such, Filestore instances are resources of the form:
        ``/projects/{project_number}/locations/{location_id}/instances/{instance_id}``
        and backups are resources of the form:
        ``/projects/{project_number}/locations/{location_id}/backup/{backup_id}``
 
-    Note that location_id must be a GCP ``zone`` for instances and but
-    to a GCP ``region`` for backups; for example:
+    Note that location_id must be a Google Cloud ``zone`` for instances,
+    but a Google Cloud ``region`` for backups; for example:
 
     -  ``projects/12345/locations/us-central1-c/instances/my-filestore``
     -  ``projects/12345/locations/us-central1/backups/my-backup``
@@ -453,6 +453,152 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_instance"]
+
+    @property
+    def list_snapshots(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.ListSnapshotsRequest],
+        Awaitable[cloud_filestore_service.ListSnapshotsResponse],
+    ]:
+        r"""Return a callable for the list snapshots method over gRPC.
+
+        Lists all snapshots in a project for either a
+        specified location or for all locations.
+
+        Returns:
+            Callable[[~.ListSnapshotsRequest],
+                    Awaitable[~.ListSnapshotsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_snapshots" not in self._stubs:
+            self._stubs["list_snapshots"] = self.grpc_channel.unary_unary(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/ListSnapshots",
+                request_serializer=cloud_filestore_service.ListSnapshotsRequest.serialize,
+                response_deserializer=cloud_filestore_service.ListSnapshotsResponse.deserialize,
+            )
+        return self._stubs["list_snapshots"]
+
+    @property
+    def get_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.GetSnapshotRequest],
+        Awaitable[cloud_filestore_service.Snapshot],
+    ]:
+        r"""Return a callable for the get snapshot method over gRPC.
+
+        Gets the details of a specific snapshot.
+
+        Returns:
+            Callable[[~.GetSnapshotRequest],
+                    Awaitable[~.Snapshot]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_snapshot" not in self._stubs:
+            self._stubs["get_snapshot"] = self.grpc_channel.unary_unary(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/GetSnapshot",
+                request_serializer=cloud_filestore_service.GetSnapshotRequest.serialize,
+                response_deserializer=cloud_filestore_service.Snapshot.deserialize,
+            )
+        return self._stubs["get_snapshot"]
+
+    @property
+    def create_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.CreateSnapshotRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create snapshot method over gRPC.
+
+        Creates a snapshot.
+
+        Returns:
+            Callable[[~.CreateSnapshotRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_snapshot" not in self._stubs:
+            self._stubs["create_snapshot"] = self.grpc_channel.unary_unary(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/CreateSnapshot",
+                request_serializer=cloud_filestore_service.CreateSnapshotRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_snapshot"]
+
+    @property
+    def delete_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.DeleteSnapshotRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete snapshot method over gRPC.
+
+        Deletes a snapshot.
+
+        Returns:
+            Callable[[~.DeleteSnapshotRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_snapshot" not in self._stubs:
+            self._stubs["delete_snapshot"] = self.grpc_channel.unary_unary(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/DeleteSnapshot",
+                request_serializer=cloud_filestore_service.DeleteSnapshotRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_snapshot"]
+
+    @property
+    def update_snapshot(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.UpdateSnapshotRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update snapshot method over gRPC.
+
+        Updates the settings of a specific snapshot.
+
+        Returns:
+            Callable[[~.UpdateSnapshotRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_snapshot" not in self._stubs:
+            self._stubs["update_snapshot"] = self.grpc_channel.unary_unary(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/UpdateSnapshot",
+                request_serializer=cloud_filestore_service.UpdateSnapshotRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_snapshot"]
 
     @property
     def list_backups(

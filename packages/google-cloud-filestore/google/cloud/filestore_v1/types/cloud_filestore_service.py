@@ -36,6 +36,13 @@ __protobuf__ = proto.module(
         "DeleteInstanceRequest",
         "ListInstancesRequest",
         "ListInstancesResponse",
+        "Snapshot",
+        "CreateSnapshotRequest",
+        "GetSnapshotRequest",
+        "DeleteSnapshotRequest",
+        "UpdateSnapshotRequest",
+        "ListSnapshotsRequest",
+        "ListSnapshotsResponse",
         "Backup",
         "CreateBackupRequest",
         "DeleteBackupRequest",
@@ -60,22 +67,39 @@ class NetworkConfig(proto.Message):
             addresses assigned. For this version, only MODE_IPV4 is
             supported.
         reserved_ip_range (str):
-            A /29 CIDR block in one of the `internal IP address
+            Optional, reserved_ip_range can have one of the following
+            two types of values.
+
+            -  CIDR range value when using DIRECT_PEERING connect mode.
+            -  `Allocated IP address
+               range <https://cloud.google.com/compute/docs/ip-addresses/reserve-static-internal-ip-address>`__
+               when using PRIVATE_SERVICE_ACCESS connect mode.
+
+            When the name of an allocated IP address range is specified,
+            it must be one of the ranges associated with the private
+            service access connection. When specified as a direct CIDR
+            value, it must be a /29 CIDR block for Basic tier, a /24
+            CIDR block for High Scale tier, or a /26 CIDR block for
+            Enterprise tier in one of the `internal IP address
             ranges <https://www.arin.net/reference/research/statistics/address_filters/>`__
             that identifies the range of IP addresses reserved for this
-            instance. For example, 10.0.0.0/29 or 192.168.0.0/29. The
-            range you specify can't overlap with either existing subnets
-            or assigned IP address ranges for other Cloud Filestore
-            instances in the selected VPC network.
+            instance. For example, 10.0.0.0/29, 192.168.0.0/24 or
+            192.168.0.0/26, respectively. The range you specify can't
+            overlap with either existing subnets or assigned IP address
+            ranges for other Filestore instances in the selected VPC
+            network.
         ip_addresses (MutableSequence[str]):
-            Output only. IPv4 addresses in the format IPv4 addresses in
-            the format ``{octet1}.{octet2}.{octet3}.{octet4}`` or IPv6
-            addresses in the format
+            Output only. IPv4 addresses in the format
+            ``{octet1}.{octet2}.{octet3}.{octet4}`` or IPv6 addresses in
+            the format
             ``{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}``.
+        connect_mode (google.cloud.filestore_v1.types.NetworkConfig.ConnectMode):
+            The network connect mode of the Filestore instance. If not
+            provided, the connect mode defaults to DIRECT_PEERING.
     """
 
     class AddressMode(proto.Enum):
-        r"""Internet protocol versions supported by Cloud Filestore.
+        r"""Internet protocol versions supported by Filestore.
 
         Values:
             ADDRESS_MODE_UNSPECIFIED (0):
@@ -85,6 +109,25 @@ class NetworkConfig(proto.Message):
         """
         ADDRESS_MODE_UNSPECIFIED = 0
         MODE_IPV4 = 1
+
+    class ConnectMode(proto.Enum):
+        r"""Available connection modes.
+
+        Values:
+            CONNECT_MODE_UNSPECIFIED (0):
+                Not set.
+            DIRECT_PEERING (1):
+                Connect via direct peering to the Filestore
+                service.
+            PRIVATE_SERVICE_ACCESS (2):
+                Connect to your Filestore instance using
+                Private Service Access. Private services access
+                provides an IP address range for multiple Google
+                Cloud services, including Filestore.
+        """
+        CONNECT_MODE_UNSPECIFIED = 0
+        DIRECT_PEERING = 1
+        PRIVATE_SERVICE_ACCESS = 2
 
     network: str = proto.Field(
         proto.STRING,
@@ -103,6 +146,11 @@ class NetworkConfig(proto.Message):
         proto.STRING,
         number=5,
     )
+    connect_mode: ConnectMode = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=ConnectMode,
+    )
 
 
 class FileShareConfig(proto.Message):
@@ -116,7 +164,7 @@ class FileShareConfig(proto.Message):
             characters or less).
         capacity_gb (int):
             File share capacity in gigabytes (GB).
-            Cloud Filestore defines 1 GB as 1024^3 bytes.
+            Filestore defines 1 GB as 1024^3 bytes.
         source_backup (str):
             The resource name of the backup, in the format
             ``projects/{project_number}/locations/{location_id}/backups/{backup_id}``,
@@ -240,7 +288,7 @@ class NfsExportOptions(proto.Message):
 
 
 class Instance(proto.Message):
-    r"""A Cloud Filestore instance.
+    r"""A Filestore instance.
 
     Attributes:
         name (str):
@@ -277,6 +325,11 @@ class Instance(proto.Message):
             overwriting each other.
         satisfies_pzs (google.protobuf.wrappers_pb2.BoolValue):
             Output only. Reserved for future use.
+        kms_key_name (str):
+            KMS key name used for data encryption.
+        suspension_reasons (MutableSequence[google.cloud.filestore_v1.types.Instance.SuspensionReason]):
+            Output only. Field indicates all the reasons
+            the instance is in "SUSPENDED" state.
     """
 
     class State(proto.Enum):
@@ -303,6 +356,16 @@ class Instance(proto.Message):
                 The instance is restoring a backup to an
                 existing file share and may be unusable during
                 this time.
+            SUSPENDED (8):
+                The instance is suspended. You can get further details from
+                the ``suspension_reasons`` field of the ``Instance``
+                resource.
+            SUSPENDING (9):
+                The instance is in the process of becoming
+                suspended.
+            RESUMING (10):
+                The instance is in the process of becoming
+                active.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -311,6 +374,9 @@ class Instance(proto.Message):
         DELETING = 4
         ERROR = 6
         RESTORING = 7
+        SUSPENDED = 8
+        SUSPENDING = 9
+        RESUMING = 10
 
     class Tier(proto.Enum):
         r"""Available service tiers.
@@ -319,9 +385,10 @@ class Instance(proto.Message):
             TIER_UNSPECIFIED (0):
                 Not set.
             STANDARD (1):
-                STANDARD tier.
+                STANDARD tier. BASIC_HDD is the preferred term for this
+                tier.
             PREMIUM (2):
-                PREMIUM tier.
+                PREMIUM tier. BASIC_SSD is the preferred term for this tier.
             BASIC_HDD (3):
                 BASIC instances offer a maximum capacity of 63.9 TB.
                 BASIC_HDD is an alias for STANDARD Tier, offering economical
@@ -333,6 +400,10 @@ class Instance(proto.Message):
             HIGH_SCALE_SSD (5):
                 HIGH_SCALE instances offer expanded capacity and performance
                 scaling capabilities.
+            ENTERPRISE (6):
+                ENTERPRISE instances offer the features and
+                availability needed for mission-critical
+                workloads.
         """
         TIER_UNSPECIFIED = 0
         STANDARD = 1
@@ -340,6 +411,21 @@ class Instance(proto.Message):
         BASIC_HDD = 3
         BASIC_SSD = 4
         HIGH_SCALE_SSD = 5
+        ENTERPRISE = 6
+
+    class SuspensionReason(proto.Enum):
+        r"""SuspensionReason contains the possible reasons for a
+        suspension.
+
+        Values:
+            SUSPENSION_REASON_UNSPECIFIED (0):
+                Not set.
+            KMS_KEY_ISSUE (1):
+                The KMS key used by the instance is either
+                revoked or denied access to.
+        """
+        SUSPENSION_REASON_UNSPECIFIED = 0
+        KMS_KEY_ISSUE = 1
 
     name: str = proto.Field(
         proto.STRING,
@@ -392,6 +478,15 @@ class Instance(proto.Message):
         number=13,
         message=wrappers_pb2.BoolValue,
     )
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    suspension_reasons: MutableSequence[SuspensionReason] = proto.RepeatedField(
+        proto.ENUM,
+        number=15,
+        enum=SuspensionReason,
+    )
 
 
 class CreateInstanceRequest(proto.Message):
@@ -400,8 +495,8 @@ class CreateInstanceRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The instance's project and location, in the format
-            ``projects/{project_id}/locations/{location}``. In Cloud
-            Filestore, locations map to GCP zones, for example
+            ``projects/{project_id}/locations/{location}``. In
+            Filestore, locations map to Google Cloud zones, for example
             **us-west1-b**.
         instance_id (str):
             Required. The name of the instance to create.
@@ -471,7 +566,7 @@ class UpdateInstanceRequest(proto.Message):
 
 
 class RestoreInstanceRequest(proto.Message):
-    r"""RestoreInstanceRequest restores an existing instances's file
+    r"""RestoreInstanceRequest restores an existing instance's file
     share from a backup.
 
 
@@ -482,7 +577,7 @@ class RestoreInstanceRequest(proto.Message):
             Required. The resource name of the instance, in the format
             ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``.
         file_share (str):
-            Required. Name of the file share in the Cloud
+            Required. Name of the file share in the
             Filestore instance that the backup is being
             restored to.
         source_backup (str):
@@ -514,11 +609,20 @@ class DeleteInstanceRequest(proto.Message):
         name (str):
             Required. The instance resource name, in the format
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
+        force (bool):
+            If set to true, all snapshots of the instance
+            will also be deleted. (Otherwise, the request
+            will only work if the instance has no
+            snapshots.)
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -530,7 +634,7 @@ class ListInstancesRequest(proto.Message):
             Required. The project and location for which to retrieve
             instance information, in the format
             ``projects/{project_id}/locations/{location}``. In Cloud
-            Filestore, locations map to GCP zones, for example
+            Filestore, locations map to Google Cloud zones, for example
             **us-west1-b**. To retrieve instance information for all
             locations, use "-" for the ``{location}`` value.
         page_size (int):
@@ -607,8 +711,238 @@ class ListInstancesResponse(proto.Message):
     )
 
 
+class Snapshot(proto.Message):
+    r"""A Filestore snapshot.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of the snapshot, in the
+            format
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}/snapshots/{snapshot_id}``.
+        description (str):
+            A description of the snapshot with 2048
+            characters or less. Requests with longer
+            descriptions will be rejected.
+        state (google.cloud.filestore_v1.types.Snapshot.State):
+            Output only. The snapshot state.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the snapshot was
+            created.
+        labels (MutableMapping[str, str]):
+            Resource labels to represent user provided
+            metadata.
+        filesystem_used_bytes (int):
+            Output only. The amount of bytes needed to
+            allocate a full copy of the snapshot content
+    """
+
+    class State(proto.Enum):
+        r"""The snapshot state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State not set.
+            CREATING (1):
+                Snapshot is being created.
+            READY (2):
+                Snapshot is available for use.
+            DELETING (3):
+                Snapshot is being deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        READY = 2
+        DELETING = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    filesystem_used_bytes: int = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+
+
+class CreateSnapshotRequest(proto.Message):
+    r"""CreateSnapshotRequest creates a snapshot.
+
+    Attributes:
+        parent (str):
+            Required. The Filestore Instance to create the snapshots of,
+            in the format
+            ``projects/{project_id}/locations/{location}/instances/{instance_id}``
+        snapshot_id (str):
+            Required. The ID to use for the snapshot.
+            The ID must be unique within the specified
+            instance.
+            This value must start with a lowercase letter
+            followed by up to 62 lowercase letters, numbers,
+            or hyphens, and cannot end with a hyphen.
+        snapshot (google.cloud.filestore_v1.types.Snapshot):
+            Required. A snapshot resource.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    snapshot: "Snapshot" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Snapshot",
+    )
+
+
+class GetSnapshotRequest(proto.Message):
+    r"""GetSnapshotRequest gets the state of a snapshot.
+
+    Attributes:
+        name (str):
+            Required. The snapshot resource name, in the format
+            ``projects/{project_id}/locations/{location}/instances/{instance_id}/snapshots/{snapshot_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteSnapshotRequest(proto.Message):
+    r"""DeleteSnapshotRequest deletes a snapshot.
+
+    Attributes:
+        name (str):
+            Required. The snapshot resource name, in the format
+            ``projects/{project_id}/locations/{location}/instances/{instance_id}/snapshots/{snapshot_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateSnapshotRequest(proto.Message):
+    r"""UpdateSnapshotRequest updates description and/or labels for a
+    snapshot.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Mask of fields to update. At least
+            one path must be supplied in this field.
+        snapshot (google.cloud.filestore_v1.types.Snapshot):
+            Required. A snapshot resource.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    snapshot: "Snapshot" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Snapshot",
+    )
+
+
+class ListSnapshotsRequest(proto.Message):
+    r"""ListSnapshotsRequest lists snapshots.
+
+    Attributes:
+        parent (str):
+            Required. The instance for which to retrieve snapshot
+            information, in the format
+            ``projects/{project_id}/locations/{location}/instances/{instance_id}``.
+        page_size (int):
+            The maximum number of items to return.
+        page_token (str):
+            The next_page_token value to use if there are additional
+            results to retrieve for this list request.
+        order_by (str):
+            Sort results. Supported values are "name",
+            "name desc" or "" (unsorted).
+        filter (str):
+            List filter.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListSnapshotsResponse(proto.Message):
+    r"""ListSnapshotsResponse is the result of ListSnapshotsRequest.
+
+    Attributes:
+        snapshots (MutableSequence[google.cloud.filestore_v1.types.Snapshot]):
+            A list of snapshots in the project for the
+            specified instance.
+        next_page_token (str):
+            The token you can use to retrieve the next
+            page of results. Not returned if there are no
+            more results in the list.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    snapshots: MutableSequence["Snapshot"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Snapshot",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class Backup(proto.Message):
-    r"""A Cloud Filestore backup.
+    r"""A Filestore backup.
 
     Attributes:
         name (str):
@@ -635,18 +969,18 @@ class Backup(proto.Message):
             number is expected to change with backup
             creation/deletion.
         source_instance (str):
-            The resource name of the source Cloud Filestore instance, in
-            the format
+            The resource name of the source Filestore instance, in the
+            format
             ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``,
             used to create this backup.
         source_file_share (str):
-            Name of the file share in the source Cloud
+            Name of the file share in the source
             Filestore instance that the backup is created
             from.
         source_instance_tier (google.cloud.filestore_v1.types.Instance.Tier):
             Output only. The service tier of the source
-            Cloud Filestore instance that this backup is
-            created from.
+            Filestore instance that this backup is created
+            from.
         download_bytes (int):
             Output only. Amount of bytes that will be
             downloaded if the backup is restored. This may
@@ -655,6 +989,9 @@ class Backup(proto.Message):
             storage.
         satisfies_pzs (google.protobuf.wrappers_pb2.BoolValue):
             Output only. Reserved for future use.
+        kms_key (str):
+            Immutable. KMS key name used for data
+            encryption.
     """
 
     class State(proto.Enum):
@@ -733,6 +1070,10 @@ class Backup(proto.Message):
         number=12,
         message=wrappers_pb2.BoolValue,
     )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
 
 
 class CreateBackupRequest(proto.Message):
@@ -741,9 +1082,9 @@ class CreateBackupRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The backup's project and location, in the format
-            ``projects/{project_number}/locations/{location}``. In Cloud
-            Filestore, backup locations map to GCP regions, for example
-            **us-west1**.
+            ``projects/{project_number}/locations/{location}``. In
+            Filestore, backup locations map to Google Cloud regions, for
+            example **us-west1**.
         backup (google.cloud.filestore_v1.types.Backup):
             Required. A [backup
             resource][google.cloud.filestore.v1.Backup]
@@ -834,9 +1175,9 @@ class ListBackupsRequest(proto.Message):
         parent (str):
             Required. The project and location for which to retrieve
             backup information, in the format
-            ``projects/{project_number}/locations/{location}``. In Cloud
-            Filestore, backup locations map to GCP regions, for example
-            **us-west1**. To retrieve backup information for all
+            ``projects/{project_number}/locations/{location}``. In
+            Filestore, backup locations map to Google Cloud regions, for
+            example **us-west1**. To retrieve backup information for all
             locations, use "-" for the ``{location}`` value.
         page_size (int):
             The maximum number of items to return.
