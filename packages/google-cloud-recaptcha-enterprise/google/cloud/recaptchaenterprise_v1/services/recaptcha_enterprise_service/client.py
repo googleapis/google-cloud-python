@@ -46,6 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service import (
@@ -584,7 +585,9 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         Returns:
             google.cloud.recaptchaenterprise_v1.types.Assessment:
-                A recaptcha assessment resource.
+                A reCAPTCHA Enterprise assessment
+                resource.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -756,6 +759,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         self,
         request: Optional[Union[recaptchaenterprise.CreateKeyRequest, dict]] = None,
         *,
+        parent: Optional[str] = None,
+        key: Optional[recaptchaenterprise.Key] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -795,6 +800,21 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest, dict]):
                 The request object. The create key request message.
+            parent (str):
+                Required. The name of the project in
+                which the key will be created, in the
+                format "projects/{project}".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            key (google.cloud.recaptchaenterprise_v1.types.Key):
+                Required. Information to create a
+                reCAPTCHA Enterprise key.
+
+                This corresponds to the ``key`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -809,12 +829,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, key])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a recaptchaenterprise.CreateKeyRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, recaptchaenterprise.CreateKeyRequest):
             request = recaptchaenterprise.CreateKeyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if key is not None:
+                request.key = key
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -841,6 +876,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         self,
         request: Optional[Union[recaptchaenterprise.ListKeysRequest, dict]] = None,
         *,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -878,6 +914,15 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.ListKeysRequest, dict]):
                 The request object. The list keys request message.
+            parent (str):
+                Required. The name of the project
+                that contains the keys that will be
+                listed, in the format
+                "projects/{project}".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -894,12 +939,25 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a recaptchaenterprise.ListKeysRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, recaptchaenterprise.ListKeysRequest):
             request = recaptchaenterprise.ListKeysRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1045,6 +1103,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         self,
         request: Optional[Union[recaptchaenterprise.GetKeyRequest, dict]] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1080,6 +1139,14 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.GetKeyRequest, dict]):
                 The request object. The get key request message.
+            name (str):
+                Required. The name of the requested
+                key, in the format
+                "projects/{project}/keys/{key}".
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1094,12 +1161,25 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a recaptchaenterprise.GetKeyRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, recaptchaenterprise.GetKeyRequest):
             request = recaptchaenterprise.GetKeyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1126,6 +1206,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         self,
         request: Optional[Union[recaptchaenterprise.UpdateKeyRequest, dict]] = None,
         *,
+        key: Optional[recaptchaenterprise.Key] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1164,6 +1246,20 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest, dict]):
                 The request object. The update key request message.
+            key (google.cloud.recaptchaenterprise_v1.types.Key):
+                Required. The key to update.
+                This corresponds to the ``key`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. The mask to control which
+                fields of the key get updated. If the
+                mask is not present, all fields will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1178,12 +1274,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([key, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a recaptchaenterprise.UpdateKeyRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, recaptchaenterprise.UpdateKeyRequest):
             request = recaptchaenterprise.UpdateKeyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if key is not None:
+                request.key = key
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1210,6 +1321,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         self,
         request: Optional[Union[recaptchaenterprise.DeleteKeyRequest, dict]] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1242,6 +1354,14 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest, dict]):
                 The request object. The delete key request message.
+            name (str):
+                Required. The name of the key to be
+                deleted, in the format
+                "projects/{project}/keys/{key}".
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1249,12 +1369,25 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a recaptchaenterprise.DeleteKeyRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, recaptchaenterprise.DeleteKeyRequest):
             request = recaptchaenterprise.DeleteKeyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

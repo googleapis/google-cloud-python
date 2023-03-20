@@ -372,6 +372,14 @@
             "type": "google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "key",
+            "type": "google.cloud.recaptchaenterprise_v1.types.Key"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -446,6 +454,14 @@
           {
             "name": "request",
             "type": "google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "key",
+            "type": "google.cloud.recaptchaenterprise_v1.types.Key"
           },
           {
             "name": "retry",
@@ -525,6 +541,10 @@
             "type": "google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -596,6 +616,10 @@
           {
             "name": "request",
             "type": "google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -672,6 +696,10 @@
             "type": "google.cloud.recaptchaenterprise_v1.types.GetKeyRequest"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -746,6 +774,10 @@
           {
             "name": "request",
             "type": "google.cloud.recaptchaenterprise_v1.types.GetKeyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -986,6 +1018,10 @@
             "type": "google.cloud.recaptchaenterprise_v1.types.ListKeysRequest"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -1060,6 +1096,10 @@
           {
             "name": "request",
             "type": "google.cloud.recaptchaenterprise_v1.types.ListKeysRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -1944,6 +1984,14 @@
             "type": "google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest"
           },
           {
+            "name": "key",
+            "type": "google.cloud.recaptchaenterprise_v1.types.Key"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -2018,6 +2066,14 @@
           {
             "name": "request",
             "type": "google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest"
+          },
+          {
+            "name": "key",
+            "type": "google.cloud.recaptchaenterprise_v1.types.Key"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",

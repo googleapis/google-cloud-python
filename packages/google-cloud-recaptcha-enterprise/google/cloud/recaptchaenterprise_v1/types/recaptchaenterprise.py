@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.recaptchaenterprise.v1",
     manifest={
         "CreateAssessmentRequest",
+        "TransactionEvent",
         "AnnotateAssessmentRequest",
         "AnnotateAssessmentResponse",
         "EndpointVerificationInfo",
@@ -32,8 +33,10 @@ __protobuf__ = proto.module(
         "PrivatePasswordLeakVerification",
         "Assessment",
         "Event",
+        "TransactionData",
         "RiskAnalysis",
         "TokenProperties",
+        "FraudPreventionAssessment",
         "AccountDefenderAssessment",
         "CreateKeyRequest",
         "ListKeysRequest",
@@ -90,6 +93,165 @@ class CreateAssessmentRequest(proto.Message):
     )
 
 
+class TransactionEvent(proto.Message):
+    r"""Describes an event in the lifecycle of a payment transaction.
+
+    Attributes:
+        event_type (google.cloud.recaptchaenterprise_v1.types.TransactionEvent.TransactionEventType):
+            Optional. The type of this transaction event.
+        reason (str):
+            Optional. The reason or standardized code
+            that corresponds with this transaction event, if
+            one exists. For example, a CHARGEBACK event with
+            code 6005.
+        value (float):
+            Optional. The value that corresponds with
+            this transaction event, if one exists. For
+            example, a refund event where $5.00 was
+            refunded. Currency is obtained from the original
+            transaction data.
+        event_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Timestamp when this transaction
+            event occurred; otherwise assumed to be the time
+            of the API call.
+    """
+
+    class TransactionEventType(proto.Enum):
+        r"""Enum that represents an event in the payment transaction
+        lifecycle.
+
+        Values:
+            TRANSACTION_EVENT_TYPE_UNSPECIFIED (0):
+                Default, unspecified event type.
+            MERCHANT_APPROVE (1):
+                Indicates that the transaction is approved by the merchant.
+                The accompanying reasons can include terms such as
+                'INHOUSE', 'ACCERTIFY', 'CYBERSOURCE', or 'MANUAL_REVIEW'.
+            MERCHANT_DENY (2):
+                Indicates that the transaction is denied and concluded due
+                to risks detected by the merchant. The accompanying reasons
+                can include terms such as 'INHOUSE', 'ACCERTIFY',
+                'CYBERSOURCE', or 'MANUAL_REVIEW'.
+            MANUAL_REVIEW (3):
+                Indicates that the transaction is being
+                evaluated by a human, due to suspicion or risk.
+            AUTHORIZATION (4):
+                Indicates that the authorization attempt with
+                the card issuer succeeded.
+            AUTHORIZATION_DECLINE (5):
+                Indicates that the authorization attempt with
+                the card issuer failed. The accompanying reasons
+                can include Visa's '54' indicating that the card
+                is expired, or '82' indicating that the CVV is
+                incorrect.
+            PAYMENT_CAPTURE (6):
+                Indicates that the transaction is completed
+                because the funds were settled.
+            PAYMENT_CAPTURE_DECLINE (7):
+                Indicates that the transaction could not be
+                completed because the funds were not settled.
+            CANCEL (8):
+                Indicates that the transaction has been canceled. Specify
+                the reason for the cancellation. For example,
+                'INSUFFICIENT_INVENTORY'.
+            CHARGEBACK_INQUIRY (9):
+                Indicates that the merchant has received a
+                chargeback inquiry due to fraud for the
+                transaction, requesting additional information
+                before a fraud chargeback is officially issued
+                and a formal chargeback notification is sent.
+            CHARGEBACK_ALERT (10):
+                Indicates that the merchant has received a
+                chargeback alert due to fraud for the
+                transaction. The process of resolving the
+                dispute without involving the payment network is
+                started.
+            FRAUD_NOTIFICATION (11):
+                Indicates that a fraud notification is issued for the
+                transaction, sent by the payment instrument's issuing bank
+                because the transaction appears to be fraudulent. We
+                recommend including TC40 or SAFE data in the ``reason``
+                field for this event type. For partial chargebacks, we
+                recommend that you include an amount in the ``value`` field.
+            CHARGEBACK (12):
+                Indicates that the merchant is informed by the payment
+                network that the transaction has entered the chargeback
+                process due to fraud. Reason code examples include
+                Discover's '6005' and '6041'. For partial chargebacks, we
+                recommend that you include an amount in the ``value`` field.
+            CHARGEBACK_REPRESENTMENT (13):
+                Indicates that the transaction has entered the chargeback
+                process due to fraud, and that the merchant has chosen to
+                enter representment. Reason examples include Discover's
+                '6005' and '6041'. For partial chargebacks, we recommend
+                that you include an amount in the ``value`` field.
+            CHARGEBACK_REVERSE (14):
+                Indicates that the transaction has had a fraud chargeback
+                which was illegitimate and was reversed as a result. For
+                partial chargebacks, we recommend that you include an amount
+                in the ``value`` field.
+            REFUND_REQUEST (15):
+                Indicates that the merchant has received a refund for a
+                completed transaction. For partial refunds, we recommend
+                that you include an amount in the ``value`` field. Reason
+                example: 'TAX_EXEMPT' (partial refund of exempt tax)
+            REFUND_DECLINE (16):
+                Indicates that the merchant has received a refund request
+                for this transaction, but that they have declined it. For
+                partial refunds, we recommend that you include an amount in
+                the ``value`` field. Reason example: 'TAX_EXEMPT' (partial
+                refund of exempt tax)
+            REFUND (17):
+                Indicates that the completed transaction was refunded by the
+                merchant. For partial refunds, we recommend that you include
+                an amount in the ``value`` field. Reason example:
+                'TAX_EXEMPT' (partial refund of exempt tax)
+            REFUND_REVERSE (18):
+                Indicates that the completed transaction was refunded by the
+                merchant, and that this refund was reversed. For partial
+                refunds, we recommend that you include an amount in the
+                ``value`` field.
+        """
+        TRANSACTION_EVENT_TYPE_UNSPECIFIED = 0
+        MERCHANT_APPROVE = 1
+        MERCHANT_DENY = 2
+        MANUAL_REVIEW = 3
+        AUTHORIZATION = 4
+        AUTHORIZATION_DECLINE = 5
+        PAYMENT_CAPTURE = 6
+        PAYMENT_CAPTURE_DECLINE = 7
+        CANCEL = 8
+        CHARGEBACK_INQUIRY = 9
+        CHARGEBACK_ALERT = 10
+        FRAUD_NOTIFICATION = 11
+        CHARGEBACK = 12
+        CHARGEBACK_REPRESENTMENT = 13
+        CHARGEBACK_REVERSE = 14
+        REFUND_REQUEST = 15
+        REFUND_DECLINE = 16
+        REFUND = 17
+        REFUND_REVERSE = 18
+
+    event_type: TransactionEventType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=TransactionEventType,
+    )
+    reason: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    value: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
+    event_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
 class AnnotateAssessmentRequest(proto.Message):
     r"""The request message to annotate an Assessment.
 
@@ -114,6 +276,10 @@ class AnnotateAssessmentRequest(proto.Message):
             account identifier is not yet known in the initial request.
             It is recommended that the identifier is hashed using
             hmac-sha256 with stable secret.
+        transaction_event (google.cloud.recaptchaenterprise_v1.types.TransactionEvent):
+            Optional. If the assessment is part of a
+            payment transaction, provide details on payment
+            lifecycle events that occur in the transaction.
     """
 
     class Annotation(proto.Enum):
@@ -247,6 +413,11 @@ class AnnotateAssessmentRequest(proto.Message):
     hashed_account_id: bytes = proto.Field(
         proto.BYTES,
         number=4,
+    )
+    transaction_event: "TransactionEvent" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="TransactionEvent",
     )
 
 
@@ -442,7 +613,7 @@ class PrivatePasswordLeakVerification(proto.Message):
 
 
 class Assessment(proto.Message):
-    r"""A recaptcha assessment resource.
+    r"""A reCAPTCHA Enterprise assessment resource.
 
     Attributes:
         name (str):
@@ -469,6 +640,9 @@ class Assessment(proto.Message):
             contains the parameters that are used to to
             check for leaks privately without sharing user
             credentials.
+        fraud_prevention_assessment (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment):
+            Assessment returned by Fraud Prevention when
+            TransactionData is provided.
     """
 
     name: str = proto.Field(
@@ -505,20 +679,25 @@ class Assessment(proto.Message):
         number=8,
         message="PrivatePasswordLeakVerification",
     )
+    fraud_prevention_assessment: "FraudPreventionAssessment" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="FraudPreventionAssessment",
+    )
 
 
 class Event(proto.Message):
-    r"""
+    r"""The event being assessed.
 
     Attributes:
         token (str):
             Optional. The user response token provided by
-            the reCAPTCHA client-side integration on your
-            site.
+            the reCAPTCHA Enterprise client-side integration
+            on your site.
         site_key (str):
             Optional. The site key that was used to
-            invoke reCAPTCHA on your site and generate the
-            token.
+            invoke reCAPTCHA Enterprise on your site and
+            generate the token.
         user_agent (str):
             Optional. The user agent present in the
             request from the user's device related to this
@@ -536,6 +715,12 @@ class Event(proto.Message):
             Optional. Unique stable hashed user
             identifier for the request. The identifier must
             be hashed using hmac-sha256 with stable secret.
+        transaction_data (google.cloud.recaptchaenterprise_v1.types.TransactionData):
+            Optional. Data describing a payment
+            transaction to be assessed. Sending this data
+            enables reCAPTCHA Enterprise Fraud Prevention
+            and the FraudPreventionAssessment component in
+            the response.
     """
 
     token: str = proto.Field(
@@ -561,6 +746,301 @@ class Event(proto.Message):
     hashed_account_id: bytes = proto.Field(
         proto.BYTES,
         number=6,
+    )
+    transaction_data: "TransactionData" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="TransactionData",
+    )
+
+
+class TransactionData(proto.Message):
+    r"""Transaction data associated with a payment protected by
+    reCAPTCHA Enterprise. All fields are optional.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        transaction_id (str):
+            Unique identifier for the transaction. This
+            custom identifier can be used to reference this
+            transaction in the future, for example, labeling
+            a refund or chargeback event. Two attempts at
+            the same transaction should use the same
+            transaction id.
+
+            This field is a member of `oneof`_ ``_transaction_id``.
+        payment_method (str):
+            The payment method for the transaction. The allowed values
+            are:
+
+            -  credit-card
+            -  debit-card
+            -  gift-card
+            -  processor-{name} (If a third-party is used, for example,
+               processor-paypal)
+            -  custom-{name} (If an alternative method is used, for
+               example, custom-crypto)
+        card_bin (str):
+            The Bank Identification Number - generally
+            the first 6 or 8 digits of the card.
+        card_last_four (str):
+            The last four digits of the card.
+        currency_code (str):
+            The currency code in ISO-4217 format.
+        value (float):
+            The decimal value of the transaction in the
+            specified currency.
+        shipping_value (float):
+            The value of shipping in the specified
+            currency. 0 for free or no shipping.
+        shipping_address (google.cloud.recaptchaenterprise_v1.types.TransactionData.Address):
+            Destination address if this transaction
+            involves shipping a physical item.
+        billing_address (google.cloud.recaptchaenterprise_v1.types.TransactionData.Address):
+            Address associated with the payment method
+            when applicable.
+        user (google.cloud.recaptchaenterprise_v1.types.TransactionData.User):
+            Information about the user paying/initiating
+            the transaction.
+        merchants (MutableSequence[google.cloud.recaptchaenterprise_v1.types.TransactionData.User]):
+            Information about the user or users
+            fulfilling the transaction.
+        items (MutableSequence[google.cloud.recaptchaenterprise_v1.types.TransactionData.Item]):
+            Items purchased in this transaction.
+        gateway_info (google.cloud.recaptchaenterprise_v1.types.TransactionData.GatewayInfo):
+            Information about the payment gateway's
+            response to the transaction.
+    """
+
+    class Address(proto.Message):
+        r"""Structured address format for billing and shipping addresses.
+
+        Attributes:
+            recipient (str):
+                The recipient name, potentially including
+                information such as "care of".
+            address (MutableSequence[str]):
+                The first lines of the address. The first
+                line generally contains the street name and
+                number, and further lines may include
+                information such as an apartment number.
+            locality (str):
+                The town/city of the address.
+            administrative_area (str):
+                The state, province, or otherwise
+                administrative area of the address.
+            region_code (str):
+                The CLDR country/region of the address.
+            postal_code (str):
+                The postal or ZIP code of the address.
+        """
+
+        recipient: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        address: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        locality: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        administrative_area: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        region_code: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        postal_code: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+
+    class User(proto.Message):
+        r"""Details about a user's account involved in the transaction.
+
+        Attributes:
+            account_id (str):
+                Unique account identifier for this user. If using account
+                defender, this should match the hashed_account_id field.
+                Otherwise, a unique and persistent identifier for this
+                account.
+            creation_ms (int):
+                The epoch milliseconds of the user's account
+                creation.
+            email (str):
+                The email address of the user.
+            email_verified (bool):
+                Whether the email has been verified to be
+                accessible by the user (OTP or similar).
+            phone_number (str):
+                The phone number of the user, with country
+                code.
+            phone_verified (bool):
+                Whether the phone number has been verified to
+                be accessible by the user (OTP or similar).
+        """
+
+        account_id: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        creation_ms: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        email: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        email_verified: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        phone_number: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        phone_verified: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
+
+    class Item(proto.Message):
+        r"""Line items being purchased in this transaction.
+
+        Attributes:
+            name (str):
+                The full name of the item.
+            value (float):
+                The value per item that the user is paying,
+                in the transaction currency, after discounts.
+            quantity (int):
+                The quantity of this item that is being
+                purchased.
+            merchant_account_id (str):
+                When a merchant is specified, its corresponding account_id.
+                Necessary to populate marketplace-style transactions.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        quantity: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+        merchant_account_id: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    class GatewayInfo(proto.Message):
+        r"""Details about the transaction from the gateway.
+
+        Attributes:
+            name (str):
+                Name of the gateway service (for example,
+                stripe, square, paypal).
+            gateway_response_code (str):
+                Gateway response code describing the state of
+                the transaction.
+            avs_response_code (str):
+                AVS response code from the gateway
+                (available only when reCAPTCHA Enterprise is
+                called after authorization).
+            cvv_response_code (str):
+                CVV response code from the gateway
+                (available only when reCAPTCHA Enterprise is
+                called after authorization).
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        gateway_response_code: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        avs_response_code: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        cvv_response_code: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    transaction_id: str = proto.Field(
+        proto.STRING,
+        number=11,
+        optional=True,
+    )
+    payment_method: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    card_bin: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    card_last_four: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    currency_code: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    value: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+    )
+    shipping_value: float = proto.Field(
+        proto.DOUBLE,
+        number=12,
+    )
+    shipping_address: Address = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=Address,
+    )
+    billing_address: Address = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Address,
+    )
+    user: User = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=User,
+    )
+    merchants: MutableSequence[User] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message=User,
+    )
+    items: MutableSequence[Item] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message=Item,
+    )
+    gateway_info: GatewayInfo = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=GatewayInfo,
     )
 
 
@@ -599,6 +1079,12 @@ class RiskAnalysis(proto.Message):
                 Too little traffic has been received from
                 this site thus far to generate quality risk
                 analysis.
+            SUSPECTED_CARDING (6):
+                The request matches behavioral
+                characteristics of a carding attack.
+            SUSPECTED_CHARGEBACK (7):
+                The request matches behavioral
+                characteristics of chargebacks for fraud.
         """
         CLASSIFICATION_REASON_UNSPECIFIED = 0
         AUTOMATION = 1
@@ -606,6 +1092,8 @@ class RiskAnalysis(proto.Message):
         TOO_MUCH_TRAFFIC = 3
         UNEXPECTED_USAGE_PATTERNS = 4
         LOW_CONFIDENCE_SCORE = 5
+        SUSPECTED_CARDING = 6
+        SUSPECTED_CHARGEBACK = 7
 
     score: float = proto.Field(
         proto.FLOAT,
@@ -619,7 +1107,7 @@ class RiskAnalysis(proto.Message):
 
 
 class TokenProperties(proto.Message):
-    r"""
+    r"""Properties of the provided event token.
 
     Attributes:
         valid (bool):
@@ -707,6 +1195,70 @@ class TokenProperties(proto.Message):
     action: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class FraudPreventionAssessment(proto.Message):
+    r"""Assessment for Fraud Prevention.
+
+    Attributes:
+        transaction_risk (float):
+            Probability (0-1) of this transaction being
+            fraudulent. Summarizes the combined risk of
+            attack vectors below.
+        stolen_instrument_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.StolenInstrumentVerdict):
+            Assessment of this transaction for risk of a
+            stolen instrument.
+        card_testing_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.CardTestingVerdict):
+            Assessment of this transaction for risk of
+            being part of a card testing attack.
+    """
+
+    class StolenInstrumentVerdict(proto.Message):
+        r"""Information about stolen instrument fraud, where the user is
+        not the legitimate owner of the instrument being used for the
+        purchase.
+
+        Attributes:
+            risk (float):
+                Probability (0-1) of this transaction being
+                executed with a stolen instrument.
+        """
+
+        risk: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+
+    class CardTestingVerdict(proto.Message):
+        r"""Information about card testing fraud, where an adversary is
+        testing fraudulently obtained cards or brute forcing their
+        details.
+
+        Attributes:
+            risk (float):
+                Probability (0-1) of this transaction attempt
+                being part of a card testing attack.
+        """
+
+        risk: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+
+    transaction_risk: float = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    stolen_instrument_verdict: StolenInstrumentVerdict = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=StolenInstrumentVerdict,
+    )
+    card_testing_verdict: CardTestingVerdict = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=CardTestingVerdict,
     )
 
 
@@ -1050,8 +1602,8 @@ class Key(proto.Message):
             href="https://cloud.google.com/recaptcha-enterprise/docs/labels">
             Creating and managing labels</a>.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The timestamp corresponding to the creation
-            of this Key.
+            Output only. The timestamp corresponding to
+            the creation of this Key.
         testing_options (google.cloud.recaptchaenterprise_v1.types.TestingOptions):
             Options for user acceptance testing.
         waf_settings (google.cloud.recaptchaenterprise_v1.types.WafSettings):

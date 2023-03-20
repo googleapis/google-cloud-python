@@ -1377,6 +1377,98 @@ async def test_create_key_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_create_key_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Key()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_key(
+            parent="parent_value",
+            key=recaptchaenterprise.Key(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].key
+        mock_val = recaptchaenterprise.Key(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_key_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_key(
+            recaptchaenterprise.CreateKeyRequest(),
+            parent="parent_value",
+            key=recaptchaenterprise.Key(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_key_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Key()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_key(
+            parent="parent_value",
+            key=recaptchaenterprise.Key(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].key
+        mock_val = recaptchaenterprise.Key(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_key_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_key(
+            recaptchaenterprise.CreateKeyRequest(),
+            parent="parent_value",
+            key=recaptchaenterprise.Key(name="name_value"),
+        )
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -1525,6 +1617,88 @@ async def test_list_keys_field_headers_async():
         "x-goog-request-params",
         "parent=parent_value",
     ) in kw["metadata"]
+
+
+def test_list_keys_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListKeysResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_keys(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_keys_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_keys(
+            recaptchaenterprise.ListKeysRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_keys_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListKeysResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListKeysResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_keys(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_keys_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_keys(
+            recaptchaenterprise.ListKeysRequest(),
+            parent="parent_value",
+        )
 
 
 def test_list_keys_pager(transport_name: str = "grpc"):
@@ -2117,6 +2291,88 @@ async def test_get_key_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_get_key_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Key()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_key(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_key_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_key(
+            recaptchaenterprise.GetKeyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_key_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Key()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_key(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_key_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_key(
+            recaptchaenterprise.GetKeyRequest(),
+            name="name_value",
+        )
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -2272,6 +2528,98 @@ async def test_update_key_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_update_key_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Key()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_key(
+            key=recaptchaenterprise.Key(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].key
+        mock_val = recaptchaenterprise.Key(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_key_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_key(
+            recaptchaenterprise.UpdateKeyRequest(),
+            key=recaptchaenterprise.Key(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_key_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Key()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_key(
+            key=recaptchaenterprise.Key(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].key
+        mock_val = recaptchaenterprise.Key(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_key_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_key(
+            recaptchaenterprise.UpdateKeyRequest(),
+            key=recaptchaenterprise.Key(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -2410,6 +2758,86 @@ async def test_delete_key_field_headers_async():
         "x-goog-request-params",
         "name=name_value",
     ) in kw["metadata"]
+
+
+def test_delete_key_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_key(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_key_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_key(
+            recaptchaenterprise.DeleteKeyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_key_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_key(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_key_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_key(
+            recaptchaenterprise.DeleteKeyRequest(),
+            name="name_value",
+        )
 
 
 @pytest.mark.parametrize(
