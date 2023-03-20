@@ -9,6 +9,6 @@ PyYAML==6.0
 setuptools==67.6.0
 grpc-google-iam-v1==0.12.6
 proto-plus==1.22.2
-pytest-asyncio==0.20.3
+pytest-asyncio==0.21.0
 libcst==0.4.9
 inflection==0.5.1
