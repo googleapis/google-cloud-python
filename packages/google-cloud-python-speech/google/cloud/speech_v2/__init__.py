@@ -27,6 +27,7 @@ from .types.cloud_speech import BatchRecognizeFileResult
 from .types.cloud_speech import BatchRecognizeMetadata
 from .types.cloud_speech import BatchRecognizeRequest
 from .types.cloud_speech import BatchRecognizeResponse
+from .types.cloud_speech import BatchRecognizeResults
 from .types.cloud_speech import BatchRecognizeTranscriptionMetadata
 from .types.cloud_speech import Config
 from .types.cloud_speech import CreateCustomClassRequest
@@ -37,10 +38,12 @@ from .types.cloud_speech import DeleteCustomClassRequest
 from .types.cloud_speech import DeletePhraseSetRequest
 from .types.cloud_speech import DeleteRecognizerRequest
 from .types.cloud_speech import ExplicitDecodingConfig
+from .types.cloud_speech import GcsOutputConfig
 from .types.cloud_speech import GetConfigRequest
 from .types.cloud_speech import GetCustomClassRequest
 from .types.cloud_speech import GetPhraseSetRequest
 from .types.cloud_speech import GetRecognizerRequest
+from .types.cloud_speech import InlineOutputConfig
 from .types.cloud_speech import ListCustomClassesRequest
 from .types.cloud_speech import ListCustomClassesResponse
 from .types.cloud_speech import ListPhraseSetsRequest
@@ -51,6 +54,7 @@ from .types.cloud_speech import OperationMetadata
 from .types.cloud_speech import PhraseSet
 from .types.cloud_speech import RecognitionConfig
 from .types.cloud_speech import RecognitionFeatures
+from .types.cloud_speech import RecognitionOutputConfig
 from .types.cloud_speech import RecognitionResponseMetadata
 from .types.cloud_speech import Recognizer
 from .types.cloud_speech import RecognizeRequest
@@ -81,6 +85,7 @@ __all__ = (
     "BatchRecognizeMetadata",
     "BatchRecognizeRequest",
     "BatchRecognizeResponse",
+    "BatchRecognizeResults",
     "BatchRecognizeTranscriptionMetadata",
     "Config",
     "CreateCustomClassRequest",
@@ -91,10 +96,12 @@ __all__ = (
     "DeletePhraseSetRequest",
     "DeleteRecognizerRequest",
     "ExplicitDecodingConfig",
+    "GcsOutputConfig",
     "GetConfigRequest",
     "GetCustomClassRequest",
     "GetPhraseSetRequest",
     "GetRecognizerRequest",
+    "InlineOutputConfig",
     "ListCustomClassesRequest",
     "ListCustomClassesResponse",
     "ListPhraseSetsRequest",
@@ -105,6 +112,7 @@ __all__ = (
     "PhraseSet",
     "RecognitionConfig",
     "RecognitionFeatures",
+    "RecognitionOutputConfig",
     "RecognitionResponseMetadata",
     "RecognizeRequest",
     "RecognizeResponse",
