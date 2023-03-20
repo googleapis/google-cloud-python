@@ -75,15 +75,15 @@ class Message(object):
     :class:`~.pubsub_v1.subscriber._consumer.Consumer`.)
 
     Attributes:
-        message_id:
+        message_id (str):
             The message ID. In general, you should not need to use this directly.
-        data:
+        data (bytes):
             The data in the message. Note that this will be a :class:`bytes`,
             not a text string.
-        attributes:
+        attributes (MutableMapping[str, str]):
             The attributes sent along with the message. See :attr:`attributes` for more
             information on this type.
-        publish_time:
+        publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The time that this message was originally published.
     """
 
@@ -103,21 +103,21 @@ class Message(object):
             responsibility of :class:`BasePolicy` subclasses to do so.
 
         Args:
-            message:
+            message (types.PubsubMessage._meta._pb):
                 The message received from Pub/Sub. For performance reasons it should be
                 the raw protobuf message normally wrapped by
                 :class:`~pubsub_v1.types.PubsubMessage`. A raw message can be obtained
                 from a  :class:`~pubsub_v1.types.PubsubMessage` instance through the
                 latter's ``._pb`` attribute.
-            ack_id:
+            ack_id (str):
                 The ack_id received from Pub/Sub.
-            delivery_attempt:
+            delivery_attempt (int):
                 The delivery attempt counter received from Pub/Sub if a DeadLetterPolicy
                 is set on the subscription, and zero otherwise.
-            request_queue:
+            request_queue (queue.Queue):
                 A queue provided by the policy that can accept requests; the policy is
                 responsible for handling those requests.
-            exactly_once_delivery_enabled_func:
+            exactly_once_delivery_enabled_func (Callable[[], bool]):
                 A Callable that returns whether exactly-once delivery is currently-enabled. Defaults to a lambda that always returns False.
         """
         self._message = message
@@ -172,8 +172,8 @@ class Message(object):
             to just cast the map to a ``dict`` or to one use ``map.get``.
 
         Returns:
-            The message's attributes. This is a ``dict``-like object provided by
-            ``google.protobuf``.
+            containers.ScalarMap: The message's attributes. This is a
+            ``dict``-like object provided by ``google.protobuf``.
         """
         return self._attributes
 
@@ -182,8 +182,8 @@ class Message(object):
         """Return the data for the underlying Pub/Sub Message.
 
         Returns:
-            The message data. This is always a bytestring; if you want a text string,
-            call :meth:`bytes.decode`.
+            bytes: The message data. This is always a bytestring; if you want
+            a text string, call :meth:`bytes.decode`.
         """
         return self._data
 
@@ -192,7 +192,8 @@ class Message(object):
         """Return the time that the message was originally published.
 
         Returns:
-            The date and time that the message was published.
+            datetime.datetime: The date and time that the message was
+            published.
         """
         return self._publish_time
 
@@ -227,7 +228,7 @@ class Message(object):
         is calculated at best effort and is approximate.
 
         Returns:
-            The delivery attempt counter or ``None``.
+            Optional[int]: The delivery attempt counter or ``None``.
         """
         return self._delivery_attempt
 
@@ -290,7 +291,8 @@ class Message(object):
         see https://cloud.google.com/pubsub/docs/exactly-once-delivery."
 
         Returns:
-            A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
+            futures.Future: A
+            :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
             instance that conforms to Python Standard library's
             :class:`~concurrent.futures.Future` interface (but not an
             instance of that class). Call `result()` to get the result
@@ -349,7 +351,7 @@ class Message(object):
         :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
 
         Args:
-            seconds:
+            seconds (int):
                 The number of seconds to set the lease deadline to. This should be
                 between 0 and 600. Due to network latency, values below 10 are advised
                 against.
@@ -387,12 +389,13 @@ class Message(object):
         see https://cloud.google.com/pubsub/docs/exactly-once-delivery."
 
         Args:
-            seconds:
+            seconds (int):
                 The number of seconds to set the lease deadline to. This should be
                 between 0 and 600. Due to network latency, values below 10 are advised
                 against.
         Returns:
-            A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
+            futures.Future: A
+            :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
             instance that conforms to Python Standard library's
             :class:`~concurrent.futures.Future` interface (but not an
             instance of that class). Call `result()` to get the result
@@ -457,7 +460,8 @@ class Message(object):
         see https://cloud.google.com/pubsub/docs/exactly-once-delivery."
 
         Returns:
-            A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
+            futures.Future: A
+            :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
             instance that conforms to Python Standard library's
             :class:`~concurrent.futures.Future` interface (but not an
             instance of that class). Call `result()` to get the result
