@@ -85,6 +85,7 @@ jobs:
         env:
           SPANNER_EMULATOR_HOST: localhost:9010
           GOOGLE_CLOUD_PROJECT: appdev-soda-spanner-staging
+          SQLALCHEMY_SILENCE_UBER_WARNING: 1
 
   migration_tests:
     runs-on: ubuntu-latest
