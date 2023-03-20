@@ -21,7 +21,6 @@ import synthtool.gcp as gcp
 from synthtool.languages import python
 from synthtool.sources import git
 
-API_COMMON_PROTOS_REPO = "googleapis/api-common-protos"
 GOOGLEAPIS_REPO = "googleapis/googleapis"
 
 # ----------------------------------------------------------------------------
