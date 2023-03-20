@@ -141,18 +141,19 @@ def compliance_test_13(session):
         )
 
     session.install(
-        "pytest",
         "pytest-cov",
-        "pytest-asyncio",
     )
 
     session.install("mock")
     session.install("-e", ".[tracing]")
     session.run("pip", "install", "sqlalchemy>=1.1.13,<=1.3.24", "--force-reinstall")
-    session.run("pip", "install", "pytest==6.2.2", "--force-reinstall")
     session.run("pip", "install", "opentelemetry-api<=1.10", "--force-reinstall")
     session.run("pip", "install", "opentelemetry-sdk<=1.10", "--force-reinstall")
     session.run("python", "create_test_database.py")
+    session.run("pip", "install", "pytest==6.2.2", "--force-reinstall")
+    session.run(
+        "pip", "install", "pytest-asyncio<0.21.0", "--force-reinstall", "--no-deps"
+    )
 
     session.run(
         "py.test",
