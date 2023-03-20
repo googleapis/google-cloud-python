@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
+from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.speech_v2.types import cloud_speech
 from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
@@ -310,7 +311,7 @@ class SpeechGrpcTransport(SpeechTransport):
         Returns the requested
         [Recognizer][google.cloud.speech.v2.Recognizer]. Fails with
         [NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested
-        recognizer doesn't exist.
+        Recognizer doesn't exist.
 
         Returns:
             Callable[[~.GetRecognizerRequest],
@@ -937,6 +938,42 @@ class SpeechGrpcTransport(SpeechTransport):
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
             )
         return self._stubs["list_operations"]
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_locations" not in self._stubs:
+            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.location.Locations/ListLocations",
+                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
+                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
+            )
+        return self._stubs["list_locations"]
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_location" not in self._stubs:
+            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+                "/google.cloud.location.Locations/GetLocation",
+                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
+                response_deserializer=locations_pb2.Location.FromString,
+            )
+        return self._stubs["get_location"]
 
     @property
     def kind(self) -> str:
