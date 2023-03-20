@@ -27,6 +27,7 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.speech_v2.types import cloud_speech
 from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
@@ -509,6 +510,27 @@ class SpeechTransport(abc.ABC):
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

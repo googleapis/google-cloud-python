@@ -53,7 +53,11 @@ __protobuf__ = proto.module(
         "StreamingRecognitionConfig",
         "StreamingRecognizeRequest",
         "BatchRecognizeRequest",
+        "GcsOutputConfig",
+        "InlineOutputConfig",
+        "RecognitionOutputConfig",
         "BatchRecognizeResponse",
+        "BatchRecognizeResults",
         "BatchRecognizeFileResult",
         "BatchRecognizeTranscriptionMetadata",
         "BatchRecognizeMetadata",
@@ -602,22 +606,46 @@ class Recognizer(proto.Message):
                stop transcribing audio after the first utterance is
                detected and completed.
 
-            When using this model,
-            [SEPARATE_RECOGNITION_PER_CHANNEL][google.cloud.speech.v2.RecognitionFeatures.MultiChannelMode.SEPARATE_RECOGNITION_PER_CHANNEL]
-            is not supported; multi-channel audio is accepted, but only
-            the first channel will be processed and transcribed.
+               When using this model,
+               [SEPARATE_RECOGNITION_PER_CHANNEL][google.cloud.speech.v2.RecognitionFeatures.MultiChannelMode.SEPARATE_RECOGNITION_PER_CHANNEL]
+               is not supported; multi-channel audio is accepted, but
+               only the first channel will be processed and transcribed.
+
+            -  ``telephony``
+
+               Best for audio that originated from a phone call
+               (typically recorded at an 8khz sampling rate).
+
+            -  ``medical_conversation``
+
+               For conversations between a medical provider—for example,
+               a doctor or nurse—and a patient. Use this model when both
+               a provider and a patient are speaking. Words uttered by
+               each speaker are automatically detected and labeled in
+               the returned transcript.
+
+               For supported features please see `medical models
+               documentation <https://cloud.google.com/speech-to-text/docs/medical-models>`__.
+
+            -  ``medical_dictation``
+
+               For dictated notes spoken by a single medical
+               provider—for example, a doctor dictating notes about a
+               patient's blood test results.
+
+               For supported features please see `medical models
+               documentation <https://cloud.google.com/speech-to-text/docs/medical-models>`__.
+
+            -  ``usm``
+
+               The next generation of Speech-to-Text models from Google.
         language_codes (MutableSequence[str]):
             Required. The language of the supplied audio as a
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
             language tag.
 
-            Supported languages:
-
-            -  ``en-US``
-
-            -  ``en-GB``
-
-            -  ``fr-FR``
+            Supported languages for each model are listed at:
+            https://cloud.google.com/speech-to-text/docs/languages
 
             If additional languages are provided, recognition result
             will contain recognition in the most likely language
@@ -768,13 +796,21 @@ class AutoDetectDecodingConfig(proto.Message):
 
     -  WAV_LINEAR16: 16-bit signed little-endian PCM samples in a WAV
        container.
+
     -  WAV_MULAW: 8-bit companded mulaw samples in a WAV container.
+
     -  WAV_ALAW: 8-bit companded alaw samples in a WAV container.
+
     -  RFC4867_5_AMR: AMR frames with an rfc4867.5 header.
+
     -  RFC4867_5_AMRWB: AMR-WB frames with an rfc4867.5 header.
+
     -  FLAC: FLAC frames in the "native FLAC" container format.
+
     -  MP3: MPEG audio frames with optional (ignored) ID3 metadata.
+
     -  OGG_OPUS: Opus audio frames in an Ogg container.
+
     -  WEBM_OPUS: Opus audio frames in a WebM container.
 
     """
@@ -797,7 +833,9 @@ class ExplicitDecodingConfig(proto.Message):
 
             -  LINEAR16: Headerless 16-bit signed little-endian PCM
                samples.
+
             -  MULAW: Headerless 8-bit companded mulaw samples.
+
             -  ALAW: Headerless 8-bit companded alaw samples.
         audio_channel_count (int):
             Number of channels present in the audio data sent for
@@ -805,8 +843,12 @@ class ExplicitDecodingConfig(proto.Message):
 
             -  LINEAR16: Headerless 16-bit signed little-endian PCM
                samples.
+
             -  MULAW: Headerless 8-bit companded mulaw samples.
+
             -  ALAW: Headerless 8-bit companded alaw samples.
+
+            The maximum allowed value is 8.
     """
 
     class AudioEncoding(proto.Enum):
@@ -851,7 +893,6 @@ class SpeakerDiarizationConfig(proto.Message):
             Required. Minimum number of speakers in the conversation.
             This range gives you more flexibility by allowing the system
             to automatically determine the correct number of speakers.
-            If not set, the default value is 2.
 
             To fix the number of speakers detected in the audio, set
             ``min_speaker_count`` = ``max_speaker_count``.
@@ -993,23 +1034,23 @@ class RecognitionFeatures(proto.Message):
 
 class SpeechAdaptation(proto.Message):
     r"""Provides "hints" to the speech recognizer to favor specific
-    words and phrases in the results. Phrase sets can be specified
-    as an inline resource, or a reference to an existing phrase set
+    words and phrases in the results. PhraseSets can be specified as
+    an inline resource, or a reference to an existing PhraseSet
     resource.
 
     Attributes:
         phrase_sets (MutableSequence[google.cloud.speech_v2.types.SpeechAdaptation.AdaptationPhraseSet]):
-            A list of inline or referenced phrase sets.
+            A list of inline or referenced PhraseSets.
         custom_classes (MutableSequence[google.cloud.speech_v2.types.CustomClass]):
-            A list of inline custom classes. Existing
-            custom class resources can be referenced
-            directly in a phrase set.
+            A list of inline CustomClasses. Existing
+            CustomClass resources can be referenced directly
+            in a PhraseSet.
     """
 
     class AdaptationPhraseSet(proto.Message):
-        r"""A biasing phrase set, which can be either a string
-        referencing the name of an existing phrase set resource, or an
-        inline definition of a phrase set.
+        r"""A biasing PhraseSet, which can be either a string referencing
+        the name of an existing PhraseSets resource, or an inline
+        definition of a PhraseSet.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -1020,13 +1061,13 @@ class SpeechAdaptation(proto.Message):
 
         Attributes:
             phrase_set (str):
-                The name of an existing phrase set resource.
+                The name of an existing PhraseSet resource.
                 The user must have read access to the resource
                 and it must not be deleted.
 
                 This field is a member of `oneof`_ ``value``.
             inline_phrase_set (google.cloud.speech_v2.types.PhraseSet):
-                An inline defined phrase set.
+                An inline defined PhraseSet.
 
                 This field is a member of `oneof`_ ``value``.
         """
@@ -1236,10 +1277,10 @@ class SpeechRecognitionAlternative(proto.Message):
             ``confidence`` was not set.
         words (MutableSequence[google.cloud.speech_v2.types.WordInfo]):
             A list of word-specific information for each recognized
-            word. When
-            [enable_speaker_diarization][google.cloud.speech.v2.SpeakerDiarizationConfig.enable_speaker_diarization]
-            is true, you will see all the words from the beginning of
-            the audio.
+            word. When the
+            [SpeakerDiarizationConfig][google.cloud.speech.v2.SpeakerDiarizationConfig]
+            is set, you will see all the words from the beginning of the
+            audio.
     """
 
     transcript: str = proto.Field(
@@ -1296,8 +1337,8 @@ class WordInfo(proto.Message):
             audio. This field specifies which one of those speakers was
             detected to have spoken this word. ``speaker_label`` is set
             if
-            [enable_speaker_diarization][google.cloud.speech.v2.SpeakerDiarizationConfig.enable_speaker_diarization]
-            is ``true`` and only in the top alternative.
+            [SpeakerDiarizationConfig][google.cloud.speech.v2.SpeakerDiarizationConfig]
+            is given and only in the top alternative.
     """
 
     start_offset: duration_pb2.Duration = proto.Field(
@@ -1478,9 +1519,9 @@ class StreamingRecognitionConfig(proto.Message):
             of the recognizer during this recognition request. If no
             mask is provided, all non-default valued fields in
             [config][google.cloud.speech.v2.StreamingRecognitionConfig.config]
-            override the values in the recognizer for this recognition
+            override the values in the Recognizer for this recognition
             request. If a mask is provided, only the fields listed in
-            the mask override the config in the recognizer for this
+            the mask override the config in the Recognizer for this
             recognition request. If a wildcard (``*``) is provided,
             [config][google.cloud.speech.v2.StreamingRecognitionConfig.config]
             completely overrides and replaces the config in the
@@ -1550,6 +1591,8 @@ class StreamingRecognizeRequest(proto.Message):
             This field is a member of `oneof`_ ``streaming_request``.
         audio (bytes):
             Inline audio bytes to be Recognized.
+            Maximum size for this field is 15 KB per
+            request.
 
             This field is a member of `oneof`_ ``streaming_request``.
     """
@@ -1604,6 +1647,11 @@ class BatchRecognizeRequest(proto.Message):
             recognizer for this recognition request.
         files (MutableSequence[google.cloud.speech_v2.types.BatchRecognizeFileMetadata]):
             Audio files with file metadata for ASR.
+            The maximum number of files allowed to be
+            specified is 5.
+        recognition_output_config (google.cloud.speech_v2.types.RecognitionOutputConfig):
+            Configuration options for where to output the
+            transcripts of each file.
     """
 
     recognizer: str = proto.Field(
@@ -1625,6 +1673,73 @@ class BatchRecognizeRequest(proto.Message):
         number=3,
         message="BatchRecognizeFileMetadata",
     )
+    recognition_output_config: "RecognitionOutputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="RecognitionOutputConfig",
+    )
+
+
+class GcsOutputConfig(proto.Message):
+    r"""Output configurations for Cloud Storage.
+
+    Attributes:
+        uri (str):
+            The Cloud Storage URI prefix with which
+            recognition results will be written.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class InlineOutputConfig(proto.Message):
+    r"""Output configurations for inline response."""
+
+
+class RecognitionOutputConfig(proto.Message):
+    r"""Configuration options for the output(s) of recognition.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_output_config (google.cloud.speech_v2.types.GcsOutputConfig):
+            If this message is populated, recognition
+            results are written to the provided Google Cloud
+            Storage URI.
+
+            This field is a member of `oneof`_ ``output``.
+        inline_response_config (google.cloud.speech_v2.types.InlineOutputConfig):
+            If this message is populated, recognition results are
+            provided in the
+            [BatchRecognizeResponse][google.cloud.speech.v2.BatchRecognizeResponse]
+            message of the Operation when completed. This is only
+            supported when calling
+            [BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize]
+            with just one audio file.
+
+            This field is a member of `oneof`_ ``output``.
+    """
+
+    gcs_output_config: "GcsOutputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="output",
+        message="GcsOutputConfig",
+    )
+    inline_response_config: "InlineOutputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="output",
+        message="InlineOutputConfig",
+    )
 
 
 class BatchRecognizeResponse(proto.Message):
@@ -1637,6 +1752,9 @@ class BatchRecognizeResponse(proto.Message):
         results (MutableMapping[str, google.cloud.speech_v2.types.BatchRecognizeFileResult]):
             Map from filename to the final result for
             that file.
+        total_billed_duration (google.protobuf.duration_pb2.Duration):
+            When available, billed audio seconds for the
+            corresponding request.
     """
 
     results: MutableMapping[str, "BatchRecognizeFileResult"] = proto.MapField(
@@ -1645,6 +1763,37 @@ class BatchRecognizeResponse(proto.Message):
         number=1,
         message="BatchRecognizeFileResult",
     )
+    total_billed_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+
+
+class BatchRecognizeResults(proto.Message):
+    r"""Output type for Cloud Storage of BatchRecognize transcripts.
+    Though this proto isn't returned in this API anywhere, the Cloud
+    Storage transcripts will be this proto serialized and should be
+    parsed as such.
+
+    Attributes:
+        results (MutableSequence[google.cloud.speech_v2.types.SpeechRecognitionResult]):
+            Sequential list of transcription results
+            corresponding to sequential portions of audio.
+        metadata (google.cloud.speech_v2.types.RecognitionResponseMetadata):
+            Metadata about the recognition.
+    """
+
+    results: MutableSequence["SpeechRecognitionResult"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SpeechRecognitionResult",
+    )
+    metadata: "RecognitionResponseMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RecognitionResponseMetadata",
+    )
 
 
 class BatchRecognizeFileResult(proto.Message):
@@ -1652,10 +1801,18 @@ class BatchRecognizeFileResult(proto.Message):
 
     Attributes:
         uri (str):
-            The GCS URI to which recognition results were
-            written.
+            The Cloud Storage URI to which recognition
+            results were written.
         error (google.rpc.status_pb2.Status):
             Error if one was encountered.
+        metadata (google.cloud.speech_v2.types.RecognitionResponseMetadata):
+
+        transcript (google.cloud.speech_v2.types.BatchRecognizeResults):
+            The transcript for the audio file. This is populated only
+            when
+            [InlineOutputConfig][google.cloud.speech.v2.InlineOutputConfig]
+            is set in the
+            [RecognitionOutputConfig][[google.cloud.speech.v2.RecognitionOutputConfig].
     """
 
     uri: str = proto.Field(
@@ -1666,6 +1823,16 @@ class BatchRecognizeFileResult(proto.Message):
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
+    )
+    metadata: "RecognitionResponseMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="RecognitionResponseMetadata",
+    )
+    transcript: "BatchRecognizeResults" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="BatchRecognizeResults",
     )
 
 
@@ -1680,8 +1847,8 @@ class BatchRecognizeTranscriptionMetadata(proto.Message):
         error (google.rpc.status_pb2.Status):
             Error if one was encountered.
         uri (str):
-            The GCS URI to which recognition results will
-            be written.
+            The Cloud Storage URI to which recognition
+            results will be written.
     """
 
     progress_percent: int = proto.Field(
@@ -2230,7 +2397,8 @@ class PhraseSet(proto.Message):
             chance of false positive recognition as well. Valid
             ``boost`` values are between 0 (exclusive) and 20. We
             recommend using a binary search approach to finding the
-            optimal value for your use case.
+            optimal value for your use case as well as adding phrases
+            both with and without boost to your requests.
         display_name (str):
             User-settable, human-readable name for the
             PhraseSet. Must be 63 characters or less.
@@ -2307,18 +2475,21 @@ class PhraseSet(proto.Message):
             value (str):
                 The phrase itself.
             boost (float):
-                Hint Boost. Overrides the boost set at the phrase set level.
-                Positive value will increase the probability that a specific
-                phrase will be recognized over other similar sounding
-                phrases. The higher the boost, the higher the chance of
-                false positive recognition as well. Negative boost values
-                would correspond to anti-biasing. Anti-biasing is not
-                enabled, so negative boost will simply be ignored. Though
-                ``boost`` can accept a wide range of positive values, most
-                use cases are best served with values between 0 and 20. We
-                recommend using a binary search approach to finding the
-                optimal value for your use case. Speech recognition will
-                skip PhraseSets with a boost value of 0.
+                Hint Boost. Overrides the boost set at the
+                phrase set level. Positive value will increase
+                the probability that a specific phrase will be
+                recognized over other similar sounding phrases.
+                The higher the boost, the higher the chance of
+                false positive recognition as well. Negative
+                boost values would correspond to anti-biasing.
+                Anti-biasing is not enabled, so negative boost
+                values will return an error. Boost values must
+                be between 0 and 20. Any values outside that
+                range will return an error. We recommend using a
+                binary search approach to finding the optimal
+                value for your use case as well as adding
+                phrases both with and without boost to your
+                requests.
         """
 
         value: str = proto.Field(

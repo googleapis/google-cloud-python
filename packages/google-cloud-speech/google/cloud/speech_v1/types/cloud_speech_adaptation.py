@@ -50,7 +50,7 @@ class CreatePhraseSetRequest(proto.Message):
             Required. The parent resource where this phrase set will be
             created. Format:
 
-            ``projects/{project}/locations/{location}/phraseSets``
+            ``projects/{project}/locations/{location}``
 
             Speech-to-Text supports three locations: ``global``, ``us``
             (US North America), and ``eu`` (Europe). If you are calling

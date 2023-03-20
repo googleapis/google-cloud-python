@@ -47,6 +47,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.speech_v2.services.speech import pagers
 from google.cloud.speech_v2.types import cloud_speech
 from google.longrunning import operations_pb2
@@ -500,7 +501,7 @@ class SpeechAsyncClient:
         r"""Returns the requested
         [Recognizer][google.cloud.speech.v2.Recognizer]. Fails with
         [NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested
-        recognizer doesn't exist.
+        Recognizer doesn't exist.
 
         .. code-block:: python
 
@@ -1405,7 +1406,8 @@ class SpeechAsyncClient:
                 should not be set.
             files (:class:`MutableSequence[google.cloud.speech_v2.types.BatchRecognizeFileMetadata]`):
                 Audio files with file metadata for
-                ASR.
+                ASR. The maximum number of files allowed
+                to be specified is 5.
 
                 This corresponds to the ``files`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3400,6 +3402,114 @@ class SpeechAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def get_location(
+        self,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_locations(
+        self,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def __aenter__(self):
         return self
