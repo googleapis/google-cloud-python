@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.59.0](https://github.com/googleapis/python-api-common-protos/compare/v1.58.0...v1.59.0) (2023-03-20)
+
+
+### Features
+
+* Add overrides_by_request_protocol to BackendRule in google/api/backend.proto ([77376dd](https://github.com/googleapis/python-api-common-protos/commit/77376dd02af0a1c9255a50516550d2474536fa9d))
+* Add proto_reference_documentation_uri to Publishing in google/api/client.proto ([77376dd](https://github.com/googleapis/python-api-common-protos/commit/77376dd02af0a1c9255a50516550d2474536fa9d))
+* Add SERVICE_NOT_VISIBLE and GCP_SUSPENDED to ErrorReason in google/api/error_reason.proto ([77376dd](https://github.com/googleapis/python-api-common-protos/commit/77376dd02af0a1c9255a50516550d2474536fa9d))
+
+
+### Documentation
+
+* Use rst syntax in readme  ([77376dd](https://github.com/googleapis/python-api-common-protos/commit/77376dd02af0a1c9255a50516550d2474536fa9d))
+
 ## [1.58.0](https://github.com/googleapis/python-api-common-protos/compare/v1.57.1...v1.58.0) (2023-01-06)
 
 
