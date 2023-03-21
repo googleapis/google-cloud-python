@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.4.0-alpha...v0.4.1-alpha) (2023-03-21)
+
+
+### Miscellaneous Chores
+
+* Release 0.4.1-alpha ([#85](https://github.com/googleapis/python-documentai-toolbox/issues/85)) ([bc8d6c7](https://github.com/googleapis/python-documentai-toolbox/commit/bc8d6c75fdee7e3efd8138916a731a881cec8811))
+
 ## [0.4.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.3.0-alpha...v0.4.0-alpha) (2023-03-09)
 
 
