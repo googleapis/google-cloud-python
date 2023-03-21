@@ -66,6 +66,38 @@ def test_address_proto():
     assert addr.proto_package == 'foo.bar'
 
 
+def test_proto_package_version_parsing():
+    addr = metadata.Address(package=("baa"))
+    assert addr.convert_to_versioned_package() == ("baa")
+
+    addr = metadata.Address(package=("bab", "v1"))
+    assert addr.convert_to_versioned_package() == ("bab_v1",)
+
+    addr = metadata.Address(package=("bac", "v10"))
+    assert addr.convert_to_versioned_package() == ("bac_v10",)
+
+    addr = metadata.Address(package=("bad", "v2beta"))
+    assert addr.convert_to_versioned_package() == ("bad_v2beta",)
+
+    addr = metadata.Address(package=("bae", "v2beta20"))
+    assert addr.convert_to_versioned_package() == ("bae_v2beta20",)
+
+    addr = metadata.Address(package=("baf", "v20beta"))
+    assert addr.convert_to_versioned_package() == ("baf_v20beta",)
+
+    addr = metadata.Address(package=("bag", "v20p1"))
+    assert addr.convert_to_versioned_package() == ("bag_v20p1",)
+
+    addr = metadata.Address(package=("bah", "v20p1alpha3p5"))
+    assert addr.convert_to_versioned_package() == ("bah_v20p1alpha3p5",)
+
+    addr = metadata.Address(package=("bai", "v20p1"))
+    assert addr.convert_to_versioned_package() == ("bai_v20p1",)
+
+    addr = metadata.Address(package=("bah", "v20p1", "baj", "v3"))
+    assert addr.convert_to_versioned_package() == ("bah", "v20p1", "baj_v3")
+
+
 def test_address_child_no_parent():
     addr = metadata.Address(package=('foo', 'bar'), module='baz')
     child = addr.child('Bacon', path=(4, 0))

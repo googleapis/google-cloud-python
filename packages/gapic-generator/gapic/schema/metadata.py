@@ -173,6 +173,19 @@ class Address(BaseAddress):
         """Return the proto package for this type."""
         return '.'.join(self.package)
 
+    def convert_to_versioned_package(self) -> Tuple[str, ...]:
+        # We need to change the import statement to use an
+        # underscore between the module and the version. For example,
+        # change google.cloud.documentai.v1 to google.cloud.documentai_v1.
+        # Check if the package name contains a version.
+        version_regex = "^v\d[^/]*$"
+        regex_match = re.match(version_regex, self.package[-1])
+        if regex_match and len(self.package) > 1:
+            versioned_module = f"{self.package[-2]}_{regex_match[0]}"
+            return self.package[:-2] + (versioned_module,)
+        else:
+            return self.package
+
     @cached_property
     def python_import(self) -> imp.Import:
         """Return the Python import for this type."""
@@ -203,27 +216,11 @@ class Address(BaseAddress):
             )
 
         if self.is_proto_plus_type:
-            # We need to change the import statement to use an
-            # underscore between the module and the version. For example,
-            # change google.cloud.documentai.v1 to google.cloud.documentai_v1.
-            # Check if the package name contains a version.
-            version_regex = "^v\d[^/]*$"
-            regex_match = re.match(version_regex, self.package[-1])
-
-            if regex_match and len(self.package) > 1:
-                versioned_module = f"{self.package[-2]}_{regex_match[0]}"
-                return imp.Import(
-                    package=self.package[:-2] +
-                    (versioned_module, 'types'),
-                    module=self.module,
-                    alias=self.module_alias,
-                )
-            else:
-                return imp.Import(
-                    package=self.package + ('types',),
-                    module=self.module,
-                    alias=self.module_alias,
-                )
+            return imp.Import(
+                package=self.convert_to_versioned_package() + ('types',),
+                module=self.module,
+                alias=self.module_alias,
+            )
 
         # Return the standard import.
         return imp.Import(
@@ -247,6 +244,13 @@ class Address(BaseAddress):
             return '.'.join(self.api_naming.module_namespace + (
                 self.api_naming.versioned_module_name,
             ) + self.subpackage + ('types',) + self.parent + (self.name, ))
+        elif self.is_proto_plus_type:
+            return ".".join(
+                self.convert_to_versioned_package()
+                + ("types",)
+                + self.parent
+                + (self.name,)
+            )
 
         # Anything left is a standard _pb2 type
         return f'{self.proto_package}.{self.module}_pb2.{self.name}'
