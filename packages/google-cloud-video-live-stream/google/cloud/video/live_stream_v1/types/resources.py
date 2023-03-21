@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
     manifest={
         "Input",
         "Channel",
+        "InputConfig",
         "LogConfig",
         "InputStreamProperty",
         "VideoStreamProperty",
@@ -37,6 +38,7 @@ __protobuf__ = proto.module(
         "AudioFormat",
         "InputAttachment",
         "Event",
+        "Encryption",
     },
 )
 
@@ -239,6 +241,16 @@ class Channel(proto.Message):
         log_config (google.cloud.video.live_stream_v1.types.LogConfig):
             Configuration of platform logs for this
             channel.
+        timecode_config (google.cloud.video.live_stream_v1.types.TimecodeConfig):
+            Configuration of timecode for this channel.
+        encryptions (MutableSequence[google.cloud.video.live_stream_v1.types.Encryption]):
+            Encryption configurations for this channel.
+            Each configuration has an ID which is referred
+            to by each MuxStream to indicate which
+            configuration is used for that output.
+        input_config (google.cloud.video.live_stream_v1.types.InputConfig):
+            The configuration for input sources defined in
+            [input_attachments][google.cloud.video.livestream.v1.Channel.input_attachments].
     """
 
     class StreamingState(proto.Enum):
@@ -361,6 +373,61 @@ class Channel(proto.Message):
         proto.MESSAGE,
         number=19,
         message="LogConfig",
+    )
+    timecode_config: outputs.TimecodeConfig = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=outputs.TimecodeConfig,
+    )
+    encryptions: MutableSequence["Encryption"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=24,
+        message="Encryption",
+    )
+    input_config: "InputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message="InputConfig",
+    )
+
+
+class InputConfig(proto.Message):
+    r"""Configuration for the input sources of a channel.
+
+    Attributes:
+        input_switch_mode (google.cloud.video.live_stream_v1.types.InputConfig.InputSwitchMode):
+            Input switch mode. Default mode is
+            ``FAILOVER_PREFER_PRIMARY``.
+    """
+
+    class InputSwitchMode(proto.Enum):
+        r"""Input switch mode.
+
+        Values:
+            INPUT_SWITCH_MODE_UNSPECIFIED (0):
+                The input switch mode is not specified.
+            FAILOVER_PREFER_PRIMARY (1):
+                Automatic failover is enabled. The primary input stream is
+                always preferred over its backup input streams configured
+                using the
+                [AutomaticFailover][google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover]
+                field.
+            MANUAL (3):
+                Automatic failover is disabled. You must use the
+                [inputSwitch][google.cloud.video.livestream.v1.Event.input_switch]
+                event to switch the active input source for the channel to
+                stream from. When this mode is chosen, the
+                [AutomaticFailover][google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover]
+                field is ignored.
+        """
+        INPUT_SWITCH_MODE_UNSPECIFIED = 0
+        FAILOVER_PREFER_PRIMARY = 1
+        MANUAL = 3
+
+    input_switch_mode: InputSwitchMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=InputSwitchMode,
     )
 
 
@@ -599,6 +666,10 @@ class Event(proto.Message):
     by the user to execute operations on a channel resource without
     having to stop the channel.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -612,8 +683,24 @@ class Event(proto.Message):
             Output only. The update time.
         labels (MutableMapping[str, str]):
             User-defined key/value metadata.
+        input_switch (google.cloud.video.live_stream_v1.types.Event.InputSwitchTask):
+            Required. Switches to another input stream.
+
+            This field is a member of `oneof`_ ``task``.
         ad_break (google.cloud.video.live_stream_v1.types.Event.AdBreakTask):
             Required. Inserts a new ad opportunity.
+
+            This field is a member of `oneof`_ ``task``.
+        return_to_program (google.cloud.video.live_stream_v1.types.Event.ReturnToProgramTask):
+            Required. Stops any running ad break.
+
+            This field is a member of `oneof`_ ``task``.
+        mute (google.cloud.video.live_stream_v1.types.Event.MuteTask):
+            Required. Mutes the stream.
+
+            This field is a member of `oneof`_ ``task``.
+        unmute (google.cloud.video.live_stream_v1.types.Event.UnmuteTask):
+            Required. Unmutes the stream.
 
             This field is a member of `oneof`_ ``task``.
         execute_now (bool):
@@ -624,11 +711,14 @@ class Event(proto.Message):
             will be populated with the time that the server actually
             schedules the event.
         execution_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time when the event should be executed. When
+            The time to execute the event. If you set
             [execute_now][google.cloud.video.livestream.v1.Event.execute_now]
-            is set to ``true``, this field should not be set in
-            ``CreateEvent`` request and will be populated with the time
-            that the server schedules the event.
+            to ``true``, then do not set this field in the
+            ``CreateEvent`` request. In this case, the server schedules
+            the event and populates this field. If you set
+            [execute_now][google.cloud.video.livestream.v1.Event.execute_now]
+            to ``false``, then you must set this field to at least 10
+            seconds in the future or else the event can't be created.
         state (google.cloud.video.live_stream_v1.types.Event.State):
             Output only. The state of the event.
         error (google.rpc.status_pb2.Status):
@@ -665,6 +755,22 @@ class Event(proto.Message):
         PENDING = 5
         STOPPED = 6
 
+    class InputSwitchTask(proto.Message):
+        r"""Switches to another input stream. Automatic failover is then
+        disabled.
+
+        Attributes:
+            input_key (str):
+                The
+                [InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key]
+                of the input to switch to.
+        """
+
+        input_key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     class AdBreakTask(proto.Message):
         r"""Inserts a new ad opportunity.
 
@@ -679,6 +785,34 @@ class Event(proto.Message):
             number=1,
             message=duration_pb2.Duration,
         )
+
+    class ReturnToProgramTask(proto.Message):
+        r"""Stops any events which are currently running. This only
+        applies to events with a duration.
+
+        """
+
+    class MuteTask(proto.Message):
+        r"""Mutes the stream.
+
+        Attributes:
+            duration (google.protobuf.duration_pb2.Duration):
+                Duration for which the stream should be
+                muted. If omitted, the stream will be muted
+                until an UnmuteTask event is sent.
+        """
+
+        duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+
+    class UnmuteTask(proto.Message):
+        r"""Unmutes the stream. The task will fail if the stream is not
+        currently muted.
+
+        """
 
     name: str = proto.Field(
         proto.STRING,
@@ -699,11 +833,35 @@ class Event(proto.Message):
         proto.STRING,
         number=4,
     )
+    input_switch: InputSwitchTask = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="task",
+        message=InputSwitchTask,
+    )
     ad_break: AdBreakTask = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="task",
         message=AdBreakTask,
+    )
+    return_to_program: ReturnToProgramTask = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="task",
+        message=ReturnToProgramTask,
+    )
+    mute: MuteTask = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="task",
+        message=MuteTask,
+    )
+    unmute: UnmuteTask = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="task",
+        message=UnmuteTask,
     )
     execute_now: bool = proto.Field(
         proto.BOOL,
@@ -723,6 +881,161 @@ class Event(proto.Message):
         proto.MESSAGE,
         number=12,
         message=status_pb2.Status,
+    )
+
+
+class Encryption(proto.Message):
+    r"""Encryption settings.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            Required. Identifier for this set of
+            encryption options.
+        secret_manager_key_source (google.cloud.video.live_stream_v1.types.Encryption.SecretManagerSource):
+            For keys stored in Google Secret Manager.
+
+            This field is a member of `oneof`_ ``secret_source``.
+        drm_systems (google.cloud.video.live_stream_v1.types.Encryption.DrmSystems):
+            Required. Configuration for DRM systems.
+        aes128 (google.cloud.video.live_stream_v1.types.Encryption.Aes128Encryption):
+            Configuration for HLS AES-128 encryption.
+
+            This field is a member of `oneof`_ ``encryption_mode``.
+        sample_aes (google.cloud.video.live_stream_v1.types.Encryption.SampleAesEncryption):
+            Configuration for HLS SAMPLE-AES encryption.
+
+            This field is a member of `oneof`_ ``encryption_mode``.
+        mpeg_cenc (google.cloud.video.live_stream_v1.types.Encryption.MpegCommonEncryption):
+            Configuration for MPEG-Dash Common Encryption
+            (MPEG-CENC).
+
+            This field is a member of `oneof`_ ``encryption_mode``.
+    """
+
+    class SecretManagerSource(proto.Message):
+        r"""Configuration for secrets stored in Google Secret Manager.
+
+        Attributes:
+            secret_version (str):
+                Required. The name of the Secret Version containing the
+                encryption key.
+                ``projects/{project}/secrets/{secret_id}/versions/{version_number}``
+        """
+
+        secret_version: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class Widevine(proto.Message):
+        r"""Widevine configuration."""
+
+    class Fairplay(proto.Message):
+        r"""Fairplay configuration."""
+
+    class Playready(proto.Message):
+        r"""Playready configuration."""
+
+    class Clearkey(proto.Message):
+        r"""Clearkey configuration."""
+
+    class DrmSystems(proto.Message):
+        r"""Defines configuration for DRM systems in use. If a field is
+        omitted, that DRM system will be considered to be disabled.
+
+        Attributes:
+            widevine (google.cloud.video.live_stream_v1.types.Encryption.Widevine):
+                Widevine configuration.
+            fairplay (google.cloud.video.live_stream_v1.types.Encryption.Fairplay):
+                Fairplay configuration.
+            playready (google.cloud.video.live_stream_v1.types.Encryption.Playready):
+                Playready configuration.
+            clearkey (google.cloud.video.live_stream_v1.types.Encryption.Clearkey):
+                Clearkey configuration.
+        """
+
+        widevine: "Encryption.Widevine" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Encryption.Widevine",
+        )
+        fairplay: "Encryption.Fairplay" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Encryption.Fairplay",
+        )
+        playready: "Encryption.Playready" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Encryption.Playready",
+        )
+        clearkey: "Encryption.Clearkey" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Encryption.Clearkey",
+        )
+
+    class Aes128Encryption(proto.Message):
+        r"""Configuration for HLS AES-128 encryption."""
+
+    class SampleAesEncryption(proto.Message):
+        r"""Configuration for HLS SAMPLE-AES encryption."""
+
+    class MpegCommonEncryption(proto.Message):
+        r"""Configuration for MPEG-Dash Common Encryption (MPEG-CENC).
+
+        Attributes:
+            scheme (str):
+                Required. Specify the encryption scheme, supported schemes:
+
+                -  ``cenc`` - AES-CTR subsample
+                -  ``cbcs``- AES-CBC subsample pattern
+        """
+
+        scheme: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    secret_manager_key_source: SecretManagerSource = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="secret_source",
+        message=SecretManagerSource,
+    )
+    drm_systems: DrmSystems = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=DrmSystems,
+    )
+    aes128: Aes128Encryption = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="encryption_mode",
+        message=Aes128Encryption,
+    )
+    sample_aes: SampleAesEncryption = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="encryption_mode",
+        message=SampleAesEncryption,
+    )
+    mpeg_cenc: MpegCommonEncryption = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="encryption_mode",
+        message=MpegCommonEncryption,
     )
 
 

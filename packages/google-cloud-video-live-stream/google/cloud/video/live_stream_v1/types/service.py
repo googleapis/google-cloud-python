@@ -252,15 +252,24 @@ class UpdateChannelRequest(proto.Message):
             the following fields:
 
             -  ```inputAttachments`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#inputattachment>`__
+            -  ```inputConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#inputconfig>`__
             -  ```output`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#output>`__
-            -  ```elementaryStreams`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#ElementaryStream>`__
+            -  ```elementaryStreams`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#elementarystream>`__
             -  ```muxStreams`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#muxstream>`__
-            -  ```manifests`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#Manifest>`__
-            -  ```spritesheets`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#spritesheet>`__
+            -  ```manifests`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#manifest>`__
+            -  ```spriteSheets`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#spritesheet>`__
+            -  ```logConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#logconfig>`__
+            -  ```timecodeConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#timecodeconfig>`__
+            -  ```encryptions`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#encryption>`__
 
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
             if it is in the mask.
+
+            If the mask is not present, then each field from the list
+            above is updated if the field appears in the request
+            payload. To unset a field, add the field to the update mask
+            and remove it from the request payload.
         channel (google.cloud.video.live_stream_v1.types.Channel):
             Required. The channel resource to be updated.
         request_id (str):
@@ -567,6 +576,11 @@ class UpdateInputRequest(proto.Message):
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
             if it is in the mask.
+
+            If the mask is not present, then each field from the list
+            above is updated if the field appears in the request
+            payload. To unset a field, add the field to the update mask
+            and remove it from the request payload.
         input (google.cloud.video.live_stream_v1.types.Input):
             Required. The input resource to be updated.
         request_id (str):

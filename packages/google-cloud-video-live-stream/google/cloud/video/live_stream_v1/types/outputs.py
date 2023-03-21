@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -32,6 +33,7 @@ __protobuf__ = proto.module(
         "AudioStream",
         "TextStream",
         "SegmentSettings",
+        "TimecodeConfig",
     },
 )
 
@@ -114,6 +116,9 @@ class MuxStream(proto.Message):
                stream and up to one video stream.
         segment_settings (google.cloud.video.live_stream_v1.types.SegmentSettings):
             Segment settings for ``fmp4`` and ``ts``.
+        encryption_id (str):
+            Identifier of the encryption configuration to
+            use. If omitted, output will be unencrypted.
     """
 
     key: str = proto.Field(
@@ -132,6 +137,10 @@ class MuxStream(proto.Message):
         proto.MESSAGE,
         number=5,
         message="SegmentSettings",
+    )
+    encryption_id: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -171,6 +180,16 @@ class Manifest(proto.Message):
             manifest that the player has, but were already deleted from
             the output Google Cloud Storage bucket. Default value is
             ``60s``.
+        use_timecode_as_timeline (bool):
+            Whether to use the timecode, as specified in timecode
+            config, when setting:
+
+            -  ``availabilityStartTime`` attribute in DASH manifests.
+            -  ``#EXT-X-PROGRAM-DATE-TIME`` tag in HLS manifests.
+
+            If false, ignore the input timecode and use the time from
+            system clock when the manifest is first generated. This is
+            the default behavior.
     """
 
     class ManifestType(proto.Enum):
@@ -211,6 +230,10 @@ class Manifest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
+    )
+    use_timecode_as_timeline: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -295,11 +318,38 @@ class PreprocessingConfig(proto.Message):
     r"""Preprocessing configurations.
 
     Attributes:
+        audio (google.cloud.video.live_stream_v1.types.PreprocessingConfig.Audio):
+            Audio preprocessing configuration.
         crop (google.cloud.video.live_stream_v1.types.PreprocessingConfig.Crop):
             Specify the video cropping configuration.
         pad (google.cloud.video.live_stream_v1.types.PreprocessingConfig.Pad):
             Specify the video pad filter configuration.
     """
+
+    class Audio(proto.Message):
+        r"""Audio preprocessing configuration.
+
+        Attributes:
+            lufs (float):
+                Specify audio loudness normalization in
+                loudness units relative to full scale (LUFS).
+                Enter a value between -24 and 0 according to the
+                following:
+                - -24 is the Advanced Television Systems
+                Committee (ATSC A/85) - -23 is the EU R128
+                broadcast standard
+                - -19 is the prior standard for online mono
+                audio - -18 is the ReplayGain standard
+                - -16 is the prior standard for stereo audio
+                - -14 is the new online audio standard
+                recommended by Spotify, as well as Amazon Echo
+                - 0 disables normalization. The default is 0.
+        """
+
+        lufs: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
 
     class Crop(proto.Message):
         r"""Video cropping configuration for the input video. The cropped
@@ -374,6 +424,11 @@ class PreprocessingConfig(proto.Message):
             number=4,
         )
 
+    audio: Audio = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=Audio,
+    )
     crop: Crop = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -647,6 +702,10 @@ class AudioStream(proto.Message):
                 Required. The zero-based index of the channel in the output
                 audio stream. Must be consistent with the
                 [input_channel][google.cloud.video.livestream.v1.AudioStream.AudioMapping.input_channel].
+            gain_db (float):
+                Audio volume control in dB. Negative values
+                decrease volume, positive values increase. The
+                default is 0.
         """
 
         input_key: str = proto.Field(
@@ -664,6 +723,10 @@ class AudioStream(proto.Message):
         output_channel: int = proto.Field(
             proto.INT32,
             number=4,
+        )
+        gain_db: float = proto.Field(
+            proto.DOUBLE,
+            number=5,
         )
 
     transmux: bool = proto.Field(
@@ -739,6 +802,68 @@ class SegmentSettings(proto.Message):
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
+    )
+
+
+class TimecodeConfig(proto.Message):
+    r"""Timecode configuration.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        source (google.cloud.video.live_stream_v1.types.TimecodeConfig.TimecodeSource):
+            The source of the timecode that will later be
+            used in outputs/manifests. It determines the
+            initial timecode/timestamp (first frame) of
+            output streams.
+        utc_offset (google.protobuf.duration_pb2.Duration):
+            UTC offset. Must be whole seconds, between
+            -18 hours and +18 hours.
+
+            This field is a member of `oneof`_ ``time_offset``.
+        time_zone (google.type.datetime_pb2.TimeZone):
+            Time zone e.g. "America/Los_Angeles".
+
+            This field is a member of `oneof`_ ``time_offset``.
+    """
+
+    class TimecodeSource(proto.Enum):
+        r"""The source of timecode.
+
+        Values:
+            TIMECODE_SOURCE_UNSPECIFIED (0):
+                The timecode source is not specified.
+            MEDIA_TIMESTAMP (1):
+                Use input media timestamp.
+            EMBEDDED_TIMECODE (2):
+                Use input embedded timecode e.g. picture
+                timing SEI message.
+        """
+        TIMECODE_SOURCE_UNSPECIFIED = 0
+        MEDIA_TIMESTAMP = 1
+        EMBEDDED_TIMECODE = 2
+
+    source: TimecodeSource = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=TimecodeSource,
+    )
+    utc_offset: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="time_offset",
+        message=duration_pb2.Duration,
+    )
+    time_zone: datetime_pb2.TimeZone = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="time_offset",
+        message=datetime_pb2.TimeZone,
     )
 
 
