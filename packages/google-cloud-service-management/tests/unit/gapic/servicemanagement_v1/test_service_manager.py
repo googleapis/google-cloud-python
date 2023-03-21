@@ -6427,6 +6427,7 @@ def test_create_service_config_rest(request_type):
                     "jwt_audience": "jwt_audience_value",
                     "disable_auth": True,
                     "protocol": "protocol_value",
+                    "overrides_by_request_protocol": {},
                 }
             ]
         },
@@ -6664,6 +6665,7 @@ def test_create_service_config_rest(request_type):
                     "go_settings": {"common": {}},
                 }
             ],
+            "proto_reference_documentation_uri": "proto_reference_documentation_uri_value",
         },
         "config_version": {"value": 541},
     }
@@ -6951,6 +6953,7 @@ def test_create_service_config_rest_bad_request(
                     "jwt_audience": "jwt_audience_value",
                     "disable_auth": True,
                     "protocol": "protocol_value",
+                    "overrides_by_request_protocol": {},
                 }
             ]
         },
@@ -7188,6 +7191,7 @@ def test_create_service_config_rest_bad_request(
                     "go_settings": {"common": {}},
                 }
             ],
+            "proto_reference_documentation_uri": "proto_reference_documentation_uri_value",
         },
         "config_version": {"value": 541},
     }
