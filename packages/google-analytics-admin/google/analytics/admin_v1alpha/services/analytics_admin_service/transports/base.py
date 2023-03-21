@@ -645,6 +645,31 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_enhanced_measurement_settings: gapic_v1.method.wrap_method(
+                self.get_enhanced_measurement_settings,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_enhanced_measurement_settings: gapic_v1.method.wrap_method(
+                self.update_enhanced_measurement_settings,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_connected_site_tag: gapic_v1.method.wrap_method(
+                self.create_connected_site_tag,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_connected_site_tag: gapic_v1.method.wrap_method(
+                self.delete_connected_site_tag,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_connected_site_tags: gapic_v1.method.wrap_method(
+                self.list_connected_site_tags,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -1714,6 +1739,63 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             analytics_admin.ListBigQueryLinksResponse,
             Awaitable[analytics_admin.ListBigQueryLinksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_enhanced_measurement_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetEnhancedMeasurementSettingsRequest],
+        Union[
+            resources.EnhancedMeasurementSettings,
+            Awaitable[resources.EnhancedMeasurementSettings],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_enhanced_measurement_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateEnhancedMeasurementSettingsRequest],
+        Union[
+            resources.EnhancedMeasurementSettings,
+            Awaitable[resources.EnhancedMeasurementSettings],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_connected_site_tag(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateConnectedSiteTagRequest],
+        Union[
+            analytics_admin.CreateConnectedSiteTagResponse,
+            Awaitable[analytics_admin.CreateConnectedSiteTagResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_connected_site_tag(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteConnectedSiteTagRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_connected_site_tags(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListConnectedSiteTagsRequest],
+        Union[
+            analytics_admin.ListConnectedSiteTagsResponse,
+            Awaitable[analytics_admin.ListConnectedSiteTagsResponse],
         ],
     ]:
         raise NotImplementedError()

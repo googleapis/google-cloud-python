@@ -137,6 +137,12 @@ class AnalyticsAdminServiceAsyncClient:
     parse_display_video360_advertiser_link_proposal_path = staticmethod(
         AnalyticsAdminServiceClient.parse_display_video360_advertiser_link_proposal_path
     )
+    enhanced_measurement_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.enhanced_measurement_settings_path
+    )
+    parse_enhanced_measurement_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_enhanced_measurement_settings_path
+    )
     expanded_data_set_path = staticmethod(
         AnalyticsAdminServiceClient.expanded_data_set_path
     )
@@ -11097,6 +11103,475 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_enhanced_measurement_settings(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetEnhancedMeasurementSettingsRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.EnhancedMeasurementSettings:
+        r"""Returns the enhanced measurement settings for this
+        data stream. Note that the stream must enable enhanced
+        measurement for these settings to take effect.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_get_enhanced_measurement_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetEnhancedMeasurementSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_enhanced_measurement_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetEnhancedMeasurementSettingsRequest, dict]]):
+                The request object. Request message for
+                GetEnhancedMeasurementSettings RPC.
+            name (:class:`str`):
+                Required. The name of the settings to lookup. Format:
+                properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings
+                Example:
+                "properties/1000/dataStreams/2000/enhancedMeasurementSettings"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings:
+                Singleton resource under a
+                WebDataStream, configuring measurement
+                of additional site interactions and
+                content.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.GetEnhancedMeasurementSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_enhanced_measurement_settings,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_enhanced_measurement_settings(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateEnhancedMeasurementSettingsRequest, dict]
+        ] = None,
+        *,
+        enhanced_measurement_settings: Optional[
+            resources.EnhancedMeasurementSettings
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.EnhancedMeasurementSettings:
+        r"""Updates the enhanced measurement settings for this
+        data stream. Note that the stream must enable enhanced
+        measurement for these settings to take effect.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_update_enhanced_measurement_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                enhanced_measurement_settings = admin_v1alpha.EnhancedMeasurementSettings()
+                enhanced_measurement_settings.search_query_parameter = "search_query_parameter_value"
+
+                request = admin_v1alpha.UpdateEnhancedMeasurementSettingsRequest(
+                    enhanced_measurement_settings=enhanced_measurement_settings,
+                )
+
+                # Make the request
+                response = await client.update_enhanced_measurement_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.UpdateEnhancedMeasurementSettingsRequest, dict]]):
+                The request object. Request message for
+                UpdateEnhancedMeasurementSettings RPC.
+            enhanced_measurement_settings (:class:`google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings`):
+                Required. The settings to update. The ``name`` field is
+                used to identify the settings to be updated.
+
+                This corresponds to the ``enhanced_measurement_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings:
+                Singleton resource under a
+                WebDataStream, configuring measurement
+                of additional site interactions and
+                content.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([enhanced_measurement_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.UpdateEnhancedMeasurementSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if enhanced_measurement_settings is not None:
+            request.enhanced_measurement_settings = enhanced_measurement_settings
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_enhanced_measurement_settings,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "enhanced_measurement_settings.name",
+                        request.enhanced_measurement_settings.name,
+                    ),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_connected_site_tag(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateConnectedSiteTagRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.CreateConnectedSiteTagResponse:
+        r"""Creates a connected site tag for a Universal
+        Analytics property. You can create a maximum of 20
+        connected site tags per property. Note: This API cannot
+        be used on GA4 properties.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_create_connected_site_tag():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                connected_site_tag = admin_v1alpha.ConnectedSiteTag()
+                connected_site_tag.display_name = "display_name_value"
+                connected_site_tag.tag_id = "tag_id_value"
+
+                request = admin_v1alpha.CreateConnectedSiteTagRequest(
+                    connected_site_tag=connected_site_tag,
+                )
+
+                # Make the request
+                response = await client.create_connected_site_tag(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.CreateConnectedSiteTagRequest, dict]]):
+                The request object. Request message for
+                CreateConnectedSiteTag RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.CreateConnectedSiteTagResponse:
+                Response message for
+                CreateConnectedSiteTag RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = analytics_admin.CreateConnectedSiteTagRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_connected_site_tag,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_connected_site_tag(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteConnectedSiteTagRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a connected site tag for a Universal
+        Analytics property. Note: this has no effect on GA4
+        properties.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_delete_connected_site_tag():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteConnectedSiteTagRequest(
+                )
+
+                # Make the request
+                await client.delete_connected_site_tag(request=request)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.DeleteConnectedSiteTagRequest, dict]]):
+                The request object. Request message for
+                DeleteConnectedSiteTag RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        request = analytics_admin.DeleteConnectedSiteTagRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_connected_site_tag,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_connected_site_tags(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListConnectedSiteTagsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.ListConnectedSiteTagsResponse:
+        r"""Lists the connected site tags for a Universal
+        Analytics property. A maximum of 20 connected site tags
+        will be returned. Note: this has no effect on GA4
+        property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_list_connected_site_tags():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListConnectedSiteTagsRequest(
+                )
+
+                # Make the request
+                response = await client.list_connected_site_tags(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.ListConnectedSiteTagsRequest, dict]]):
+                The request object. Request message for
+                ListConnectedSiteTags RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ListConnectedSiteTagsResponse:
+                Response message for
+                ListConnectedSiteTags RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = analytics_admin.ListConnectedSiteTagsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_connected_site_tags,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

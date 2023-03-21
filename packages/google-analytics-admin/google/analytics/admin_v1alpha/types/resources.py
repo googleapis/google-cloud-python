@@ -64,6 +64,8 @@ __protobuf__ = proto.module(
         "AttributionSettings",
         "AccessBinding",
         "BigQueryLink",
+        "EnhancedMeasurementSettings",
+        "ConnectedSiteTag",
     },
 )
 
@@ -256,6 +258,8 @@ class ChangeHistoryResourceType(proto.Enum):
             ExpandedDataSet resource
         CHANNEL_GROUP (22):
             ChannelGroup resource
+        ENHANCED_MEASUREMENT_SETTINGS (24):
+            EnhancedMeasurementSettings resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -275,11 +279,11 @@ class ChangeHistoryResourceType(proto.Enum):
     ATTRIBUTION_SETTINGS = 20
     EXPANDED_DATA_SET = 21
     CHANNEL_GROUP = 22
+    ENHANCED_MEASUREMENT_SETTINGS = 24
 
 
 class GoogleSignalsState(proto.Enum):
-    r"""Status of the Google Signals settings (i.e., whether this
-    feature has been enabled for the property).
+    r"""Status of the Google Signals settings.
 
     Values:
         GOOGLE_SIGNALS_STATE_UNSPECIFIED (0):
@@ -297,8 +301,7 @@ class GoogleSignalsState(proto.Enum):
 
 
 class GoogleSignalsConsent(proto.Enum):
-    r"""Consent field of the Google Signals settings (i.e., whether
-    the user has consented to the Google Signals terms of service.)
+    r"""Consent field of the Google Signals settings.
 
     Values:
         GOOGLE_SIGNALS_CONSENT_UNSPECIFIED (0):
@@ -464,7 +467,7 @@ class Property(proto.Message):
             When creating a property, if the type is
             "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will
             be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot
-            yet be created via Google Analytics Admin API.
+            yet be created with the Google Analytics Admin API.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the entity was
             originally created.
@@ -1326,6 +1329,11 @@ class ChangeHistoryChange(proto.Message):
                 change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            enhanced_measurement_settings (google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings):
+                A snapshot of EnhancedMeasurementSettings
+                resource in change history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account: "Account" = proto.Field(
@@ -1431,6 +1439,12 @@ class ChangeHistoryChange(proto.Message):
             number=23,
             oneof="resource",
             message="BigQueryLink",
+        )
+        enhanced_measurement_settings: "EnhancedMeasurementSettings" = proto.Field(
+            proto.MESSAGE,
+            number=24,
+            oneof="resource",
+            message="EnhancedMeasurementSettings",
         )
 
     resource: str = proto.Field(
@@ -1729,7 +1743,7 @@ class ConversionEvent(proto.Message):
             was created in the property.
         deletable (bool):
             Output only. If set, this event can currently
-            be deleted via DeleteConversionEvent.
+            be deleted with DeleteConversionEvent.
         custom (bool):
             Output only. If set to true, this conversion
             event refers to a custom event.  If set to
@@ -2295,6 +2309,9 @@ class BigQueryLink(proto.Message):
         streaming_export_enabled (bool):
             If set true, enables streaming export to the
             linked Google Cloud project.
+        intraday_export_enabled (bool):
+            If set true, enables intraday export to the
+            linked Google Cloud project.
         include_advertising_id (bool):
             If set true, exported data will include
             advertising identifiers for mobile app streams.
@@ -2329,6 +2346,10 @@ class BigQueryLink(proto.Message):
         proto.BOOL,
         number=5,
     )
+    intraday_export_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
     include_advertising_id: bool = proto.Field(
         proto.BOOL,
         number=6,
@@ -2340,6 +2361,131 @@ class BigQueryLink(proto.Message):
     excluded_events: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
+    )
+
+
+class EnhancedMeasurementSettings(proto.Message):
+    r"""Singleton resource under a WebDataStream, configuring
+    measurement of additional site interactions and content.
+
+    Attributes:
+        name (str):
+            Output only. Resource name of the Enhanced Measurement
+            Settings. Format:
+            properties/{property_id}/dataStreams/{data_stream}/enhancedMeasurementSettings
+            Example:
+            "properties/1000/dataStreams/2000/enhancedMeasurementSettings".
+        stream_enabled (bool):
+            Indicates whether Enhanced Measurement
+            Settings will be used to automatically measure
+            interactions and content on this web stream.
+            Changing this value does not affect the settings
+            themselves, but determines whether they are
+            respected.
+        scrolls_enabled (bool):
+            If enabled, capture scroll events each time a
+            visitor gets to the bottom of a page.
+        outbound_clicks_enabled (bool):
+            If enabled, capture an outbound click event
+            each time a visitor clicks a link that leads
+            them away from your domain.
+        site_search_enabled (bool):
+            If enabled, capture a view search results
+            event each time a visitor performs a search on
+            your site (based on a query parameter).
+        video_engagement_enabled (bool):
+            If enabled, capture video play, progress, and
+            complete events as visitors view embedded videos
+            on your site.
+        file_downloads_enabled (bool):
+            If enabled, capture a file download event
+            each time a link is clicked with a common
+            document, compressed file, application, video,
+            or audio extension.
+        page_changes_enabled (bool):
+            If enabled, capture a page view event each
+            time the website changes the browser history
+            state.
+        form_interactions_enabled (bool):
+            If enabled, capture a form interaction event
+            each time a visitor interacts with a form on
+            your website. False by default.
+        search_query_parameter (str):
+            Required. URL query parameters to interpret
+            as site search parameters. Max length is 1024
+            characters. Must not be empty.
+        uri_query_parameter (str):
+            Additional URL query parameters.
+            Max length is 1024 characters.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    stream_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    scrolls_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    outbound_clicks_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    site_search_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    video_engagement_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    file_downloads_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    page_changes_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    form_interactions_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    search_query_parameter: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    uri_query_parameter: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+
+
+class ConnectedSiteTag(proto.Message):
+    r"""Configuration for a specific Connected Site Tag.
+
+    Attributes:
+        display_name (str):
+            Required. User-provided display name for the
+            connected site tag. Must be less than 256
+            characters.
+        tag_id (str):
+            Required. "Tag ID to forward events to. Also
+            known as the Measurement ID, or the "G-ID"  (For
+            example: G-12345).
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tag_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

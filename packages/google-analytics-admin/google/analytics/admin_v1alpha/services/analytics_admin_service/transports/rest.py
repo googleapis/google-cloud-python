@@ -188,6 +188,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_connected_site_tag(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_connected_site_tag(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_conversion_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -297,6 +305,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def pre_delete_account(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_connected_site_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -460,6 +472,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_enhanced_measurement_settings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_enhanced_measurement_settings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_expanded_data_set(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -553,6 +573,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_big_query_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_connected_site_tags(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_connected_site_tags(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -761,6 +789,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_display_video360_advertiser_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_enhanced_measurement_settings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_enhanced_measurement_settings(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1181,6 +1217,31 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_connected_site_tag(
+        self,
+        request: analytics_admin.CreateConnectedSiteTagRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.CreateConnectedSiteTagRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_connected_site_tag
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_connected_site_tag(
+        self, response: analytics_admin.CreateConnectedSiteTagResponse
+    ) -> analytics_admin.CreateConnectedSiteTagResponse:
+        """Post-rpc interceptor for create_connected_site_tag
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_conversion_event(
         self,
         request: analytics_admin.CreateConversionEventRequest,
@@ -1505,6 +1566,20 @@ class AnalyticsAdminServiceRestInterceptor:
         metadata: Sequence[Tuple[str, str]],
     ) -> Tuple[analytics_admin.DeleteAccountRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_account
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def pre_delete_connected_site_tag(
+        self,
+        request: analytics_admin.DeleteConnectedSiteTagRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.DeleteConnectedSiteTagRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_connected_site_tag
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AnalyticsAdminService server.
@@ -1996,6 +2071,31 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_get_enhanced_measurement_settings(
+        self,
+        request: analytics_admin.GetEnhancedMeasurementSettingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.GetEnhancedMeasurementSettingsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_enhanced_measurement_settings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_enhanced_measurement_settings(
+        self, response: resources.EnhancedMeasurementSettings
+    ) -> resources.EnhancedMeasurementSettings:
+        """Post-rpc interceptor for get_enhanced_measurement_settings
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_expanded_data_set(
         self,
         request: analytics_admin.GetExpandedDataSetRequest,
@@ -2265,6 +2365,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListBigQueryLinksResponse
     ) -> analytics_admin.ListBigQueryLinksResponse:
         """Post-rpc interceptor for list_big_query_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_connected_site_tags(
+        self,
+        request: analytics_admin.ListConnectedSiteTagsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListConnectedSiteTagsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_connected_site_tags
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_connected_site_tags(
+        self, response: analytics_admin.ListConnectedSiteTagsResponse
+    ) -> analytics_admin.ListConnectedSiteTagsResponse:
+        """Post-rpc interceptor for list_connected_site_tags
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2884,6 +3007,32 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.DisplayVideo360AdvertiserLink
     ) -> resources.DisplayVideo360AdvertiserLink:
         """Post-rpc interceptor for update_display_video360_advertiser_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_enhanced_measurement_settings(
+        self,
+        request: analytics_admin.UpdateEnhancedMeasurementSettingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.UpdateEnhancedMeasurementSettingsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_enhanced_measurement_settings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_enhanced_measurement_settings(
+        self, response: resources.EnhancedMeasurementSettings
+    ) -> resources.EnhancedMeasurementSettings:
+        """Post-rpc interceptor for update_enhanced_measurement_settings
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -4875,6 +5024,107 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_audience(resp)
             return resp
 
+    class _CreateConnectedSiteTag(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateConnectedSiteTag")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateConnectedSiteTagRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.CreateConnectedSiteTagResponse:
+            r"""Call the create connected site tag method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateConnectedSiteTagRequest):
+                    The request object. Request message for
+                CreateConnectedSiteTag RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.CreateConnectedSiteTagResponse:
+                    Response message for
+                CreateConnectedSiteTag RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/properties:createConnectedSiteTag",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_connected_site_tag(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateConnectedSiteTagRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.CreateConnectedSiteTagResponse()
+            pb_resp = analytics_admin.CreateConnectedSiteTagResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_connected_site_tag(resp)
+            return resp
+
     class _CreateConversionEvent(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateConversionEvent")
@@ -6381,6 +6631,82 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteConnectedSiteTag(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteConnectedSiteTag")
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteConnectedSiteTagRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete connected site tag method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteConnectedSiteTagRequest):
+                    The request object. Request message for
+                DeleteConnectedSiteTag RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/properties:deleteConnectedSiteTag",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_connected_site_tag(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteConnectedSiteTagRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8609,6 +8935,103 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
+    class _GetEnhancedMeasurementSettings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetEnhancedMeasurementSettings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetEnhancedMeasurementSettingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.EnhancedMeasurementSettings:
+            r"""Call the get enhanced measurement
+            settings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.GetEnhancedMeasurementSettingsRequest):
+                        The request object. Request message for
+                    GetEnhancedMeasurementSettings RPC.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.EnhancedMeasurementSettings:
+                        Singleton resource under a
+                    WebDataStream, configuring measurement
+                    of additional site interactions and
+                    content.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/enhancedMeasurementSettings}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_enhanced_measurement_settings(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetEnhancedMeasurementSettingsRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.EnhancedMeasurementSettings()
+            pb_resp = resources.EnhancedMeasurementSettings.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_enhanced_measurement_settings(resp)
+            return resp
+
     class _GetExpandedDataSet(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("GetExpandedDataSet")
@@ -9686,6 +10109,96 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_big_query_links(resp)
+            return resp
+
+    class _ListConnectedSiteTags(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListConnectedSiteTags")
+
+        def __call__(
+            self,
+            request: analytics_admin.ListConnectedSiteTagsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListConnectedSiteTagsResponse:
+            r"""Call the list connected site tags method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListConnectedSiteTagsRequest):
+                    The request object. Request message for
+                ListConnectedSiteTags RPC.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListConnectedSiteTagsResponse:
+                    Response message for
+                ListConnectedSiteTags RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/properties:listConnectedSiteTags",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_connected_site_tags(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListConnectedSiteTagsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListConnectedSiteTagsResponse()
+            pb_resp = analytics_admin.ListConnectedSiteTagsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_connected_site_tags(resp)
             return resp
 
     class _ListConversionEvents(AnalyticsAdminServiceRestStub):
@@ -11043,6 +11556,11 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     "uri": "/v1alpha/{entity=properties/*}:runAccessReport",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{entity=accounts/*}:runAccessReport",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_run_access_report(
                 request, metadata
@@ -12239,6 +12757,117 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_display_video360_advertiser_link(resp)
             return resp
 
+    class _UpdateEnhancedMeasurementSettings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateEnhancedMeasurementSettings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateEnhancedMeasurementSettingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.EnhancedMeasurementSettings:
+            r"""Call the update enhanced
+            measurement settings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.UpdateEnhancedMeasurementSettingsRequest):
+                        The request object. Request message for
+                    UpdateEnhancedMeasurementSettings RPC.
+
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.EnhancedMeasurementSettings:
+                        Singleton resource under a
+                    WebDataStream, configuring measurement
+                    of additional site interactions and
+                    content.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{enhanced_measurement_settings.name=properties/*/dataStreams/*/enhancedMeasurementSettings}",
+                    "body": "enhanced_measurement_settings",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_update_enhanced_measurement_settings(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateEnhancedMeasurementSettingsRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.EnhancedMeasurementSettings()
+            pb_resp = resources.EnhancedMeasurementSettings.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_enhanced_measurement_settings(resp)
+            return resp
+
     class _UpdateExpandedDataSet(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateExpandedDataSet")
@@ -13135,6 +13764,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateAudience(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_connected_site_tag(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateConnectedSiteTagRequest],
+        analytics_admin.CreateConnectedSiteTagResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateConnectedSiteTag(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_conversion_event(
         self,
     ) -> Callable[
@@ -13273,6 +13913,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAccount(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_connected_site_tag(
+        self,
+    ) -> Callable[[analytics_admin.DeleteConnectedSiteTagRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteConnectedSiteTag(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_conversion_event(
@@ -13502,6 +14150,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._GetDisplayVideo360AdvertiserLinkProposal(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_enhanced_measurement_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetEnhancedMeasurementSettingsRequest],
+        resources.EnhancedMeasurementSettings,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEnhancedMeasurementSettings(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_expanded_data_set(
         self,
     ) -> Callable[
@@ -13619,6 +14278,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBigQueryLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_connected_site_tags(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListConnectedSiteTagsRequest],
+        analytics_admin.ListConnectedSiteTagsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListConnectedSiteTags(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_conversion_events(
@@ -13889,6 +14559,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDisplayVideo360AdvertiserLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_enhanced_measurement_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateEnhancedMeasurementSettingsRequest],
+        resources.EnhancedMeasurementSettings,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateEnhancedMeasurementSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_expanded_data_set(

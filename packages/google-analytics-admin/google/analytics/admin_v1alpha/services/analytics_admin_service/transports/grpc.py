@@ -3243,6 +3243,166 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
             )
         return self._stubs["list_big_query_links"]
 
+    @property
+    def get_enhanced_measurement_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetEnhancedMeasurementSettingsRequest],
+        resources.EnhancedMeasurementSettings,
+    ]:
+        r"""Return a callable for the get enhanced measurement
+        settings method over gRPC.
+
+        Returns the enhanced measurement settings for this
+        data stream. Note that the stream must enable enhanced
+        measurement for these settings to take effect.
+
+        Returns:
+            Callable[[~.GetEnhancedMeasurementSettingsRequest],
+                    ~.EnhancedMeasurementSettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_enhanced_measurement_settings" not in self._stubs:
+            self._stubs[
+                "get_enhanced_measurement_settings"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEnhancedMeasurementSettings",
+                request_serializer=analytics_admin.GetEnhancedMeasurementSettingsRequest.serialize,
+                response_deserializer=resources.EnhancedMeasurementSettings.deserialize,
+            )
+        return self._stubs["get_enhanced_measurement_settings"]
+
+    @property
+    def update_enhanced_measurement_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateEnhancedMeasurementSettingsRequest],
+        resources.EnhancedMeasurementSettings,
+    ]:
+        r"""Return a callable for the update enhanced measurement
+        settings method over gRPC.
+
+        Updates the enhanced measurement settings for this
+        data stream. Note that the stream must enable enhanced
+        measurement for these settings to take effect.
+
+        Returns:
+            Callable[[~.UpdateEnhancedMeasurementSettingsRequest],
+                    ~.EnhancedMeasurementSettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_enhanced_measurement_settings" not in self._stubs:
+            self._stubs[
+                "update_enhanced_measurement_settings"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEnhancedMeasurementSettings",
+                request_serializer=analytics_admin.UpdateEnhancedMeasurementSettingsRequest.serialize,
+                response_deserializer=resources.EnhancedMeasurementSettings.deserialize,
+            )
+        return self._stubs["update_enhanced_measurement_settings"]
+
+    @property
+    def create_connected_site_tag(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateConnectedSiteTagRequest],
+        analytics_admin.CreateConnectedSiteTagResponse,
+    ]:
+        r"""Return a callable for the create connected site tag method over gRPC.
+
+        Creates a connected site tag for a Universal
+        Analytics property. You can create a maximum of 20
+        connected site tags per property. Note: This API cannot
+        be used on GA4 properties.
+
+        Returns:
+            Callable[[~.CreateConnectedSiteTagRequest],
+                    ~.CreateConnectedSiteTagResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_connected_site_tag" not in self._stubs:
+            self._stubs["create_connected_site_tag"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateConnectedSiteTag",
+                request_serializer=analytics_admin.CreateConnectedSiteTagRequest.serialize,
+                response_deserializer=analytics_admin.CreateConnectedSiteTagResponse.deserialize,
+            )
+        return self._stubs["create_connected_site_tag"]
+
+    @property
+    def delete_connected_site_tag(
+        self,
+    ) -> Callable[[analytics_admin.DeleteConnectedSiteTagRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete connected site tag method over gRPC.
+
+        Deletes a connected site tag for a Universal
+        Analytics property. Note: this has no effect on GA4
+        properties.
+
+        Returns:
+            Callable[[~.DeleteConnectedSiteTagRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_connected_site_tag" not in self._stubs:
+            self._stubs["delete_connected_site_tag"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteConnectedSiteTag",
+                request_serializer=analytics_admin.DeleteConnectedSiteTagRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_connected_site_tag"]
+
+    @property
+    def list_connected_site_tags(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListConnectedSiteTagsRequest],
+        analytics_admin.ListConnectedSiteTagsResponse,
+    ]:
+        r"""Return a callable for the list connected site tags method over gRPC.
+
+        Lists the connected site tags for a Universal
+        Analytics property. A maximum of 20 connected site tags
+        will be returned. Note: this has no effect on GA4
+        property.
+
+        Returns:
+            Callable[[~.ListConnectedSiteTagsRequest],
+                    ~.ListConnectedSiteTagsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_connected_site_tags" not in self._stubs:
+            self._stubs["list_connected_site_tags"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListConnectedSiteTags",
+                request_serializer=analytics_admin.ListConnectedSiteTagsRequest.serialize,
+                response_deserializer=analytics_admin.ListConnectedSiteTagsResponse.deserialize,
+            )
+        return self._stubs["list_connected_site_tags"]
+
     def close(self):
         self.grpc_channel.close()
 

@@ -165,6 +165,13 @@ __protobuf__ = proto.module(
         "GetBigQueryLinkRequest",
         "ListBigQueryLinksRequest",
         "ListBigQueryLinksResponse",
+        "GetEnhancedMeasurementSettingsRequest",
+        "UpdateEnhancedMeasurementSettingsRequest",
+        "CreateConnectedSiteTagRequest",
+        "CreateConnectedSiteTagResponse",
+        "DeleteConnectedSiteTagRequest",
+        "ListConnectedSiteTagsRequest",
+        "ListConnectedSiteTagsResponse",
     },
 )
 
@@ -174,10 +181,17 @@ class RunAccessReportRequest(proto.Message):
 
     Attributes:
         entity (str):
-            The Data Access Report is requested for this
-            property. For example if "123" is your GA4
-            property ID, then entity should be
-            "properties/123".
+            The Data Access Report supports requesting at
+            the property level or account level. If
+            requested at the account level, Data Access
+            Reports include all access for all properties
+            under that account.
+            To request at the property level, entity should
+            be for example 'properties/123' if "123" is your
+            GA4 property ID. To request at the account
+            level, entity should be for example
+            'accounts/1234' if "1234" is your GA4 Account
+            ID.
         dimensions (MutableSequence[google.analytics.admin_v1alpha.types.AccessDimension]):
             The dimensions requested and displayed in the
             response. Requests are allowed up to 9
@@ -245,7 +259,8 @@ class RunAccessReportRequest(proto.Message):
         return_entity_quota (bool):
             Toggles whether to return the current state of this
             Analytics Property's quota. Quota is returned in
-            `AccessQuota <#AccessQuota>`__.
+            `AccessQuota <#AccessQuota>`__. For account-level requests,
+            this field must be false.
     """
 
     entity: str = proto.Field(
@@ -331,7 +346,8 @@ class RunAccessReportResponse(proto.Message):
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         quota (google.analytics.admin_v1alpha.types.AccessQuota):
             The quota state for this Analytics property
-            including this request.
+            including this request. This field doesn't work
+            with account-level requests.
     """
 
     dimension_headers: MutableSequence[
@@ -496,8 +512,7 @@ class ProvisionAccountTicketRequest(proto.Message):
         redirect_uri (str):
             Redirect URI where the user will be sent
             after accepting Terms of Service. Must be
-            configured in Developers Console as a Redirect
-            URI.
+            configured in Cloud Console as a Redirect URI.
     """
 
     account: resources.Account = proto.Field(
@@ -3148,9 +3163,10 @@ class BatchUpdateAccessBindingsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The account or property that owns
-            the access bindings. The parent field in the
-            UpdateAccessBindingRequest messages must either
-            be empty or match this field. Formats:
+            the access bindings. The parent of all provided
+            AccessBinding in UpdateAccessBindingRequest
+            messages must match this field.
+            Formats:
             - accounts/{account}
             - properties/{property}
         requests (MutableSequence[google.analytics.admin_v1alpha.types.UpdateAccessBindingRequest]):
@@ -3209,9 +3225,10 @@ class BatchDeleteAccessBindingsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The account or property that owns
-            the access bindings. The parent field in the
-            DeleteAccessBindingRequest messages must either
-            be empty or match this field. Formats:
+            the access bindings. The parent of all provided
+            values for the 'names' field in
+            DeleteAccessBindingRequest messages must match
+            this field. Formats:
             - accounts/{account}
             - properties/{property}
         requests (MutableSequence[google.analytics.admin_v1alpha.types.DeleteAccessBindingRequest]):
@@ -3520,6 +3537,141 @@ class ListBigQueryLinksResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GetEnhancedMeasurementSettingsRequest(proto.Message):
+    r"""Request message for GetEnhancedMeasurementSettings RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the settings to lookup. Format:
+            properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings
+            Example:
+            "properties/1000/dataStreams/2000/enhancedMeasurementSettings".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateEnhancedMeasurementSettingsRequest(proto.Message):
+    r"""Request message for UpdateEnhancedMeasurementSettings RPC.
+
+    Attributes:
+        enhanced_measurement_settings (google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings):
+            Required. The settings to update. The ``name`` field is used
+            to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    enhanced_measurement_settings: resources.EnhancedMeasurementSettings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.EnhancedMeasurementSettings,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class CreateConnectedSiteTagRequest(proto.Message):
+    r"""Request message for CreateConnectedSiteTag RPC.
+
+    Attributes:
+        property (str):
+            The Universal Analytics property to create
+            connected site tags for. This API does not
+            support GA4 properties. Format:
+            properties/{universalAnalyticsPropertyId}
+            Example: properties/1234
+        connected_site_tag (google.analytics.admin_v1alpha.types.ConnectedSiteTag):
+            Required. The tag to add to the Universal
+            Analytics property
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connected_site_tag: resources.ConnectedSiteTag = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.ConnectedSiteTag,
+    )
+
+
+class CreateConnectedSiteTagResponse(proto.Message):
+    r"""Response message for CreateConnectedSiteTag RPC."""
+
+
+class DeleteConnectedSiteTagRequest(proto.Message):
+    r"""Request message for DeleteConnectedSiteTag RPC.
+
+    Attributes:
+        property (str):
+            The Universal Analytics property to delete
+            connected site tags for. This API does not
+            support GA4 properties. Format:
+            properties/{universalAnalyticsPropertyId}
+            Example: properties/1234
+        tag_id (str):
+            Tag ID to forward events to. Also known as
+            the Measurement ID, or the "G-ID"  (For example:
+            G-12345).
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tag_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListConnectedSiteTagsRequest(proto.Message):
+    r"""Request message for ListConnectedSiteTags RPC.
+
+    Attributes:
+        property (str):
+            The Universal Analytics property to fetch connected site
+            tags for. This does not work on GA4 properties. A maximum of
+            20 connected site tags will be returned. Example Format:
+            ``properties/1234``
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListConnectedSiteTagsResponse(proto.Message):
+    r"""Response message for ListConnectedSiteTags RPC.
+
+    Attributes:
+        connected_site_tags (MutableSequence[google.analytics.admin_v1alpha.types.ConnectedSiteTag]):
+            The site tags for the Universal Analytics
+            property. A maximum of 20 connected site tags
+            will be returned.
+    """
+
+    connected_site_tags: MutableSequence[
+        resources.ConnectedSiteTag
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.ConnectedSiteTag,
     )
 
 
