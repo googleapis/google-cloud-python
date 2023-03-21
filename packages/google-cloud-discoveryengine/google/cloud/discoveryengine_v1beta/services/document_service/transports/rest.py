@@ -407,6 +407,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
                     },
                     {
@@ -427,6 +443,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                    },
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
@@ -516,6 +548,11 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents",
+                    "body": "document",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents",
                     "body": "document",
                 },
             ]
@@ -611,6 +648,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     "method": "delete",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_delete_document(request, metadata)
             pb_request = document_service.DeleteDocumentRequest.pb(request)
@@ -694,6 +735,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_document(request, metadata)
@@ -783,6 +828,11 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents:import",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents:import",
                     "body": "*",
                 },
             ]
@@ -885,6 +935,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     "method": "get",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents",
+                },
             ]
             request, metadata = self._interceptor.pre_list_documents(request, metadata)
             pb_request = document_service.ListDocumentsRequest.pb(request)
@@ -976,6 +1030,11 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "patch",
                     "uri": "/v1beta/{document.name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
+                    "body": "document",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{document.name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
                     "body": "document",
                 },
             ]
@@ -1111,6 +1170,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -1192,6 +1267,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
