@@ -130,6 +130,11 @@ class Client(ClientWithProject):
         if project is _marker:
             project = None
 
+        # Save the initial value of client_info and client_options before they
+        # are passed along, for use in __reduce__ defined elsewhere.
+        self._initial_client_info = client_info
+        self._initial_client_options = client_options
+
         kw_args = {"client_info": client_info}
 
         # `api_endpoint` should be only set by the user via `client_options`,

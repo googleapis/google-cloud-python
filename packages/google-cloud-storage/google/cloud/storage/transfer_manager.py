@@ -16,10 +16,16 @@
 
 import concurrent.futures
 
+import io
+import inspect
 import os
 import warnings
+import pickle
+import copyreg
 
 from google.api_core import exceptions
+from google.cloud.storage import Client
+from google.cloud.storage import Blob
 
 warnings.warn(
     "The module `transfer_manager` is a preview feature. Functionality and API "
@@ -27,16 +33,54 @@ warnings.warn(
 )
 
 
-DEFAULT_CHUNK_SIZE = 200 * 1024 * 1024
+TM_DEFAULT_CHUNK_SIZE = 32 * 1024 * 1024
+DEFAULT_MAX_WORKERS = 8
 
 
+# Constants to be passed in as `worker_type`.
+PROCESS = "process"
+THREAD = "thread"
+
+
+_cached_clients = {}
+
+
+def _deprecate_threads_param(func):
+    def convert_threads_or_raise(*args, **kwargs):
+        binding = inspect.signature(func).bind(*args, **kwargs)
+        threads = binding.arguments.get("threads")
+        if threads:
+            worker_type = binding.arguments.get("worker_type")
+            max_workers = binding.arguments.get("max_workers")
+            if worker_type or max_workers:  # Parameter conflict
+                raise ValueError(
+                    "The `threads` parameter is deprecated and conflicts with its replacement parameters, `worker_type` and `max_workers`."
+                )
+            # No conflict, so issue a warning and set worker_type and max_workers.
+            warnings.warn(
+                "The `threads` parameter is deprecated. Please use `worker_type` and `max_workers` parameters instead."
+            )
+            args = binding.args
+            kwargs = binding.kwargs
+            kwargs["worker_type"] = THREAD
+            kwargs["max_workers"] = threads
+            return func(*args, **kwargs)
+        else:
+            return func(*args, **kwargs)
+
+    return convert_threads_or_raise
+
+
+@_deprecate_threads_param
 def upload_many(
     file_blob_pairs,
     skip_if_exists=False,
     upload_kwargs=None,
-    threads=4,
+    threads=None,
     deadline=None,
     raise_exception=False,
+    worker_type=PROCESS,
+    max_workers=DEFAULT_MAX_WORKERS,
 ):
     """Upload many files concurrently via a worker pool.
 
@@ -47,6 +91,9 @@ def upload_many(
         A list of tuples of a file or filename and a blob. Each file will be
         uploaded to the corresponding blob by using blob.upload_from_file() or
         blob.upload_from_filename() as appropriate.
+
+        File handlers are only supported if worker_type is set to THREAD.
+        If worker_type is set to PROCESS, please use filenames only.
 
     :type skip_if_exists: bool
     :param skip_if_exists:
@@ -65,14 +112,10 @@ def upload_many(
 
     :type threads: int
     :param threads:
-        The number of threads to use in the worker pool. This is passed to
-        `concurrent.futures.ThreadPoolExecutor` as the `max_worker`; refer
-        to standard library documentation for details.
-
-        The performance impact of this value depends on the use case, but
-        generally, smaller files benefit from more threads and larger files
-        don't benefit from more threads. Too many threads can slow operations,
-        especially with large files, due to contention over the Python GIL.
+        ***DEPRECATED*** Sets `worker_type` to THREAD and `max_workers` to the
+        number specified. If `worker_type` or `max_workers` are set explicitly,
+        this parameter should be set to None. Please use `worker_type` and
+        `max_workers` instead of this parameter.
 
     :type deadline: int
     :param deadline:
@@ -92,6 +135,40 @@ def upload_many(
         If skip_if_exists is True, 412 Precondition Failed responses are
         considered part of normal operation and are not raised as an exception.
 
+    :type worker_type: str
+    :param worker_type:
+        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
+        or google.cloud.storage.transfer_manager.THREAD.
+
+        Although the exact performance impact depends on the use case, in most
+        situations the PROCESS worker type will use more system resources (both
+        memory and CPU) and result in faster operations than THREAD workers.
+
+        Because the subprocesses of the PROCESS worker type can't access memory
+        from the main process, Client objects have to be serialized and then
+        recreated in each subprocess. The serialization of the Client object
+        for use in subprocesses is an approximation and may not capture every
+        detail of the Client object, especially if the Client was modified after
+        its initial creation or if `Client._http` was modified in any way.
+
+        THREAD worker types are observed to be relatively efficient for
+        operations with many small files, but not for operations with large
+        files. PROCESS workers are recommended for large file operations.
+
+        PROCESS workers do not support writing to file handlers. Please refer
+        to files by filename only when using PROCESS workers.
+
+    :type max_workers: int
+    :param max_workers:
+        The maximum number of workers to create to handle the workload.
+
+        With PROCESS workers, a larger number of workers will consume more
+        system resources (memory and CPU) at once.
+
+        How many workers is optimal depends heavily on the specific use case,
+        and the default is a conservative number that should work okay in most
+        cases without consuming excessive resources.
+
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
     :rtype: list
@@ -103,21 +180,37 @@ def upload_many(
     if upload_kwargs is None:
         upload_kwargs = {}
     if skip_if_exists:
+        upload_kwargs = upload_kwargs.copy()
         upload_kwargs["if_generation_match"] = 0
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+    pool_class, needs_pickling = _get_pool_class_and_requirements(worker_type)
+
+    with pool_class(max_workers=max_workers) as executor:
         futures = []
         for path_or_file, blob in file_blob_pairs:
-            method = (
-                blob.upload_from_filename
-                if isinstance(path_or_file, str)
-                else blob.upload_from_file
+            # File objects are only supported by the THREAD worker because they can't
+            # be pickled.
+            if needs_pickling and not isinstance(path_or_file, str):
+                raise ValueError(
+                    "Passing in a file object is only supported by the THREAD worker type. Please either select THREAD workers, or pass in filenames only."
+                )
+
+            futures.append(
+                executor.submit(
+                    _call_method_on_maybe_pickled_blob,
+                    _pickle_blob(blob) if needs_pickling else blob,
+                    "upload_from_filename"
+                    if isinstance(path_or_file, str)
+                    else "upload_from_file",
+                    path_or_file,
+                    **upload_kwargs,
+                )
             )
-            futures.append(executor.submit(method, path_or_file, **upload_kwargs))
+        concurrent.futures.wait(
+            futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
+        )
+
     results = []
-    concurrent.futures.wait(
-        futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
-    )
     for future in futures:
         exp = future.exception()
 
@@ -134,12 +227,15 @@ def upload_many(
     return results
 
 
+@_deprecate_threads_param
 def download_many(
     blob_file_pairs,
     download_kwargs=None,
-    threads=4,
+    threads=None,
     deadline=None,
     raise_exception=False,
+    worker_type=PROCESS,
+    max_workers=DEFAULT_MAX_WORKERS,
 ):
     """Download many blobs concurrently via a worker pool.
 
@@ -154,6 +250,9 @@ def download_many(
         Note that blob.download_to_filename() does not delete the destination
         file if the download fails.
 
+        File handlers are only supported if worker_type is set to THREAD.
+        If worker_type is set to PROCESS, please use filenames only.
+
     :type download_kwargs: dict
     :param download_kwargs:
         A dictionary of keyword arguments to pass to the download method. Refer
@@ -163,14 +262,10 @@ def download_many(
 
     :type threads: int
     :param threads:
-        The number of threads to use in the worker pool. This is passed to
-        `concurrent.futures.ThreadPoolExecutor` as the `max_worker`; refer
-        to standard library documentation for details.
-
-        The performance impact of this value depends on the use case, but
-        generally, smaller files benefit from more threads and larger files
-        don't benefit from more threads. Too many threads can slow operations,
-        especially with large files, due to contention over the Python GIL.
+        ***DEPRECATED*** Sets `worker_type` to THREAD and `max_workers` to the
+        number specified. If `worker_type` or `max_workers` are set explicitly,
+        this parameter should be set to None. Please use `worker_type` and
+        `max_workers` instead of this parameter.
 
     :type deadline: int
     :param deadline:
@@ -187,6 +282,40 @@ def download_many(
         are only processed and potentially raised after all operations are
         complete in success or failure.
 
+    :type worker_type: str
+    :param worker_type:
+        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
+        or google.cloud.storage.transfer_manager.THREAD.
+
+        Although the exact performance impact depends on the use case, in most
+        situations the PROCESS worker type will use more system resources (both
+        memory and CPU) and result in faster operations than THREAD workers.
+
+        Because the subprocesses of the PROCESS worker type can't access memory
+        from the main process, Client objects have to be serialized and then
+        recreated in each subprocess. The serialization of the Client object
+        for use in subprocesses is an approximation and may not capture every
+        detail of the Client object, especially if the Client was modified after
+        its initial creation or if `Client._http` was modified in any way.
+
+        THREAD worker types are observed to be relatively efficient for
+        operations with many small files, but not for operations with large
+        files. PROCESS workers are recommended for large file operations.
+
+        PROCESS workers do not support writing to file handlers. Please refer
+        to files by filename only when using PROCESS workers.
+
+    :type max_workers: int
+    :param max_workers:
+        The maximum number of workers to create to handle the workload.
+
+        With PROCESS workers, a larger number of workers will consume more
+        system resources (memory and CPU) at once.
+
+        How many workers is optimal depends heavily on the specific use case,
+        and the default is a conservative number that should work okay in most
+        cases without consuming excessive resources.
+
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
     :rtype: list
@@ -198,29 +327,48 @@ def download_many(
 
     if download_kwargs is None:
         download_kwargs = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+
+    pool_class, needs_pickling = _get_pool_class_and_requirements(worker_type)
+
+    with pool_class(max_workers=max_workers) as executor:
         futures = []
         for blob, path_or_file in blob_file_pairs:
-            method = (
-                blob.download_to_filename
-                if isinstance(path_or_file, str)
-                else blob.download_to_file
+            # File objects are only supported by the THREAD worker because they can't
+            # be pickled.
+            if needs_pickling and not isinstance(path_or_file, str):
+                raise ValueError(
+                    "Passing in a file object is only supported by the THREAD worker type. Please either select THREAD workers, or pass in filenames only."
+                )
+
+            futures.append(
+                executor.submit(
+                    _call_method_on_maybe_pickled_blob,
+                    _pickle_blob(blob) if needs_pickling else blob,
+                    "download_to_filename"
+                    if isinstance(path_or_file, str)
+                    else "download_to_file",
+                    path_or_file,
+                    **download_kwargs,
+                )
             )
-            futures.append(executor.submit(method, path_or_file, **download_kwargs))
+        concurrent.futures.wait(
+            futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
+        )
+
     results = []
-    concurrent.futures.wait(
-        futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
-    )
     for future in futures:
+        # If raise_exception is False, don't call future.result()
         if not raise_exception:
             exp = future.exception()
             if exp:
                 results.append(exp)
                 continue
+        # Get the real result. If there was an exception, this will raise it.
         results.append(future.result())
     return results
 
 
+@_deprecate_threads_param
 def upload_many_from_filenames(
     bucket,
     filenames,
@@ -229,9 +377,11 @@ def upload_many_from_filenames(
     skip_if_exists=False,
     blob_constructor_kwargs=None,
     upload_kwargs=None,
-    threads=4,
+    threads=None,
     deadline=None,
     raise_exception=False,
+    worker_type=PROCESS,
+    max_workers=DEFAULT_MAX_WORKERS,
 ):
     """Upload many files concurrently by their filenames.
 
@@ -309,14 +459,10 @@ def upload_many_from_filenames(
 
     :type threads: int
     :param threads:
-        The number of threads to use in the worker pool. This is passed to
-        `concurrent.futures.ThreadPoolExecutor` as the `max_worker`; refer
-        to standard library documentation for details.
-
-        The performance impact of this value depends on the use case, but
-        generally, smaller files benefit from more threads and larger files
-        don't benefit from more threads. Too many threads can slow operations,
-        especially with large files, due to contention over the Python GIL.
+        ***DEPRECATED*** Sets `worker_type` to THREAD and `max_workers` to the
+        number specified. If `worker_type` or `max_workers` are set explicitly,
+        this parameter should be set to None. Please use `worker_type` and
+        `max_workers` instead of this parameter.
 
     :type deadline: int
     :param deadline:
@@ -335,6 +481,37 @@ def upload_many_from_filenames(
 
         If skip_if_exists is True, 412 Precondition Failed responses are
         considered part of normal operation and are not raised as an exception.
+
+    :type worker_type: str
+    :param worker_type:
+        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
+        or google.cloud.storage.transfer_manager.THREAD.
+
+        Although the exact performance impact depends on the use case, in most
+        situations the PROCESS worker type will use more system resources (both
+        memory and CPU) and result in faster operations than THREAD workers.
+
+        Because the subprocesses of the PROCESS worker type can't access memory
+        from the main process, Client objects have to be serialized and then
+        recreated in each subprocess. The serialization of the Client object
+        for use in subprocesses is an approximation and may not capture every
+        detail of the Client object, especially if the Client was modified after
+        its initial creation or if `Client._http` was modified in any way.
+
+        THREAD worker types are observed to be relatively efficient for
+        operations with many small files, but not for operations with large
+        files. PROCESS workers are recommended for large file operations.
+
+    :type max_workers: int
+    :param max_workers:
+        The maximum number of workers to create to handle the workload.
+
+        With PROCESS workers, a larger number of workers will consume more
+        system resources (memory and CPU) at once.
+
+        How many workers is optimal depends heavily on the specific use case,
+        and the default is a conservative number that should work okay in most
+        cases without consuming excessive resources.
 
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
@@ -359,22 +536,26 @@ def upload_many_from_filenames(
         file_blob_pairs,
         skip_if_exists=skip_if_exists,
         upload_kwargs=upload_kwargs,
-        threads=threads,
         deadline=deadline,
         raise_exception=raise_exception,
+        worker_type=worker_type,
+        max_workers=max_workers,
     )
 
 
+@_deprecate_threads_param
 def download_many_to_path(
     bucket,
     blob_names,
     destination_directory="",
     blob_name_prefix="",
     download_kwargs=None,
-    threads=4,
+    threads=None,
     deadline=None,
     create_directories=True,
     raise_exception=False,
+    worker_type=PROCESS,
+    max_workers=DEFAULT_MAX_WORKERS,
 ):
     """Download many files concurrently by their blob names.
 
@@ -442,14 +623,10 @@ def download_many_to_path(
 
     :type threads: int
     :param threads:
-        The number of threads to use in the worker pool. This is passed to
-        `concurrent.futures.ThreadPoolExecutor` as the `max_worker` param; refer
-        to standard library documentation for details.
-
-        The performance impact of this value depends on the use case, but
-        generally, smaller files benefit from more threads and larger files
-        don't benefit from more threads. Too many threads can slow operations,
-        especially with large files, due to contention over the Python GIL.
+        ***DEPRECATED*** Sets `worker_type` to THREAD and `max_workers` to the
+        number specified. If `worker_type` or `max_workers` are set explicitly,
+        this parameter should be set to None. Please use `worker_type` and
+        `max_workers` instead of this parameter.
 
     :type deadline: int
     :param deadline:
@@ -474,6 +651,37 @@ def download_many_to_path(
         Precondition Failed responses are considered part of normal operation
         and are not raised as an exception.
 
+    :type worker_type: str
+    :param worker_type:
+        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
+        or google.cloud.storage.transfer_manager.THREAD.
+
+        Although the exact performance impact depends on the use case, in most
+        situations the PROCESS worker type will use more system resources (both
+        memory and CPU) and result in faster operations than THREAD workers.
+
+        Because the subprocesses of the PROCESS worker type can't access memory
+        from the main process, Client objects have to be serialized and then
+        recreated in each subprocess. The serialization of the Client object
+        for use in subprocesses is an approximation and may not capture every
+        detail of the Client object, especially if the Client was modified after
+        its initial creation or if `Client._http` was modified in any way.
+
+        THREAD worker types are observed to be relatively efficient for
+        operations with many small files, but not for operations with large
+        files. PROCESS workers are recommended for large file operations.
+
+    :type max_workers: int
+    :param max_workers:
+        The maximum number of workers to create to handle the workload.
+
+        With PROCESS workers, a larger number of workers will consume more
+        system resources (memory and CPU) at once.
+
+        How many workers is optimal depends heavily on the specific use case,
+        and the default is a conservative number that should work okay in most
+        cases without consuming excessive resources.
+
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
     :rtype: list
@@ -495,7 +703,237 @@ def download_many_to_path(
     return download_many(
         blob_file_pairs,
         download_kwargs=download_kwargs,
-        threads=threads,
         deadline=deadline,
         raise_exception=raise_exception,
+        worker_type=worker_type,
+        max_workers=max_workers,
     )
+
+
+def download_chunks_concurrently(
+    blob,
+    filename,
+    chunk_size=TM_DEFAULT_CHUNK_SIZE,
+    download_kwargs=None,
+    deadline=None,
+    worker_type=PROCESS,
+    max_workers=DEFAULT_MAX_WORKERS,
+):
+    """Download a single file in chunks, concurrently.
+
+    This function is a PREVIEW FEATURE: the API may change in a future version.
+
+    In some environments, using this feature with mutiple processes will result
+    in faster downloads of large files.
+
+    Using this feature with multiple threads is unlikely to improve download
+    performance under normal circumstances due to Python interpreter threading
+    behavior. The default is therefore to use processes instead of threads.
+
+    Checksumming (md5 or crc32c) is not supported for chunked operations. Any
+    `checksum` parameter passed in to download_kwargs will be ignored.
+
+    :type bucket: 'google.cloud.storage.bucket.Bucket'
+    :param bucket:
+        The bucket which contains the blobs to be downloaded
+
+    :type blob: `google.cloud.storage.Blob`
+    :param blob:
+        The blob to be downloaded.
+
+    :type filename: str
+    :param filename:
+        The destination filename or path.
+
+    :type download_kwargs: dict
+    :param download_kwargs:
+        A dictionary of keyword arguments to pass to the download method. Refer
+        to the documentation for blob.download_to_file() or
+        blob.download_to_filename() for more information. The dict is directly
+        passed into the download methods and is not validated by this function.
+
+        Keyword arguments "start" and "end" which are not supported and will
+        cause a ValueError if present.
+
+    :type deadline: int
+    :param deadline:
+        The number of seconds to wait for all threads to resolve. If the
+        deadline is reached, all threads will be terminated regardless of their
+        progress and concurrent.futures.TimeoutError will be raised. This can be
+        left as the default of None (no deadline) for most use cases.
+
+    :type worker_type: str
+    :param worker_type:
+        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
+        or google.cloud.storage.transfer_manager.THREAD.
+
+        Although the exact performance impact depends on the use case, in most
+        situations the PROCESS worker type will use more system resources (both
+        memory and CPU) and result in faster operations than THREAD workers.
+
+        Because the subprocesses of the PROCESS worker type can't access memory
+        from the main process, Client objects have to be serialized and then
+        recreated in each subprocess. The serialization of the Client object
+        for use in subprocesses is an approximation and may not capture every
+        detail of the Client object, especially if the Client was modified after
+        its initial creation or if `Client._http` was modified in any way.
+
+        THREAD worker types are observed to be relatively efficient for
+        operations with many small files, but not for operations with large
+        files. PROCESS workers are recommended for large file operations.
+
+    :type max_workers: int
+    :param max_workers:
+        The maximum number of workers to create to handle the workload.
+
+        With PROCESS workers, a larger number of workers will consume more
+        system resources (memory and CPU) at once.
+
+        How many workers is optimal depends heavily on the specific use case,
+        and the default is a conservative number that should work okay in most
+        cases without consuming excessive resources.
+
+    :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
+    """
+
+    if download_kwargs is None:
+        download_kwargs = {}
+    if "start" in download_kwargs or "end" in download_kwargs:
+        raise ValueError(
+            "Download arguments 'start' and 'end' are not supported by download_chunks_concurrently."
+        )
+
+    # We must know the size and the generation of the blob.
+    if not blob.size or not blob.generation:
+        blob.reload()
+
+    pool_class, needs_pickling = _get_pool_class_and_requirements(worker_type)
+    # Pickle the blob ahead of time (just once, not once per chunk) if needed.
+    maybe_pickled_blob = _pickle_blob(blob) if needs_pickling else blob
+
+    futures = []
+
+    # Create and/or truncate the destination file to prepare for sparse writing.
+    with open(filename, "wb") as _:
+        pass
+
+    with pool_class(max_workers=max_workers) as executor:
+        cursor = 0
+        end = blob.size
+        while cursor < end:
+            start = cursor
+            cursor = min(cursor + chunk_size, end)
+            futures.append(
+                executor.submit(
+                    _download_and_write_chunk_in_place,
+                    maybe_pickled_blob,
+                    filename,
+                    start=start,
+                    end=cursor - 1,
+                    download_kwargs=download_kwargs,
+                )
+            )
+
+        concurrent.futures.wait(
+            futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
+        )
+
+    # Raise any exceptions. Successful results can be ignored.
+    for future in futures:
+        future.result()
+    return None
+
+
+def _download_and_write_chunk_in_place(
+    maybe_pickled_blob, filename, start, end, download_kwargs
+):
+    if isinstance(maybe_pickled_blob, Blob):
+        blob = maybe_pickled_blob
+    else:
+        blob = pickle.loads(maybe_pickled_blob)
+    with open(
+        filename, "rb+"
+    ) as f:  # Open in mixed read/write mode to avoid truncating or appending
+        f.seek(start)
+        return blob.download_to_file(f, start=start, end=end, **download_kwargs)
+
+
+def _call_method_on_maybe_pickled_blob(
+    maybe_pickled_blob, method_name, *args, **kwargs
+):
+    """Helper function that runs inside a thread or subprocess.
+
+    `maybe_pickled_blob` is either a blob (for threads) or a specially pickled
+    blob (for processes) because the default pickling mangles clients which are
+    attached to blobs."""
+
+    if isinstance(maybe_pickled_blob, Blob):
+        blob = maybe_pickled_blob
+    else:
+        blob = pickle.loads(maybe_pickled_blob)
+    return getattr(blob, method_name)(*args, **kwargs)
+
+
+def _reduce_client(cl):
+    """Replicate a Client by constructing a new one with the same params."""
+
+    client_object_id = id(cl)
+    project = cl.project
+    credentials = cl._credentials
+    _http = None  # Can't carry this over
+    client_info = cl._initial_client_info
+    client_options = cl._initial_client_options
+
+    return _LazyClient, (
+        client_object_id,
+        project,
+        credentials,
+        _http,
+        client_info,
+        client_options,
+    )
+
+
+def _pickle_blob(blob):
+    """Pickle a Blob (and its Bucket and Client) and return a bytestring."""
+
+    # We need a custom pickler to process Client objects, which are attached to
+    # Buckets (and therefore to Blobs in turn). Unfortunately, the Python
+    # multiprocessing library doesn't seem to have a good way to use a custom
+    # pickler, and using copyreg will mutate global state and affect code
+    # outside of the client library. Instead, we'll pre-pickle the object and
+    # pass the bytestring in.
+    f = io.BytesIO()
+    p = pickle.Pickler(f)
+    p.dispatch_table = copyreg.dispatch_table.copy()
+    p.dispatch_table[Client] = _reduce_client
+    p.dump(blob)
+    return f.getvalue()
+
+
+def _get_pool_class_and_requirements(worker_type):
+    """Returns the pool class, and whether the pool requires pickled Blobs."""
+
+    if worker_type == PROCESS:
+        # Use processes. Pickle blobs with custom logic to handle the client.
+        return (concurrent.futures.ProcessPoolExecutor, True)
+    elif worker_type == THREAD:
+        # Use threads. Pass blobs through unpickled.
+        return (concurrent.futures.ThreadPoolExecutor, False)
+    else:
+        raise ValueError(
+            "The worker_type must be google.cloud.storage.transfer_manager.PROCESS or google.cloud.storage.transfer_manager.THREAD"
+        )
+
+
+class _LazyClient:
+    """An object that will transform into either a cached or a new Client"""
+
+    def __new__(cls, id, *args, **kwargs):
+        cached_client = _cached_clients.get(id)
+        if cached_client:
+            return cached_client
+        else:
+            cached_client = Client(*args, **kwargs)
+            _cached_clients[id] = cached_client
+            return cached_client
