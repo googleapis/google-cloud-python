@@ -1954,6 +1954,11 @@
                 "set_node_template"
               ]
             },
+            "SimulateMaintenanceEvent": {
+              "methods": [
+                "simulate_maintenance_event"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"

@@ -187,6 +187,11 @@ class NodeGroupsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.simulate_maintenance_event: gapic_v1.method.wrap_method(
+                self.simulate_maintenance_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
@@ -309,6 +314,15 @@ class NodeGroupsTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SetNodeTemplateNodeGroupRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def simulate_maintenance_event(
+        self,
+    ) -> Callable[
+        [compute.SimulateMaintenanceEventNodeGroupRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

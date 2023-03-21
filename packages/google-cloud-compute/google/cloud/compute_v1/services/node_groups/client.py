@@ -2601,6 +2601,283 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Done; return the response.
         return response
 
+    def simulate_maintenance_event_unary(
+        self,
+        request: Optional[
+            Union[compute.SimulateMaintenanceEventNodeGroupRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        node_group: Optional[str] = None,
+        node_groups_simulate_maintenance_event_request_resource: Optional[
+            compute.NodeGroupsSimulateMaintenanceEventRequest
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Simulates maintenance event on specified nodes from
+        the node group.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventNodeGroupRequest, dict]):
+                The request object. A request message for
+                NodeGroups.SimulateMaintenanceEvent. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            node_group (str):
+                Name of the NodeGroup resource whose
+                nodes will go under maintenance
+                simulation.
+
+                This corresponds to the ``node_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            node_groups_simulate_maintenance_event_request_resource (google.cloud.compute_v1.types.NodeGroupsSimulateMaintenanceEventRequest):
+                The body resource for this request
+                This corresponds to the ``node_groups_simulate_maintenance_event_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                zone,
+                node_group,
+                node_groups_simulate_maintenance_event_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SimulateMaintenanceEventNodeGroupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SimulateMaintenanceEventNodeGroupRequest):
+            request = compute.SimulateMaintenanceEventNodeGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if node_group is not None:
+                request.node_group = node_group
+            if node_groups_simulate_maintenance_event_request_resource is not None:
+                request.node_groups_simulate_maintenance_event_request_resource = (
+                    node_groups_simulate_maintenance_event_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.simulate_maintenance_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("node_group", request.node_group),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def simulate_maintenance_event(
+        self,
+        request: Optional[
+            Union[compute.SimulateMaintenanceEventNodeGroupRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        node_group: Optional[str] = None,
+        node_groups_simulate_maintenance_event_request_resource: Optional[
+            compute.NodeGroupsSimulateMaintenanceEventRequest
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Simulates maintenance event on specified nodes from
+        the node group.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventNodeGroupRequest, dict]):
+                The request object. A request message for
+                NodeGroups.SimulateMaintenanceEvent. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            node_group (str):
+                Name of the NodeGroup resource whose
+                nodes will go under maintenance
+                simulation.
+
+                This corresponds to the ``node_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            node_groups_simulate_maintenance_event_request_resource (google.cloud.compute_v1.types.NodeGroupsSimulateMaintenanceEventRequest):
+                The body resource for this request
+                This corresponds to the ``node_groups_simulate_maintenance_event_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                zone,
+                node_group,
+                node_groups_simulate_maintenance_event_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SimulateMaintenanceEventNodeGroupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SimulateMaintenanceEventNodeGroupRequest):
+            request = compute.SimulateMaintenanceEventNodeGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if node_group is not None:
+                request.node_group = node_group
+            if node_groups_simulate_maintenance_event_request_resource is not None:
+                request.node_groups_simulate_maintenance_event_request_resource = (
+                    node_groups_simulate_maintenance_event_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.simulate_maintenance_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("node_group", request.node_group),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def test_iam_permissions(
         self,
         request: Optional[

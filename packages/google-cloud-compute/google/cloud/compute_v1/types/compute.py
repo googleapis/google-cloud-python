@@ -835,6 +835,7 @@ __protobuf__ = proto.module(
         "NodeGroupsListNodes",
         "NodeGroupsScopedList",
         "NodeGroupsSetNodeTemplateRequest",
+        "NodeGroupsSimulateMaintenanceEventRequest",
         "NodeTemplate",
         "NodeTemplateAggregatedList",
         "NodeTemplateList",
@@ -1172,6 +1173,7 @@ __protobuf__ = proto.module(
         "ShieldedInstanceIntegrityPolicy",
         "SignedUrlKey",
         "SimulateMaintenanceEventInstanceRequest",
+        "SimulateMaintenanceEventNodeGroupRequest",
         "Snapshot",
         "SnapshotList",
         "SourceDiskEncryptionKey",
@@ -30593,6 +30595,8 @@ class GuestOsFeature(proto.Message):
                 No description available.
             SEV_CAPABLE (87083793):
                 No description available.
+            SEV_LIVE_MIGRATABLE (392039820):
+                No description available.
             SEV_SNP_CAPABLE (426919):
                 No description available.
             UEFI_COMPATIBLE (195865408):
@@ -30608,6 +30612,7 @@ class GuestOsFeature(proto.Message):
         MULTI_IP_SUBNET = 151776719
         SECURE_BOOT = 376811194
         SEV_CAPABLE = 87083793
+        SEV_LIVE_MIGRATABLE = 392039820
         SEV_SNP_CAPABLE = 426919
         UEFI_COMPATIBLE = 195865408
         VIRTIO_SCSI_MULTIQUEUE = 201597069
@@ -32139,13 +32144,13 @@ class HealthStatusForNetworkEndpoint(proto.Message):
                 A value indicating that the enum field is not
                 set.
             DRAINING (480455402):
-                No description available.
+                Endpoint is being drained.
             HEALTHY (439801213):
-                No description available.
+                Endpoint is healthy.
             UNHEALTHY (462118084):
-                No description available.
+                Endpoint is unhealthy.
             UNKNOWN (433141802):
-                No description available.
+                Health status of the endpoint is unknown.
         """
         UNDEFINED_HEALTH_STATE = 0
         DRAINING = 480455402
@@ -63360,6 +63365,21 @@ class NodeGroupsSetNodeTemplateRequest(proto.Message):
     )
 
 
+class NodeGroupsSimulateMaintenanceEventRequest(proto.Message):
+    r"""
+
+    Attributes:
+        nodes (MutableSequence[str]):
+            Names of the nodes to go under maintenance
+            simulation.
+    """
+
+    nodes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=104993457,
+    )
+
+
 class NodeTemplate(proto.Message):
     r"""Represent a sole-tenant Node Template resource. You can use a
     template to define properties for nodes in a node group. For
@@ -84873,6 +84893,67 @@ class SimulateMaintenanceEventInstanceRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class SimulateMaintenanceEventNodeGroupRequest(proto.Message):
+    r"""A request message for NodeGroups.SimulateMaintenanceEvent.
+    See the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        node_group (str):
+            Name of the NodeGroup resource whose nodes
+            will go under maintenance simulation.
+        node_groups_simulate_maintenance_event_request_resource (google.cloud.compute_v1.types.NodeGroupsSimulateMaintenanceEventRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    node_group: str = proto.Field(
+        proto.STRING,
+        number=469958146,
+    )
+    node_groups_simulate_maintenance_event_request_resource: "NodeGroupsSimulateMaintenanceEventRequest" = proto.Field(
+        proto.MESSAGE,
+        number=351468764,
+        message="NodeGroupsSimulateMaintenanceEventRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
     )
     zone: str = proto.Field(
         proto.STRING,
