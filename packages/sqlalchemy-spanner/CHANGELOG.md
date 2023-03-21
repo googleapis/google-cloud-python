@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.2.2...v1.3.0) (2023-03-20)
+
+
+### Features
+
+* Implement get_view_names() method ([#306](https://github.com/googleapis/python-spanner-sqlalchemy/issues/306)) ([63461e6](https://github.com/googleapis/python-spanner-sqlalchemy/commit/63461e67364b5214e7ea8a2d89c0fda4d9ced72d)), closes [#303](https://github.com/googleapis/python-spanner-sqlalchemy/issues/303)
+* Support request priorities ([#286](https://github.com/googleapis/python-spanner-sqlalchemy/issues/286)) ([3aecf2d](https://github.com/googleapis/python-spanner-sqlalchemy/commit/3aecf2d651e6eb9f3af72a3ed3599aa51b4158a9))
+
+
+### Bug Fixes
+
+* Alembic incompatibility with sqlalchemy &lt; 1.3.11 ([#290](https://github.com/googleapis/python-spanner-sqlalchemy/issues/290)) ([f99f3a7](https://github.com/googleapis/python-spanner-sqlalchemy/commit/f99f3a78477aecc71af70deba41b861e12d51c28))
+* Introspect constraints, keeping their order ([#289](https://github.com/googleapis/python-spanner-sqlalchemy/issues/289)) ([7f65972](https://github.com/googleapis/python-spanner-sqlalchemy/commit/7f659729e15848c1493cb271e832b6968d7ab031))
+* Test fix ([#310](https://github.com/googleapis/python-spanner-sqlalchemy/issues/310)) ([c376d42](https://github.com/googleapis/python-spanner-sqlalchemy/commit/c376d422ab455ee88bb94e2cd136aa9ef865e375))
+
 ## [1.2.2](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.2.1...v1.2.2) (2022-10-04)
 
 
