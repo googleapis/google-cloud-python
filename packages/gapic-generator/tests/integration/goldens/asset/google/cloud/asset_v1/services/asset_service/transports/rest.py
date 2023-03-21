@@ -500,7 +500,6 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 request (~.asset_service.AnalyzeIamPolicyRequest):
                     The request object. A request message for
                 [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -581,7 +580,6 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 request (~.asset_service.AnalyzeIamPolicyLongrunningRequest):
                     The request object. A request message for
                 [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

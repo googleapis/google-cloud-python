@@ -50,7 +50,7 @@
             {% if not method.client_streaming %}
             request (Union[{{ method.input.ident.sphinx }}, dict]):
                 The request object.{{ " " }}
-                {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
+                {{- method.input.meta.doc|rst(width=72, indent=16, nl=False) }}
             {% for key, field in method.flattened_fields.items() %}
             {{ field.name }} ({{ field.ident.sphinx }}):
                 {{ field.meta.doc|rst(width=72, indent=16) }}
@@ -61,7 +61,7 @@
             {% else %}
             requests (Iterator[{{ method.input.ident.sphinx }}]):
                 The request object iterator.{{ " " }}
-                {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
+                {{- method.input.meta.doc|rst(width=72, indent=16, nl=False) }}
             {% endif %}
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

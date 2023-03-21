@@ -346,7 +346,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.CreateTriggerRequest):
                     The request object. The request message for the
                 CreateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -434,7 +433,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.DeleteTriggerRequest):
                     The request object. The request message for the
                 DeleteTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -513,7 +511,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetTriggerRequest):
                     The request object. The request message for the
                 GetTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -593,7 +590,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.ListTriggersRequest):
                     The request object. The request message for the
                 ListTriggers method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -673,7 +669,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.UpdateTriggerRequest):
                     The request object. The request message for the
                 UpdateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

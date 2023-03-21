@@ -555,7 +555,6 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
                 request (~.logging.ListMonitoredResourceDescriptorsRequest):
                     The request object. The parameters to
                 ListMonitoredResourceDescriptors
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -1546,7 +1546,6 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
                 See `Enabling CMEK for Logs
                 Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
                 for more information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2508,7 +2507,6 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
                 See `Enabling CMEK for Logs
                 Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
                 for more information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

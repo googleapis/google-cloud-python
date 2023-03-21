@@ -540,7 +540,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]]):
-                The request object. The parameters to `ListLogEntries`.
+                The request object. The parameters to ``ListLogEntries``.
             resource_names (:class:`MutableSequence[str]`):
                 Required. Names of one or more parent resources from
                 which to retrieve log entries:
@@ -932,7 +932,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             requests (AsyncIterator[`google.cloud.logging_v2.types.TailLogEntriesRequest`]):
-                The request object AsyncIterator. The parameters to `TailLogEntries`.
+                The request object AsyncIterator. The parameters to ``TailLogEntries``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

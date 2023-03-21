@@ -233,7 +233,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.ListBucketsRequest, dict]]):
-                The request object. The parameters to `ListBuckets`.
+                The request object. The parameters to ``ListBuckets``.
             parent (:class:`str`):
                 Required. The parent resource whose buckets are to be
                 listed:
@@ -354,7 +354,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.GetBucketRequest, dict]]):
-                The request object. The parameters to `GetBucket`.
+                The request object. The parameters to ``GetBucket``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -435,7 +435,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.CreateBucketRequest, dict]]):
-                The request object. The parameters to `CreateBucket`.
+                The request object. The parameters to ``CreateBucket``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -523,7 +523,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict]]):
-                The request object. The parameters to `UpdateBucket`.
+                The request object. The parameters to ``UpdateBucket``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -600,7 +600,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]]):
-                The request object. The parameters to `DeleteBucket`.
+                The request object. The parameters to ``DeleteBucket``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -669,7 +669,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]]):
-                The request object. The parameters to `UndeleteBucket`.
+                The request object. The parameters to ``UndeleteBucket``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -742,7 +742,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.ListViewsRequest, dict]]):
-                The request object. The parameters to `ListViews`.
+                The request object. The parameters to ``ListViews``.
             parent (:class:`str`):
                 Required. The bucket whose views are to be listed:
 
@@ -855,7 +855,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.GetViewRequest, dict]]):
-                The request object. The parameters to `GetView`.
+                The request object. The parameters to ``GetView``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -937,7 +937,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.CreateViewRequest, dict]]):
-                The request object. The parameters to `CreateView`.
+                The request object. The parameters to ``CreateView``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1018,7 +1018,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.UpdateViewRequest, dict]]):
-                The request object. The parameters to `UpdateView`.
+                The request object. The parameters to ``UpdateView``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1095,7 +1095,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]]):
-                The request object. The parameters to `DeleteView`.
+                The request object. The parameters to ``DeleteView``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1168,7 +1168,7 @@ class ConfigServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.ListSinksRequest, dict]]):
-                The request object. The parameters to `ListSinks`.
+                The request object. The parameters to ``ListSinks``.
             parent (:class:`str`):
                 Required. The parent resource whose sinks are to be
                 listed:
@@ -1294,7 +1294,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.GetSinkRequest, dict]]):
-                The request object. The parameters to `GetSink`.
+                The request object. The parameters to ``GetSink``.
             sink_name (:class:`str`):
                 Required. The resource name of the sink:
 
@@ -1427,7 +1427,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.CreateSinkRequest, dict]]):
-                The request object. The parameters to `CreateSink`.
+                The request object. The parameters to ``CreateSink``.
             parent (:class:`str`):
                 Required. The resource in which to create the sink:
 
@@ -1564,7 +1564,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.UpdateSinkRequest, dict]]):
-                The request object. The parameters to `UpdateSink`.
+                The request object. The parameters to ``UpdateSink``.
             sink_name (:class:`str`):
                 Required. The full resource name of the sink to update,
                 including the parent resource and the sink identifier:
@@ -1717,7 +1717,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]]):
-                The request object. The parameters to `DeleteSink`.
+                The request object. The parameters to ``DeleteSink``.
             sink_name (:class:`str`):
                 Required. The full resource name of the sink to delete,
                 including the parent resource and the sink identifier:
@@ -1826,7 +1826,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.ListExclusionsRequest, dict]]):
-                The request object. The parameters to `ListExclusions`.
+                The request object. The parameters to ``ListExclusions``.
             parent (:class:`str`):
                 Required. The parent resource whose exclusions are to be
                 listed.
@@ -1952,7 +1952,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.GetExclusionRequest, dict]]):
-                The request object. The parameters to `GetExclusion`.
+                The request object. The parameters to ``GetExclusion``.
             name (:class:`str`):
                 Required. The resource name of an existing exclusion:
 
@@ -2087,7 +2087,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.CreateExclusionRequest, dict]]):
-                The request object. The parameters to `CreateExclusion`.
+                The request object. The parameters to ``CreateExclusion``.
             parent (:class:`str`):
                 Required. The parent resource in which to create the
                 exclusion:
@@ -2224,7 +2224,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.UpdateExclusionRequest, dict]]):
-                The request object. The parameters to `UpdateExclusion`.
+                The request object. The parameters to ``UpdateExclusion``.
             name (:class:`str`):
                 Required. The resource name of the exclusion to update:
 
@@ -2365,7 +2365,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]]):
-                The request object. The parameters to `DeleteExclusion`.
+                The request object. The parameters to ``DeleteExclusion``.
             name (:class:`str`):
                 Required. The resource name of an existing exclusion to
                 delete:
@@ -2483,8 +2483,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             request (Optional[Union[google.cloud.logging_v2.types.GetCmekSettingsRequest, dict]]):
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
-                See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+
+                See `Enabling CMEK for Logs
+                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
                 for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2591,8 +2592,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             request (Optional[Union[google.cloud.logging_v2.types.UpdateCmekSettingsRequest, dict]]):
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
-                See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+
+                See `Enabling CMEK for Logs
+                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
                 for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
