@@ -1,2 +1,0 @@
-recursive-include google/cloud/alloydb *.py
-recursive-include google/cloud/alloydb_v1beta *.py

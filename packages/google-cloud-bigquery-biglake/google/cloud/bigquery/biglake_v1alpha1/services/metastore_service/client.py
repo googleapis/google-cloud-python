@@ -575,8 +575,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery.biglake_v1alpha1.types.CreateCatalogRequest, dict]):
-                The request object. Request message for the
-                CreateCatalog method.
+                The request object. Request message for the CreateCatalog
+                method.
             parent (str):
                 Required. The parent resource where this catalog will be
                 created. Format:
@@ -699,8 +699,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery.biglake_v1alpha1.types.DeleteCatalogRequest, dict]):
-                The request object. Request message for the
-                DeleteCatalog method.
+                The request object. Request message for the DeleteCatalog
+                method.
             name (str):
                 Required. The name of the catalog to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
@@ -1464,8 +1464,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery.biglake_v1alpha1.types.ListDatabasesRequest, dict]):
-                The request object. Request message for the
-                ListDatabases method.
+                The request object. Request message for the ListDatabases
+                method.
             parent (str):
                 Required. The parent, which owns this collection of
                 databases. Format:

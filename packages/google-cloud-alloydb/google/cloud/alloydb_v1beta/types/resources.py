@@ -1102,7 +1102,7 @@ class Instance(proto.Message):
         r"""The Availability type of an instance. Potential values:
         <br><b>ZONAL</b>: The instance serves data from only one zone.
         Outages in that zone affect instance availability.
-        <br><b>REGIONAL</b>: The instance can serve data from more
+          <br><b>REGIONAL</b>: The instance can serve data from more
         than one zone   in a region (it is highly available).
 
         Values:
