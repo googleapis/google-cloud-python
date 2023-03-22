@@ -54,7 +54,7 @@ class Document(proto.Message):
             This field is a member of `oneof`_ ``data``.
         name (str):
             Immutable. The full resource name of the document. Format:
-            ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document_id}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document_id}``.
 
             This field must be a UTF-8 encoded string with a length
             limit of 1024 characters.
@@ -65,8 +65,8 @@ class Document(proto.Message):
             `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
             with a length limit of 63 characters.
         schema_id (str):
-            Required. The identifier of the schema
-            located in the same data store.
+            The identifier of the schema located in the
+            same data store.
         parent_document_id (str):
             The identifier of the parent document. Currently supports at
             most two level document hierarchy.

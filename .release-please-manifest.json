@@ -1,6 +1,6 @@
 {
     "packages/google-cloud-contentwarehouse": "0.4.0",
-    "packages/google-cloud-discoveryengine": "0.3.1",
+    "packages/google-cloud-discoveryengine": "0.4.0",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.1",
     "packages/google-geo-type": "0.3.0",
     "packages/google-maps-addressvalidation": "0.3.0",
@@ -11,5 +11,6 @@
     "packages/google-maps-mapsplatformdatasets": "0.2.0",
     "packages/google-cloud-advisorynotifications": "0.1.0",
     "packages/google-cloud-alloydb": "0.1.0",
-    "packages/google-cloud-workstations": "0.0.0"
+    "packages/google-cloud-workstations": "0.1.0",
+    "packages/google-cloud-bigquery-biglake": "0.1.0"
 }
