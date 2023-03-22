@@ -768,6 +768,7 @@ def test_create_reservation(request_type, transport: str = "grpc"):
             ignore_idle_slots=True,
             concurrency=1195,
             multi_region_auxiliary=True,
+            edition=gcbr_reservation.Edition.STANDARD,
         )
         response = client.create_reservation(request)
 
@@ -783,6 +784,7 @@ def test_create_reservation(request_type, transport: str = "grpc"):
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == gcbr_reservation.Edition.STANDARD
 
 
 def test_create_reservation_empty_call():
@@ -829,6 +831,7 @@ async def test_create_reservation_async(
                 ignore_idle_slots=True,
                 concurrency=1195,
                 multi_region_auxiliary=True,
+                edition=gcbr_reservation.Edition.STANDARD,
             )
         )
         response = await client.create_reservation(request)
@@ -845,6 +848,7 @@ async def test_create_reservation_async(
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == gcbr_reservation.Edition.STANDARD
 
 
 @pytest.mark.asyncio
@@ -1491,6 +1495,7 @@ def test_get_reservation(request_type, transport: str = "grpc"):
             ignore_idle_slots=True,
             concurrency=1195,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
         response = client.get_reservation(request)
 
@@ -1506,6 +1511,7 @@ def test_get_reservation(request_type, transport: str = "grpc"):
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_get_reservation_empty_call():
@@ -1547,6 +1553,7 @@ async def test_get_reservation_async(
                 ignore_idle_slots=True,
                 concurrency=1195,
                 multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
             )
         )
         response = await client.get_reservation(request)
@@ -1563,6 +1570,7 @@ async def test_get_reservation_async(
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 @pytest.mark.asyncio
@@ -1975,6 +1983,7 @@ def test_update_reservation(request_type, transport: str = "grpc"):
             ignore_idle_slots=True,
             concurrency=1195,
             multi_region_auxiliary=True,
+            edition=gcbr_reservation.Edition.STANDARD,
         )
         response = client.update_reservation(request)
 
@@ -1990,6 +1999,7 @@ def test_update_reservation(request_type, transport: str = "grpc"):
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == gcbr_reservation.Edition.STANDARD
 
 
 def test_update_reservation_empty_call():
@@ -2036,6 +2046,7 @@ async def test_update_reservation_async(
                 ignore_idle_slots=True,
                 concurrency=1195,
                 multi_region_auxiliary=True,
+                edition=gcbr_reservation.Edition.STANDARD,
             )
         )
         response = await client.update_reservation(request)
@@ -2052,6 +2063,7 @@ async def test_update_reservation_async(
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == gcbr_reservation.Edition.STANDARD
 
 
 @pytest.mark.asyncio
@@ -2249,6 +2261,7 @@ def test_create_capacity_commitment(request_type, transport: str = "grpc"):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
         response = client.create_capacity_commitment(request)
 
@@ -2265,6 +2278,7 @@ def test_create_capacity_commitment(request_type, transport: str = "grpc"):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_create_capacity_commitment_empty_call():
@@ -2312,6 +2326,7 @@ async def test_create_capacity_commitment_async(
                 state=reservation.CapacityCommitment.State.PENDING,
                 renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
                 multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
             )
         )
         response = await client.create_capacity_commitment(request)
@@ -2329,6 +2344,7 @@ async def test_create_capacity_commitment_async(
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 @pytest.mark.asyncio
@@ -2969,6 +2985,7 @@ def test_get_capacity_commitment(request_type, transport: str = "grpc"):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
         response = client.get_capacity_commitment(request)
 
@@ -2985,6 +3002,7 @@ def test_get_capacity_commitment(request_type, transport: str = "grpc"):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_get_capacity_commitment_empty_call():
@@ -3032,6 +3050,7 @@ async def test_get_capacity_commitment_async(
                 state=reservation.CapacityCommitment.State.PENDING,
                 renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
                 multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
             )
         )
         response = await client.get_capacity_commitment(request)
@@ -3049,6 +3068,7 @@ async def test_get_capacity_commitment_async(
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 @pytest.mark.asyncio
@@ -3471,6 +3491,7 @@ def test_update_capacity_commitment(request_type, transport: str = "grpc"):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
         response = client.update_capacity_commitment(request)
 
@@ -3487,6 +3508,7 @@ def test_update_capacity_commitment(request_type, transport: str = "grpc"):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_update_capacity_commitment_empty_call():
@@ -3534,6 +3556,7 @@ async def test_update_capacity_commitment_async(
                 state=reservation.CapacityCommitment.State.PENDING,
                 renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
                 multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
             )
         )
         response = await client.update_capacity_commitment(request)
@@ -3551,6 +3574,7 @@ async def test_update_capacity_commitment_async(
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 @pytest.mark.asyncio
@@ -3999,6 +4023,7 @@ def test_merge_capacity_commitments(request_type, transport: str = "grpc"):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
         response = client.merge_capacity_commitments(request)
 
@@ -4015,6 +4040,7 @@ def test_merge_capacity_commitments(request_type, transport: str = "grpc"):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_merge_capacity_commitments_empty_call():
@@ -4062,6 +4088,7 @@ async def test_merge_capacity_commitments_async(
                 state=reservation.CapacityCommitment.State.PENDING,
                 renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
                 multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
             )
         )
         response = await client.merge_capacity_commitments(request)
@@ -4079,6 +4106,7 @@ async def test_merge_capacity_commitments_async(
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 @pytest.mark.asyncio
@@ -7125,10 +7153,12 @@ def test_create_reservation_rest(request_type):
         "name": "name_value",
         "slot_capacity": 1391,
         "ignore_idle_slots": True,
+        "autoscale": {"current_slots": 1431, "max_slots": 986},
         "concurrency": 1195,
         "creation_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -7141,6 +7171,7 @@ def test_create_reservation_rest(request_type):
             ignore_idle_slots=True,
             concurrency=1195,
             multi_region_auxiliary=True,
+            edition=gcbr_reservation.Edition.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -7160,6 +7191,7 @@ def test_create_reservation_rest(request_type):
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == gcbr_reservation.Edition.STANDARD
 
 
 def test_create_reservation_rest_required_fields(
@@ -7322,10 +7354,12 @@ def test_create_reservation_rest_bad_request(
         "name": "name_value",
         "slot_capacity": 1391,
         "ignore_idle_slots": True,
+        "autoscale": {"current_slots": 1431, "max_slots": 986},
         "concurrency": 1195,
         "creation_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -7773,6 +7807,7 @@ def test_get_reservation_rest(request_type):
             ignore_idle_slots=True,
             concurrency=1195,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -7792,6 +7827,7 @@ def test_get_reservation_rest(request_type):
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_get_reservation_rest_required_fields(
@@ -8303,10 +8339,12 @@ def test_update_reservation_rest(request_type):
         "name": "projects/sample1/locations/sample2/reservations/sample3",
         "slot_capacity": 1391,
         "ignore_idle_slots": True,
+        "autoscale": {"current_slots": 1431, "max_slots": 986},
         "concurrency": 1195,
         "creation_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -8319,6 +8357,7 @@ def test_update_reservation_rest(request_type):
             ignore_idle_slots=True,
             concurrency=1195,
             multi_region_auxiliary=True,
+            edition=gcbr_reservation.Edition.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -8338,6 +8377,7 @@ def test_update_reservation_rest(request_type):
     assert response.ignore_idle_slots is True
     assert response.concurrency == 1195
     assert response.multi_region_auxiliary is True
+    assert response.edition == gcbr_reservation.Edition.STANDARD
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8415,10 +8455,12 @@ def test_update_reservation_rest_bad_request(
         "name": "projects/sample1/locations/sample2/reservations/sample3",
         "slot_capacity": 1391,
         "ignore_idle_slots": True,
+        "autoscale": {"current_slots": 1431, "max_slots": 986},
         "concurrency": 1195,
         "creation_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -8536,6 +8578,7 @@ def test_create_capacity_commitment_rest(request_type):
         },
         "renewal_plan": 3,
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -8549,6 +8592,7 @@ def test_create_capacity_commitment_rest(request_type):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -8569,6 +8613,7 @@ def test_create_capacity_commitment_rest(request_type):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_create_capacity_commitment_rest_required_fields(
@@ -8759,6 +8804,7 @@ def test_create_capacity_commitment_rest_bad_request(
         },
         "renewal_plan": 3,
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -9209,6 +9255,7 @@ def test_get_capacity_commitment_rest(request_type):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -9229,6 +9276,7 @@ def test_get_capacity_commitment_rest(request_type):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 def test_get_capacity_commitment_rest_required_fields(
@@ -9763,6 +9811,7 @@ def test_update_capacity_commitment_rest(request_type):
         },
         "renewal_plan": 3,
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -9776,6 +9825,7 @@ def test_update_capacity_commitment_rest(request_type):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -9796,6 +9846,7 @@ def test_update_capacity_commitment_rest(request_type):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9888,6 +9939,7 @@ def test_update_capacity_commitment_rest_bad_request(
         },
         "renewal_plan": 3,
         "multi_region_auxiliary": True,
+        "edition": 1,
     }
     request = request_type(**request_init)
 
@@ -10274,6 +10326,7 @@ def test_merge_capacity_commitments_rest(request_type):
             state=reservation.CapacityCommitment.State.PENDING,
             renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
             multi_region_auxiliary=True,
+            edition=reservation.Edition.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -10294,6 +10347,7 @@ def test_merge_capacity_commitments_rest(request_type):
     assert response.state == reservation.CapacityCommitment.State.PENDING
     assert response.renewal_plan == reservation.CapacityCommitment.CommitmentPlan.FLEX
     assert response.multi_region_auxiliary is True
+    assert response.edition == reservation.Edition.STANDARD
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

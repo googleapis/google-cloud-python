@@ -720,7 +720,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Returns:
             google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.ListReservationsPager:
                 The response for
-                [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
+                   [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1275,7 +1275,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Returns:
             google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.ListCapacityCommitmentsPager:
                 The response for
-                [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
+                   [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1757,7 +1757,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Returns:
             google.cloud.bigquery_reservation_v1.types.SplitCapacityCommitmentResponse:
                 The response for
-                [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
+                   [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
 
         """
         # Create or coerce a protobuf request object.
@@ -2182,7 +2182,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Returns:
             google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.ListAssignmentsPager:
                 The response for
-                [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
+                   [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2444,7 +2444,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Returns:
             google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.SearchAssignmentsPager:
                 The response for
-                [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
+                   [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2604,7 +2604,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Returns:
             google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.SearchAllAssignmentsPager:
                 The response for
-                [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
+                   [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

@@ -25,6 +25,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.reservation.v1",
     manifest={
+        "Edition",
         "Reservation",
         "CapacityCommitment",
         "CreateReservationRequest",
@@ -61,6 +62,29 @@ __protobuf__ = proto.module(
 )
 
 
+class Edition(proto.Enum):
+    r"""The type of editions.
+    Different features and behaviors are provided to different
+    editions Capacity commitments and reservations are linked to
+    editions.
+
+    Values:
+        EDITION_UNSPECIFIED (0):
+            Default value, which will be treated as
+            ENTERPRISE.
+        STANDARD (1):
+            Standard edition.
+        ENTERPRISE (2):
+            Enterprise edition.
+        ENTERPRISE_PLUS (3):
+            Enterprise plus edition.
+    """
+    EDITION_UNSPECIFIED = 0
+    STANDARD = 1
+    ENTERPRISE = 2
+    ENTERPRISE_PLUS = 3
+
+
 class Reservation(proto.Message):
     r"""A reservation is a mechanism used to guarantee slots to
     users.
@@ -80,10 +104,9 @@ class Reservation(proto.Message):
             Queries using this reservation might use more slots during
             runtime if ignore_idle_slots is set to false.
 
-            If the new reservation's slot capacity exceeds the project's
-            slot capacity or if total slot capacity of the new
-            reservation and its siblings exceeds the project's slot
-            capacity, the request will fail with
+            If total slot_capacity of the reservation and its siblings
+            exceeds the total slot_count of all capacity commitments,
+            the request will fail with
             ``google.rpc.Code.RESOURCE_EXHAUSTED``.
 
             NOTE: for reservations in US or EU multi-regions, slot
@@ -96,15 +119,18 @@ class Reservation(proto.Message):
             admin project. If true, a query or pipeline job using this
             reservation will execute with the slot capacity specified in
             the slot_capacity field at most.
+        autoscale (google.cloud.bigquery_reservation_v1.types.Reservation.Autoscale):
+            The configuration parameters for the auto
+            scaling feature. Note this is an alpha feature.
         concurrency (int):
-            Maximum number of queries that are allowed to
-            run concurrently in this reservation. This is a
-            soft limit due to asynchronous nature of the
-            system and various optimizations for small
-            queries.
-            Default value is 0 which means that concurrency
-            will be automatically set based on the
-            reservation size.
+            Job concurrency target which sets a soft upper bound on the
+            number of jobs that can run concurrently in this
+            reservation. This is a soft target due to asynchronous
+            nature of the system and various optimizations for small
+            queries. Default value is 0 which means that concurrency
+            target will be automatically computed by the system. NOTE:
+            this field is exposed as ``target_job_concurrency`` in the
+            Information Schema, DDL and BQ CLI.
         creation_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of the
             reservation.
@@ -120,7 +146,29 @@ class Reservation(proto.Message):
             designated for disaster recovery purposes. If
             false, this reservation is placed in the
             organization's default region.
+        edition (google.cloud.bigquery_reservation_v1.types.Edition):
+            Edition of the reservation.
     """
+
+    class Autoscale(proto.Message):
+        r"""Auto scaling settings.
+
+        Attributes:
+            current_slots (int):
+                Output only. The slot capacity added to this reservation
+                when autoscale happens. Will be between [0, max_slots].
+            max_slots (int):
+                Number of slots to be scaled when needed.
+        """
+
+        current_slots: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        max_slots: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -133,6 +181,11 @@ class Reservation(proto.Message):
     ignore_idle_slots: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    autoscale: Autoscale = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Autoscale,
     )
     concurrency: int = proto.Field(
         proto.INT64,
@@ -151,6 +204,11 @@ class Reservation(proto.Message):
     multi_region_auxiliary: bool = proto.Field(
         proto.BOOL,
         number=14,
+    )
+    edition: "Edition" = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum="Edition",
     )
 
 
@@ -205,6 +263,8 @@ class CapacityCommitment(proto.Message):
             designated for disaster recovery purposes. If
             false, this commitment is placed in the
             organization's default region.
+        edition (google.cloud.bigquery_reservation_v1.types.Edition):
+            Edition of the capacity commitment.
     """
 
     class CommitmentPlan(proto.Enum):
@@ -222,6 +282,9 @@ class CapacityCommitment(proto.Message):
                 minute after becoming ACTIVE. After that, they
                 are not in a committed period anymore and can be
                 removed any time.
+            FLEX_FLAT_RATE (7):
+                Same as FLEX, should only be used if
+                flat-rate commitments are still available.
             TRIAL (5):
                 Trial commitments have a committed period of 182 days after
                 becoming ACTIVE. After that, they are converted to a new
@@ -233,16 +296,40 @@ class CapacityCommitment(proto.Message):
                 of 30 days after becoming ACTIVE. After that,
                 they are not in a committed period anymore and
                 can be removed any time.
+            MONTHLY_FLAT_RATE (8):
+                Same as MONTHLY, should only be used if
+                flat-rate commitments are still available.
             ANNUAL (4):
                 Annual commitments have a committed period of 365 days after
                 becoming ACTIVE. After that they are converted to a new
                 commitment based on the renewal_plan.
+            ANNUAL_FLAT_RATE (9):
+                Same as ANNUAL, should only be used if
+                flat-rate commitments are still available.
+            THREE_YEAR (10):
+                3-year commitments have a committed period of 1095(3 \* 365)
+                days after becoming ACTIVE. After that they are converted to
+                a new commitment based on the renewal_plan.
+            NONE (6):
+                Should only be used for ``renewal_plan`` and is only
+                meaningful if edition is specified to values other than
+                EDITION_UNSPECIFIED. Otherwise
+                CreateCapacityCommitmentRequest or
+                UpdateCapacityCommitmentRequest will be rejected with error
+                code ``google.rpc.Code.INVALID_ARGUMENT``. If the
+                renewal_plan is NONE, capacity commitment will be removed at
+                the end of its commitment period.
         """
         COMMITMENT_PLAN_UNSPECIFIED = 0
         FLEX = 3
+        FLEX_FLAT_RATE = 7
         TRIAL = 5
         MONTHLY = 2
+        MONTHLY_FLAT_RATE = 8
         ANNUAL = 4
+        ANNUAL_FLAT_RATE = 9
+        THREE_YEAR = 10
+        NONE = 6
 
     class State(proto.Enum):
         r"""Capacity commitment can either become ACTIVE right away or
@@ -308,6 +395,11 @@ class CapacityCommitment(proto.Message):
     multi_region_auxiliary: bool = proto.Field(
         proto.BOOL,
         number=10,
+    )
+    edition: "Edition" = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum="Edition",
     )
 
 
@@ -740,11 +832,15 @@ class Assignment(proto.Message):
                 BigQuery ML jobs that use services external
                 to BigQuery for model training. These jobs will
                 not utilize idle slots from other reservations.
+            BACKGROUND (4):
+                Background jobs that BigQuery runs for the
+                customers in the background.
         """
         JOB_TYPE_UNSPECIFIED = 0
         PIPELINE = 1
         QUERY = 2
         ML_EXTERNAL = 3
+        BACKGROUND = 4
 
     class State(proto.Enum):
         r"""Assignment will remain in PENDING state if no active capacity
@@ -1064,6 +1160,13 @@ class MoveAssignmentRequest(proto.Message):
         destination_id (str):
             The new reservation ID, e.g.:
             ``projects/myotherproject/locations/US/reservations/team2-prod``
+        assignment_id (str):
+            The optional assignment ID. A new assignment
+            name is generated if this field is empty.
+
+            This field can contain only lowercase
+            alphanumeric characters or dashes. Max length is
+            64 characters.
     """
 
     name: str = proto.Field(
@@ -1073,6 +1176,10 @@ class MoveAssignmentRequest(proto.Message):
     destination_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    assignment_id: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

@@ -34,6 +34,7 @@ from google.cloud.bigquery_reservation_v1.types.reservation import (
     DeleteAssignmentRequest,
     DeleteCapacityCommitmentRequest,
     DeleteReservationRequest,
+    Edition,
     GetBiReservationRequest,
     GetCapacityCommitmentRequest,
     GetReservationRequest,
@@ -94,4 +95,5 @@ __all__ = (
     "UpdateBiReservationRequest",
     "UpdateCapacityCommitmentRequest",
     "UpdateReservationRequest",
+    "Edition",
 )

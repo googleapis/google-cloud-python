@@ -23,6 +23,7 @@ from .reservation import (
     DeleteAssignmentRequest,
     DeleteCapacityCommitmentRequest,
     DeleteReservationRequest,
+    Edition,
     GetBiReservationRequest,
     GetCapacityCommitmentRequest,
     GetReservationRequest,
@@ -81,4 +82,5 @@ __all__ = (
     "UpdateBiReservationRequest",
     "UpdateCapacityCommitmentRequest",
     "UpdateReservationRequest",
+    "Edition",
 )

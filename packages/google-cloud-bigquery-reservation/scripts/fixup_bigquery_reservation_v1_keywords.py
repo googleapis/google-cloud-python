@@ -52,7 +52,7 @@ class bigquery_reservationCallTransformer(cst.CSTTransformer):
         'list_capacity_commitments': ('parent', 'page_size', 'page_token', ),
         'list_reservations': ('parent', 'page_size', 'page_token', ),
         'merge_capacity_commitments': ('parent', 'capacity_commitment_ids', ),
-        'move_assignment': ('name', 'destination_id', ),
+        'move_assignment': ('name', 'destination_id', 'assignment_id', ),
         'search_all_assignments': ('parent', 'query', 'page_size', 'page_token', ),
         'search_assignments': ('parent', 'query', 'page_size', 'page_token', ),
         'split_capacity_commitment': ('name', 'slot_count', ),
