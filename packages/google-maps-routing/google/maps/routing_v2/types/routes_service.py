@@ -123,16 +123,17 @@ class ComputeRoutesRequest(proto.Message):
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for the display
             fields. This includes the ``instruction`` field in
-            ``NavigationInstruction``. The units of measure used for the
-            route, leg, step distance, and duration are not affected by
-            this value. If you don't provide this value, then the
-            display units are inferred from the location of the request.
+            [NavigationInstruction][google.maps.routing.v2.NavigationInstruction].
+            The units of measure used for the route, leg, step distance,
+            and duration are not affected by this value. If you don't
+            provide this value, then the display units are inferred from
+            the location of the request.
         requested_reference_routes (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ReferenceRoute]):
             Optional. Specifies what reference routes to calculate as
             part of the request in addition to the default route. A
             reference route is a route with a different route
-            calculation objective than the default route. For example an
-            FUEL_EFFICIENT reference route calculation takes into
+            calculation objective than the default route. For example a
+            ``FUEL_EFFICIENT`` reference route calculation takes into
             account various parameters that would generate an optimal
             fuel efficient route.
         extra_computations (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ExtraComputation]):
@@ -468,11 +469,13 @@ class RouteMatrixElement(proto.Message):
             The travel distance of the route, in meters.
         duration (google.protobuf.duration_pb2.Duration):
             The length of time needed to navigate the route. If you set
-            the ``routing_preference`` to ``TRAFFIC_UNAWARE``, then this
-            value is the same as ``static_duration``. If you set the
-            ``routing_preference`` to either ``TRAFFIC_AWARE`` or
-            ``TRAFFIC_AWARE_OPTIMAL``, then this value is calculated
-            taking traffic conditions into account.
+            the
+            [routing_preference][google.maps.routing.v2.ComputeRouteMatrixRequest.routing_preference]
+            to ``TRAFFIC_UNAWARE``, then this value is the same as
+            ``static_duration``. If you set the ``routing_preference``
+            to either ``TRAFFIC_AWARE`` or ``TRAFFIC_AWARE_OPTIMAL``,
+            then this value is calculated taking traffic conditions into
+            account.
         static_duration (google.protobuf.duration_pb2.Duration):
             The duration of traveling through the route
             without taking traffic conditions into
