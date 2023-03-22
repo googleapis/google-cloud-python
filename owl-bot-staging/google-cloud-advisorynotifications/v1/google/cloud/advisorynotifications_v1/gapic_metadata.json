@@ -1,0 +1,58 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.advisorynotifications_v1",
+  "protoPackage": "google.cloud.advisorynotifications.v1",
+  "schema": "1.0",
+  "services": {
+    "AdvisoryNotificationsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AdvisoryNotificationsServiceClient",
+          "rpcs": {
+            "GetNotification": {
+              "methods": [
+                "get_notification"
+              ]
+            },
+            "ListNotifications": {
+              "methods": [
+                "list_notifications"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AdvisoryNotificationsServiceAsyncClient",
+          "rpcs": {
+            "GetNotification": {
+              "methods": [
+                "get_notification"
+              ]
+            },
+            "ListNotifications": {
+              "methods": [
+                "list_notifications"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AdvisoryNotificationsServiceClient",
+          "rpcs": {
+            "GetNotification": {
+              "methods": [
+                "get_notification"
+              ]
+            },
+            "ListNotifications": {
+              "methods": [
+                "list_notifications"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
