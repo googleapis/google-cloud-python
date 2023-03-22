@@ -36,6 +36,8 @@ python3 -m pip install -e .
 python_bucket_items=$(gsutil ls "gs://docs-staging-v2/docfx-python*")
 # Store empty tarballs that did not produce any content to check later.
 empty_packages=""
+# Store monorepo packages to process later
+monorepo_packages=""
 # Retrieve unique repositories to regenerate the YAML with.
 for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d "-" -f 2- | rev | uniq); do
 
@@ -54,6 +56,15 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
   gsutil cp ${bucket_item} .
   tar -zxvf ${tarball}
   repo=$(cat docs.metadata | grep "github_repository:" | cut -d "\"" -f 2 | cut -d "/" -f 2)
+
+  # If the pacakage is part of the monorepo, we'll process this later.
+  if [[ "${repo}" == "google-cloud-python" ]]; then
+    # Add an extra whitespace at the end to be used as a natural separator.
+    monorepo_packages+="$(cat docs.metadata | grep "distribution_name" | cut -d "\"" -f 2) "
+    cd ..
+    rm -rf ${tarball}
+    continue
+  fi
 
   # Clean up the tarball content.
   cd ..
@@ -152,7 +163,57 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
   rm "noxfile.py"
 done
 
-if [ ! ${empty_packages} ]; then
+# Build documentation for monorepo packages
+if [ -n "${monorepo_packages}" ]; then
+  echo "Processing monorepo packages"
+  git clone "https://github.com/googleapis/google-cloud-python.git"
+  cd google-cloud-python/packages
+
+  # TODO (https://github.com/googleapis/sphinx-docfx-yaml/issues/287): support
+  # multi-version build for the monorepo.
+  for monorepo_package in $(echo ${monorepo_packages}); do
+    cd ${monorepo_package}
+
+    # Test running with the plugin version locally.
+    if [[ "${TEST_PLUGIN}" == "true" ]]; then
+      # --no-use-pep517 is required for django-spanner install issue: see https://github.com/pypa/pip/issues/7953
+      python3 -m pip install --user --no-use-pep517 -e .[all]
+      sphinx-build -T -N -D extensions=sphinx.ext.autodoc,sphinx.ext.autosummary,docfx_yaml.extension,sphinx.ext.intersphinx,sphinx.ext.coverage,sphinx.ext.napoleon,sphinx.ext.todo,sphinx.ext.viewcode,recommonmark -b html -d docs/_build/doctrees/ docs/ docs/_build/html/
+      continue
+    fi
+
+    # Build YAML tarballs for Cloud-RAD.
+    nox -s docfx
+
+    # Check that documentation is produced. If not, log and continue.
+    if [ ! "$(ls docs/_build/html/docfx_yaml/)" ]; then
+      empty_packages="${monorepo_package} ${empty_packages}"
+      continue
+    fi
+
+    python3 -m docuploader create-metadata \
+      --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
+      --version=$(python3 setup.py --version) \
+      --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
+      --distribution-name=$(python3 setup.py --name) \
+      --product-page=$(jq --raw-output '.product_documentation // empty' .repo-metadata.json) \
+      --github-repository=$(jq --raw-output '.repo // empty' .repo-metadata.json) \
+      --issue-tracker=$(jq --raw-output '.issue_tracker // empty' .repo-metadata.json)
+
+    cat docs.metadata
+
+    # upload docs
+    python3 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"
+
+    # Clean up the package to make room.
+    cd ../
+    rm -rf ${monorepo_package}
+  done
+  cd ../../
+  rm -rf google-cloud-python
+fi
+
+if [ ! "${empty_packages}" ]; then
   exit
 fi
 
