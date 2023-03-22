@@ -11,6 +11,11 @@ load(
     "golden_update",
     "integration_test",
 )
+load(
+    "@com_github_grpc_grpc//bazel:python_rules.bzl",
+    "py_proto_library",
+)
+
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -81,6 +86,11 @@ py_test(
     ],
 )
 
+py_proto_library(
+    name = "iam_policy_py_proto",
+    deps = ["@com_google_googleapis//google/iam/v1:iam_policy_proto"],
+)
+
 # Eventarc.
 py_gapic_library(
     name = "eventarc_py_gapic",
@@ -91,7 +101,9 @@ py_gapic_library(
         "python-gapic-name=eventarc",
         "autogen-snippets",
     ],
+    service_yaml = "eventarc_v1.yaml",
     transport = "grpc+rest",
+    deps = [":iam_policy_py_proto"]
 )
 
 py_test(

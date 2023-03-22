@@ -2582,3 +2582,23 @@ def test_mixin_api_methods_lro():
     assert api_schema.mixin_api_methods == {
         'CancelOperation': m1, 'DeleteOperation': m2, 'WaitOperation': m3,
         'GetOperation': m4}
+
+
+def test_has_iam_mixin():
+    # Check that has_iam_mixin() property of API returns True when the
+    # service YAML contains `google.iam.v1.IAMPolicy`.
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.iam.v1.IAMPolicy'
+            }
+        ],
+    })
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    assert api_schema.has_iam_mixin

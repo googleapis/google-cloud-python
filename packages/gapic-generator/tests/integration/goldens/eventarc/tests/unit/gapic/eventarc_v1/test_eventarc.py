@@ -54,6 +54,10 @@ from google.cloud.eventarc_v1.services.eventarc import transports
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
+from google.cloud.location import locations_pb2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import options_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore

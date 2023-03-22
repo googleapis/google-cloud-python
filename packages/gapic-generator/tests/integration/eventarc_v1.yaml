@@ -1,0 +1,9 @@
+type: google.api.Service
+config_version: 3
+name: eventarc.googleapis.com
+title: Eventarc API
+
+apis:
+- name: google.cloud.eventarc.v1.Eventarc
+- name: google.cloud.location.Locations
+- name: google.iam.v1.IAMPolicy

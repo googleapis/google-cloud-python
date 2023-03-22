@@ -29,6 +29,9 @@ from google.oauth2 import service_account # type: ignore
 
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
+from google.cloud.location import locations_pb2 # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)

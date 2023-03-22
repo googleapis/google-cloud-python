@@ -38,6 +38,9 @@ from google.cloud.eventarc_v1.services.eventarc import pagers
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
+from google.cloud.location import locations_pb2 # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
