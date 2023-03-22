@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.9.1](https://github.com/googleapis/gapic-generator-python/compare/v1.9.0...v1.9.1) (2023-03-22)
+
+
+### Bug Fixes
+
+* Restore grpc-google-iam-v1 dependency when api.has_iam_mixin is True ([#1631](https://github.com/googleapis/gapic-generator-python/issues/1631)) ([a7ed16d](https://github.com/googleapis/gapic-generator-python/commit/a7ed16dbc1098772a5d9ff1f48f0651cc90fe5b4))
+
+
+### Documentation
+
+* Fix docstring with proto-plus dependency ([#1624](https://github.com/googleapis/gapic-generator-python/issues/1624)) ([dce071d](https://github.com/googleapis/gapic-generator-python/commit/dce071d71c66c12cf001a66d238f6f6ea3c67c04))
+* Fix formatting of request arg in docstring ([#1628](https://github.com/googleapis/gapic-generator-python/issues/1628)) ([8b4f5ca](https://github.com/googleapis/gapic-generator-python/commit/8b4f5caf1f496b36a02ed26b5af65b0d58ab1b6e))
+
 ## [1.9.0](https://github.com/googleapis/gapic-generator-python/compare/v1.8.6...v1.9.0) (2023-03-17)
 
 
