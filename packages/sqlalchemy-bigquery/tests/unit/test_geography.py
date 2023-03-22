@@ -104,7 +104,7 @@ def test_geoalchemy2_core(faux_conn, last_query):
 
     try:
         conn.execute(
-            select([lake_table.c.name, lake_table.c.geog.ST_AREA().label("area")])
+            select([lake_table.c.name, lake_table.c.geog.ST_Area().label("area")])
         )
     except Exception:
         pass  # sqlite had no special functions :)
@@ -169,7 +169,7 @@ def test_calling_st_functions_that_dont_take_geographies(faux_conn, last_query):
     from sqlalchemy import select, func
 
     try:
-        faux_conn.execute(select([func.ST_GEOGFROMTEXT("point(0 0)")]))
+        faux_conn.execute(select([func.ST_GeogFromText("point(0 0)")]))
     except Exception:
         pass  # sqlite had no special functions :)
 

@@ -50,10 +50,12 @@ UNIT_TEST_EXTRAS_BY_PYTHON = {
     "3.8": [
         "tests",
         "alembic",
+        "bqstorage",
     ],
     "3.11": [
         "tests",
         "geography",
+        "bqstorage",
     ],
 }
 
@@ -73,10 +75,12 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON = {
     "3.8": [
         "tests",
         "alembic",
+        "bqstorage",
     ],
     "3.11": [
         "tests",
         "geography",
+        "bqstorage",
     ],
 }
 
@@ -179,13 +183,21 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-def default(session):
+def default(session, install_extras=True):
     # Install all test dependencies, then install this package in-place.
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
+
+    if install_extras and session.python == "3.11":
+        install_target = ".[geography,alembic,tests,bqstorage]"
+    elif install_extras:
+        install_target = ".[all]"
+    else:
+        install_target = "."
+    session.install("-e", install_target, "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -262,6 +274,51 @@ def system(session):
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
 
+    install_systemtest_dependencies(session, "-c", constraints_path)
+
+    # Run py.test against the system tests.
+    if system_test_exists:
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_path,
+            *session.posargs,
+        )
+    if system_test_folder_exists:
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_folder_path,
+            *session.posargs,
+        )
+
+
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def system_noextras(session):
+    """Run the system test suite."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    system_test_path = os.path.join("tests", "system.py")
+    system_test_folder_path = os.path.join("tests", "system")
+
+    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+    # Install pyopenssl for mTLS testing.
+    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
+        session.install("pyopenssl")
+
+    system_test_exists = os.path.exists(system_test_path)
+    system_test_folder_exists = os.path.exists(system_test_folder_path)
+    # Sanity check: only run tests if found.
+    if not system_test_exists and not system_test_folder_exists:
+        session.skip("System tests were not found")
+
+    global SYSTEM_TEST_EXTRAS_BY_PYTHON
+    SYSTEM_TEST_EXTRAS_BY_PYTHON = False
     install_systemtest_dependencies(session, "-c", constraints_path)
 
     # Run py.test against the system tests.

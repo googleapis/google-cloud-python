@@ -45,11 +45,26 @@ def readme():
         return f.read()
 
 
-extras = dict(
-    geography=["GeoAlchemy2", "shapely"],
-    alembic=["alembic"],
-    tests=["packaging", "pytz"],
-)
+extras = {
+    "geography": ["GeoAlchemy2", "shapely"],
+    "alembic": ["alembic"],
+    "tests": ["packaging", "pytz"],
+    # Keep the no-op bqstorage extra for backward compatibility.
+    # See: https://github.com/googleapis/python-bigquery/issues/757
+    "bqstorage": [
+        "google-cloud-bigquery-storage >= 2.0.0, <3.0.0dev",
+        # Due to an issue in pip's dependency resolver, the `grpc` extra is not
+        # installed, even though `google-cloud-bigquery-storage` specifies it
+        # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
+        # See: https://github.com/googleapis/python-bigquery/issues/83 The
+        # grpc.Channel.close() method isn't added until 1.32.0.
+        # https://github.com/grpc/grpc/pull/15254
+        "grpcio >= 1.47.0, < 2.0dev",
+        "grpcio >= 1.49.1, < 2.0dev; python_version>='3.11'",
+        "pyarrow >= 3.0.0",
+    ],
+}
+
 extras["all"] = set(itertools.chain.from_iterable(extras.values()))
 
 setup(
@@ -85,9 +100,7 @@ setup(
         # https://github.com/googleapis/google-cloud-python/issues/10566
         "google-auth>=1.25.0,<3.0.0dev",  # Work around pip wack.
         "google-cloud-bigquery>=2.25.2,<4.0.0dev",
-        "google-cloud-bigquery-storage>=2.0.0,<3.0.0dev",
         "packaging",
-        "pyarrow>=3.0.0",
         "sqlalchemy>=1.2.0,<2.0.0dev",
         "future",
     ],

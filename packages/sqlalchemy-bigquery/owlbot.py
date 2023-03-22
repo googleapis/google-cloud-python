@@ -29,8 +29,8 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 extras = ["tests"]
 extras_by_python = {
-    "3.8": ["tests", "alembic"],
-    "3.11": ["tests", "geography"],
+    "3.8": ["tests", "alembic", "bqstorage"],
+    "3.11": ["tests", "geography", "bqstorage"],
 }
 templated_files = common.py_library(
     unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11"],
@@ -95,6 +95,14 @@ s.replace(
 )
 
 
+s.replace(
+    ["noxfile.py"],
+    r"def default\(session\)",
+    "def default(session, install_extras=True)",    
+)
+
+
+
 
 def place_before(path, text, *before_text, escape=None):
     replacement = "\n".join(before_text) + "\n" + text
@@ -114,6 +122,23 @@ place_before(
     "noxfile.py",
     "nox.options.error_on_missing_interpreters = True",
     "nox.options.stop_on_first_error = True",
+)
+
+
+install_logic = '''
+    if install_extras and session.python == "3.11":
+        install_target = ".[geography,alembic,tests,bqstorage]"
+    elif install_extras:
+        install_target = ".[all]"
+    else:
+        install_target = "."
+    session.install("-e", install_target, "-c", constraints_path)
+'''
+
+place_before(
+    "noxfile.py",
+    "# Run py.test against the unit tests.",
+    install_logic,
 )
 
 
@@ -188,6 +213,63 @@ place_before(
 
 s.replace(["noxfile.py"], '"alabaster"', '"alabaster", "geoalchemy2", "shapely"')
 
+
+system_noextras = '''
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def system_noextras(session):
+    """Run the system test suite."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    system_test_path = os.path.join("tests", "system.py")
+    system_test_folder_path = os.path.join("tests", "system")
+
+    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+    # Install pyopenssl for mTLS testing.
+    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
+        session.install("pyopenssl")
+
+    system_test_exists = os.path.exists(system_test_path)
+    system_test_folder_exists = os.path.exists(system_test_folder_path)
+    # Sanity check: only run tests if found.
+    if not system_test_exists and not system_test_folder_exists:
+        session.skip("System tests were not found")
+
+    global SYSTEM_TEST_EXTRAS_BY_PYTHON
+    SYSTEM_TEST_EXTRAS_BY_PYTHON = False
+    install_systemtest_dependencies(session, "-c", constraints_path)
+
+    # Run py.test against the system tests.
+    if system_test_exists:
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_path,
+            *session.posargs,
+        )
+    if system_test_folder_exists:
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_folder_path,
+            *session.posargs,
+        )
+
+        
+'''
+
+
+place_before(
+    "noxfile.py",
+    "@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])\n"
+    "def compliance(session):", 
+    system_noextras,
+    escape="()[]",
+    )
 
 
 # Add DB config for SQLAlchemy dialect test suite.

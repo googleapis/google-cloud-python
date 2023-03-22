@@ -81,6 +81,20 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install sqlalchemy-bigquery
 
+
+Installations when processing large datasets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When handling large datasets, you may see speed increases by also installing the
+`bqstorage` dependencies. See the instructions above about creating a virtual 
+environment and then install `sqlalchemy-bigquery` using the `bqstorage` extras:
+
+.. code-block:: console
+
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install sqlalchemy-bigquery[bqstorage]
+
+
 Usage
 -----
 
