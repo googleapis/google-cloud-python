@@ -529,7 +529,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.CreateDocument][google.cloud.discoveryengine.v1beta.DocumentService.CreateDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -635,7 +634,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.DeleteDocument][google.cloud.discoveryengine.v1beta.DocumentService.DeleteDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -716,7 +714,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -915,7 +912,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1011,7 +1007,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1beta.DocumentService.UpdateDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -1037,7 +1037,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.CreateWorkstationRequest):
                     The request object. Message for creating a
                 CreateWorkstation.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1140,7 +1139,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                     request (~.workstations.CreateWorkstationClusterRequest):
                         The request object. Message for creating a
                     CreateWorkstationCluster.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1242,7 +1240,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.CreateWorkstationConfigRequest):
                     The request object. Message for creating a
                 CreateWorkstationConfig.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1342,7 +1339,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.DeleteWorkstationRequest):
                     The request object. Request message for
                 DeleteWorkstation.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1434,7 +1430,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                     request (~.workstations.DeleteWorkstationClusterRequest):
                         The request object. Message for deleting a workstation
                     cluster.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1525,7 +1520,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.DeleteWorkstationConfigRequest):
                     The request object. Message for deleting a workstation
                 configuration.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1616,7 +1610,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.GenerateAccessTokenRequest):
                     The request object. Request message for
                 GenerateAccessToken.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1806,7 +1799,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.GetWorkstationClusterRequest):
                     The request object. Request message for
                 GetWorkstationCluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1899,7 +1891,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.GetWorkstationConfigRequest):
                     The request object. Request message for
                 GetWorkstationConfig.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1995,7 +1986,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                     request (~.workstations.ListUsableWorkstationConfigsRequest):
                         The request object. Request message for
                     ListUsableWorkstationConfigs.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2087,7 +2077,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.ListUsableWorkstationsRequest):
                     The request object. Request message for
                 ListUsableWorkstations.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2179,7 +2168,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.ListWorkstationClustersRequest):
                     The request object. Request message for
                 ListWorkstationClusters.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2271,7 +2259,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.ListWorkstationConfigsRequest):
                     The request object. Request message for
                 ListWorkstationConfigs.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2651,7 +2638,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.UpdateWorkstationRequest):
                     The request object. Request message for
                 UpdateWorkstation.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2754,7 +2740,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                     request (~.workstations.UpdateWorkstationClusterRequest):
                         The request object. Request message for
                     UpdateWorkstationCluster.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2856,7 +2841,6 @@ class WorkstationsRestTransport(WorkstationsTransport):
                 request (~.workstations.UpdateWorkstationConfigRequest):
                     The request object. Request message for
                 UpdateWorkstationConfig.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

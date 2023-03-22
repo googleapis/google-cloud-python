@@ -798,7 +798,6 @@ class LineageRestTransport(LineageTransport):
                     request (~.lineage.BatchSearchLinkProcessesRequest):
                         The request object. Request message for
                     [BatchSearchLinkProcesses][google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -899,7 +898,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.CreateLineageEventRequest):
                     The request object. Request message for
                 [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.CreateLineageEvent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1003,7 +1001,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.CreateProcessRequest):
                     The request object. Request message for
                 [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1102,7 +1099,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.CreateRunRequest):
                     The request object. Request message for
                 [CreateRun][google.cloud.datacatalog.lineage.v1.CreateRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1202,7 +1198,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.DeleteLineageEventRequest):
                     The request object. Request message for
                 [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.DeleteLineageEvent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1280,7 +1275,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.DeleteProcessRequest):
                     The request object. Request message for
                 [DeleteProcess][google.cloud.datacatalog.lineage.v1.DeleteProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1369,7 +1363,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.DeleteRunRequest):
                     The request object. Request message for
                 [DeleteRun][google.cloud.datacatalog.lineage.v1.DeleteRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1458,7 +1451,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.GetLineageEventRequest):
                     The request object. Request message for
                 [GetLineageEvent][google.cloud.datacatalog.lineage.v1.GetLineageEvent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1553,7 +1545,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.GetProcessRequest):
                     The request object. Request message for
                 [GetProcess][google.cloud.datacatalog.lineage.v1.GetProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1643,7 +1634,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.GetRunRequest):
                     The request object. Request message for
                 [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1734,7 +1724,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.ListLineageEventsRequest):
                     The request object. Request message for
                 [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1826,7 +1815,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.ListProcessesRequest):
                     The request object. Request message for
                 [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1916,7 +1904,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.ListRunsRequest):
                     The request object. Request message for
                 [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2006,7 +1993,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.SearchLinksRequest):
                     The request object. Request message for
                 [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2105,7 +2091,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.UpdateProcessRequest):
                     The request object. Request message for
                 [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2204,7 +2189,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.UpdateRunRequest):
                     The request object. Request message for
                 [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

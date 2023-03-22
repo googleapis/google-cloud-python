@@ -701,7 +701,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.CheckLockRequest):
                     The request object. Request message for the CheckLock
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -800,7 +799,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.CreateCatalogRequest):
                     The request object. Request message for the CreateCatalog
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -901,7 +899,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.CreateDatabaseRequest):
                     The request object. Request message for the
                 CreateDatabase method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -998,7 +995,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.CreateLockRequest):
                     The request object. Request message for the CreateLock
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1097,7 +1093,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.CreateTableRequest):
                     The request object. Request message for the CreateTable
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1194,7 +1189,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.DeleteCatalogRequest):
                     The request object. Request message for the DeleteCatalog
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1284,7 +1278,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.DeleteDatabaseRequest):
                     The request object. Request message for the
                 DeleteDatabase method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1372,7 +1365,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.DeleteLockRequest):
                     The request object. Request message for the DeleteLock
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1448,7 +1440,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.DeleteTableRequest):
                     The request object. Request message for the DeleteTable
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1536,7 +1527,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.GetCatalogRequest):
                     The request object. Request message for the GetCatalog
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1626,7 +1616,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.GetDatabaseRequest):
                     The request object. Request message for the GetDatabase
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1714,7 +1703,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.GetTableRequest):
                     The request object. Request message for the GetTable
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1802,7 +1790,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.ListCatalogsRequest):
                     The request object. Request message for the ListCatalogs
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1892,7 +1879,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.ListDatabasesRequest):
                     The request object. Request message for the ListDatabases
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1982,7 +1968,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.ListLocksRequest):
                     The request object. Request message for the ListLocks
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2072,7 +2057,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.ListTablesRequest):
                     The request object. Request message for the ListTables
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2162,7 +2146,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.UpdateDatabaseRequest):
                     The request object. Request message for the
                 UpdateDatabase method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2259,7 +2242,6 @@ class MetastoreServiceRestTransport(MetastoreServiceTransport):
                 request (~.metastore.UpdateTableRequest):
                     The request object. Request message for the UpdateTable
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

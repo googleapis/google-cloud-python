@@ -347,7 +347,6 @@ class AdvisoryNotificationsServiceRestTransport(AdvisoryNotificationsServiceTran
                 request (~.service.ListNotificationsRequest):
                     The request object. Request for fetching all
                 notifications for a given parent.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
