@@ -18,6 +18,7 @@ Sphinx DocFX YAML Top-level Extension.
 
 This extension allows you to automagically generate DocFX YAML from your Python AutoAPI docs.
 """
+import ast
 import os
 import inspect
 import re
@@ -320,70 +321,6 @@ def _resolve_reference_in_module_summary(pattern, lines):
 
         new_lines.append(new_line)
     return new_lines, xrefs
-
-
-def enumerate_extract_signature(doc, max_args=20):
-    el = "((?P<p%d>[*a-zA-Z_]+) *(?P<a%d>: *[a-zA-Z_.]+)? *(?P<d%d>= *[^ ]+?)?)"
-    els = [el % (i, i, i) for i in range(0, max_args)]
-    par = els[0] + "?" + "".join(["( *, *" + e + ")?" for e in els[1:]])
-    exp = "(?P<name>[a-zA-Z_]+) *[(] *(?P<sig>{0}) *[)]".format(par)
-    reg = re.compile(exp)
-    for func in reg.finditer(doc.replace("\n", " ")):
-        yield func
-
-
-def enumerate_cleaned_signature(doc, max_args=20):
-    for sig in enumerate_extract_signature(doc, max_args=max_args):
-        dic = sig.groupdict()
-        name = sig["name"]
-        args = []
-        for i in range(0, max_args):
-            p = dic.get('p%d' % i, None)
-            if p is None:
-                break
-            d = dic.get('d%d' % i, None)
-            if d is None:
-                args.append(p)
-            else:
-                args.append("%s%s" % (p, d))
-        yield "{0}({1})".format(name, ", ".join(args))
-
-
-def _extract_signature(obj_sig):
-    try:    
-        signature = inspect.signature(obj_sig)
-        parameters = signature.parameters
-    except TypeError as e:
-        mes = "[docfx] unable to get signature of '{0}' - {1}.".format(
-            object_name, str(e).replace("\n", "\\n"))
-        signature = None
-        parameters = None
-    except ValueError as e:
-        # Backup plan, no __text_signature__, this happen
-        # when a function was created with pybind11.
-        doc = obj_sig.__doc__
-        sigs = set(enumerate_cleaned_signature(doc))
-        if len(sigs) == 0:
-            mes = "[docfx] unable to get signature of '{0}' - {1}.".format(
-                object_name, str(e).replace("\n", "\\n"))
-            signature = None
-            parameters = None
-        elif len(sigs) > 1:
-            mes = "[docfx] too many signatures for '{0}' - {1} - {2}.".format(
-                object_name, str(e).replace("\n", "\\n"), " *** ".join(sigs))
-            signature = None
-            parameters = None
-        else:
-            try:
-                signature = inspect._signature_fromstr(
-                    inspect.Signature, obj_sig, list(sigs)[0])
-                parameters = signature.parameters
-            except TypeError as e:
-                mes = "[docfx] unable to get signature of '{0}' - {1}.".format(
-                    object_name, str(e).replace("\n", "\\n"))
-                signature = None
-                parameters = None    
-    return signature, parameters
 
 
 # Given a line containing restructured keyword, returns which keyword it is.
@@ -1114,9 +1051,35 @@ def process_docstring(app, _type, name, obj, options, lines):
     app.env.docfx_info_uid_types[datam['uid']] = _type
 
 
-# Uses black.format_str() to reformat code as if running black/linter
-# for better presnetation.
-def format_code(code):
+def is_valid_python_code(syntax: str) -> bool:
+    """Determines if given string is proper Python code using ast.parse().
+
+    Args:
+        syntax: content to verify if it is valid Python code. Syntax can be
+            mulit-line, doesn't have to be content in a single line.
+
+    Returns:
+        True if syntax can be parsed to valid Python code. False otherwise.
+    """
+    try:
+        ast.parse(syntax)
+    except SyntaxError:
+        # Failed to parse.
+        return False
+    return True
+
+def format_code(code: str) -> str:
+    """Reformats code using black.format_str().
+
+    Works as if running black/linter for better presentation of the syntax.
+
+    Args:
+        code: The code to format.
+
+    Returns:
+        Formatted code with `black.format_str()`. May not format if there is
+            an error.
+    """
     # Signature code comes in raw text without formatting, to run black it
     # requires the code to look like actual function declaration in code.
     # Returns the original formatted code without the added bits.
@@ -1126,7 +1089,10 @@ def format_code(code):
 def process_signature(app, _type, name, obj, options, signature, return_annotation):
     if signature:
         short_name = name.split('.')[-1]
-        signature = short_name + signature
+        signature_to_use = [short_name, signature]
+        if return_annotation and is_valid_python_code(return_annotation):
+            signature_to_use.append(f' -> {return_annotation}')
+        signature = ''.join(signature_to_use)
         try:
             signature = format_code(signature)
         except InvalidInput as e:

@@ -146,7 +146,7 @@ items:
 
     '
   syntax:
-    content: 'common_billing_account_path(billing_account: str)'
+    content: 'common_billing_account_path(billing_account: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.common_billing_account_path
@@ -166,7 +166,7 @@ items:
 
     '
   syntax:
-    content: 'common_folder_path(folder: str)'
+    content: 'common_folder_path(folder: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.common_folder_path
@@ -186,7 +186,7 @@ items:
 
     '
   syntax:
-    content: 'common_location_path(project: str, location: str)'
+    content: 'common_location_path(project: str, location: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.common_location_path
@@ -206,7 +206,7 @@ items:
 
     '
   syntax:
-    content: 'common_organization_path(organization: str)'
+    content: 'common_organization_path(organization: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.common_organization_path
@@ -226,7 +226,7 @@ items:
 
     '
   syntax:
-    content: 'common_project_path(project: str)'
+    content: 'common_project_path(project: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.common_project_path
@@ -394,7 +394,8 @@ items:
       \ dict\n        ]\n    ] = None,\n    *,\n    language_code: typing.Optional[str]\
       \ = None,\n    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.cloud.texttospeech_v1beta1.types.cloud_tts.ListVoicesResponse"
     parameters:
     - defaultValue: None
       description: The request object. The top-level message sent by the client for
@@ -443,7 +444,7 @@ items:
 
     '
   syntax:
-    content: 'model_path(project: str, location: str, model: str)'
+    content: 'model_path(project: str, location: str, model: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.model_path
@@ -463,7 +464,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_billing_account_path(path: str)'
+    content: 'parse_common_billing_account_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.parse_common_billing_account_path
@@ -483,7 +484,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_folder_path(path: str)'
+    content: 'parse_common_folder_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.parse_common_folder_path
@@ -503,7 +504,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_location_path(path: str)'
+    content: 'parse_common_location_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.parse_common_location_path
@@ -523,7 +524,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_organization_path(path: str)'
+    content: 'parse_common_organization_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.parse_common_organization_path
@@ -543,7 +544,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_project_path(path: str)'
+    content: 'parse_common_project_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.parse_common_project_path
@@ -563,7 +564,7 @@ items:
 
     '
   syntax:
-    content: 'parse_model_path(path: str)'
+    content: 'parse_model_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechClient.parse_model_path
@@ -603,7 +604,7 @@ items:
       \    ] = None,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> google.cloud.texttospeech_v1beta1.types.cloud_tts.SynthesizeSpeechResponse"
     parameters:
     - defaultValue: None
       description: The request object. The top-level message sent by the client for

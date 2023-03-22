@@ -190,7 +190,7 @@ items:
 
     '
   syntax:
-    content: 'common_billing_account_path(billing_account: str)'
+    content: 'common_billing_account_path(billing_account: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.common_billing_account_path
@@ -210,7 +210,7 @@ items:
 
     '
   syntax:
-    content: 'common_folder_path(folder: str)'
+    content: 'common_folder_path(folder: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.common_folder_path
@@ -230,7 +230,7 @@ items:
 
     '
   syntax:
-    content: 'common_location_path(project: str, location: str)'
+    content: 'common_location_path(project: str, location: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.common_location_path
@@ -250,7 +250,7 @@ items:
 
     '
   syntax:
-    content: 'common_organization_path(organization: str)'
+    content: 'common_organization_path(organization: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.common_organization_path
@@ -270,7 +270,7 @@ items:
 
     '
   syntax:
-    content: 'common_project_path(project: str)'
+    content: 'common_project_path(project: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.common_project_path
@@ -303,7 +303,7 @@ items:
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Union[\n      \
       \  int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.cloud.pubsub_v1.types.Topic"
     parameters:
     - defaultValue: None
       description: The request object. A topic resource.
@@ -364,7 +364,7 @@ items:
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Union[\n      \
       \  int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> None"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>DeleteTopic</code> method.
@@ -416,7 +416,7 @@ items:
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Union[\n        int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.cloud.pubsub_v1.types.DetachSubscriptionResponse"
     parameters:
     - defaultValue: None
       description: The request object. Request for the DetachSubscription method.
@@ -456,7 +456,7 @@ items:
 
     '
   syntax:
-    content: ensure_cleanup_and_commit_timer_runs()
+    content: ensure_cleanup_and_commit_timer_runs() -> None
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.ensure_cleanup_and_commit_timer_runs
@@ -479,7 +479,7 @@ items:
   syntax:
     content: "from_service_account_file(\n    filename: str,\n    batch_settings:\
       \ typing.Union[\n        google.cloud.pubsub_v1.types.BatchSettings, typing.Sequence\n\
-      \    ] = (),\n    **kwargs: typing.Any\n)"
+      \    ] = (),\n    **kwargs: typing.Any\n) -> google.cloud.pubsub_v1.publisher.client.Client"
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.from_service_account_file
@@ -526,7 +526,7 @@ items:
   syntax:
     content: "from_service_account_json(\n    filename: str,\n    batch_settings:\
       \ typing.Union[\n        google.cloud.pubsub_v1.types.BatchSettings, typing.Sequence\n\
-      \    ] = (),\n    **kwargs: typing.Any\n)"
+      \    ] = (),\n    **kwargs: typing.Any\n) -> google.cloud.pubsub_v1.publisher.client.Client"
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.from_service_account_json
@@ -555,7 +555,7 @@ items:
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Union[\n        int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.iam.v1.policy_pb2.Policy"
     parameters:
     - defaultValue: None
       description: The request object. Request message for <code>GetIamPolicy</code>
@@ -690,7 +690,7 @@ items:
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Union[\n      \
       \  int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.cloud.pubsub_v1.types.Topic"
     parameters:
     - defaultValue: None
       description: The request object. Request for the GetTopic method.
@@ -748,7 +748,7 @@ items:
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Union[\n      \
       \  int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.pubsub_v1.services.publisher.pagers.ListTopicSnapshotsPager"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>ListTopicSnapshots</code>
@@ -805,7 +805,7 @@ items:
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Union[\n      \
       \  int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.pubsub_v1.services.publisher.pagers.ListTopicSubscriptionsPager"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>ListTopicSubscriptions</code>
@@ -862,7 +862,7 @@ items:
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Union[\n      \
       \  int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.pubsub_v1.services.publisher.pagers.ListTopicsPager"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>ListTopics</code> method.
@@ -905,7 +905,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_billing_account_path(path: str)'
+    content: 'parse_common_billing_account_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_common_billing_account_path
@@ -925,7 +925,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_folder_path(path: str)'
+    content: 'parse_common_folder_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_common_folder_path
@@ -945,7 +945,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_location_path(path: str)'
+    content: 'parse_common_location_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_common_location_path
@@ -965,7 +965,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_organization_path(path: str)'
+    content: 'parse_common_organization_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_common_organization_path
@@ -985,7 +985,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_project_path(path: str)'
+    content: 'parse_common_project_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_common_project_path
@@ -1005,7 +1005,7 @@ items:
 
     '
   syntax:
-    content: 'parse_schema_path(path: str)'
+    content: 'parse_schema_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_schema_path
@@ -1025,7 +1025,7 @@ items:
 
     '
   syntax:
-    content: 'parse_subscription_path(path: str)'
+    content: 'parse_subscription_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_subscription_path
@@ -1045,7 +1045,7 @@ items:
 
     '
   syntax:
-    content: 'parse_topic_path(path: str)'
+    content: 'parse_topic_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.parse_topic_path
@@ -1079,7 +1079,7 @@ items:
     content: "publish(\n    topic: str,\n    data: bytes,\n    ordering_key: str =\
       \ \"\",\n    retry: OptionalRetry = _MethodDefault._DEFAULT_VALUE,\n    timeout:\
       \ types.OptionalTimeout = _MethodDefault._DEFAULT_VALUE,\n    **attrs: typing.Union[bytes,\
-      \ str]\n)"
+      \ str]\n) -> pubsub_v1.publisher.futures.Future"
     exceptions:
     - description: If called after publisher has been stopped by a <code>stop()</code>
         method call.
@@ -1105,7 +1105,7 @@ items:
 
     '
   syntax:
-    content: 'resume_publish(topic: str, ordering_key: str)'
+    content: 'resume_publish(topic: str, ordering_key: str) -> None'
     exceptions:
     - description: If called after publisher has been stopped by a <code>stop()</code>
         method call.
@@ -1132,7 +1132,7 @@ items:
 
     '
   syntax:
-    content: 'schema_path(project: str, schema: str)'
+    content: 'schema_path(project: str, schema: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.schema_path
@@ -1159,7 +1159,7 @@ items:
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Union[\n        int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.iam.v1.policy_pb2.Policy"
     parameters:
     - defaultValue: None
       description: The request object. Request message for <code>SetIamPolicy</code>
@@ -1236,7 +1236,7 @@ items:
 
     </aside>'
   syntax:
-    content: stop()
+    content: stop() -> None
     exceptions:
     - description: If called after publisher has been stopped by a <code>stop()</code>
         method call.
@@ -1260,7 +1260,7 @@ items:
 
     '
   syntax:
-    content: 'subscription_path(project: str, subscription: str)'
+    content: 'subscription_path(project: str, subscription: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.subscription_path
@@ -1303,7 +1303,7 @@ items:
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Union[\n        int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse"
     parameters:
     - defaultValue: None
       description: The request object. Request message for <code>TestIamPermissions</code>
@@ -1340,7 +1340,7 @@ items:
 
     '
   syntax:
-    content: 'topic_path(project: str, topic: str)'
+    content: 'topic_path(project: str, topic: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.topic_path
@@ -1395,7 +1395,7 @@ items:
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Union[\n        int,\n        float,\n        google.api_core.timeout.ConstantTimeout,\n\
       \        google.api_core.timeout.ExponentialTimeout,\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
-      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) -> google.cloud.pubsub_v1.types.Topic"
     parameters:
     - defaultValue: None
       description: The request object. Request for the UpdateTopic method.

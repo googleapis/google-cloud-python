@@ -154,7 +154,8 @@ items:
       \    ack_ids: typing.Optional[typing.Sequence[str]] = None,\n    retry: typing.Union[\n\
       \        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ None"
     parameters:
     - defaultValue: None
       description: The request object. Request for the Acknowledge method.
@@ -229,7 +230,7 @@ items:
 
     '
   syntax:
-    content: close()
+    content: close() -> None
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.close
@@ -272,7 +273,7 @@ items:
 
     '
   syntax:
-    content: 'common_billing_account_path(billing_account: str)'
+    content: 'common_billing_account_path(billing_account: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.common_billing_account_path
@@ -292,7 +293,7 @@ items:
 
     '
   syntax:
-    content: 'common_folder_path(folder: str)'
+    content: 'common_folder_path(folder: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.common_folder_path
@@ -312,7 +313,7 @@ items:
 
     '
   syntax:
-    content: 'common_location_path(project: str, location: str)'
+    content: 'common_location_path(project: str, location: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.common_location_path
@@ -332,7 +333,7 @@ items:
 
     '
   syntax:
-    content: 'common_organization_path(organization: str)'
+    content: 'common_organization_path(organization: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.common_organization_path
@@ -352,7 +353,7 @@ items:
 
     '
   syntax:
-    content: 'common_project_path(project: str)'
+    content: 'common_project_path(project: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.common_project_path
@@ -396,7 +397,8 @@ items:
       \ subscription: typing.Optional[str] = None,\n    retry: typing.Union[\n   \
       \     google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.cloud.pubsub_v1.types.Snapshot"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>CreateSnapshot</code>
@@ -475,7 +477,8 @@ items:
       \ = None,\n    ack_deadline_seconds: typing.Optional[int] = None,\n    retry:\
       \ typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.cloud.pubsub_v1.types.Subscription"
     parameters:
     - defaultValue: None
       description: The request object. A subscription resource.
@@ -574,7 +577,8 @@ items:
       \ dict]\n    ] = None,\n    *,\n    snapshot: typing.Optional[str] = None,\n\
       \    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ None"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>DeleteSnapshot</code>
@@ -627,7 +631,8 @@ items:
       \ dict]\n    ] = None,\n    *,\n    subscription: typing.Optional[str] = None,\n\
       \    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ None"
     parameters:
     - defaultValue: None
       description: The request object. Request for the DeleteSubscription method.
@@ -666,7 +671,8 @@ items:
 
     '
   syntax:
-    content: 'from_service_account_file(filename: str, **kwargs: typing.Any)'
+    content: "from_service_account_file(\n    filename: str, **kwargs: typing.Any\n\
+      ) -> google.cloud.pubsub_v1.subscriber.client.Client"
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_file
@@ -711,7 +717,8 @@ items:
 
     '
   syntax:
-    content: 'from_service_account_json(filename: str, **kwargs: typing.Any)'
+    content: "from_service_account_json(\n    filename: str, **kwargs: typing.Any\n\
+      ) -> google.cloud.pubsub_v1.subscriber.client.Client"
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_json
@@ -739,7 +746,7 @@ items:
       \ = None,\n    *,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> google.iam.v1.policy_pb2.Policy"
     parameters:
     - defaultValue: None
       description: The request object. Request message for <code>GetIamPolicy</code>
@@ -876,7 +883,8 @@ items:
       \ dict]\n    ] = None,\n    *,\n    snapshot: typing.Optional[str] = None,\n\
       \    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.cloud.pubsub_v1.types.Snapshot"
     parameters:
     - defaultValue: None
       description: The request object. Request for the GetSnapshot method.
@@ -930,7 +938,8 @@ items:
       \ dict]\n    ] = None,\n    *,\n    subscription: typing.Optional[str] = None,\n\
       \    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.cloud.pubsub_v1.types.Subscription"
     parameters:
     - defaultValue: None
       description: The request object. Request for the GetSubscription method.
@@ -985,7 +994,8 @@ items:
       \ dict]\n    ] = None,\n    *,\n    project: typing.Optional[str] = None,\n\
       \    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.pubsub_v1.services.subscriber.pagers.ListSnapshotsPager"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>ListSnapshots</code>
@@ -1040,7 +1050,8 @@ items:
       \ dict]\n    ] = None,\n    *,\n    project: typing.Optional[str] = None,\n\
       \    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.pubsub_v1.services.subscriber.pagers.ListSubscriptionsPager"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>ListSubscriptions</code>
@@ -1101,7 +1112,7 @@ items:
       \ typing.Optional[int] = None,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> None"
     parameters:
     - defaultValue: None
       description: The request object. Request for the ModifyAckDeadline method.
@@ -1171,7 +1182,8 @@ items:
       \    push_config: typing.Optional[google.cloud.pubsub_v1.types.PushConfig] =\
       \ None,\n    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ None"
     parameters:
     - defaultValue: None
       description: The request object. Request for the ModifyPushConfig method.
@@ -1218,7 +1230,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_billing_account_path(path: str)'
+    content: 'parse_common_billing_account_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_common_billing_account_path
@@ -1238,7 +1250,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_folder_path(path: str)'
+    content: 'parse_common_folder_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_common_folder_path
@@ -1258,7 +1270,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_location_path(path: str)'
+    content: 'parse_common_location_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_common_location_path
@@ -1278,7 +1290,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_organization_path(path: str)'
+    content: 'parse_common_organization_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_common_organization_path
@@ -1298,7 +1310,7 @@ items:
 
     '
   syntax:
-    content: 'parse_common_project_path(path: str)'
+    content: 'parse_common_project_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_common_project_path
@@ -1318,7 +1330,7 @@ items:
 
     '
   syntax:
-    content: 'parse_snapshot_path(path: str)'
+    content: 'parse_snapshot_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_snapshot_path
@@ -1338,7 +1350,7 @@ items:
 
     '
   syntax:
-    content: 'parse_subscription_path(path: str)'
+    content: 'parse_subscription_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_subscription_path
@@ -1358,7 +1370,7 @@ items:
 
     '
   syntax:
-    content: 'parse_topic_path(path: str)'
+    content: 'parse_topic_path(path: str) -> typing.Dict[str, str]'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.parse_topic_path
@@ -1392,7 +1404,8 @@ items:
       \    return_immediately: typing.Optional[bool] = None,\n    max_messages: typing.Optional[int]\
       \ = None,\n    retry: typing.Union[\n        google.api_core.retry.Retry, google.api_core.gapic_v1.method._MethodDefault\n\
       \    ] = _MethodDefault._DEFAULT_VALUE,\n    timeout: typing.Optional[float]\
-      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n)"
+      \ = None,\n    metadata: typing.Sequence[typing.Tuple[str, str]] = ()\n) ->\
+      \ google.cloud.pubsub_v1.types.PullResponse"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>Pull</code> method.
@@ -1467,7 +1480,7 @@ items:
       \ dict]\n    ] = None,\n    *,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> google.cloud.pubsub_v1.types.SeekResponse"
     parameters:
     - defaultValue: None
       description: The request object. Request for the <code>Seek</code> method.
@@ -1509,7 +1522,7 @@ items:
       \ = None,\n    *,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> google.iam.v1.policy_pb2.Policy"
     parameters:
     - defaultValue: None
       description: The request object. Request message for <code>SetIamPolicy</code>
@@ -1567,7 +1580,7 @@ items:
 
     '
   syntax:
-    content: 'snapshot_path(project: str, snapshot: str)'
+    content: 'snapshot_path(project: str, snapshot: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.snapshot_path
@@ -1608,7 +1621,7 @@ items:
       \    ] = None,\n    *,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> typing.Iterable[google.cloud.pubsub_v1.types.StreamingPullResponse]"
     parameters:
     - defaultValue: None
       description: The request object iterator. Request for the <code>StreamingPull</code>
@@ -1677,7 +1690,7 @@ items:
       \ typing.Any],\n    flow_control: typing.Union[\n        google.cloud.pubsub_v1.types.FlowControl,\
       \ typing.Sequence\n    ] = (),\n    scheduler: typing.Optional[subscriber.scheduler.ThreadScheduler]\
       \ = None,\n    use_legacy_flow_control: bool = False,\n    await_callbacks_on_shutdown:\
-      \ bool = False,\n)"
+      \ bool = False,\n) -> google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture"
     parameters:
     - defaultValue: 'False'
       description: If set to <code>True</code>, flow control at the Cloud Pub/Sub
@@ -1704,7 +1717,7 @@ items:
 
     '
   syntax:
-    content: 'subscription_path(project: str, subscription: str)'
+    content: 'subscription_path(project: str, subscription: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.subscription_path
@@ -1746,7 +1759,7 @@ items:
       \    ] = None,\n    *,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse"
     parameters:
     - defaultValue: None
       description: The request object. Request message for <code>TestIamPermissions</code>
@@ -1783,7 +1796,7 @@ items:
 
     '
   syntax:
-    content: 'topic_path(project: str, topic: str)'
+    content: 'topic_path(project: str, topic: str) -> str'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.topic_path
@@ -1838,7 +1851,7 @@ items:
       \ dict]\n    ] = None,\n    *,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> google.cloud.pubsub_v1.types.Snapshot"
     parameters:
     - defaultValue: None
       description: The request object. Request for the UpdateSnapshot method.
@@ -1890,7 +1903,7 @@ items:
       \ dict]\n    ] = None,\n    *,\n    retry: typing.Union[\n        google.api_core.retry.Retry,\
       \ google.api_core.gapic_v1.method._MethodDefault\n    ] = _MethodDefault._DEFAULT_VALUE,\n\
       \    timeout: typing.Optional[float] = None,\n    metadata: typing.Sequence[typing.Tuple[str,\
-      \ str]] = ()\n)"
+      \ str]] = ()\n) -> google.cloud.pubsub_v1.types.Subscription"
     parameters:
     - defaultValue: None
       description: The request object. Request for the UpdateSubscription method.

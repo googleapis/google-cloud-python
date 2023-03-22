@@ -96,7 +96,7 @@ items:
 
     '
   syntax:
-    content: cancel()
+    content: cancel() -> bool
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.futures.Future.cancel
@@ -119,7 +119,7 @@ items:
 
     '
   syntax:
-    content: cancelled()
+    content: cancelled() -> bool
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.futures.Future.cancelled
@@ -187,7 +187,8 @@ items:
 
     '
   syntax:
-    content: 'result(timeout: typing.Optional[typing.Union[int, float]] = None)'
+    content: "result(\n    timeout: typing.Optional[typing.Union[int, float]] = None\n\
+      ) -> google.cloud.pubsub_v1.subscriber.exceptions.AcknowledgeStatus"
     exceptions:
     - description: If the request times out.
       var_type: concurrent.futures.TimeoutError
@@ -212,7 +213,7 @@ items:
 
     '
   syntax:
-    content: running()
+    content: running() -> bool
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.futures.Future.running
@@ -303,7 +304,7 @@ items:
 
     '
   syntax:
-    content: set_running_or_notify_cancel()
+    content: set_running_or_notify_cancel() -> typing.NoReturn
     exceptions:
     - description: if this method was already called or if set_result() or set_exception()
         was called.

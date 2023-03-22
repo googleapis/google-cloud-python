@@ -61,7 +61,7 @@ items:
 
     '
   syntax:
-    content: 'schedule(callback: typing.Callable, *args, **kwargs)'
+    content: 'schedule(callback: typing.Callable, *args, **kwargs) -> None'
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler.schedule
@@ -80,7 +80,7 @@ items:
 
     '
   syntax:
-    content: 'shutdown(await_msg_callbacks: bool = False)'
+    content: "shutdown(\n    await_msg_callbacks: bool = False,\n) -> typing.List[pubsub_v1.subscriber.message.Message]"
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler.shutdown

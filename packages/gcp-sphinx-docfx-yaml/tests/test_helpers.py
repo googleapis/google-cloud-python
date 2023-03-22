@@ -330,5 +330,40 @@ For example:
         self.assertEqual(summary_want, summary_got)
 
 
+    syntax_testdata = [
+        [
+            'None',
+        ],
+        [
+            \
+"""
+google.cloud.pubsub_v1.message.Message
+""",
+        ],
+        [
+            'Callable[[], int]',
+        ],
+    ]
+    @parameterized.expand(syntax_testdata)
+    def test_is_valid_python_code(self, syntax):
+        result = extension.is_valid_python_code(syntax)
+        self.assertTrue(result)
+
+
+    invalid_syntax_testdata = [
+        [
+            'This should not be considered valid Python code.',
+        ],
+        [
+            # Typo in code
+            'Callable[]',
+        ],
+    ]
+    @parameterized.expand(invalid_syntax_testdata)
+    def test_is_not_valid_python_code(self, invalid_syntax):
+        result = extension.is_valid_python_code(invalid_syntax)
+        self.assertFalse(result)
+
+
 if __name__ == '__main__':
     unittest.main()

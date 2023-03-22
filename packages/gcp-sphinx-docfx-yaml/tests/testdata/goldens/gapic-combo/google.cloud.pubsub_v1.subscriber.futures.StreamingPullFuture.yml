@@ -101,7 +101,7 @@ items:
     \ cancelling the future.\n\n.. versionchanged:: 2.10.0\n   The method always returns\
     \ `True` instead of `None`.\n\n"
   syntax:
-    content: cancel()
+    content: cancel() -> bool
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel
@@ -118,7 +118,7 @@ items:
     startLine: 78
   summary: ''
   syntax:
-    content: cancelled()
+    content: cancelled() -> bool
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancelled
@@ -208,7 +208,7 @@ items:
 
     '
   syntax:
-    content: running()
+    content: running() -> bool
     parameters: []
   type: method
   uid: google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.running
@@ -299,7 +299,7 @@ items:
 
     '
   syntax:
-    content: set_running_or_notify_cancel()
+    content: set_running_or_notify_cancel() -> typing.NoReturn
     exceptions:
     - description: if this method was already called or if set_result() or set_exception()
         was called.
