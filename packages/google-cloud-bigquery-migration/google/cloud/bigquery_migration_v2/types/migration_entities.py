@@ -147,7 +147,7 @@ class MigrationTask(proto.Message):
             Translation_Snowflake2BQ, Translation_Netezza2BQ,
             Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
             Translation_SQLServer2BQ, Translation_Presto2BQ,
-            Translation_MySQL2BQ.
+            Translation_MySQL2BQ, Translation_Postgresql2BQ.
         state (google.cloud.bigquery_migration_v2.types.MigrationTask.State):
             Output only. The current state of the task.
         processing_error (google.rpc.error_details_pb2.ErrorInfo):
@@ -295,6 +295,9 @@ class MigrationSubtask(proto.Message):
                 scheduled. If it was already assigned,it might
                 still finish but no new lease renewals will be
                 granted.
+            PENDING_DEPENDENCY (6):
+                The subtask is pending a dependency. It will
+                be scheduled once its dependencies are done.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -302,6 +305,7 @@ class MigrationSubtask(proto.Message):
         SUCCEEDED = 3
         FAILED = 4
         PAUSED = 5
+        PENDING_DEPENDENCY = 6
 
     name: str = proto.Field(
         proto.STRING,

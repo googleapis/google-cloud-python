@@ -65,19 +65,22 @@ class TranslationConfigDetails(proto.Message):
             corresponding input files to.
 
             This field is a member of `oneof`_ ``target_location``.
-        source_dialect (google.cloud.bigquery_migration_v2.types.Dialect):
-            The dialect of the input files.
-        target_dialect (google.cloud.bigquery_migration_v2.types.Dialect):
-            The target dialect for the engine to
-            translate the input to.
         name_mapping_list (google.cloud.bigquery_migration_v2.types.ObjectNameMappingList):
             The mapping of objects to their desired
             output names in list form.
 
             This field is a member of `oneof`_ ``output_name_mapping``.
+        source_dialect (google.cloud.bigquery_migration_v2.types.Dialect):
+            The dialect of the input files.
+        target_dialect (google.cloud.bigquery_migration_v2.types.Dialect):
+            The target dialect for the engine to
+            translate the input to.
         source_env (google.cloud.bigquery_migration_v2.types.SourceEnv):
             The default source environment values for the
             translation.
+        request_source (str):
+            The indicator to show translation request
+            initiator.
     """
 
     gcs_source_path: str = proto.Field(
@@ -90,6 +93,12 @@ class TranslationConfigDetails(proto.Message):
         number=2,
         oneof="target_location",
     )
+    name_mapping_list: "ObjectNameMappingList" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="output_name_mapping",
+        message="ObjectNameMappingList",
+    )
     source_dialect: "Dialect" = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -100,16 +109,14 @@ class TranslationConfigDetails(proto.Message):
         number=4,
         message="Dialect",
     )
-    name_mapping_list: "ObjectNameMappingList" = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        oneof="output_name_mapping",
-        message="ObjectNameMappingList",
-    )
     source_env: "SourceEnv" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="SourceEnv",
+    )
+    request_source: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
