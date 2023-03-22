@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.2...v2.0.3) (2023-03-22)
+
+
+### Bug Fixes
+
+* Add support for return annotation in syntax ([#291](https://github.com/googleapis/sphinx-docfx-yaml/issues/291)) ([16894ce](https://github.com/googleapis/sphinx-docfx-yaml/commit/16894ce1468ad96bdf3b216266f878fe45f75a12))
+
 ## [2.0.2](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.1...v2.0.2) (2023-02-03)
 
 
