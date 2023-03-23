@@ -675,10 +675,12 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateEntityRequest, dict]):
                 The request object. Update a metadata entity request.
-                The exiting entity will be fully replaced by the entity
-                in the request. The entity ID is mutable. To modify the
-                ID, use the current entity ID in the request URL and
-                specify the new ID in the request body.
+                The exiting entity will be fully
+                replaced by the entity in the request.
+                The entity ID is mutable. To modify the
+                ID, use the current entity ID in the
+                request URL and specify the new ID in
+                the request body.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
