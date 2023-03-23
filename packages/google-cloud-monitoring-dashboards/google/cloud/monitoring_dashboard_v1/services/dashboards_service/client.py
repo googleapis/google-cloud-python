@@ -511,7 +511,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest, dict]):
-                The request object. The `CreateDashboard` request.
+                The request object. The ``CreateDashboard`` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -599,7 +599,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]):
-                The request object. The `ListDashboards` request.
+                The request object. The ``ListDashboards`` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -695,7 +695,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest, dict]):
-                The request object. The `GetDashboard` request.
+                The request object. The ``GetDashboard`` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -781,7 +781,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]):
-                The request object. The `DeleteDashboard` request.
+                The request object. The ``DeleteDashboard`` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -862,7 +862,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest, dict]):
-                The request object. The `UpdateDashboard` request.
+                The request object. The ``UpdateDashboard`` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
