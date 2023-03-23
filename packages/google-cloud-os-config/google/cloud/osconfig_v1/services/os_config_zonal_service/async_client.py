@@ -638,8 +638,8 @@ class OsConfigZonalServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.GetOSPolicyAssignmentRequest, dict]]):
-                The request object. A request message to get an OS
-                policy assignment
+                The request object. A request message to get an OS policy
+                assignment
             name (:class:`str`):
                 Required. The resource name of OS policy assignment.
 
@@ -1249,8 +1249,8 @@ class OsConfigZonalServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsRequest, dict]]):
-                The request object. List the OS policy assignment
-                reports for VM instances.
+                The request object. List the OS policy assignment reports
+                for VM instances.
             parent (:class:`str`):
                 Required. The parent resource name.
 
@@ -1511,7 +1511,8 @@ class OsConfigZonalServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.ListInventoriesRequest, dict]]):
                 The request object. A request message for listing
-                inventory data for all VMs in the specified location.
+                inventory data for all VMs in the
+                specified location.
             parent (:class:`str`):
                 Required. The parent resource name.
 
@@ -1635,7 +1636,8 @@ class OsConfigZonalServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.GetVulnerabilityReportRequest, dict]]):
                 The request object. A request message for getting the
-                vulnerability report for the specified VM.
+                vulnerability report for the specified
+                VM.
             name (:class:`str`):
                 Required. API resource name for vulnerability resource.
 
@@ -1752,8 +1754,8 @@ class OsConfigZonalServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.ListVulnerabilityReportsRequest, dict]]):
                 The request object. A request message for listing
-                vulnerability reports for all VM instances in the
-                specified location.
+                vulnerability reports for all VM
+                instances in the specified location.
             parent (:class:`str`):
                 Required. The parent resource name.
 

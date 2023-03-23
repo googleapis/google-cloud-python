@@ -987,8 +987,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.GetOSPolicyAssignmentRequest, dict]):
-                The request object. A request message to get an OS
-                policy assignment
+                The request object. A request message to get an OS policy
+                assignment
             name (str):
                 Required. The resource name of OS policy assignment.
 
@@ -1496,8 +1496,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.GetInstanceOSPoliciesComplianceRequest, dict]):
                 The request object. A request message for getting OS
-                policies compliance data for the given Compute Engine VM
-                instance.
+                policies compliance data for the given
+                Compute Engine VM instance.
             name (str):
                 Required. API resource name for instance OS policies
                 compliance resource.
@@ -1641,8 +1641,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListInstanceOSPoliciesCompliancesRequest, dict]):
                 The request object. A request message for listing OS
-                policies compliance data for all Compute Engine VMs in
-                the given location.
+                policies compliance data for all Compute
+                Engine VMs in the given location.
             parent (str):
                 Required. The parent resource name.
 
@@ -1899,8 +1899,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListOSPolicyAssignmentReportsRequest, dict]):
-                The request object. List the OS policy assignment
-                reports for VM instances.
+                The request object. List the OS policy assignment reports
+                for VM instances.
             parent (str):
                 Required. The parent resource name.
 
@@ -2165,7 +2165,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListInventoriesRequest, dict]):
                 The request object. A request message for listing
-                inventory data for all VMs in the specified location.
+                inventory data for all VMs in the
+                specified location.
             parent (str):
                 Required. The parent resource name.
 
@@ -2289,7 +2290,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.GetVulnerabilityReportRequest, dict]):
                 The request object. A request message for getting the
-                vulnerability report for the specified VM.
+                vulnerability report for the specified
+                VM.
             name (str):
                 Required. API resource name for vulnerability resource.
 
@@ -2406,8 +2408,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListVulnerabilityReportsRequest, dict]):
                 The request object. A request message for listing
-                vulnerability reports for all VM instances in the
-                specified location.
+                vulnerability reports for all VM
+                instances in the specified location.
             parent (str):
                 Required. The parent resource name.
 

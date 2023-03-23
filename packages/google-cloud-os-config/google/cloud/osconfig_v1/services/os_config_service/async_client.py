@@ -268,7 +268,8 @@ class OsConfigServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.ExecutePatchJobRequest, dict]]):
                 The request object. A request message to initiate
-                patching across Compute Engine instances.
+                patching across Compute Engine
+                instances.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -358,8 +359,8 @@ class OsConfigServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.GetPatchJobRequest, dict]]):
-                The request object. Request to get an active or
-                completed patch job.
+                The request object. Request to get an active or completed
+                patch job.
             name (:class:`str`):
                 Required. Name of the patch in the form
                 ``projects/*/patchJobs/*``
@@ -1363,8 +1364,8 @@ class OsConfigServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.osconfig_v1.types.PausePatchDeploymentRequest, dict]]):
-                The request object. A request message for pausing a
-                patch deployment.
+                The request object. A request message for pausing a patch
+                deployment.
             name (:class:`str`):
                 Required. The resource name of the patch deployment in
                 the form ``projects/*/patchDeployments/*``.

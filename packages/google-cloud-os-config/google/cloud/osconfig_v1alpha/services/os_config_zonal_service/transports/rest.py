@@ -717,7 +717,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     request (~.os_policy_assignments.CreateOSPolicyAssignmentRequest):
                         The request object. A request message to create an OS
                     policy assignment
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -820,7 +819,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     request (~.os_policy_assignments.DeleteOSPolicyAssignmentRequest):
                         The request object. A request message for deleting a OS
                     policy assignment.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -915,7 +913,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                         The request object. A request message for getting OS
                     policies compliance data for the given
                     Compute Engine VM instance.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1027,7 +1024,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                 request (~.inventory.GetInventoryRequest):
                     The request object. A request message for getting
                 inventory data for the specified VM.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1125,7 +1121,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                 request (~.os_policy_assignments.GetOSPolicyAssignmentRequest):
                     The request object. A request message to get an OS policy
                 assignment
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1228,7 +1223,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     request (~.os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest):
                         The request object. Get a report of the OS policy
                     assignment for a VM instance.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1325,7 +1319,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     The request object. A request message for getting the
                 vulnerability report for the specified
                 VM.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1423,7 +1416,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                         The request object. A request message for listing OS
                     policies compliance data for all Compute
                     Engine VMs in the given location.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1526,7 +1518,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     The request object. A request message for listing
                 inventory data for all VMs in the
                 specified location.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1620,7 +1611,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     request (~.os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest):
                         The request object. List the OS policy assignment reports
                     for VM instances.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1722,7 +1712,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     request (~.os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest):
                         The request object. A request message to list revisions
                     for a OS policy assignment
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1822,7 +1811,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     request (~.os_policy_assignments.ListOSPolicyAssignmentsRequest):
                         The request object. A request message to list OS policy
                     assignments for a parent resource
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1918,7 +1906,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                         The request object. A request message for listing
                     vulnerability reports for all VM
                     instances in the specified location.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2012,7 +1999,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
                     request (~.os_policy_assignments.UpdateOSPolicyAssignmentRequest):
                         The request object. A request message to update an OS
                     policy assignment
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

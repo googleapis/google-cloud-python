@@ -677,7 +677,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_deployments.CreatePatchDeploymentRequest):
                     The request object. A request message for creating a
                 patch deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -782,7 +781,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_deployments.DeletePatchDeploymentRequest):
                     The request object. A request message for deleting a
                 patch deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -861,7 +859,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                     The request object. A request message to initiate
                 patching across Compute Engine
                 instances.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -970,7 +967,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_deployments.GetPatchDeploymentRequest):
                     The request object. A request message for retrieving a
                 patch deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1066,7 +1062,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_jobs.GetPatchJobRequest):
                     The request object. Request to get an active or completed
                 patch job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1164,7 +1159,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_deployments.ListPatchDeploymentsRequest):
                     The request object. A request message for listing patch
                 deployments.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1257,7 +1251,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                     request (~.patch_jobs.ListPatchJobInstanceDetailsRequest):
                         The request object. Request to list details for all
                     instances that are part of a patch job.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1349,7 +1342,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_jobs.ListPatchJobsRequest):
                     The request object. A request message for listing patch
                 jobs.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1439,7 +1431,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_deployments.PausePatchDeploymentRequest):
                     The request object. A request message for pausing a patch
                 deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1544,7 +1535,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_deployments.ResumePatchDeploymentRequest):
                     The request object. A request message for resuming a
                 patch deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1649,7 +1639,6 @@ class OsConfigServiceRestTransport(OsConfigServiceTransport):
                 request (~.patch_deployments.UpdatePatchDeploymentRequest):
                     The request object. A request message for updating a
                 patch deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
