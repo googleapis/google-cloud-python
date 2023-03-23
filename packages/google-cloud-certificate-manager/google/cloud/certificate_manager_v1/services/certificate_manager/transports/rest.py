@@ -1311,7 +1311,6 @@ class CertificateManagerRestTransport(CertificateManagerTransport):
                     request (~.gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest):
                         The request object. Request for the ``CreateCertificateIssuanceConfig``
                     method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1809,7 +1808,6 @@ class CertificateManagerRestTransport(CertificateManagerTransport):
                     request (~.certificate_issuance_config.DeleteCertificateIssuanceConfigRequest):
                         The request object. Request for the ``DeleteCertificateIssuanceConfig``
                     method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2628,7 +2626,6 @@ class CertificateManagerRestTransport(CertificateManagerTransport):
                     request (~.certificate_issuance_config.ListCertificateIssuanceConfigsRequest):
                         The request object. Request for the ``ListCertificateIssuanceConfigs``
                     method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

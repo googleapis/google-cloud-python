@@ -640,8 +640,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.ListCertificatesRequest, dict]):
-                The request object. Request for the `ListCertificates`
-                method.
+                The request object. Request for the ``ListCertificates`` method.
             parent (str):
                 Required. The project and location from which the
                 certificate should be listed, specified in the format
@@ -756,8 +755,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.GetCertificateRequest, dict]):
-                The request object. Request for the `GetCertificate`
-                method.
+                The request object. Request for the ``GetCertificate`` method.
             name (str):
                 Required. A name of the certificate to describe. Must be
                 in the format ``projects/*/locations/*/certificates/*``.
@@ -866,8 +864,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateRequest, dict]):
-                The request object. Request for the `CreateCertificate`
-                method.
+                The request object. Request for the ``CreateCertificate`` method.
             parent (str):
                 Required. The parent resource of the certificate. Must
                 be in the format ``projects/*/locations/*``.
@@ -1003,8 +1000,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.UpdateCertificateRequest, dict]):
-                The request object. Request for the `UpdateCertificate`
-                method.
+                The request object. Request for the ``UpdateCertificate`` method.
             certificate (google.cloud.certificate_manager_v1.types.Certificate):
                 Required. A definition of the
                 certificate to update.
@@ -1134,8 +1130,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateRequest, dict]):
-                The request object. Request for the `DeleteCertificate`
-                method.
+                The request object. Request for the ``DeleteCertificate`` method.
             name (str):
                 Required. A name of the certificate to delete. Must be
                 in the format ``projects/*/locations/*/certificates/*``.
@@ -1258,8 +1253,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.ListCertificateMapsRequest, dict]):
-                The request object. Request for the
-                `ListCertificateMaps` method.
+                The request object. Request for the ``ListCertificateMaps`` method.
             parent (str):
                 Required. The project and location from which the
                 certificate maps should be listed, specified in the
@@ -1374,8 +1368,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.GetCertificateMapRequest, dict]):
-                The request object. Request for the `GetCertificateMap`
-                method.
+                The request object. Request for the ``GetCertificateMap`` method.
             name (str):
                 Required. A name of the certificate map to describe.
                 Must be in the format
@@ -1487,8 +1480,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateMapRequest, dict]):
-                The request object. Request for the
-                `CreateCertificateMap` method.
+                The request object. Request for the ``CreateCertificateMap`` method.
             parent (str):
                 Required. The parent resource of the certificate map.
                 Must be in the format ``projects/*/locations/*``.
@@ -1624,8 +1616,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.UpdateCertificateMapRequest, dict]):
-                The request object. Request for the
-                `UpdateCertificateMap` method.
+                The request object. Request for the ``UpdateCertificateMap`` method.
             certificate_map (google.cloud.certificate_manager_v1.types.CertificateMap):
                 Required. A definition of the
                 certificate map to update.
@@ -1758,8 +1749,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateMapRequest, dict]):
-                The request object. Request for the
-                `DeleteCertificateMap` method.
+                The request object. Request for the ``DeleteCertificateMap`` method.
             name (str):
                 Required. A name of the certificate map to delete. Must
                 be in the format
@@ -1883,8 +1873,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.ListCertificateMapEntriesRequest, dict]):
-                The request object. Request for the
-                `ListCertificateMapEntries` method.
+                The request object. Request for the ``ListCertificateMapEntries`` method.
             parent (str):
                 Required. The project, location and certificate map from
                 which the certificate map entries should be listed,
@@ -2004,8 +1993,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.GetCertificateMapEntryRequest, dict]):
-                The request object. Request for the
-                `GetCertificateMapEntry` method.
+                The request object. Request for the ``GetCertificateMapEntry`` method.
             name (str):
                 Required. A name of the certificate map entry to
                 describe. Must be in the format
@@ -2121,8 +2109,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateMapEntryRequest, dict]):
-                The request object. Request for the
-                `CreateCertificateMapEntry` method.
+                The request object. Request for the ``CreateCertificateMapEntry`` method.
             parent (str):
                 Required. The parent resource of the certificate map
                 entry. Must be in the format
@@ -2269,8 +2256,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.UpdateCertificateMapEntryRequest, dict]):
-                The request object. Request for the
-                `UpdateCertificateMapEntry` method.
+                The request object. Request for the ``UpdateCertificateMapEntry`` method.
             certificate_map_entry (google.cloud.certificate_manager_v1.types.CertificateMapEntry):
                 Required. A definition of the
                 certificate map entry to create map
@@ -2405,8 +2391,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateMapEntryRequest, dict]):
-                The request object. Request for the
-                `DeleteCertificateMapEntry` method.
+                The request object. Request for the ``DeleteCertificateMapEntry`` method.
             name (str):
                 Required. A name of the certificate map entry to delete.
                 Must be in the format
@@ -2534,8 +2519,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.ListDnsAuthorizationsRequest, dict]):
-                The request object. Request for the
-                `ListDnsAuthorizations` method.
+                The request object. Request for the ``ListDnsAuthorizations`` method.
             parent (str):
                 Required. The project and location from which the dns
                 authorizations should be listed, specified in the format
@@ -2650,8 +2634,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.GetDnsAuthorizationRequest, dict]):
-                The request object. Request for the
-                `GetDnsAuthorization` method.
+                The request object. Request for the ``GetDnsAuthorization`` method.
             name (str):
                 Required. A name of the dns authorization to describe.
                 Must be in the format
@@ -2768,8 +2751,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.CreateDnsAuthorizationRequest, dict]):
-                The request object. Request for the
-                `CreateDnsAuthorization` method.
+                The request object. Request for the ``CreateDnsAuthorization`` method.
             parent (str):
                 Required. The parent resource of the dns authorization.
                 Must be in the format ``projects/*/locations/*``.
@@ -2908,8 +2890,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.UpdateDnsAuthorizationRequest, dict]):
-                The request object. Request for the
-                `UpdateDnsAuthorization` method.
+                The request object. Request for the ``UpdateDnsAuthorization`` method.
             dns_authorization (google.cloud.certificate_manager_v1.types.DnsAuthorization):
                 Required. A definition of the dns
                 authorization to update.
@@ -3038,8 +3019,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.DeleteDnsAuthorizationRequest, dict]):
-                The request object. Request for the
-                `DeleteDnsAuthorization` method.
+                The request object. Request for the ``DeleteDnsAuthorization`` method.
             name (str):
                 Required. A name of the dns authorization to delete.
                 Must be in the format
@@ -3165,8 +3145,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.ListCertificateIssuanceConfigsRequest, dict]):
-                The request object. Request for the
-                `ListCertificateIssuanceConfigs` method.
+                The request object. Request for the ``ListCertificateIssuanceConfigs``
+                method.
             parent (str):
                 Required. The project and location from which the
                 certificate should be listed, specified in the format
@@ -3287,8 +3267,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.GetCertificateIssuanceConfigRequest, dict]):
-                The request object. Request for the
-                `GetCertificateIssuanceConfig` method.
+                The request object. Request for the ``GetCertificateIssuanceConfig`` method.
             name (str):
                 Required. A name of the certificate issuance config to
                 describe. Must be in the format
@@ -3417,8 +3396,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateIssuanceConfigRequest, dict]):
-                The request object. Request for the
-                `CreateCertificateIssuanceConfig` method.
+                The request object. Request for the ``CreateCertificateIssuanceConfig``
+                method.
             parent (str):
                 Required. The parent resource of the certificate
                 issuance config. Must be in the format
@@ -3569,8 +3548,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         Args:
             request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateIssuanceConfigRequest, dict]):
-                The request object. Request for the
-                `DeleteCertificateIssuanceConfig` method.
+                The request object. Request for the ``DeleteCertificateIssuanceConfig``
+                method.
             name (str):
                 Required. A name of the certificate issuance config to
                 delete. Must be in the format
