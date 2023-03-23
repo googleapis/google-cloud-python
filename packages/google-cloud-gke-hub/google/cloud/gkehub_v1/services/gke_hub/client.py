@@ -525,8 +525,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.ListMembershipsRequest, dict]):
-                The request object. Request message for
-                `GkeHub.ListMemberships` method.
+                The request object. Request message for ``GkeHub.ListMemberships`` method.
             parent (str):
                 Required. The parent (project and location) where the
                 Memberships will be listed. Specified in the format
@@ -639,8 +638,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.ListFeaturesRequest, dict]):
-                The request object. Request message for
-                `GkeHub.ListFeatures` method.
+                The request object. Request message for ``GkeHub.ListFeatures`` method.
             parent (str):
                 Required. The parent (project and location) where the
                 Features will be listed. Specified in the format
@@ -753,8 +751,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.GetMembershipRequest, dict]):
-                The request object. Request message for
-                `GkeHub.GetMembership` method.
+                The request object. Request message for ``GkeHub.GetMembership`` method.
             name (str):
                 Required. The Membership resource name in the format
                 ``projects/*/locations/*/memberships/*``.
@@ -854,8 +851,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.GetFeatureRequest, dict]):
-                The request object. Request message for
-                `GkeHub.GetFeature` method.
+                The request object. Request message for ``GkeHub.GetFeature`` method.
             name (str):
                 Required. The Feature resource name in the format
                 ``projects/*/locations/*/features/*``
@@ -967,8 +963,8 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.CreateMembershipRequest, dict]):
-                The request object. Request message for the
-                `GkeHub.CreateMembership` method.
+                The request object. Request message for the ``GkeHub.CreateMembership``
+                method.
             parent (str):
                 Required. The parent (project and location) where the
                 Memberships will be created. Specified in the format
@@ -1112,8 +1108,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.CreateFeatureRequest, dict]):
-                The request object. Request message for the
-                `GkeHub.CreateFeature` method.
+                The request object. Request message for the ``GkeHub.CreateFeature`` method.
             parent (str):
                 Required. The parent (project and location) where the
                 Feature will be created. Specified in the format
@@ -1249,8 +1244,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.DeleteMembershipRequest, dict]):
-                The request object. Request message for
-                `GkeHub.DeleteMembership` method.
+                The request object. Request message for ``GkeHub.DeleteMembership`` method.
             name (str):
                 Required. The Membership resource name in the format
                 ``projects/*/locations/*/memberships/*``.
@@ -1372,8 +1366,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.DeleteFeatureRequest, dict]):
-                The request object. Request message for
-                `GkeHub.DeleteFeature` method.
+                The request object. Request message for ``GkeHub.DeleteFeature`` method.
             name (str):
                 Required. The Feature resource name in the format
                 ``projects/*/locations/*/features/*``.
@@ -1498,8 +1491,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.UpdateMembershipRequest, dict]):
-                The request object. Request message for
-                `GkeHub.UpdateMembership` method.
+                The request object. Request message for ``GkeHub.UpdateMembership`` method.
             name (str):
                 Required. The Membership resource name in the format
                 ``projects/*/locations/*/memberships/*``.
@@ -1639,8 +1631,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.UpdateFeatureRequest, dict]):
-                The request object. Request message for
-                `GkeHub.UpdateFeature` method.
+                The request object. Request message for ``GkeHub.UpdateFeature`` method.
             name (str):
                 Required. The Feature resource name in the format
                 ``projects/*/locations/*/features/*``.
@@ -1777,9 +1768,8 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.GenerateConnectManifestRequest, dict]):
-                The request object. Request message for
-                `GkeHub.GenerateConnectManifest` method.
-                .
+                The request object. Request message for ``GkeHub.GenerateConnectManifest``
+                method. .
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

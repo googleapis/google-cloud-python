@@ -282,7 +282,7 @@ class GkeHubMembershipServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.ListMembershipsRequest, dict]]):
                 The request object. Request message for
-                `GkeHubMembershipService.ListMemberships` method.
+                ``GkeHubMembershipService.ListMemberships`` method.
             parent (:class:`str`):
                 Required. The parent (project and location) where the
                 Memberships will be listed. Specified in the format
@@ -397,7 +397,7 @@ class GkeHubMembershipServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.GetMembershipRequest, dict]]):
                 The request object. Request message for
-                `GkeHubMembershipService.GetMembership` method.
+                ``GkeHubMembershipService.GetMembership`` method.
             name (:class:`str`):
                 Required. The Membership resource name in the format
                 ``projects/*/locations/*/memberships/*``.
@@ -510,7 +510,7 @@ class GkeHubMembershipServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.CreateMembershipRequest, dict]]):
                 The request object. Request message for the
-                `GkeHubMembershipService.CreateMembership` method.
+                ``GkeHubMembershipService.CreateMembership`` method.
             parent (:class:`str`):
                 Required. The parent (project and location) where the
                 Memberships will be created. Specified in the format
@@ -659,7 +659,7 @@ class GkeHubMembershipServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.DeleteMembershipRequest, dict]]):
                 The request object. Request message for
-                `GkeHubMembershipService.DeleteMembership` method.
+                ``GkeHubMembershipService.DeleteMembership`` method.
             name (:class:`str`):
                 Required. The Membership resource name in the format
                 ``projects/*/locations/*/memberships/*``.
@@ -785,7 +785,7 @@ class GkeHubMembershipServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.UpdateMembershipRequest, dict]]):
                 The request object. Request message for
-                `GkeHubMembershipService.UpdateMembership` method.
+                ``GkeHubMembershipService.UpdateMembership`` method.
             name (:class:`str`):
                 Required. The membership resource name in the format:
                 ``projects/[project_id]/locations/global/memberships/[membership_id]``
@@ -928,7 +928,7 @@ class GkeHubMembershipServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.GenerateConnectManifestRequest, dict]]):
                 The request object. Request message for
-                `GkeHubMembershipService.GenerateConnectManifest`
+                ``GkeHubMembershipService.GenerateConnectManifest``
                 method. .
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1013,7 +1013,8 @@ class GkeHubMembershipServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.ValidateExclusivityRequest, dict]]):
                 The request object. The request to validate the existing
-                state of the membership CR in the cluster.
+                state of the membership CR in the
+                cluster.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1107,8 +1108,8 @@ class GkeHubMembershipServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.GenerateExclusivityManifestRequest, dict]]):
-                The request object. The request to generate the
-                manifests for exclusivity artifacts.
+                The request object. The request to generate the manifests
+                for exclusivity artifacts.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

@@ -719,7 +719,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                 request (~.membership.CreateMembershipRequest):
                     The request object. Request message for the
                 ``GkeHubMembershipService.CreateMembership`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -819,7 +818,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                 request (~.membership.DeleteMembershipRequest):
                     The request object. Request message for
                 ``GkeHubMembershipService.DeleteMembership`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -911,7 +909,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                     The request object. Request message for
                 ``GkeHubMembershipService.GenerateConnectManifest``
                 method. .
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1005,7 +1002,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                     request (~.membership.GenerateExclusivityManifestRequest):
                         The request object. The request to generate the manifests
                     for exclusivity artifacts.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1098,7 +1094,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                 request (~.membership.GetMembershipRequest):
                     The request object. Request message for
                 ``GkeHubMembershipService.GetMembership`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1188,7 +1183,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                 request (~.membership.ListMembershipsRequest):
                     The request object. Request message for
                 ``GkeHubMembershipService.ListMemberships`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1282,7 +1276,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                 request (~.membership.UpdateMembershipRequest):
                     The request object. Request message for
                 ``GkeHubMembershipService.UpdateMembership`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1385,7 +1378,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
                     The request object. The request to validate the existing
                 state of the membership CR in the
                 cluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

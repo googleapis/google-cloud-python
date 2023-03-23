@@ -683,7 +683,6 @@ class GkeHubRestTransport(GkeHubTransport):
                 request (~.service.CreateMembershipRequest):
                     The request object. Request message for the ``GkeHub.CreateMembership``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -948,7 +947,6 @@ class GkeHubRestTransport(GkeHubTransport):
                 request (~.service.GenerateConnectManifestRequest):
                     The request object. Request message for ``GkeHub.GenerateConnectManifest``
                 method. .
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
