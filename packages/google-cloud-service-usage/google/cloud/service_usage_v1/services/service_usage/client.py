@@ -470,8 +470,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.EnableServiceRequest, dict]):
-                The request object. Request message for the
-                `EnableService` method.
+                The request object. Request message for the ``EnableService`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -573,8 +572,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.DisableServiceRequest, dict]):
-                The request object. Request message for the
-                `DisableService` method.
+                The request object. Request message for the ``DisableService`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -666,8 +664,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.GetServiceRequest, dict]):
-                The request object. Request message for the `GetService`
-                method.
+                The request object. Request message for the ``GetService`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -760,8 +757,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.ListServicesRequest, dict]):
-                The request object. Request message for the
-                `ListServices` method.
+                The request object. Request message for the ``ListServices`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -858,8 +854,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.BatchEnableServicesRequest, dict]):
-                The request object. Request message for the
-                `BatchEnableServices` method.
+                The request object. Request message for the ``BatchEnableServices`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -951,8 +946,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.BatchGetServicesRequest, dict]):
-                The request object. Request message for the
-                `BatchGetServices` method.
+                The request object. Request message for the ``BatchGetServices`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
