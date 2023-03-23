@@ -357,7 +357,6 @@ class TenantServiceRestTransport(TenantServiceTransport):
                 request (~.tenant_service.CreateTenantRequest):
                     The request object. The Request of the CreateTenant
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -628,7 +627,6 @@ class TenantServiceRestTransport(TenantServiceTransport):
                 request (~.tenant_service.ListTenantsRequest):
                     The request object. List tenants for which the client has
                 ACL visibility.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -716,7 +714,6 @@ class TenantServiceRestTransport(TenantServiceTransport):
                 request (~.tenant_service.UpdateTenantRequest):
                     The request object. Request for updating a specified
                 tenant.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

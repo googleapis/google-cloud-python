@@ -357,7 +357,6 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
                 request (~.company_service.CreateCompanyRequest):
                     The request object. The Request of the CreateCompany
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -534,7 +533,6 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
                 request (~.company_service.GetCompanyRequest):
                     The request object. Request for getting a company by
                 name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -628,7 +626,6 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
                 request (~.company_service.ListCompaniesRequest):
                     The request object. List companies for which the client
                 has ACL visibility.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -716,7 +713,6 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
                 request (~.company_service.UpdateCompanyRequest):
                     The request object. Request for updating a specified
                 company.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

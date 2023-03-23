@@ -382,8 +382,7 @@ class TenantServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.talent_v4.types.GetTenantRequest, dict]]):
-                The request object. Request for getting a tenant by
-                name.
+                The request object. Request for getting a tenant by name.
             name (:class:`str`):
                 Required. The resource name of the tenant to be
                 retrieved.
@@ -738,8 +737,8 @@ class TenantServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.talent_v4.types.ListTenantsRequest, dict]]):
-                The request object. List tenants for which the client
-                has ACL visibility.
+                The request object. List tenants for which the client has
+                ACL visibility.
             parent (:class:`str`):
                 Required. Resource name of the project under which the
                 tenant is created.

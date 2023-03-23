@@ -1292,8 +1292,7 @@ class JobServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.talent_v4beta1.types.SearchJobsRequest, dict]]):
-                The request object. The Request body of the `SearchJobs`
-                call.
+                The request object. The Request body of the ``SearchJobs`` call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1396,8 +1395,7 @@ class JobServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.talent_v4beta1.types.SearchJobsRequest, dict]]):
-                The request object. The Request body of the `SearchJobs`
-                call.
+                The request object. The Request body of the ``SearchJobs`` call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
