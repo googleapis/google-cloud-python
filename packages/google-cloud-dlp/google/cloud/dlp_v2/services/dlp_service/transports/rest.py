@@ -1109,7 +1109,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.ActivateJobTriggerRequest):
                     The request object. Request message for
                 ActivateJobTrigger.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1215,7 +1214,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.CancelDlpJobRequest):
                     The request object. The request message for canceling a
                 DLP job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1306,7 +1304,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     request (~.dlp.CreateDeidentifyTemplateRequest):
                         The request object. Request message for
                     CreateDeidentifyTemplate.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1428,7 +1425,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 long running jobs such as calculating
                 risk metrics or inspecting Google Cloud
                 Storage.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1532,7 +1528,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.CreateInspectTemplateRequest):
                     The request object. Request message for
                 CreateInspectTemplate.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1764,7 +1759,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.CreateStoredInfoTypeRequest):
                     The request object. Request message for
                 CreateStoredInfoType.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1975,7 +1969,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     request (~.dlp.DeleteDeidentifyTemplateRequest):
                         The request object. Request message for
                     DeleteDeidentifyTemplate.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2065,7 +2058,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.DeleteDlpJobRequest):
                     The request object. The request message for deleting a
                 DLP job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2145,7 +2137,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.DeleteInspectTemplateRequest):
                     The request object. Request message for
                 DeleteInspectTemplate.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2319,7 +2310,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.DeleteStoredInfoTypeRequest):
                     The request object. Request message for
                 DeleteStoredInfoType.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2409,7 +2399,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.FinishDlpJobRequest):
                     The request object. The request message for finishing a
                 DLP hybrid job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2494,7 +2483,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.GetDeidentifyTemplateRequest):
                     The request object. Request message for
                 GetDeidentifyTemplate.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2693,7 +2681,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.GetInspectTemplateRequest):
                     The request object. Request message for
                 GetInspectTemplate.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2900,7 +2887,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.GetStoredInfoTypeRequest):
                     The request object. Request message for
                 GetStoredInfoType.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3005,7 +2991,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.HybridInspectDlpJobRequest):
                     The request object. Request to search for potentially
                 sensitive info in a custom location.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3107,7 +3092,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     request (~.dlp.HybridInspectJobTriggerRequest):
                         The request object. Request to search for potentially
                     sensitive info in a custom location.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3198,7 +3182,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.InspectContentRequest):
                     The request object. Request to search for potentially
                 sensitive info in a ContentItem.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3299,7 +3282,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.ListDeidentifyTemplatesRequest):
                     The request object. Request message for
                 ListDeidentifyTemplates.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3403,7 +3385,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.ListDlpJobsRequest):
                     The request object. The request message for listing DLP
                 jobs.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3582,7 +3563,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.ListInspectTemplatesRequest):
                     The request object. Request message for
                 ListInspectTemplates.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3782,7 +3762,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.ListStoredInfoTypesRequest):
                     The request object. Request message for
                 ListStoredInfoTypes.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3877,7 +3856,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     The request object. Request to search for potentially
                 sensitive info in an image and redact it
                 by covering it with a colored rectangle.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4081,7 +4059,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     request (~.dlp.UpdateDeidentifyTemplateRequest):
                         The request object. Request message for
                     UpdateDeidentifyTemplate.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4200,7 +4177,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.UpdateInspectTemplateRequest):
                     The request object. Request message for
                 UpdateInspectTemplate.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4432,7 +4408,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 request (~.dlp.UpdateStoredInfoTypeRequest):
                     The request object. Request message for
                 UpdateStoredInfoType.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

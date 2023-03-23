@@ -702,8 +702,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         Args:
             request (Union[google.cloud.dlp_v2.types.RedactImageRequest, dict]):
                 The request object. Request to search for potentially
-                sensitive info in an image and redact it by covering it
-                with a colored rectangle.
+                sensitive info in an image and redact it
+                by covering it with a colored rectangle.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -789,8 +789,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeidentifyContentRequest, dict]):
-                The request object. Request to de-identify a
-                ContentItem.
+                The request object. Request to de-identify a ContentItem.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2300,8 +2299,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateJobTriggerRequest, dict]):
-                The request object. Request message for
-                CreateJobTrigger.
+                The request object. Request message for CreateJobTrigger.
             parent (str):
                 Required. Parent resource name.
 
@@ -2433,8 +2431,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateJobTriggerRequest, dict]):
-                The request object. Request message for
-                UpdateJobTrigger.
+                The request object. Request message for UpdateJobTrigger.
             name (str):
                 Required. Resource name of the project and the
                 triggeredJob, for example
@@ -2902,8 +2899,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteJobTriggerRequest, dict]):
-                The request object. Request message for
-                DeleteJobTrigger.
+                The request object. Request message for DeleteJobTrigger.
             name (str):
                 Required. Resource name of the project and the
                 triggeredJob, for example
@@ -3090,9 +3086,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateDlpJobRequest, dict]):
                 The request object. Request message for
-                CreateDlpJobRequest. Used to initiate long running jobs
-                such as calculating risk metrics or inspecting Google
-                Cloud Storage.
+                CreateDlpJobRequest. Used to initiate
+                long running jobs such as calculating
+                risk metrics or inspecting Google Cloud
+                Storage.
             parent (str):
                 Required. Parent resource name.
 
@@ -3369,8 +3366,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dlp_v2.types.GetDlpJobRequest, dict]):
-                The request object. The request message for
-                [DlpJobs.GetDlpJob][].
+                The request object. The request message for [DlpJobs.GetDlpJob][].
             name (str):
                 Required. The name of the DlpJob
                 resource.
