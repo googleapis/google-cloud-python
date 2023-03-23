@@ -800,7 +800,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.CreateDatasetRequest):
                     The request object. Request message for
                 [AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -898,7 +897,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.CreateModelRequest):
                     The request object. Request message for
                 [AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -996,7 +994,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.DeleteDatasetRequest):
                     The request object. Request message for
                 [AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1085,7 +1082,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.DeleteModelRequest):
                     The request object. Request message for
                 [AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1174,7 +1170,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.DeployModelRequest):
                     The request object. Request message for
                 [AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1272,7 +1267,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.ExportDataRequest):
                     The request object. Request message for
                 [AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1372,7 +1366,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel].
                 Models need to be enabled for exporting, otherwise an
                 error code will be returned.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1470,7 +1463,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.GetAnnotationSpecRequest):
                     The request object. Request message for
                 [AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1560,7 +1552,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.GetDatasetRequest):
                     The request object. Request message for
                 [AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1652,7 +1643,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.GetModelRequest):
                     The request object. Request message for
                 [AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1742,7 +1732,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.GetModelEvaluationRequest):
                     The request object. Request message for
                 [AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1832,7 +1821,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.ImportDataRequest):
                     The request object. Request message for
                 [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1930,7 +1918,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.ListDatasetsRequest):
                     The request object. Request message for
                 [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2022,7 +2009,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.ListModelEvaluationsRequest):
                     The request object. Request message for
                 [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2114,7 +2100,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.ListModelsRequest):
                     The request object. Request message for
                 [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2204,7 +2189,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.UndeployModelRequest):
                     The request object. Request message for
                 [AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2304,7 +2288,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.UpdateDatasetRequest):
                     The request object. Request message for
                 [AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2407,7 +2390,6 @@ class AutoMlRestTransport(AutoMlTransport):
                 request (~.service.UpdateModelRequest):
                     The request object. Request message for
                 [AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

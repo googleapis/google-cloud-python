@@ -328,7 +328,6 @@ class PredictionServiceRestTransport(PredictionServiceTransport):
                 request (~.prediction_service.BatchPredictRequest):
                     The request object. Request message for
                 [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -426,7 +425,6 @@ class PredictionServiceRestTransport(PredictionServiceTransport):
                 request (~.prediction_service.PredictRequest):
                     The request object. Request message for
                 [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
