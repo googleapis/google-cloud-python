@@ -428,7 +428,6 @@ class ConnectionServiceRestTransport(ConnectionServiceTransport):
                 request (~.gcbc_connection.CreateConnectionRequest):
                     The request object. The request for
                 [ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1.ConnectionService.CreateConnection].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -530,7 +529,6 @@ class ConnectionServiceRestTransport(ConnectionServiceTransport):
                 request (~.connection.DeleteConnectionRequest):
                     The request object. The request for
                 [ConnectionService.DeleteConnectionRequest][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -608,7 +606,6 @@ class ConnectionServiceRestTransport(ConnectionServiceTransport):
                 request (~.connection.GetConnectionRequest):
                     The request object. The request for
                 [ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -871,7 +868,6 @@ class ConnectionServiceRestTransport(ConnectionServiceTransport):
                 request (~.connection.ListConnectionsRequest):
                     The request object. The request for
                 [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1232,7 +1228,6 @@ class ConnectionServiceRestTransport(ConnectionServiceTransport):
                 request (~.gcbc_connection.UpdateConnectionRequest):
                     The request object. The request for
                 [ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
