@@ -257,10 +257,9 @@ class GatewayServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.api.httpbody_pb2.HttpBody, dict]]):
-                The request object. Message that represents an arbitrary
-                HTTP body. It should only be used for payload formats
-                that can't be represented as JSON, such as raw binary or
-                an HTML page.
+                The request object. Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
                 This message can be used both in streaming and
                 non-streaming API methods in the request as well as the
@@ -270,7 +269,10 @@ class GatewayServiceAsyncClient:
                 convenient if one wants to extract parameters from
                 either the URL or HTTP template into the request fields
                 and also want access to the raw HTTP body.
+
                 Example:
+
+                ::
 
                     message GetResourceRequest {
                       // A unique request id.
@@ -290,6 +292,8 @@ class GatewayServiceAsyncClient:
                     }
 
                 Example with streaming methods:
+
+                ::
 
                     service CaldavService {
                       rpc GetCalendar(stream google.api.HttpBody)
@@ -422,10 +426,9 @@ class GatewayServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.api.httpbody_pb2.HttpBody, dict]]):
-                The request object. Message that represents an arbitrary
-                HTTP body. It should only be used for payload formats
-                that can't be represented as JSON, such as raw binary or
-                an HTML page.
+                The request object. Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
                 This message can be used both in streaming and
                 non-streaming API methods in the request as well as the
@@ -435,7 +438,10 @@ class GatewayServiceAsyncClient:
                 convenient if one wants to extract parameters from
                 either the URL or HTTP template into the request fields
                 and also want access to the raw HTTP body.
+
                 Example:
+
+                ::
 
                     message GetResourceRequest {
                       // A unique request id.
@@ -455,6 +461,8 @@ class GatewayServiceAsyncClient:
                     }
 
                 Example with streaming methods:
+
+                ::
 
                     service CaldavService {
                       rpc GetCalendar(stream google.api.HttpBody)
@@ -587,10 +595,9 @@ class GatewayServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.api.httpbody_pb2.HttpBody, dict]]):
-                The request object. Message that represents an arbitrary
-                HTTP body. It should only be used for payload formats
-                that can't be represented as JSON, such as raw binary or
-                an HTML page.
+                The request object. Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
                 This message can be used both in streaming and
                 non-streaming API methods in the request as well as the
@@ -600,7 +607,10 @@ class GatewayServiceAsyncClient:
                 convenient if one wants to extract parameters from
                 either the URL or HTTP template into the request fields
                 and also want access to the raw HTTP body.
+
                 Example:
+
+                ::
 
                     message GetResourceRequest {
                       // A unique request id.
@@ -620,6 +630,8 @@ class GatewayServiceAsyncClient:
                     }
 
                 Example with streaming methods:
+
+                ::
 
                     service CaldavService {
                       rpc GetCalendar(stream google.api.HttpBody)
@@ -752,10 +764,9 @@ class GatewayServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.api.httpbody_pb2.HttpBody, dict]]):
-                The request object. Message that represents an arbitrary
-                HTTP body. It should only be used for payload formats
-                that can't be represented as JSON, such as raw binary or
-                an HTML page.
+                The request object. Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
                 This message can be used both in streaming and
                 non-streaming API methods in the request as well as the
@@ -765,7 +776,10 @@ class GatewayServiceAsyncClient:
                 convenient if one wants to extract parameters from
                 either the URL or HTTP template into the request fields
                 and also want access to the raw HTTP body.
+
                 Example:
+
+                ::
 
                     message GetResourceRequest {
                       // A unique request id.
@@ -785,6 +799,8 @@ class GatewayServiceAsyncClient:
                     }
 
                 Example with streaming methods:
+
+                ::
 
                     service CaldavService {
                       rpc GetCalendar(stream google.api.HttpBody)
@@ -917,10 +933,9 @@ class GatewayServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.api.httpbody_pb2.HttpBody, dict]]):
-                The request object. Message that represents an arbitrary
-                HTTP body. It should only be used for payload formats
-                that can't be represented as JSON, such as raw binary or
-                an HTML page.
+                The request object. Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
                 This message can be used both in streaming and
                 non-streaming API methods in the request as well as the
@@ -930,7 +945,10 @@ class GatewayServiceAsyncClient:
                 convenient if one wants to extract parameters from
                 either the URL or HTTP template into the request fields
                 and also want access to the raw HTTP body.
+
                 Example:
+
+                ::
 
                     message GetResourceRequest {
                       // A unique request id.
@@ -950,6 +968,8 @@ class GatewayServiceAsyncClient:
                     }
 
                 Example with streaming methods:
+
+                ::
 
                     service CaldavService {
                       rpc GetCalendar(stream google.api.HttpBody)
