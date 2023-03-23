@@ -483,8 +483,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.CreateContactRequest, dict]):
-                The request object. Request message for the
-                CreateContact method.
+                The request object. Request message for the CreateContact
+                method.
             parent (str):
                 Required. The resource to save this contact for. Format:
                 organizations/{organization_id}, folders/{folder_id} or
@@ -597,8 +597,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.UpdateContactRequest, dict]):
-                The request object. Request message for the
-                UpdateContact method.
+                The request object. Request message for the UpdateContact
+                method.
             contact (google.cloud.essential_contacts_v1.types.Contact):
                 Required. The contact resource to
                 replace the existing saved contact.
@@ -930,8 +930,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.DeleteContactRequest, dict]):
-                The request object. Request message for the
-                DeleteContact method.
+                The request object. Request message for the DeleteContact
+                method.
             name (str):
                 Required. The name of the contact to delete. Format:
                 organizations/{organization_id}/contacts/{contact_id},

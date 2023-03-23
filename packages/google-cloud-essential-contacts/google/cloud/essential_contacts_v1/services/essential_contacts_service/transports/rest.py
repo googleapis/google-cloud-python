@@ -367,7 +367,6 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
                 request (~.service.ComputeContactsRequest):
                     The request object. Request message for the
                 ComputeContacts method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -467,7 +466,6 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
                 request (~.service.CreateContactRequest):
                     The request object. Request message for the CreateContact
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -576,7 +574,6 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
                 request (~.service.DeleteContactRequest):
                     The request object. Request message for the DeleteContact
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -660,7 +657,6 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
                 request (~.service.GetContactRequest):
                     The request object. Request message for the GetContact
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -758,7 +754,6 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
                 request (~.service.ListContactsRequest):
                     The request object. Request message for the ListContacts
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -856,7 +851,6 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
                 request (~.service.SendTestMessageRequest):
                     The request object. Request message for the
                 SendTestMessage method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -953,7 +947,6 @@ class EssentialContactsServiceRestTransport(EssentialContactsServiceTransport):
                 request (~.service.UpdateContactRequest):
                     The request object. Request message for the UpdateContact
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
