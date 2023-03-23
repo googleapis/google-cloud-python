@@ -518,8 +518,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.metastore_v1alpha.types.CreateFederationRequest, dict]]):
-                The request object. Request message for
-                CreateFederation.
+                The request object. Request message for CreateFederation.
             parent (:class:`str`):
                 Required. The relative resource name of the location in
                 which to create a federation service, in the following
@@ -667,8 +666,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.metastore_v1alpha.types.UpdateFederationRequest, dict]]):
-                The request object. Request message for
-                UpdateFederation.
+                The request object. Request message for UpdateFederation.
             federation (:class:`google.cloud.metastore_v1alpha.types.Federation`):
                 Required. The metastore federation to update. The server
                 only merges fields in the service if they are specified
@@ -804,8 +802,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.metastore_v1alpha.types.DeleteFederationRequest, dict]]):
-                The request object. Request message for
-                DeleteFederation.
+                The request object. Request message for DeleteFederation.
             name (:class:`str`):
                 Required. The relative resource name of the metastore
                 federation to delete, in the following form:

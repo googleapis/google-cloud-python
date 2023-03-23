@@ -1847,8 +1847,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
 
         Args:
             request (Union[google.cloud.metastore_v1.types.RestoreServiceRequest, dict]):
-                The request object. Request message for
-                [DataprocMetastore.Restore][].
+                The request object. Request message for [DataprocMetastore.Restore][].
             service (str):
                 Required. The relative resource name of the metastore
                 service to run restore, in the following form:

@@ -1540,8 +1540,7 @@ class DataprocMetastoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.metastore_v1alpha.types.RestoreServiceRequest, dict]]):
-                The request object. Request message for
-                [DataprocMetastore.Restore][].
+                The request object. Request message for [DataprocMetastore.Restore][].
             service (:class:`str`):
                 Required. The relative resource name of the metastore
                 service to run restore, in the following form:

@@ -1034,7 +1034,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                     request (~.metastore.AlterMetadataResourceLocationRequest):
                         The request object. Request message for
                     [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1beta.DataprocMetastore.AlterMetadataResourceLocation].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1136,7 +1135,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.CreateBackupRequest):
                     The request object. Request message for
                 [DataprocMetastore.CreateBackup][google.cloud.metastore.v1beta.DataprocMetastore.CreateBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1236,7 +1234,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.CreateMetadataImportRequest):
                     The request object. Request message for
                 [DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.CreateMetadataImport].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1338,7 +1335,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.CreateServiceRequest):
                     The request object. Request message for
                 [DataprocMetastore.CreateService][google.cloud.metastore.v1beta.DataprocMetastore.CreateService].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1436,7 +1432,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.DeleteBackupRequest):
                     The request object. Request message for
                 [DataprocMetastore.DeleteBackup][google.cloud.metastore.v1beta.DataprocMetastore.DeleteBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1525,7 +1520,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.DeleteServiceRequest):
                     The request object. Request message for
                 [DataprocMetastore.DeleteService][google.cloud.metastore.v1beta.DataprocMetastore.DeleteService].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1614,7 +1608,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.ExportMetadataRequest):
                     The request object. Request message for
                 [DataprocMetastore.ExportMetadata][google.cloud.metastore.v1beta.DataprocMetastore.ExportMetadata].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1712,7 +1705,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.GetBackupRequest):
                     The request object. Request message for
                 [DataprocMetastore.GetBackup][google.cloud.metastore.v1beta.DataprocMetastore.GetBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1800,7 +1792,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.GetMetadataImportRequest):
                     The request object. Request message for
                 [DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.GetMetadataImport].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1892,7 +1883,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.GetServiceRequest):
                     The request object. Request message for
                 [DataprocMetastore.GetService][google.cloud.metastore.v1beta.DataprocMetastore.GetService].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1982,7 +1972,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.ListBackupsRequest):
                     The request object. Request message for
                 [DataprocMetastore.ListBackups][google.cloud.metastore.v1beta.DataprocMetastore.ListBackups].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2072,7 +2061,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.ListMetadataImportsRequest):
                     The request object. Request message for
                 [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1beta.DataprocMetastore.ListMetadataImports].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2164,7 +2152,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.ListServicesRequest):
                     The request object. Request message for
                 [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2254,7 +2241,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.MoveTableToDatabaseRequest):
                     The request object. Request message for
                 [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1beta.DataprocMetastore.MoveTableToDatabase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2354,7 +2340,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.QueryMetadataRequest):
                     The request object. Request message for
                 [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1beta.DataprocMetastore.QueryMetadata].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2452,7 +2437,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.RemoveIamPolicyRequest):
                     The request object. Request message for
                 [DataprocMetastore.RemoveIamPolicy][google.cloud.metastore.v1beta.DataprocMetastore.RemoveIamPolicy].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2651,7 +2635,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.UpdateMetadataImportRequest):
                     The request object. Request message for
                 [DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.UpdateMetadataImport].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2753,7 +2736,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 request (~.metastore.UpdateServiceRequest):
                     The request object. Request message for
                 [DataprocMetastore.UpdateService][google.cloud.metastore.v1beta.DataprocMetastore.UpdateService].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
