@@ -617,7 +617,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                 request (~.attached_service.CreateAttachedClusterRequest):
                     The request object. Request message for
                 ``AttachedClusters.CreateAttachedCluster`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -715,7 +714,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                 request (~.attached_service.DeleteAttachedClusterRequest):
                     The request object. Request message for
                 ``AttachedClusters.DeleteAttachedCluster`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -809,7 +807,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                         The request object. Request message for
                     ``AttachedClusters.GenerateAttachedClusterInstallManifest``
                     method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -911,7 +908,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                 request (~.attached_service.GetAttachedClusterRequest):
                     The request object. Request message for
                 ``AttachedClusters.GetAttachedCluster`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1002,7 +998,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                     request (~.attached_service.GetAttachedServerConfigRequest):
                         The request object. GetAttachedServerConfigRequest gets
                     the server config for attached clusters.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1093,7 +1088,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                 request (~.attached_service.ImportAttachedClusterRequest):
                     The request object. Request message for
                 ``AttachedClusters.ImportAttachedCluster`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1191,7 +1185,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                 request (~.attached_service.ListAttachedClustersRequest):
                     The request object. Request message for
                 ``AttachedClusters.ListAttachedClusters`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1283,7 +1276,6 @@ class AttachedClustersRestTransport(AttachedClustersTransport):
                 request (~.attached_service.UpdateAttachedClusterRequest):
                     The request object. Request message for
                 ``AttachedClusters.UpdateAttachedCluster`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

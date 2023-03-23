@@ -728,7 +728,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.CreateAwsClusterRequest):
                     The request object. Request message for ``AwsClusters.CreateAwsCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -828,7 +827,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.CreateAwsNodePoolRequest):
                     The request object. Response message for ``AwsClusters.CreateAwsNodePool``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -926,7 +924,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.DeleteAwsClusterRequest):
                     The request object. Request message for ``AwsClusters.DeleteAwsCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1015,7 +1012,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.DeleteAwsNodePoolRequest):
                     The request object. Request message for ``AwsClusters.DeleteAwsNodePool``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1104,7 +1100,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.GenerateAwsAccessTokenRequest):
                     The request object. Request message for
                 ``AwsClusters.GenerateAwsAccessToken`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1194,7 +1189,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.GetAwsClusterRequest):
                     The request object. Request message for ``AwsClusters.GetAwsCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1280,7 +1274,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.GetAwsNodePoolRequest):
                     The request object. Request message for ``AwsClusters.GetAwsNodePool``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1368,7 +1361,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.GetAwsServerConfigRequest):
                     The request object. GetAwsServerConfigRequest gets the
                 server config of GKE cluster on AWS.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1458,7 +1450,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.ListAwsClustersRequest):
                     The request object. Request message for ``AwsClusters.ListAwsClusters``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1548,7 +1539,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.ListAwsNodePoolsRequest):
                     The request object. Request message for ``AwsClusters.ListAwsNodePools``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1640,7 +1630,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.UpdateAwsClusterRequest):
                     The request object. Request message for ``AwsClusters.UpdateAwsCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1740,7 +1729,6 @@ class AwsClustersRestTransport(AwsClustersTransport):
                 request (~.aws_service.UpdateAwsNodePoolRequest):
                     The request object. Request message for ``AwsClusters.UpdateAwsNodePool``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -585,8 +585,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.CreateAzureClientRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.CreateAzureClient` method.
+                The request object. Request message for ``AzureClusters.CreateAzureClient``
+                method.
             parent (str):
                 Required. The parent location where this
                 [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
@@ -748,8 +748,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GetAzureClientRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.GetAzureClient` method.
+                The request object. Request message for ``AzureClusters.GetAzureClient``
+                method.
             name (str):
                 Required. The name of the
                 [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
@@ -876,8 +876,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.ListAzureClientsRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.ListAzureClients` method.
+                The request object. Request message for ``AzureClusters.ListAzureClients``
+                method.
             parent (str):
                 Required. The parent location which owns this collection
                 of
@@ -1013,8 +1013,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.DeleteAzureClientRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.DeleteAzureClient` method.
+                The request object. Request message for ``AzureClusters.DeleteAzureClient``
+                method.
             name (str):
                 Required. The resource name the
                 [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
@@ -1167,8 +1167,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.CreateAzureClusterRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.CreateAzureCluster` method.
+                The request object. Request message for ``AzureClusters.CreateAzureCluster``
+                method.
             parent (str):
                 Required. The parent location where this
                 [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
@@ -1332,8 +1332,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.UpdateAzureClusterRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.UpdateAzureCluster` method.
+                The request object. Request message for ``AzureClusters.UpdateAzureCluster``
+                method.
             azure_cluster (google.cloud.gke_multicloud_v1.types.AzureCluster):
                 Required. The
                 [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
@@ -1478,8 +1478,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GetAzureClusterRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.GetAzureCluster` method.
+                The request object. Request message for ``AzureClusters.GetAzureCluster``
+                method.
             name (str):
                 Required. The name of the
                 [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
@@ -1590,8 +1590,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.ListAzureClustersRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.ListAzureClusters` method.
+                The request object. Request message for ``AzureClusters.ListAzureClusters``
+                method.
             parent (str):
                 Required. The parent location which owns this collection
                 of
@@ -1728,8 +1728,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.DeleteAzureClusterRequest, dict]):
-                The request object. Request message for
-                `Clusters.DeleteAzureCluster` method.
+                The request object. Request message for ``Clusters.DeleteAzureCluster``
+                method.
             name (str):
                 Required. The resource name the
                 [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
@@ -1861,7 +1861,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GenerateAzureAccessTokenRequest, dict]):
                 The request object. Request message for
-                `AzureClusters.GenerateAzureAccessToken` method.
+                ``AzureClusters.GenerateAzureAccessToken`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1970,7 +1970,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.CreateAzureNodePoolRequest, dict]):
                 The request object. Response message for
-                `AzureClusters.CreateAzureNodePool` method.
+                ``AzureClusters.CreateAzureNodePool`` method.
             parent (str):
                 Required. The
                 [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
@@ -2132,7 +2132,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.UpdateAzureNodePoolRequest, dict]):
                 The request object. Request message for
-                `AzureClusters.UpdateAzureNodePool` method.
+                ``AzureClusters.UpdateAzureNodePool`` method.
             azure_node_pool (google.cloud.gke_multicloud_v1.types.AzureNodePool):
                 Required. The
                 [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]
@@ -2267,8 +2267,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GetAzureNodePoolRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.GetAzureNodePool` method.
+                The request object. Request message for ``AzureClusters.GetAzureNodePool``
+                method.
             name (str):
                 Required. The name of the
                 [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]
@@ -2379,8 +2379,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.ListAzureNodePoolsRequest, dict]):
-                The request object. Request message for
-                `AzureClusters.ListAzureNodePools` method.
+                The request object. Request message for ``AzureClusters.ListAzureNodePools``
+                method.
             parent (str):
                 Required. The parent ``AzureCluster`` which owns this
                 collection of
@@ -2512,8 +2512,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.DeleteAzureNodePoolRequest, dict]):
-                The request object. Delete message for
-                `AzureClusters.DeleteAzureNodePool` method.
+                The request object. Delete message for ``AzureClusters.DeleteAzureNodePool``
+                method.
             name (str):
                 Required. The resource name the
                 [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]

@@ -854,7 +854,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.CreateAzureClientRequest):
                     The request object. Request message for ``AzureClusters.CreateAzureClient``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -954,7 +953,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.CreateAzureClusterRequest):
                     The request object. Request message for ``AzureClusters.CreateAzureCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1054,7 +1052,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.CreateAzureNodePoolRequest):
                     The request object. Response message for
                 ``AzureClusters.CreateAzureNodePool`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1152,7 +1149,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.DeleteAzureClientRequest):
                     The request object. Request message for ``AzureClusters.DeleteAzureClient``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1241,7 +1237,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.DeleteAzureClusterRequest):
                     The request object. Request message for ``Clusters.DeleteAzureCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1330,7 +1325,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.DeleteAzureNodePoolRequest):
                     The request object. Delete message for ``AzureClusters.DeleteAzureNodePool``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1420,7 +1414,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                     request (~.azure_service.GenerateAzureAccessTokenRequest):
                         The request object. Request message for
                     ``AzureClusters.GenerateAzureAccessToken`` method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1510,7 +1503,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.GetAzureClientRequest):
                     The request object. Request message for ``AzureClusters.GetAzureClient``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1614,7 +1606,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.GetAzureClusterRequest):
                     The request object. Request message for ``AzureClusters.GetAzureCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1702,7 +1693,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.GetAzureNodePoolRequest):
                     The request object. Request message for ``AzureClusters.GetAzureNodePool``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1790,7 +1780,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.GetAzureServerConfigRequest):
                     The request object. GetAzureServerConfigRequest gets the
                 server config of GKE cluster on Azure.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1882,7 +1871,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.ListAzureClientsRequest):
                     The request object. Request message for ``AzureClusters.ListAzureClients``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1972,7 +1960,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.ListAzureClustersRequest):
                     The request object. Request message for ``AzureClusters.ListAzureClusters``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2062,7 +2049,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.ListAzureNodePoolsRequest):
                     The request object. Request message for ``AzureClusters.ListAzureNodePools``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2154,7 +2140,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.UpdateAzureClusterRequest):
                     The request object. Request message for ``AzureClusters.UpdateAzureCluster``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2254,7 +2239,6 @@ class AzureClustersRestTransport(AzureClustersTransport):
                 request (~.azure_service.UpdateAzureNodePoolRequest):
                     The request object. Request message for
                 ``AzureClusters.UpdateAzureNodePool`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

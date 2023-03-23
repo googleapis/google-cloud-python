@@ -571,8 +571,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.CreateAwsClusterRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.CreateAwsCluster` method.
+                The request object. Request message for ``AwsClusters.CreateAwsCluster``
+                method.
             parent (str):
                 Required. The parent location where this
                 [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -739,8 +739,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.UpdateAwsClusterRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.UpdateAwsCluster` method.
+                The request object. Request message for ``AwsClusters.UpdateAwsCluster``
+                method.
             aws_cluster (google.cloud.gke_multicloud_v1.types.AwsCluster):
                 Required. The
                 [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -891,8 +891,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GetAwsClusterRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.GetAwsCluster` method.
+                The request object. Request message for ``AwsClusters.GetAwsCluster``
+                method.
             name (str):
                 Required. The name of the
                 [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -1002,8 +1002,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.ListAwsClustersRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.ListAwsClusters` method.
+                The request object. Request message for ``AwsClusters.ListAwsClusters``
+                method.
             parent (str):
                 Required. The parent location which owns this collection
                 of
@@ -1138,8 +1138,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.DeleteAwsClusterRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.DeleteAwsCluster` method.
+                The request object. Request message for ``AwsClusters.DeleteAwsCluster``
+                method.
             name (str):
                 Required. The resource name the
                 [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -1270,7 +1270,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GenerateAwsAccessTokenRequest, dict]):
                 The request object. Request message for
-                `AwsClusters.GenerateAwsAccessToken` method.
+                ``AwsClusters.GenerateAwsAccessToken`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1379,8 +1379,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.CreateAwsNodePoolRequest, dict]):
-                The request object. Response message for
-                `AwsClusters.CreateAwsNodePool` method.
+                The request object. Response message for ``AwsClusters.CreateAwsNodePool``
+                method.
             parent (str):
                 Required. The
                 [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -1542,8 +1542,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.UpdateAwsNodePoolRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.UpdateAwsNodePool` method.
+                The request object. Request message for ``AwsClusters.UpdateAwsNodePool``
+                method.
             aws_node_pool (google.cloud.gke_multicloud_v1.types.AwsNodePool):
                 Required. The
                 [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
@@ -1694,8 +1694,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GetAwsNodePoolRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.GetAwsNodePool` method.
+                The request object. Request message for ``AwsClusters.GetAwsNodePool``
+                method.
             name (str):
                 Required. The name of the
                 [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
@@ -1806,8 +1806,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.ListAwsNodePoolsRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.ListAwsNodePools` method.
+                The request object. Request message for ``AwsClusters.ListAwsNodePools``
+                method.
             parent (str):
                 Required. The parent ``AwsCluster`` which owns this
                 collection of
@@ -1939,8 +1939,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.DeleteAwsNodePoolRequest, dict]):
-                The request object. Request message for
-                `AwsClusters.DeleteAwsNodePool` method.
+                The request object. Request message for ``AwsClusters.DeleteAwsNodePool``
+                method.
             name (str):
                 Required. The resource name the
                 [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
