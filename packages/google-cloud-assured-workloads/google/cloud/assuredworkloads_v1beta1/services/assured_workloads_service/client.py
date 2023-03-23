@@ -744,7 +744,8 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         Args:
             request (Union[google.cloud.assuredworkloads_v1beta1.types.RestrictAllowedResourcesRequest, dict]):
                 The request object. Request for restricting list of
-                available resources in Workload environment.
+                available resources in Workload
+                environment.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1028,8 +1029,9 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         Args:
             request (Union[google.cloud.assuredworkloads_v1beta1.types.AnalyzeWorkloadMoveRequest, dict]):
                 The request object. A request to analyze a hypothetical
-                move of a source project or project-based workload to a
-                target (destination) folder-based workload.
+                move of a source project or
+                project-based workload to a target
+                (destination) folder-based workload.
             project (str):
                 The source type is a project. Specify the project's
                 relative resource name, formatted as either a project

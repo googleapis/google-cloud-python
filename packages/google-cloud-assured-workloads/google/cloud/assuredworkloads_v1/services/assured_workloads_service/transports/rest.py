@@ -824,7 +824,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
                 request (~.assuredworkloads.ListWorkloadsRequest):
                     The request object. Request for fetching workloads in an
                 organization.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -914,7 +913,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
                         The request object. Request for restricting list of
                     available resources in Workload
                     environment.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

@@ -531,7 +531,8 @@ class AssuredWorkloadsServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.assuredworkloads_v1.types.RestrictAllowedResourcesRequest, dict]]):
                 The request object. Request for restricting list of
-                available resources in Workload environment.
+                available resources in Workload
+                environment.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -929,8 +930,8 @@ class AssuredWorkloadsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.assuredworkloads_v1.types.ListViolationsRequest, dict]]):
-                The request object. Request for fetching violations in
-                an organization.
+                The request object. Request for fetching violations in an
+                organization.
             parent (:class:`str`):
                 Required. The Workload name. Format
                 ``organizations/{org_id}/locations/{location}/workloads/{workload}``.
