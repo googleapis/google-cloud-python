@@ -1881,8 +1881,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest, dict]):
-                The request object. The request message to search
-                related account group memberships.
+                The request object. The request message to search related
+                account group memberships.
             project (str):
                 Required. The name of the project to
                 search related account group memberships
