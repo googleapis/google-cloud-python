@@ -274,7 +274,6 @@ class TemplatesServiceRestTransport(TemplatesServiceTransport):
                 request (~.templates.CreateJobFromTemplateRequest):
                     The request object. A request to create a Cloud Dataflow
                 job from a template.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -369,7 +368,6 @@ class TemplatesServiceRestTransport(TemplatesServiceTransport):
                 request (~.templates.GetTemplateRequest):
                     The request object. A request to retrieve a Cloud
                 Dataflow job template.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

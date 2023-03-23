@@ -459,7 +459,6 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
                 request (~.jobs.CreateJobRequest):
                     The request object. Request to create a Cloud Dataflow
                 job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -552,7 +551,6 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
                 request (~.jobs.GetJobRequest):
                     The request object. Request to get the state of a Cloud
                 Dataflow job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -722,7 +720,6 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
                 request (~.jobs.SnapshotJobRequest):
                     The request object. Request to create a snapshot of a
                 job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -813,7 +810,6 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
                 request (~.jobs.UpdateJobRequest):
                     The request object. Request to update a Cloud Dataflow
                 job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

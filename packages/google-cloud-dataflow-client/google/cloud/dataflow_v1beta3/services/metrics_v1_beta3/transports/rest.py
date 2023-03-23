@@ -445,7 +445,6 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
                         The request object. Request to get information about a
                     particular execution stage of a job.
                     Currently only tracked for Batch jobs.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

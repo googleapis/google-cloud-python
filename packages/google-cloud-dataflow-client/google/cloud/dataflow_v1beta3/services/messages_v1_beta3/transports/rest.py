@@ -219,7 +219,6 @@ class MessagesV1Beta3RestTransport(MessagesV1Beta3Transport):
                 with the oldest messages first. If no time range is
                 specified the results with start with the oldest
                 message.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

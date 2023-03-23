@@ -568,8 +568,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest, dict]):
-                The request object. Request to get job execution
-                details.
+                The request object. Request to get job execution details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -674,8 +673,8 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest, dict]):
                 The request object. Request to get information about a
-                particular execution stage of a job. Currently only
-                tracked for Batch jobs.
+                particular execution stage of a job.
+                Currently only tracked for Batch jobs.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

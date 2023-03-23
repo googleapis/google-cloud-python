@@ -216,7 +216,6 @@ class FlexTemplatesServiceRestTransport(FlexTemplatesServiceTransport):
                 request (~.templates.LaunchFlexTemplateRequest):
                     The request object. A request to launch a Cloud Dataflow
                 job from a FlexTemplate.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

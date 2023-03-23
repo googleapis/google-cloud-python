@@ -469,11 +469,11 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest, dict]):
-                The request object. Request to list job messages.
-                Up to max_results messages will be returned in the time
-                range specified starting with the oldest messages first.
-                If no time range is specified the results with start
-                with the oldest message.
+                The request object. Request to list job messages. Up to max_results messages
+                will be returned in the time range specified starting
+                with the oldest messages first. If no time range is
+                specified the results with start with the oldest
+                message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
