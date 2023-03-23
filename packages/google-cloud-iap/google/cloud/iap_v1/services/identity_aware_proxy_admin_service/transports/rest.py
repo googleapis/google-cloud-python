@@ -1371,7 +1371,6 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 request (~.service.UpdateIapSettingsRequest):
                     The request object. The request sent to
                 UpdateIapSettings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

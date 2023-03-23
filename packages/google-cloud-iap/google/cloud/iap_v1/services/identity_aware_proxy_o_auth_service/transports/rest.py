@@ -530,7 +530,6 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     request (~.service.CreateIdentityAwareProxyClientRequest):
                         The request object. The request sent to
                     CreateIdentityAwareProxyClient.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -635,7 +634,6 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     request (~.service.DeleteIdentityAwareProxyClientRequest):
                         The request object. The request sent to
                     DeleteIdentityAwareProxyClient.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -806,7 +804,6 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     request (~.service.GetIdentityAwareProxyClientRequest):
                         The request object. The request sent to
                     GetIdentityAwareProxyClient.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -985,7 +982,6 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     request (~.service.ListIdentityAwareProxyClientsRequest):
                         The request object. The request sent to
                     ListIdentityAwareProxyClients.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1078,7 +1074,6 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     request (~.service.ResetIdentityAwareProxyClientSecretRequest):
                         The request object. The request sent to
                     ResetIdentityAwareProxyClientSecret.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

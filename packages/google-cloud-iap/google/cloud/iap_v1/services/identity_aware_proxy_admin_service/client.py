@@ -515,8 +515,7 @@ class IdentityAwareProxyAdminServiceClient(
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -660,8 +659,7 @@ class IdentityAwareProxyAdminServiceClient(
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -806,8 +804,7 @@ class IdentityAwareProxyAdminServiceClient(
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1177,8 +1174,7 @@ class IdentityAwareProxyAdminServiceClient(
 
         Args:
             request (Union[google.cloud.iap_v1.types.CreateTunnelDestGroupRequest, dict]):
-                The request object. The request to
-                CreateTunnelDestGroup.
+                The request object. The request to CreateTunnelDestGroup.
             parent (str):
                 Required. Google Cloud Project ID and location. In the
                 following format:
@@ -1396,8 +1392,7 @@ class IdentityAwareProxyAdminServiceClient(
 
         Args:
             request (Union[google.cloud.iap_v1.types.DeleteTunnelDestGroupRequest, dict]):
-                The request object. The request to
-                DeleteTunnelDestGroup.
+                The request object. The request to DeleteTunnelDestGroup.
             name (str):
                 Required. Name of the TunnelDestGroup to delete. In the
                 following format:
@@ -1494,8 +1489,7 @@ class IdentityAwareProxyAdminServiceClient(
 
         Args:
             request (Union[google.cloud.iap_v1.types.UpdateTunnelDestGroupRequest, dict]):
-                The request object. The request to
-                UpdateTunnelDestGroup.
+                The request object. The request to UpdateTunnelDestGroup.
             tunnel_dest_group (google.cloud.iap_v1.types.TunnelDestGroup):
                 Required. The new values for the
                 TunnelDestGroup.
