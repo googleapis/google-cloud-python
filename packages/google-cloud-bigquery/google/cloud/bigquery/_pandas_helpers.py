@@ -21,6 +21,7 @@ from itertools import islice
 import logging
 import queue
 import warnings
+from typing import Any, Union
 
 from packaging import version
 
@@ -283,7 +284,13 @@ def bq_to_arrow_schema(bq_schema):
     return pyarrow.schema(arrow_fields)
 
 
-def default_types_mapper(date_as_object: bool = False):
+def default_types_mapper(
+    date_as_object: bool = False,
+    bool_dtype: Union[Any, None] = None,
+    int_dtype: Union[Any, None] = None,
+    float_dtype: Union[Any, None] = None,
+    string_dtype: Union[Any, None] = None,
+):
     """Create a mapping from pyarrow types to pandas types.
 
     This overrides the pandas defaults to use null-safe extension types where
@@ -299,8 +306,17 @@ def default_types_mapper(date_as_object: bool = False):
     """
 
     def types_mapper(arrow_data_type):
-        if pyarrow.types.is_boolean(arrow_data_type):
-            return pandas.BooleanDtype()
+        if bool_dtype is not None and pyarrow.types.is_boolean(arrow_data_type):
+            return bool_dtype
+
+        elif int_dtype is not None and pyarrow.types.is_integer(arrow_data_type):
+            return int_dtype
+
+        elif float_dtype is not None and pyarrow.types.is_floating(arrow_data_type):
+            return float_dtype
+
+        elif string_dtype is not None and pyarrow.types.is_string(arrow_data_type):
+            return string_dtype
 
         elif (
             # If date_as_object is True, we know some DATE columns are
@@ -309,9 +325,6 @@ def default_types_mapper(date_as_object: bool = False):
             and pyarrow.types.is_date(arrow_data_type)
         ):
             return db_dtypes.DateDtype()
-
-        elif pyarrow.types.is_integer(arrow_data_type):
-            return pandas.Int64Dtype()
 
         elif pyarrow.types.is_time(arrow_data_type):
             return db_dtypes.TimeDtype()

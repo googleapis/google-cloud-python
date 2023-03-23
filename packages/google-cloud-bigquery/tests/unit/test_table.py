@@ -56,6 +56,11 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
 
 try:
+    import db_dtypes  # type: ignore
+except ImportError:  # pragma: NO COVER
+    db_dtypes = None
+
+try:
     import geopandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     geopandas = None
@@ -3455,6 +3460,114 @@ class TestRowIterator(unittest.TestCase):
                 self.assertIsInstance(row.payment_type, str)
                 self.assertIsInstance(row.complete, bool)
                 self.assertIsInstance(row.date, datetime.date)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_w_dtypes_mapper(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING"),
+            SchemaField("complete", "BOOL"),
+            SchemaField("age", "INTEGER"),
+            SchemaField("seconds", "INT64"),
+            SchemaField("miles", "FLOAT64"),
+        ]
+        row_data = [
+            ["Phred Phlyntstone", "true", "32", "23000", "1.77"],
+            ["Bharney Rhubble", "false", "33", "454000", "6.66"],
+            ["Wylma Phlyntstone", "true", "29", "341000", "2.0"],
+        ]
+        rows = [{"f": [{"v": field} for field in row]} for row in row_data]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        df = row_iterator.to_dataframe(
+            create_bqstorage_client=False,
+            bool_dtype=pandas.BooleanDtype(),
+            int_dtype=pandas.Int32Dtype(),
+            float_dtype=pandas.StringDtype(),
+            string_dtype=pandas.StringDtype(),
+        )
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(df.complete.dtype.name, "boolean")
+        self.assertEqual(df.age.dtype.name, "Int32")
+        self.assertEqual(df.seconds.dtype.name, "Int32")
+        self.assertEqual(df.miles.dtype.name, "string")
+        self.assertEqual(df.name.dtype.name, "string")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_w_none_dtypes_mapper(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING"),
+            SchemaField("complete", "BOOL"),
+            SchemaField("age", "INTEGER"),
+            SchemaField("seconds", "INT64"),
+            SchemaField("miles", "FLOAT64"),
+        ]
+        row_data = [
+            ["Phred Phlyntstone", "true", "32", "23000", "1.77"],
+            ["Bharney Rhubble", "false", "33", "454000", "6.66"],
+            ["Wylma Phlyntstone", "true", "29", "341000", "2.0"],
+        ]
+        rows = [{"f": [{"v": field} for field in row]} for row in row_data]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        df = row_iterator.to_dataframe(
+            create_bqstorage_client=False,
+            bool_dtype=None,
+            int_dtype=None,
+            float_dtype=None,
+            string_dtype=None,
+        )
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(df.complete.dtype.name, "bool")
+        self.assertEqual(df.age.dtype.name, "int64")
+        self.assertEqual(df.seconds.dtype.name, "int64")
+        self.assertEqual(df.miles.dtype.name, "float64")
+        self.assertEqual(df.name.dtype.name, "object")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_w_unsupported_dtypes_mapper(self):
+        import numpy
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING"),
+        ]
+        row_data = [
+            ["Phred Phlyntstone"],
+        ]
+        rows = [{"f": [{"v": field} for field in row]} for row in row_data]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                bool_dtype=numpy.dtype("bool"),
+            )
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                int_dtype=numpy.dtype("int64"),
+            )
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                float_dtype=numpy.dtype("float64"),
+            )
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                string_dtype=numpy.dtype("object"),
+            )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_column_dtypes(self):

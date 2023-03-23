@@ -28,7 +28,7 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
-from google.cloud.bigquery.enums import KeyResultStatementKind
+from google.cloud.bigquery.enums import KeyResultStatementKind, DefaultPandasDTypes
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import (
@@ -52,6 +52,11 @@ from google.cloud.bigquery._tqdm_helpers import wait_for_query
 from google.cloud.bigquery.job.base import _AsyncJob
 from google.cloud.bigquery.job.base import _JobConfig
 from google.cloud.bigquery.job.base import _JobReference
+
+try:
+    import pandas  # type: ignore
+except ImportError:  # pragma: NO COVER
+    pandas = None
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Assumption: type checks are only used by library developers and CI environments
@@ -1620,6 +1625,10 @@ class QueryJob(_AsyncJob):
         create_bqstorage_client: bool = True,
         max_results: Optional[int] = None,
         geography_as_object: bool = False,
+        bool_dtype: Union[Any, None] = DefaultPandasDTypes.BOOL_DTYPE,
+        int_dtype: Union[Any, None] = DefaultPandasDTypes.INT_DTYPE,
+        float_dtype: Union[Any, None] = None,
+        string_dtype: Union[Any, None] = None,
     ) -> "pandas.DataFrame":
         """Return a pandas DataFrame from a QueryJob
 
@@ -1672,6 +1681,46 @@ class QueryJob(_AsyncJob):
 
                 .. versionadded:: 2.24.0
 
+            bool_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.BooleanDtype()``)
+                to convert BigQuery Boolean type, instead of relying on the default
+                ``pandas.BooleanDtype()``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("bool")``. BigQuery Boolean
+                type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type
+
+                .. versionadded:: 3.7.1
+
+            int_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.Int64Dtype()``)
+                to convert BigQuery Integer types, instead of relying on the default
+                ``pandas.Int64Dtype()``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("int64")``. A list of BigQuery
+                Integer types can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types
+
+                .. versionadded:: 3.7.1
+
+            float_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.Float32Dtype()``)
+                to convert BigQuery Float type, instead of relying on the default
+                ``numpy.dtype("float64")``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("float64")``. BigQuery Float
+                type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types
+
+                .. versionadded:: 3.7.1
+
+            string_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.StringDtype()``) to
+                convert BigQuery String type, instead of relying on the default
+                ``numpy.dtype("object")``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("object")``. BigQuery String
+                type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type
+
+                .. versionadded:: 3.7.1
+
         Returns:
             pandas.DataFrame:
                 A :class:`~pandas.DataFrame` populated with row data
@@ -1694,6 +1743,10 @@ class QueryJob(_AsyncJob):
             progress_bar_type=progress_bar_type,
             create_bqstorage_client=create_bqstorage_client,
             geography_as_object=geography_as_object,
+            bool_dtype=bool_dtype,
+            int_dtype=int_dtype,
+            float_dtype=float_dtype,
+            string_dtype=string_dtype,
         )
 
     # If changing the signature of this method, make sure to apply the same

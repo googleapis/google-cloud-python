@@ -35,6 +35,11 @@ except ImportError:  # pragma: NO COVER
     pyarrow = None
 
 try:
+    import db_dtypes  # type: ignore
+except ImportError:  # pragma: NO COVER
+    db_dtypes = None
+
+try:
     import geopandas  # type: ignore
 except ImportError:
     geopandas = None
@@ -55,6 +60,7 @@ from google.api_core.page_iterator import HTTPIterator
 import google.cloud._helpers  # type: ignore
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import _pandas_helpers
+from google.cloud.bigquery.enums import DefaultPandasDTypes
 from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -87,6 +93,11 @@ _NO_SHAPELY_ERROR = (
 )
 
 _TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
+
+_NO_SUPPORTED_DTYPE = (
+    "The dtype cannot to be converted to a pandas ExtensionArray "
+    "because the necessary `__from_arrow__` attribute is missing."
+)
 
 
 def _reference_getter(table):
@@ -1920,6 +1931,10 @@ class RowIterator(HTTPIterator):
         progress_bar_type: str = None,
         create_bqstorage_client: bool = True,
         geography_as_object: bool = False,
+        bool_dtype: Union[Any, None] = DefaultPandasDTypes.BOOL_DTYPE,
+        int_dtype: Union[Any, None] = DefaultPandasDTypes.INT_DTYPE,
+        float_dtype: Union[Any, None] = None,
+        string_dtype: Union[Any, None] = None,
     ) -> "pandas.DataFrame":
         """Create a pandas DataFrame by loading all pages of a query.
 
@@ -1958,6 +1973,7 @@ class RowIterator(HTTPIterator):
                   progress bar as a graphical dialog box.
 
                 .. versionadded:: 1.11.0
+
             create_bqstorage_client (Optional[bool]):
                 If ``True`` (default), create a BigQuery Storage API client
                 using the default API settings. The BigQuery Storage API
@@ -1975,6 +1991,46 @@ class RowIterator(HTTPIterator):
 
                 .. versionadded:: 2.24.0
 
+            bool_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.BooleanDtype()``)
+                to convert BigQuery Boolean type, instead of relying on the default
+                ``pandas.BooleanDtype()``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("bool")``. BigQuery Boolean
+                type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type
+
+                .. versionadded:: 3.7.1
+
+            int_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.Int64Dtype()``)
+                to convert BigQuery Integer types, instead of relying on the default
+                ``pandas.Int64Dtype()``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("int64")``. A list of BigQuery
+                Integer types can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types
+
+                .. versionadded:: 3.7.1
+
+            float_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.Float32Dtype()``)
+                to convert BigQuery Float type, instead of relying on the default
+                ``numpy.dtype("float64")``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("float64")``. BigQuery Float
+                type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types
+
+                .. versionadded:: 3.7.1
+
+            string_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g. ``pandas.StringDtype()``) to
+                convert BigQuery String type, instead of relying on the default
+                ``numpy.dtype("object")``. If you explicitly set the value to ``None``,
+                then the data type will be ``numpy.dtype("object")``. BigQuery String
+                type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type
+
+                .. versionadded:: 3.7.1
+
         Returns:
             pandas.DataFrame:
                 A :class:`~pandas.DataFrame` populated with row data and column
@@ -1987,13 +2043,33 @@ class RowIterator(HTTPIterator):
                 the :mod:`google.cloud.bigquery_storage_v1` module is
                 required but cannot be imported.  Also if
                 `geography_as_object` is `True`, but the
-                :mod:`shapely` library cannot be imported.
+                :mod:`shapely` library cannot be imported. Also if
+                `bool_dtype`, `int_dtype` or other dtype parameters
+                is not supported dtype.
 
         """
         _pandas_helpers.verify_pandas_imports()
 
         if geography_as_object and shapely is None:
             raise ValueError(_NO_SHAPELY_ERROR)
+
+        if bool_dtype is DefaultPandasDTypes.BOOL_DTYPE:
+            bool_dtype = pandas.BooleanDtype()
+
+        if int_dtype is DefaultPandasDTypes.INT_DTYPE:
+            int_dtype = pandas.Int64Dtype()
+
+        if bool_dtype is not None and not hasattr(bool_dtype, "__from_arrow__"):
+            raise ValueError("bool_dtype", _NO_SUPPORTED_DTYPE)
+
+        if int_dtype is not None and not hasattr(int_dtype, "__from_arrow__"):
+            raise ValueError("int_dtype", _NO_SUPPORTED_DTYPE)
+
+        if float_dtype is not None and not hasattr(float_dtype, "__from_arrow__"):
+            raise ValueError("float_dtype", _NO_SUPPORTED_DTYPE)
+
+        if string_dtype is not None and not hasattr(string_dtype, "__from_arrow__"):
+            raise ValueError("string_dtype", _NO_SUPPORTED_DTYPE)
 
         if dtypes is None:
             dtypes = {}
@@ -2019,15 +2095,15 @@ class RowIterator(HTTPIterator):
             for col in record_batch
             # Type can be date32 or date64 (plus units).
             # See: https://arrow.apache.org/docs/python/api/datatypes.html
-            if str(col.type).startswith("date")
+            if pyarrow.types.is_date(col.type)
         )
 
         timestamp_as_object = not all(
             self.__can_cast_timestamp_ns(col)
             for col in record_batch
-            # Type can be timestamp (plus units and time zone).
+            # Type can be datetime and timestamp (plus units and time zone).
             # See: https://arrow.apache.org/docs/python/api/datatypes.html
-            if str(col.type).startswith("timestamp")
+            if pyarrow.types.is_timestamp(col.type)
         )
 
         if len(record_batch) > 0:
@@ -2036,7 +2112,11 @@ class RowIterator(HTTPIterator):
                 timestamp_as_object=timestamp_as_object,
                 integer_object_nulls=True,
                 types_mapper=_pandas_helpers.default_types_mapper(
-                    date_as_object=date_as_object
+                    date_as_object=date_as_object,
+                    bool_dtype=bool_dtype,
+                    int_dtype=int_dtype,
+                    float_dtype=float_dtype,
+                    string_dtype=string_dtype,
                 ),
             )
         else:
@@ -2233,6 +2313,10 @@ class _EmptyRowIterator(RowIterator):
         progress_bar_type=None,
         create_bqstorage_client=True,
         geography_as_object=False,
+        bool_dtype=None,
+        int_dtype=None,
+        float_dtype=None,
+        string_dtype=None,
     ) -> "pandas.DataFrame":
         """Create an empty dataframe.
 
@@ -2241,6 +2325,11 @@ class _EmptyRowIterator(RowIterator):
             dtypes (Any): Ignored. Added for compatibility with RowIterator.
             progress_bar_type (Any): Ignored. Added for compatibility with RowIterator.
             create_bqstorage_client (bool): Ignored. Added for compatibility with RowIterator.
+            geography_as_object (bool): Ignored. Added for compatibility with RowIterator.
+            bool_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            int_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            float_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            string_dtype (Any): Ignored. Added for compatibility with RowIterator.
 
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.

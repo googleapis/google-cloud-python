@@ -77,6 +77,20 @@ class CreateDisposition(object):
     returned in the job result."""
 
 
+class DefaultPandasDTypes(enum.Enum):
+    """Default Pandas DataFrem DTypes to convert BigQuery data. These
+    Sentinel values are used instead of None to maintain backward compatibility,
+    and allow Pandas package is not available. For more information:
+    https://stackoverflow.com/a/60605919/101923
+    """
+
+    BOOL_DTYPE = object()
+    """Specifies default bool dtype"""
+
+    INT_DTYPE = object()
+    """Specifies default integer dtype"""
+
+
 class DestinationFormat(object):
     """The exported file format. The default value is :attr:`CSV`.
 
