@@ -1358,7 +1358,6 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                 request (~.gda_repository.CreateRepositoryRequest):
                     The request object. The request to create a new
                 repository.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2472,7 +2471,6 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                 request (~.settings.GetProjectSettingsRequest):
                     The request object. Gets the redirection status for a
                 project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2980,7 +2978,6 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                 request (~.apt_artifact.ImportAptArtifactsRequest):
                     The request object. The request to import new apt
                 artifacts.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3069,7 +3066,6 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                 request (~.yum_artifact.ImportYumArtifactsRequest):
                     The request object. The request to import new yum
                 artifacts.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4373,7 +4369,6 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                 request (~.gda_tag.UpdateTagRequest):
                     The request object. The request to create or update a
                 tag.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
